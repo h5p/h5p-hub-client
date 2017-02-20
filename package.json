@@ -1,0 +1,27 @@
+{
+  "name": "h5p-hub",
+  "version": "1.0.0",
+  "description": "H5P Content Hub and H5P Content Type Hub",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel --presets es2015 js/main.js -o build/main.bundle.js",
+    "start": "http-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h5p/h5p-hub.git"
+  },
+  "author": "Timothy Lim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/h5p/h5p-hub/issues"
+  },
+  "homepage": "https://github.com/h5p/h5p-hub#readme",
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-core": "^6.23.1",
+    "babel-preset-es2015": "^6.22.0",
+    "http-server": "^0.9.0"
+  }
+}
