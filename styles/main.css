@@ -1,0 +1,44 @@
+
+.hub-panel {
+  max-width:  51.667em;
+}
+
+.hub-panel-header {
+  background-color: white;
+  cursor: pointer;
+  border: 0.042em;
+  box-shadow: 0px 0px 0.2em 0.2em  rgba(79,87,99,0.2);
+  overflow: hidden;
+}
+
+.hub-logo {
+  padding: 5px;
+  background-color: #bab8b8;
+  width: 4em;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.panel-title {
+  display: inline-block;
+  margin-left: 0.5em;
+  width: 85%;
+}
+
+.down-arrow {
+  max-width: 30px;
+  display: inline-block;
+  height: 100%;
+  padding: 5px 10px;
+}
+
+.hub-body {
+  border: solid;
+  border-width: thin;
+  border-color: gray;
+  height: 500px;
+}
+
+
+.hidden {display: none;}

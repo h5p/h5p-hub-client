@@ -1,122 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-
-.hub-panel {
-  max-width:  51.667em;
-}
-
-.hub-panel-header {
-  background-color: white;
-  cursor: pointer;
-  border: 0.042em;
-  box-shadow: 0px 0px 0.2em 0.2em  rgba(79,87,99,0.2);
-  overflow: hidden;
-}
-
-.hub-logo {
-  padding: 5px;
-  background-color: #bab8b8;
-  width: 4em;
-  display: inline-block;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.panel-title {
-  display: inline-block;
-  margin-left: 0.5em;
-  width: 85%;
-}
-
-.down-arrow {
-  max-width: 30px;
-  display: inline-block;
-  height: 100%;
-  padding: 5px 10px;
-}
-
-.hub-body {
-  border: solid;
-  border-width: thin;
-  border-color: gray;
-  height: 500px;
-}
-
-
-.hidden {display: none;}
-</style>
+  <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
 
 <script>
+  import Panel from 'scripts/panel/panel';
 
-class Hub {
-  constructor() {
+  class Hub {
+    constructor() {
 
-    const bodyEl = document.createElement('p');
-    bodyEl.innerHTML = 'test body';
+      const bodyEl = document.createElement('p');
+      bodyEl.innerHTML = 'test body';
 
-    this.panel = new Panel({
-      title: 'Single Choice Set',
-      body: bodyEl
-    });
+      this.panel = new Panel({
+        title: 'Single Choice Set',
+        body: bodyEl
+      });
+    }
+
+    get() {
+      return this.panel.get();
+    }
   }
 
-  get() {
-    return this.panel.get();
-  }
-}
-
-class Panel {
-  constructor({title, contentEl}) {
-
-    const logoEl = document.createElement('div');
-    logoEl.className += 'hub-logo';
-    logoEl.innerHTML += 'H5P Hub';
-
-    const titleEl = document.createElement('div');
-    titleEl.className += 'panel-title';
-    titleEl.innerHTML += '<p>' + title + '</p>';
-
-    const downArrowEl = document.createElement('div');
-    downArrowEl.className += 'down-arrow';
-    downArrowEl.innerHTML += '<span>v</span>'
-
-    const headerEl = document.createElement('div');
-    headerEl.className += 'hub-panel-header';
-    headerEl.setAttribute('aria-expanded', false);
-    headerEl.setAttribute('aria-controls', 'hub-panel-body');
-    headerEl.addEventListener('click', function(event) {
-      bodyEl.classList.toggle('hidden');
-    })
-    headerEl.appendChild(logoEl);
-    headerEl.appendChild(titleEl);
-    headerEl.appendChild(downArrowEl);
-
-    const bodyEl = document.createElement('div');
-    bodyEl.className += 'hub-body';
-    bodyEl.className += ' hidden';
-    bodyEl.id += 'hub-body';
-    bodyEl.innerHTML = '<span>Body Text</span>';
-
-    // Compose the panel
-    const panelEl = document.createElement('div');
-    panelEl.className += 'hub-panel';
-    panelEl.appendChild(headerEl);
-    panelEl.appendChild(bodyEl);
-    this.panelEl = panelEl;
-  }
-
-  get() {
-    return this.panelEl;
-  }
-}
-
-
-const hub = new Hub();
-document.body.appendChild(hub.get());
+  const hub = new Hub();
+  document.body.appendChild(hub.get());
 </script>
 </body>
 </html>
