@@ -20,6 +20,8 @@ export default class Hub {
     this.view = new HubView({
       title: 'Title'
     });
+
+    this.view.addTab('Create Content', '<h1>Create content!<h1>')
   }
 
   getElement() {

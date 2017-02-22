@@ -53,8 +53,7 @@ export default class HubView {
     this.bodyElement.className += "panel-body";
     this.bodyElement.setAttribute('aria-hidden', 'false');
     this.bodyElement.id = 'panel-body-1';
-    this.bodyElement.innerHTML = 'Body';
-    //this.bodyElement.appendChild(this.tabContainerElement);
+    this.bodyElement.appendChild(this.tabContainerElement);
 
     /**
      * @type {HTMLElement}
@@ -87,7 +86,7 @@ export default class HubView {
     tabpanel.innerHTML = content;
 
     this.tablist.appendChild(tab);
-    this.tabcontainer.appendChild(tabpanel);
+    this.tabContainerElement.appendChild(tabpanel);
   }
 
   /**
