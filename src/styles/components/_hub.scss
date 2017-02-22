@@ -1,0 +1,12 @@
+@import "../../../node_modules/h5p-sdk/src/styles/base/colors";
+
+.h5p-hub {
+  &.panel {
+    border: 1px solid $c1;
+  }
+
+  .panel-header {
+    background-color: white;
+    color: $c1;
+  }
+}

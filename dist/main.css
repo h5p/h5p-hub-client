@@ -55,3 +55,10 @@
 
 .tabcontainer [aria-hidden="true"] {
   display: none; }
+
+.h5p-hub.panel {
+  border: 1px solid #697585; }
+
+.h5p-hub .panel-header {
+  background-color: white;
+  color: #697585; }
