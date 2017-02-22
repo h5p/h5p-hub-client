@@ -1,9 +1,9 @@
-import
+import initPanel from "../../node_modules/h5p-sdk/src/scripts/components/panel"
 
-export default class Hub {
+export default class HubView {
   constructor(){
     console.log('im a hub');
-    const contentBrowser = new H5P.contentBrowser();
+    
   }
 
   getElement() {
