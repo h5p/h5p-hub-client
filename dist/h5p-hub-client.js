@@ -153,7 +153,19 @@
 	  _createClass(HubView, [{
 	    key: "renderTabPanel",
 	    value: function renderTabPanel(state) {
-	      this.tabContainerElement = undefined;
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tablist = document.createElement('ul');
+	      this.tablist.className += "tablist";
+	      this.tablist.setAttribute('role', 'tablist');
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabContainerElement = document.createElement('div');
+	      this.tabContainerElement.appendChild(this.tablist);
 	    }
 	
 	    /**
@@ -188,7 +200,7 @@
 	       * @type {HTMLElement}
 	       */
 	      this.rootElement = document.createElement('div');
-	      this.rootElement.className += 'panel';
+	      this.rootElement.className += 'h5p-hub panel';
 	      this.rootElement.appendChild(this.titleElement);
 	      this.rootElement.appendChild(this.bodyElement);
 	
@@ -199,14 +211,27 @@
 	     * Adds a tab
 	     *
 	     * @param {string} title
-	     * @param {HTMLElement} element
+	     * @param {HTMLElement} content
 	     */
 	
 	  }, {
 	    key: "addTab",
-	    value: function addTab(title, element) {}
-	    // <li id="tab1" class="tab" aria-controls="panel1" aria-selected="true" role="tab" tabindex="0">Create Content</li>
+	    value: function addTab(title, content) {
+	      var tab = document.createElement('li');
+	      tab.innerHTML = title;
 	
+	      var tabpanel = document.createElement('div');
+	      tabpanel.id = 'tab1';
+	      tabpanel.className += 'tab';
+	      tabpanel.setAttribute('aria-controls', 'panel1');
+	      tabpanel.setAttribute('aria-selected', 'true');
+	      tabpanel.setAttribute('role', 'tab');
+	      tabpanel.setAttribute('tabindex', '0');
+	      tabpanel.innerHTML = content;
+	
+	      this.tablist.appendChild(tab);
+	      this.tabcontainer.appendChild(tabpanel);
+	    }
 	
 	    /**
 	     * Returns the root html element

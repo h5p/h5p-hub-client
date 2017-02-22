@@ -6,11 +6,14 @@
 <body>
   <h1>H5P Hub Client</h1>
 
+  <p style="width: 1000px; margin-right: auto; margin-left: auto; padding-bottom: 100px;">
+
+  </p>
+
   <script type="text/javascript">H5P = {};</script>
   <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
-    const hub = new H5P.HubClient();
-    document.body.appendChild(hub.getElement());
+    document.querySelector('p').appendChild((new H5P.HubClient()).getElement());
   </script>
 </body>
 </html>
