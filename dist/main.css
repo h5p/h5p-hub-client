@@ -25,13 +25,8 @@
     padding: 10px; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
-  .panel .panel-body {
-    padding: 20px; }
   .panel [aria-hidden="true"] {
     display: none; }
-
-.tabcontainer .tabpanel {
-  padding: 20px; }
 
 .tabcontainer nav {
   background-color: #697585;

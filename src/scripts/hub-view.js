@@ -83,14 +83,20 @@ export default class HubView {
    */
   addTab(title, content) {
     let tab = document.createElement('li');
+    tab.className += 'tab';
+    tab.id ='tab1';
+    tab.className += 'tab';
+    tab.setAttribute('aria-controls', 'panel1');
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('tabindex', '0');
     tab.innerHTML = title;
 
     let tabpanel = document.createElement('div');
-    tabpanel.id ='tab1';
-    tabpanel.className += 'tab';
-    tabpanel.setAttribute('aria-controls', 'panel1');
-    tabpanel.setAttribute('aria-selected', 'true');
-    tabpanel.setAttribute('role', 'tab');
+    tabpanel.id ='panel1';
+    tabpanel.className += 'tabpanel';
+    tabpanel.setAttribute('aria-lablledby', 'tab1');
+    tabpanel.setAttribute('role', 'tabpanel');
     tabpanel.setAttribute('tabindex', '0');
     tabpanel.innerHTML = content;
 
