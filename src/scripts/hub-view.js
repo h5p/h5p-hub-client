@@ -1,5 +1,5 @@
 import initPanel from "../../node_modules/h5p-sdk/src/scripts/components/panel"
-//import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
+import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
 
 export default class HubView {
   /**
@@ -27,8 +27,17 @@ export default class HubView {
     /**
      * @type {HTMLElement}
      */
+     this.tabListWrapper = document.createElement('nav');
+     this.tabListWrapper.appendChild(this.tablist);
+
+    /**
+     * @type {HTMLElement}
+     */
     this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.appendChild(this.tablist);
+    this.tabContainerElement.className += 'tabcontainer';
+    this.tabContainerElement.appendChild(this.tabListWrapper);
+
+    initTabPanel(this.tabContainerElement);
   }
 
   /**

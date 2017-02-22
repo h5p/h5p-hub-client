@@ -67,7 +67,7 @@
 	
 	var _hubView2 = _interopRequireDefault(_hubView);
 	
-	var _contentBrowser = __webpack_require__(6);
+	var _contentBrowser = __webpack_require__(7);
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
@@ -97,7 +97,7 @@
 	      title: 'Title'
 	    });
 	
-	    this.view.addTab('Create Content', '<h1>Create content!<h1>');
+	    this.view.addTab('Create Content', '<h1>Create content body <h1>');
 	  }
 	
 	  _createClass(Hub, [{
@@ -128,11 +128,13 @@
 	
 	var _panel2 = _interopRequireDefault(_panel);
 	
+	var _tabPanel = __webpack_require__(6);
+	
+	var _tabPanel2 = _interopRequireDefault(_tabPanel);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	//import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
 	
 	var HubView = function () {
 	  /**
@@ -166,8 +168,17 @@
 	      /**
 	       * @type {HTMLElement}
 	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(this.tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
 	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.appendChild(this.tablist);
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	
+	      (0, _tabPanel2.default)(this.tabContainerElement);
 	    }
 	
 	    /**
@@ -620,6 +631,64 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = init;
+	
+	var _elements = __webpack_require__(4);
+	
+	var _functional = __webpack_require__(5);
+	
+	/**
+	 * @type {function}
+	 */
+	var getWhereRoleIsTab = (0, _elements.querySelectorAll)('[role="tab"]');
+	
+	/**
+	 * @type {function}
+	 */
+	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	
+	/**
+	 * @type {function}
+	 */
+	var setAllAriaHiddenTrue = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
+	
+	/**
+	 * @type {function}
+	 */
+	var setAriaSelectedFalse = (0, _elements.setAttribute)('aria-selected', 'false');
+	
+	/**
+	 * @type {function}
+	 */
+	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
+	
+	function init(element) {
+	  var tabs = getWhereRoleIsTab(element);
+	  var tabpanels = getWhereRoleIsTabpanel(element);
+	
+	  tabs.forEach(function (tab) {
+	    tab.addEventListener('click', function (event) {
+	
+	      setAllAriaSelectedFalse(tabs);
+	      event.target.setAttribute('aria-selected', 'true');
+	
+	      setAllAriaHiddenTrue(tabpanels);
+	      var tabpanelId = event.target.getAttribute('aria-controls');
+	      var targetTabpanel = document.getElementById(tabpanelId);
+	      targetTabpanel.setAttribute('aria-hidden', 'false');
+	    });
+	  });
+	}
+
+/***/ },
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";

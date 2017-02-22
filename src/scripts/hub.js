@@ -21,7 +21,7 @@ export default class Hub {
       title: 'Title'
     });
 
-    this.view.addTab('Create Content', '<h1>Create content!<h1>')
+    this.view.addTab('Create Content', '<h1>Create content body <h1>')
   }
 
   getElement() {
