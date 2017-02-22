@@ -7,7 +7,7 @@
   background-color: white;
   cursor: pointer;
   border: 0.042em;
-  box-shadow: 0px 0px 0.2em 0.2em  rgba(79,87,99,0.2);
+  box-shadow: 0 0 0.2em 0.2em  rgba(79,87,99,0.2);
   overflow: hidden;
 }
 

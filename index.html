@@ -1,32 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="src/styles/main.css" />
 </head>
 <body>
+  <h1>H5P Hub Client</h1>
 
-<script>
-  import Panel from 'scripts/panel/panel';
-
-  class Hub {
-    constructor() {
-
-      const bodyEl = document.createElement('p');
-      bodyEl.innerHTML = 'test body';
-
-      this.panel = new Panel({
-        title: 'Single Choice Set',
-        body: bodyEl
-      });
-    }
-
-    get() {
-      return this.panel.get();
-    }
-  }
-
-  const hub = new Hub();
-  document.body.appendChild(hub.get());
-</script>
+  <script type="text/javascript">H5P = {};</script>
+  <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
+  <script type="text/javascript">
+    const hub = new H5P.HubClient();
+    document.body.appendChild(hub.getElement());
+  </script>
 </body>
 </html>
