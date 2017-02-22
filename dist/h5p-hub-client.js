@@ -75,7 +75,15 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/**
+	 * @typedef {object} HubState
+	 * @property {string} title
+	 */
+	
 	var Hub = function () {
+	  /**
+	   * @param {HubState} state
+	   */
 	  function Hub(state) {
 	    _classCallCheck(this, Hub);
 	
@@ -125,48 +133,87 @@
 	//import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
 	
 	var HubView = function () {
+	  /**
+	   * @param {HubState} state
+	   */
 	  function HubView(state) {
 	    _classCallCheck(this, HubView);
 	
-	    /**
-	     * @type {HTMLElement}
-	     */
-	    this.titleElement = document.createElement('div');
-	    this.titleElement.className += "panel-title";
-	    this.titleElement.innerHTML = state.title;
-	
-	    /**
-	     * @type {HTMLElement}
-	     */
-	    this.bodyElement = document.createElement('div');
-	    this.bodyElement.className += "panel-body";
-	    this.bodyElement.setAttribute('aria-hidden', 'false');
-	    this.bodyElement.id = 'panel-body-1';
-	
-	    /**
-	     * @type {HTMLElement}
-	     */
-	    this.rootElement = document.createElement('div');
-	    this.rootElement.className += 'panel';
-	    this.rootElement.setAttribute('aria-expanded', 'true');
-	    this.rootElement.setAttribute('aria-controls', 'panel-body-1');
-	    this.rootElement.appendChild(this.titleElement);
-	    this.rootElement.appendChild(this.bodyElement);
-	
-	    //initPanel(this.rootElement);
+	    this.renderTabPanel(state);
+	    this.renderPanel(state);
 	  }
 	
 	  /**
-	   * Adds a tab
+	   * Creates the dom for the tab panel
 	   *
-	   * @param {string} title
-	   * @param {HTMLElement} element
+	   * @param {HubState} state
 	   */
 	
 	
 	  _createClass(HubView, [{
+	    key: "renderTabPanel",
+	    value: function renderTabPanel(state) {
+	      this.tabContainerElement = undefined;
+	    }
+	
+	    /**
+	     * Creates the dom for the panel
+	     *
+	     * @param {HubState} state
+	     */
+	
+	  }, {
+	    key: "renderPanel",
+	    value: function renderPanel(state) {
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.titleElement = document.createElement('div');
+	      this.titleElement.className += "panel-header";
+	      this.titleElement.setAttribute('aria-expanded', 'true');
+	      this.titleElement.setAttribute('aria-controls', 'panel-body-1');
+	      this.titleElement.innerHTML = state.title;
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.bodyElement = document.createElement('div');
+	      this.bodyElement.className += "panel-body";
+	      this.bodyElement.setAttribute('aria-hidden', 'false');
+	      this.bodyElement.id = 'panel-body-1';
+	      this.bodyElement.innerHTML = 'Body';
+	      //this.bodyElement.appendChild(this.tabContainerElement);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.rootElement = document.createElement('div');
+	      this.rootElement.className += 'panel';
+	      this.rootElement.appendChild(this.titleElement);
+	      this.rootElement.appendChild(this.bodyElement);
+	
+	      (0, _panel2.default)(this.rootElement);
+	    }
+	
+	    /**
+	     * Adds a tab
+	     *
+	     * @param {string} title
+	     * @param {HTMLElement} element
+	     */
+	
+	  }, {
 	    key: "addTab",
 	    value: function addTab(title, element) {}
+	    // <li id="tab1" class="tab" aria-controls="panel1" aria-selected="true" role="tab" tabindex="0">Create Content</li>
+	
+	
+	    /**
+	     * Returns the root html element
+	     *
+	     * @return {HTMLElement}
+	     */
+	
 	  }, {
 	    key: "getElement",
 	    value: function getElement() {
@@ -176,12 +223,6 @@
 	
 	  return HubView;
 	}();
-	/*
-	 <div class="panel-header" aria-expanded="true" aria-controls="panel-body-1">Title</div>
-	 <div id="panel-body-1" class="panel-body" aria-hidden="false">Ipsum lorum</div>
-	*
-	* */
-	
 	
 	exports.default = HubView;
 
@@ -252,6 +293,9 @@
 	 */
 	function init(element) {
 	  var titleEl = selectExpandable(element);
+	
+	  console.log('init', element, titleEl);
+	
 	  var bodyEl = document.getElementById(getAriaControls(titleEl));
 	
 	  if (titleEl) {

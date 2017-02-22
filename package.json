@@ -6,6 +6,8 @@
   "scripts": {
     "build": "webpack",
     "watch-build": "webpack --watch",
+    "build-css": "node-sass --include-path scss src/styles/main.scss dist/main.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
     "dev": "lite-server"
   },
   "repository": {

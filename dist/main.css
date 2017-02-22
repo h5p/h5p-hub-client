@@ -1,0 +1,57 @@
+.button {
+  font-size: 0.833em;
+  text-decoration: none;
+  padding: 0.708em 1.375em;
+  border-radius: 1.375em;
+  background-color: #0a78d1;
+  color: white;
+  border: transparent; }
+
+.button-inverse {
+  font-size: 0.833em;
+  text-decoration: none;
+  padding: 0.708em 1.375em;
+  border-radius: 1.375em;
+  background-color: white;
+  color: #0a78d1;
+  border: 0.083em #0a78d1 solid; }
+
+.panel {
+  border: thin solid #697585; }
+  .panel .panel-header {
+    background-color: #697585;
+    color: white;
+    border: 0.042em;
+    padding: 10px; }
+    .panel .panel-header[aria-expanded] {
+      cursor: pointer; }
+  .panel .panel-body {
+    padding: 20px; }
+  .panel [aria-hidden="true"] {
+    display: none; }
+
+.tabcontainer .tabpanel {
+  padding: 20px; }
+
+.tabcontainer nav {
+  background-color: #697585;
+  padding-top: 10px;
+  padding-bottom: 10px; }
+
+.tabcontainer nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0; }
+
+.tabcontainer nav li {
+  display: inline;
+  padding: 10px 25px;
+  text-decoration: none;
+  color: #f3f3f3;
+  cursor: pointer; }
+
+.tabcontainer nav li[aria-selected="true"] {
+  box-shadow: inset 0 -5px #0a78d1; }
+
+.tabcontainer [aria-hidden="true"] {
+  display: none; }
