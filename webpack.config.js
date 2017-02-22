@@ -16,6 +16,7 @@ module.exports = {
       {
         test: /\.js$/,
         include: [
+          path.resolve(__dirname, "node_modules/h5p-sdk/src/scripts"),
           path.resolve(__dirname, "src/scripts"),
           path.resolve(__dirname, "src/entries")
         ],

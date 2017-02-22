@@ -1,14 +1,20 @@
-import
+import HubView from './hub-view';
+import ContentBrowser from './content-browser/content-browser';
 
 export default class Hub {
-  constructor(){
-    console.log('im a hub');
-    const contentBrowser = new H5P.contentBrowser();
+  constructor(state){
+    this.state = state;
+
+    // controllers
+    this.contentBrowser = new ContentBrowser();
+
+    // views
+    this.view = new HubView({
+      title: 'Title'
+    });
   }
 
   getElement() {
-    const res = document.createElement('div');
-    res.innerHTML = "Hello world";
-    return res;
+    return this.view.getElement();
   }
 }
