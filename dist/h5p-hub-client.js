@@ -71,6 +71,10 @@
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
+	var _tabPanel = __webpack_require__(6);
+	
+	var _tabPanel2 = _interopRequireDefault(_tabPanel);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -97,10 +101,58 @@
 	      title: 'Title'
 	    });
 	
-	    this.view.addTab('Create Content', '<h1>Create content body <h1>');
+	    var browserContainer = document.createElement('div');
+	    browserContainer.innerHTML = 'content';
+	    this.view.addTab('Create Content', browserContainer);
+	
+	    this.createContentFilters();
 	  }
 	
 	  _createClass(Hub, [{
+	    key: 'createTab',
+	    value: function createTab(config, index) {
+	
+	      var tab = document.createElement('li');
+	      tab.className += 'tab';
+	      tab.id = 'tab' + index;
+	      tab.setAttribute('aria-selected', 'true');
+	      tab.setAttribute('role', 'tab');
+	      tab.setAttribute('tabindex', '0');
+	      tab.innerHTML = config;
+	
+	      return tab;
+	    }
+	  }, {
+	    key: 'createContentFilters',
+	    value: function createContentFilters() {
+	
+	      var tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      var tablist = document.createElement('ul');
+	      tablist.className += "tablist";
+	      tablist.setAttribute('role', 'tablist');
+	
+	      tabs.map(this.createTab).forEach(tablist.appendChild.bind(tablist));
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabContainerElement = document.createElement('div');
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	
+	      (0, _tabPanel2.default)(this.tabContainerElement);
+	    }
+	  }, {
 	    key: 'getElement',
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -150,13 +202,13 @@
 	  /**
 	   * Creates the dom for the tab panel
 	   *
-	   * @param {HubState} state
+	   * @param {HubState}
 	   */
 	
 	
 	  _createClass(HubView, [{
 	    key: "renderTabPanel",
-	    value: function renderTabPanel(state) {
+	    value: function renderTabPanel() {
 	
 	      /**
 	       * @type {HTMLElement}
@@ -232,7 +284,6 @@
 	      var tab = document.createElement('li');
 	      tab.className += 'tab';
 	      tab.id = 'tab1';
-	      tab.className += 'tab';
 	      tab.setAttribute('aria-controls', 'panel1');
 	      tab.setAttribute('aria-selected', 'true');
 	      tab.setAttribute('role', 'tab');
@@ -245,7 +296,7 @@
 	      tabpanel.setAttribute('aria-lablledby', 'tab1');
 	      tabpanel.setAttribute('role', 'tabpanel');
 	      tabpanel.setAttribute('tabindex', '0');
-	      tabpanel.innerHTML = content;
+	      tabpanel.appendChild(content);
 	
 	      this.tablist.appendChild(tab);
 	      this.tabContainerElement.appendChild(tabpanel);

@@ -13,9 +13,9 @@ export default class HubView {
   /**
    * Creates the dom for the tab panel
    *
-   * @param {HubState} state
+   * @param {HubState}
    */
-  renderTabPanel(state){
+  renderTabPanel(){
 
     /**
      * @type {HTMLElement}
@@ -85,7 +85,6 @@ export default class HubView {
     let tab = document.createElement('li');
     tab.className += 'tab';
     tab.id ='tab1';
-    tab.className += 'tab';
     tab.setAttribute('aria-controls', 'panel1');
     tab.setAttribute('aria-selected', 'true');
     tab.setAttribute('role', 'tab');
@@ -98,7 +97,7 @@ export default class HubView {
     tabpanel.setAttribute('aria-lablledby', 'tab1');
     tabpanel.setAttribute('role', 'tabpanel');
     tabpanel.setAttribute('tabindex', '0');
-    tabpanel.innerHTML = content;
+    tabpanel.appendChild(content);
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabpanel);
