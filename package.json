@@ -19,8 +19,7 @@
   },
   "homepage": "https://github.com/h5p/h5p-hub#readme",
   "dependencies":  {
-    "h5p-sdk": "../h5p-sdk",
-    "h5p-lib-controls": "../h5p-lib-controls"
+    "h5p-sdk": "../h5p-sdk"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
