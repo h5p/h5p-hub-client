@@ -170,3 +170,6 @@ input:focus {
 
 .input-group {
   background-color: white; }
+
+.input-button {
+  font-size: 2.5em; }
