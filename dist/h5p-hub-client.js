@@ -71,9 +71,9 @@
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
-	var _tabPanel = __webpack_require__(6);
+	var _uploadSection = __webpack_require__(10);
 	
-	var _tabPanel2 = _interopRequireDefault(_tabPanel);
+	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -82,6 +82,8 @@
 	/**
 	 * @typedef {object} HubState
 	 * @property {string} title
+	 * @property {string} sectionId
+	 * @property {boolean} expanded
 	 */
 	
 	var Hub = function () {
@@ -95,17 +97,24 @@
 	
 	    // controllers
 	    this.contentBrowser = new _contentBrowser2.default();
+	    this.uploadSection = new _uploadSection2.default();
 	
 	    // views
 	    this.view = new _hubView2.default({
-	      title: 'Title'
+	      title: 'Title',
+	      sectionId: 'create-content'
 	    });
 	
 	    this.view.addTab('Create Content', this.contentBrowser.getElement());
-	    this.view.addTab('Upload', this.contentBrowser.getElement());
-	
-	    var browserContainer = document.createElement('div');
+	    this.view.addTab('Upload', this.uploadSection.getElement());
 	  }
+	
+	  /**
+	   * Returns the root element in the view
+	   *
+	   * @return {HTMLElement}
+	   */
+	
 	
 	  _createClass(Hub, [{
 	    key: 'getElement',
@@ -156,8 +165,6 @@
 	
 	  /**
 	   * Creates the dom for the tab panel
-	   *
-	   * @param {HubState}
 	   */
 	
 	
@@ -191,35 +198,45 @@
 	    /**
 	     * Creates the dom for the panel
 	     *
-	     * @param {HubState} state
+	     * @param {string} title
+	     * @param {string} sectionId
+	     * @param {boolean} expanded
 	     */
 	
 	  }, {
 	    key: "renderPanel",
-	    value: function renderPanel(state) {
+	    value: function renderPanel(_ref) {
+	      var title = _ref.title,
+	          sectionId = _ref.sectionId,
+	          _ref$expanded = _ref.expanded,
+	          expanded = _ref$expanded === undefined ? false : _ref$expanded;
+	
 	      /**
 	       * @type {HTMLElement}
 	       */
 	      this.titleElement = document.createElement('div');
-	      this.titleElement.className += "panel-header";
-	      this.titleElement.setAttribute('aria-expanded', 'true');
+	      this.titleElement.className += "panel-header icon-hub-icon";
+	      this.titleElement.setAttribute('aria-expanded', expanded.toString());
 	      this.titleElement.setAttribute('aria-controls', 'panel-body-1');
-	      this.titleElement.innerHTML = state.title;
+	      this.titleElement.innerHTML = title;
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
 	      this.bodyElement = document.createElement('div');
 	      this.bodyElement.className += "panel-body";
-	      this.bodyElement.setAttribute('aria-hidden', 'false');
+	      this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
 	      this.bodyElement.id = 'panel-body-1';
 	      this.bodyElement.appendChild(this.tabContainerElement);
+	      if (!expanded) {
+	        this.bodyElement.style.height = "0";
+	      }
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
 	      this.rootElement = document.createElement('div');
-	      this.rootElement.className += 'h5p-hub panel';
+	      this.rootElement.className += "h5p-hub h5p-section-" + sectionId + " panel";
 	      this.rootElement.appendChild(this.titleElement);
 	      this.rootElement.appendChild(this.bodyElement);
 	
@@ -255,6 +272,18 @@
 	
 	      this.tablist.appendChild(tab);
 	      this.tabContainerElement.appendChild(tabpanel);
+	    }
+	
+	    /**
+	     * Sets the section
+	     *
+	     * @param {string} sectionId
+	     */
+	
+	  }, {
+	    key: "setSection",
+	    value: function setSection(sectionId) {
+	      this.rootElement.className = "h5p-hub h5p-section-" + sectionId + " panel";
 	    }
 	
 	    /**
@@ -324,13 +353,15 @@
 	/**
 	 * @type {Function}
 	 */
-	var handleMutation = (0, _functional.curry)(function (bodyElement, mutation) {
+	var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
 	  var titleEl = mutation.target;
 	
 	  if (isExpanded(titleEl)) {
 	    setAriaHiddenFalse(bodyElement);
+	    bodyElement.style.height = bodyElement.scrollHeight + 'px';
 	  } else {
 	    setAriaHiddenTrue(bodyElement);
+	    bodyElement.style.height = "0";
 	  }
 	});
 	
@@ -342,11 +373,13 @@
 	 */
 	function init(element) {
 	  var titleEl = selectExpandable(element);
-	  var bodyEl = document.getElementById(getAriaControls(titleEl));
+	  var bodyId = getAriaControls(titleEl);
+	  var bodyEl = element.querySelector('#' + bodyId);
 	
 	  if (titleEl) {
 	    // set observer on title for aria-expanded
-	    var observer = new MutationObserver((0, _functional.forEach)(handleMutation(bodyEl)));
+	    var observer = new MutationObserver((0, _functional.forEach)(toggleBodyVisibility(bodyEl)));
+	
 	    observer.observe(titleEl, {
 	      attributes: true,
 	      attributeOldValue: true,
@@ -355,7 +388,7 @@
 	
 	    // Set click listener that toggles aria-expanded
 	    titleEl.addEventListener('click', function (event) {
-	      (0, _elements.toggleAttribute)('aria-expanded', event.target);
+	      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
 	    });
 	  }
 	
@@ -682,7 +715,12 @@
 	/**
 	 * @type {function}
 	 */
-	var setAllAriaHiddenTrue = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
+	var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
+	
+	/**
+	 * @type {function}
+	 */
+	var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 	
 	/**
 	 * @type {function}
@@ -696,7 +734,7 @@
 	
 	function init(element) {
 	  var tabs = getWhereRoleIsTab(element);
-	  var tabpanels = getWhereRoleIsTabpanel(element);
+	  var tabPanels = getWhereRoleIsTabpanel(element);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
@@ -704,10 +742,10 @@
 	      setAllAriaSelectedFalse(tabs);
 	      event.target.setAttribute('aria-selected', 'true');
 	
-	      setAllAriaHiddenTrue(tabpanels);
-	      var tabpanelId = event.target.getAttribute('aria-controls');
-	      var targetTabpanel = document.getElementById(tabpanelId);
-	      targetTabpanel.setAttribute('aria-hidden', 'false');
+	      hideAll(tabPanels);
+	      var tabPanelId = event.target.getAttribute('aria-controls');
+	      var targetTabPanel = element.querySelector('#' + tabPanelId);
+	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
 	}
@@ -1026,6 +1064,42 @@
 	}();
 	
 	exports.default = HubServices;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @class
+	 */
+	var UploadSection = function () {
+	  function UploadSection() {
+	    _classCallCheck(this, UploadSection);
+	  }
+	
+	  _createClass(UploadSection, [{
+	    key: "getElement",
+	    value: function getElement() {
+	      var element = document.createElement('div');
+	      element.innerHTML = "TODO Upload";
+	      return element;
+	    }
+	  }]);
+	
+	  return UploadSection;
+	}();
+	
+	exports.default = UploadSection;
 
 /***/ }
 /******/ ]);
