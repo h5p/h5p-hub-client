@@ -873,7 +873,7 @@
 	    key: 'renderInputField',
 	    value: function renderInputField() {
 	      var inputField = document.createElement('input');
-	      inputField.className = 'hub-search';
+	      inputField.className = 'hub-search shadow';
 	      inputField.setAttribute('type', 'text');
 	      inputField.setAttribute('placeholder', "Search for Content Types");
 	      return inputField;
@@ -890,10 +890,15 @@
 	    key: 'renderInputGroup',
 	    value: function renderInputGroup(buttonTitle) {
 	      var inputGroup = document.createElement('div');
-	      inputGroup.className = 'input-group rounded';
+	      inputGroup.className = 'input-group rounded shadow';
 	      inputGroup.appendChild(this.renderInputField());
 	      inputGroup.appendChild(this.renderInputButton(buttonTitle));
-	      return inputGroup;
+	
+	      var inputGroupWrapper = document.createElement('div');
+	      inputGroupWrapper.className = 'input-group-wrapper rounded';
+	      inputGroupWrapper.appendChild(inputGroup);
+	
+	      return inputGroupWrapper;
 	    }
 	
 	    /**

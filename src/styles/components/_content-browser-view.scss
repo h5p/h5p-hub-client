@@ -19,6 +19,13 @@
   }
 }
 
-.input-group {
+.input-group-wrapper {
+  padding: 5px;
   margin-top: $padding;
+  background-color: white;
+  border-radius: 50px;
+}
+
+.input-group {
+  background-color: white;
 }

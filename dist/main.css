@@ -20,15 +20,18 @@
 .input-group {
   display: flex;
   border: 1px solid gray;
-  overflow: hidden; }
-  .input-group.rounded {
-    border-radius: 1em; }
+  overflow: hidden;
+  border-radius: 50px;
+  -moz-box-shadow: inset 0 0 3px #000000;
+  -webkit-box-shadow: inset 0 0 3px #000000;
+  box-shadow: inset 0 0 3px #000000; }
 
 input {
   padding: 1.0em 1.5em;
   font-size: 1em;
   width: 100%;
-  border: none; }
+  border: none;
+  background-color: transparent; }
 
 input:focus {
   outline: none; }
@@ -47,8 +50,9 @@ input:focus {
     padding: 10px; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
-  .panel [aria-hidden="true"] {
-    display: none; }
+  .panel .panel-body {
+    overflow: hidden;
+    transition: height 200ms; }
 
 .tabcontainer nav {
   background-color: #474f5a;
@@ -70,7 +74,7 @@ input:focus {
 .tabcontainer nav li[aria-selected="true"] {
   box-shadow: inset 0 -5px #0a78d1; }
 
-.tabcontainer [aria-hidden="true"] {
+.tabcontainer .tabpanel[aria-hidden="true"] {
   display: none; }
 
 .menu nav {
@@ -137,5 +141,11 @@ input:focus {
     color: white;
     font-style: italic; }
 
+.input-group-wrapper {
+  padding: 5px;
+  margin-top: 0.833em;
+  background-color: white;
+  border-radius: 50px; }
+
 .input-group {
-  margin-top: 0.833em; }
+  background-color: white; }
