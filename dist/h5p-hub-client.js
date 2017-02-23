@@ -455,7 +455,6 @@
 	 * @function
 	 */
 	var setAttribute = exports.setAttribute = (0, _functional.curry)(function (name, value, el) {
-	  // console.log(name, value, el);
 	  el.setAttribute(name, value);
 	});
 	
@@ -758,19 +757,13 @@
 	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
 	
 	function init(element) {
-	  // const tabs = getWhereRoleIsTab(element);
+	  var tabs = getWhereRoleIsTab(element);
 	  var tabPanels = getWhereRoleIsTabpanel(element);
-	
-	  var tabs = element.querySelectorAll('[role="tab"]');
-	
-	  console.log(tabs);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
 	
 	      setAllAriaSelectedFalse(tabs);
-	      console.log(event);
-	      console.log(tabPanels);
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
@@ -887,10 +880,15 @@
 	
 	  _createClass(ContentBrowserView, [{
 	    key: 'renderMenuItem',
-	    value: function renderMenuItem(title) {
+	    value: function renderMenuItem(title, index) {
 	      var tab = document.createElement('li');
 	      tab.setAttribute('tabindex', '0');
 	      tab.innerHTML = title;
+	
+	      //TODO remove after demo
+	      if (index === 0) {
+	        tab.setAttribute('aria-selected', 'true');
+	      }
 	      return tab;
 	    }
 	  }, {

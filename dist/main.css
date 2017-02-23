@@ -50,7 +50,7 @@ input:focus {
     background-color: #697585;
     color: white;
     border: 0.042em;
-    padding: 0.833em; }
+    padding: 10px; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
   .panel .panel-body {
@@ -96,6 +96,9 @@ input:focus {
   text-decoration: none;
   color: #f3f3f3;
   cursor: pointer; }
+
+.menu nav li[aria-selected="true"] {
+  box-shadow: inset 0 -5px #0a78d1; }
 
 .h5p-hub {
   font-family: 'Open Sans', sans-serif; }
@@ -149,7 +152,7 @@ input:focus {
 
 .menu {
   overflow: auto;
-  border-bottom: solid 1px #f3f3f3;
+  border-bottom: solid 1px #9CA5B4;
   margin-left: 2.25em;
   margin-right: 2.25em; }
   .menu nav {
