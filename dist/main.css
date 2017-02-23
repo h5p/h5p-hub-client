@@ -133,4 +133,9 @@ input:focus {
     float: right; }
   .menu .menu-title {
     float: left;
-    text-align: center; }
+    text-align: center;
+    color: white;
+    font-style: italic; }
+
+.input-group {
+  margin-top: 0.833em; }

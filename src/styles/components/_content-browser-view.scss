@@ -14,5 +14,11 @@
   .menu-title {
     float: left;
     text-align: center;
+    color: white;
+    font-style: italic;
   }
+}
+
+.input-group {
+  margin-top: $padding;
 }
