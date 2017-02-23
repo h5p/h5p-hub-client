@@ -102,84 +102,12 @@
 	    });
 	
 	    this.view.addTab('Create Content', this.contentBrowser.getElement());
+	    this.view.addTab('Upload', this.contentBrowser.getElement());
 	
 	    var browserContainer = document.createElement('div');
-	    browserContainer.innerHTML = 'content';
-	    this.view.addTab('Create Content', browserContainer);
-	
-	    this.createContentFilters();
 	  }
 	
 	  _createClass(Hub, [{
-	    key: 'creatInputField',
-	    value: function creatInputField() {
-	      var inputField = document.createElement('input');
-	      inputField.className += 'hub-search';
-	      inputField.setAttribute('type', 'text');
-	      inputField.setAttribute('placeholder', "Search for Content Types");
-	      return inputField;
-	    }
-	  }, {
-	    key: 'createInputButton',
-	    value: function createInputButton(title) {
-	      var inputButton = document.createElement('div');
-	      inputButton.className += 'input-button';
-	      inputButton.innerHTML = title;
-	      return inputButton;
-	    }
-	  }, {
-	    key: 'createInputGroup',
-	    value: function createInputGroup(buttonTitle) {
-	      var inputGroup = document.createElement('div');
-	      inputGroup.className += 'input-group rounded';
-	      inputGroup.appendChild(this.createInputField());
-	      inputGroup.appendChild(this.createInputButton(buttonTitle));
-	      return inputGroup;
-	    }
-	  }, {
-	    key: 'createTab',
-	    value: function createTab(config, index) {
-	      var tab = document.createElement('li');
-	      tab.className += 'tab';
-	      tab.id = 'tab' + index;
-	      tab.setAttribute('aria-selected', 'true');
-	      tab.setAttribute('role', 'tab');
-	      tab.setAttribute('tabindex', '0');
-	      tab.innerHTML = config;
-	
-	      return tab;
-	    }
-	  }, {
-	    key: 'createContentFilters',
-	    value: function createContentFilters() {
-	
-	      var tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
-	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      var tablist = document.createElement('ul');
-	      tablist.className += "tablist";
-	      tablist.setAttribute('role', 'tablist');
-	
-	      tabs.map(this.createTab).forEach(tablist.appendChild.bind(tablist));
-	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      this.tabListWrapper = document.createElement('nav');
-	      this.tabListWrapper.appendChild(tablist);
-	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.className += 'tabcontainer';
-	      this.tabContainerElement.appendChild(this.tabListWrapper);
-	
-	      (0, _tabPanel2.default)(this.tabContainerElement);
-	    }
-	  }, {
 	    key: 'getElement',
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -860,7 +788,7 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -869,6 +797,12 @@
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _tabPanel = __webpack_require__(6);
+	
+	var _tabPanel2 = _interopRequireDefault(_tabPanel);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -879,16 +813,88 @@
 	    this.state = state;
 	
 	    this.rootElement = document.createElement('div');
+	    this.rootElement.appendChild(this.renderContentTypeFilters());
+	    this.rootElement.appendChild(this.renderInputGroup());
 	  }
 	
-	  /**
-	   *
-	   * @param {ContentType[]} contentTypes
-	   */
-	
-	
 	  _createClass(ContentBrowserView, [{
+	    key: 'renderContentTypeFilters',
+	    value: function renderContentTypeFilters(state) {
+	      var tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      var tablist = document.createElement('ul');
+	      tablist.className += "tablist";
+	      tablist.setAttribute('role', 'tablist');
+	
+	      tabs.map(this.createTab).forEach(tablist.appendChild.bind(tablist));
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabContainerElement = document.createElement('div');
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	
+	      (0, _tabPanel2.default)(this.tabContainerElement);
+	
+	      return this.tabContainerElement;
+	    }
+	  }, {
+	    key: 'renderInputField',
+	    value: function renderInputField() {
+	      var inputField = document.createElement('input');
+	      inputField.className = 'hub-search';
+	      inputField.setAttribute('type', 'text');
+	      inputField.setAttribute('placeholder', "Search for Content Types");
+	      return inputField;
+	    }
+	  }, {
+	    key: 'renderInputButton',
+	    value: function renderInputButton(title) {
+	      var inputButton = document.createElement('div');
+	      inputButton.className = 'input-button';
+	      inputButton.innerHTML = "Search";
+	      return inputButton;
+	    }
+	  }, {
+	    key: 'renderInputGroup',
+	    value: function renderInputGroup(buttonTitle) {
+	      var inputGroup = document.createElement('div');
+	      inputGroup.className = 'input-group rounded';
+	      inputGroup.appendChild(this.renderInputField());
+	      inputGroup.appendChild(this.renderInputButton(buttonTitle));
+	      return inputGroup;
+	    }
+	  }, {
+	    key: 'createTab',
+	    value: function createTab(config, index) {
+	      var tab = document.createElement('li');
+	      tab.className = 'tab';
+	      tab.id = 'tab' + index;
+	      tab.setAttribute('aria-selected', 'true');
+	      tab.setAttribute('role', 'tab');
+	      tab.setAttribute('tabindex', '0');
+	      tab.innerHTML = config;
+	
+	      return tab;
+	    }
+	  }, {
 	    key: 'updateList',
+	
+	
+	    /**
+	     *
+	     * @param {ContentType[]} contentTypes
+	     */
 	    value: function updateList(contentTypes) {
 	      if (this.listElement) {
 	        this.listElement.remove();

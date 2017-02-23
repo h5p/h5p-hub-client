@@ -1,9 +1,83 @@
+import initTabPanel from "../../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
+
 export default class ContentBrowserView {
   constructor(state) {
     this.state = state;
 
     this.rootElement = document.createElement('div');
+    this.rootElement.appendChild(this.renderContentTypeFilters());
+    this.rootElement.appendChild(this.renderInputGroup());
   }
+
+  renderContentTypeFilters(state) {
+    let tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+
+    /**
+     * @type {HTMLElement}
+     */
+    const tablist = document.createElement('ul');
+    tablist.className += "tablist";
+    tablist.setAttribute ('role', 'tablist');
+
+    tabs
+      .map(this.createTab)
+      .forEach(tablist.appendChild.bind(tablist));
+
+
+    /**
+     * @type {HTMLElement}
+     */
+     this.tabListWrapper = document.createElement('nav');
+     this.tabListWrapper.appendChild(tablist);
+
+    /**
+     * @type {HTMLElement}
+     */
+    this.tabContainerElement = document.createElement('div');
+    this.tabContainerElement.className += 'tabcontainer';
+    this.tabContainerElement.appendChild(this.tabListWrapper);
+
+    initTabPanel(this.tabContainerElement);
+
+    return this.tabContainerElement;
+  }
+
+
+  renderInputField() {
+    const inputField = document.createElement('input');
+    inputField.className = 'hub-search';
+    inputField.setAttribute('type', 'text');
+    inputField.setAttribute('placeholder', "Search for Content Types")
+    return inputField;
+  }
+
+  renderInputButton(title) {
+    const inputButton = document.createElement('div');
+    inputButton.className = 'input-button';
+    inputButton.innerHTML = "Search";
+    return inputButton;
+  }
+
+  renderInputGroup(buttonTitle) {
+    const inputGroup = document.createElement('div');
+    inputGroup.className = 'input-group rounded';
+    inputGroup.appendChild(this.renderInputField());
+    inputGroup.appendChild(this.renderInputButton(buttonTitle));
+    return inputGroup;
+  }
+
+  createTab(config, index) {
+    const tab = document.createElement('li');
+    tab.className = 'tab';
+    tab.id ='tab' + index;
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('tabindex', '0');
+    tab.innerHTML = config;
+
+    return tab;
+  };
+
 
   /**
    *

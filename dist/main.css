@@ -17,6 +17,27 @@
   color: #0a78d1;
   border: 0.083em #0a78d1 solid; }
 
+.input-group {
+  display: flex;
+  border: 1px solid gray;
+  overflow: hidden; }
+  .input-group.rounded {
+    border-radius: 1em; }
+
+input {
+  padding: 1.0em 1.5em;
+  font-size: 1em;
+  width: 100%;
+  border: none; }
+
+input:focus {
+  outline: none; }
+
+.input-button {
+  min-width: 80px;
+  text-align: center;
+  cursor: pointer; }
+
 .panel {
   border: thin solid #697585; }
   .panel .panel-header {
