@@ -53,7 +53,7 @@ export default class HubView {
     this.titleElement.className += "panel-header icon-hub-icon";
     this.titleElement.setAttribute('aria-expanded', expanded.toString());
     this.titleElement.setAttribute('aria-controls', 'panel-body-1');
-    this.titleElement.innerHTML = title;
+    this.titleElement.innerHTML = title || '';
 
     /**
      * @type {HTMLElement}

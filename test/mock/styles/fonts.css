@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'h5p';
-  src:  url('fonts/h5p.eot?pgq60q');
-  src:  url('fonts/h5p.eot?pgq60q#iefix') format('embedded-opentype'),
-  url('fonts/h5p.ttf?pgq60q') format('truetype'),
-  url('fonts/h5p.woff?pgq60q') format('woff'),
-  url('fonts/h5p.svg?pgq60q#h5p') format('svg');
+  src:  url('fonts/h5p.eot?mw786z');
+  src:  url('fonts/h5p.eot?mw786z#iefix') format('embedded-opentype'),
+  url('fonts/h5p.ttf?mw786z') format('truetype'),
+  url('fonts/h5p.woff?mw786z') format('woff'),
+  url('fonts/h5p.svg?mw786z#h5p') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -27,7 +27,7 @@
 .icon-scrollbar-bars-icon3:before {
   content: "\e921";
 }
-.icon-check2:before {
+.icon-check:before {
   content: "\e91c";
 }
 .icon-check-empty:before {
@@ -73,5 +73,5 @@
   content: "\e924";
 }
 .icon-hub-icon:before {
-  content: "\e925";
+  content: "\e900";
 }

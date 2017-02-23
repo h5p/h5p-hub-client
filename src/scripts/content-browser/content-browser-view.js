@@ -153,7 +153,6 @@ export default class ContentBrowserView {
     row.appendChild(title);
     row.appendChild(description);
 
-
     return row;
   }
 

@@ -22,7 +22,6 @@ export default class Hub {
 
     // views
     this.view = new HubView({
-      title: 'Title',
       sectionId: 'create-content'
     });
 

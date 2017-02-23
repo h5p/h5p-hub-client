@@ -21,15 +21,20 @@
 .input-group {
   display: flex;
   border: 1px solid gray;
-  overflow: hidden; }
-  .input-group.rounded {
-    border-radius: 1em; }
+  overflow: hidden;
+  border-radius: 50px;
+  -moz-box-shadow: inset 0 0 3px #697585;
+  -webkit-box-shadow: inset 0 0 3px #697585;
+  box-shadow: inset 0 0 3px #697585; }
 
 input {
-  padding: 1.0em 1.5em;
+  padding: 0.833em;
   font-size: 1em;
   width: 100%;
-  border: none; }
+  border: none;
+  background-color: transparent;
+  font-style: italic;
+  font-color: #697585; }
 
 input:focus {
   outline: none; }
@@ -45,7 +50,7 @@ input:focus {
     background-color: #697585;
     color: white;
     border: 0.042em;
-    padding: 10px; }
+    padding: 0.833em; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
   .panel .panel-body {
