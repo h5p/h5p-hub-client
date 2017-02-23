@@ -83,7 +83,7 @@ export default class HubView {
     tabpanel.setAttribute('aria-selected', 'true');
     tabpanel.setAttribute('role', 'tab');
     tabpanel.setAttribute('tabindex', '0');
-    tabpanel.innerHTML = content;
+    tabpanel.appendChild(content);
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabpanel);

@@ -97,7 +97,7 @@
 	      title: 'Title'
 	    });
 	
-	    this.view.addTab('Create Content', '<h1>Create content!<h1>');
+	    this.view.addTab('Create Content', this.contentBrowser.getElement());
 	  }
 	
 	  _createClass(Hub, [{
@@ -228,7 +228,7 @@
 	      tabpanel.setAttribute('aria-selected', 'true');
 	      tabpanel.setAttribute('role', 'tab');
 	      tabpanel.setAttribute('tabindex', '0');
-	      tabpanel.innerHTML = content;
+	      tabpanel.appendChild(content);
 	
 	      this.tablist.appendChild(tab);
 	      this.tabContainerElement.appendChild(tabpanel);
@@ -348,7 +348,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.querySelectorAll = exports.querySelector = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
+	exports.querySelectorAll = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
 	
 	var _functional = __webpack_require__(5);
 	
@@ -428,6 +428,19 @@
 	var toggleAttribute = exports.toggleAttribute = (0, _functional.curry)(function (name, el) {
 	  var value = getAttribute(name, el);
 	  setAttribute(name, (0, _functional.inverseBooleanString)(value), el);
+	});
+	
+	/**
+	 * The appendChild() method adds a node to the end of the list of children of a specified parent node.
+	 *
+	 * @param {HTMLElement} parent
+	 * @param {HTMLElement} child
+	 *
+	 * @function
+	 * @return {HTMLElement}
+	 */
+	var appendChild = exports.appendChild = (0, _functional.curry)(function (parent, child) {
+	  return parent.appendChild(child);
 	});
 	
 	/**
@@ -620,6 +633,196 @@
 
 /***/ },
 /* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _contentBrowserView = __webpack_require__(7);
+	
+	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
+	
+	var _hubServices = __webpack_require__(8);
+	
+	var _hubServices2 = _interopRequireDefault(_hubServices);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @typedef {object} ContentType
+	 * @property {string} id
+	 * @property {string} title
+	 * @property {string} shortDescription
+	 * @property {string} longDescription
+	 * @property {string} icon
+	 * @property {string} created
+	 * @property {string} update
+	 * @property {boolean} recommended
+	 * @property {number} timesDownloaded
+	 * @property {string[]} screenshots
+	 * @property {string} exampleContent
+	 * @property {string[]} keywords
+	 * @property {string[]} categories
+	 * @property {string} license
+	 */
+	
+	/**
+	 * @class
+	 */
+	var ContentBrowser = function () {
+	  function ContentBrowser(state) {
+	    var _this = this;
+	
+	    _classCallCheck(this, ContentBrowser);
+	
+	    this.view = new _contentBrowserView2.default(state);
+	    this.services = new _hubServices2.default({
+	      rootUrl: '/test/mock/api'
+	    });
+	
+	    // get content types
+	    this.services.contentTypes().then(function (contentTypes) {
+	      return _this.view.updateList(contentTypes);
+	    });
+	  }
+	
+	  _createClass(ContentBrowser, [{
+	    key: "getElement",
+	    value: function getElement() {
+	      return this.view.getElement();
+	    }
+	  }]);
+	
+	  return ContentBrowser;
+	}();
+	
+	exports.default = ContentBrowser;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ContentBrowserView = function () {
+	  function ContentBrowserView(state) {
+	    _classCallCheck(this, ContentBrowserView);
+	
+	    this.state = state;
+	
+	    this.rootElement = document.createElement('div');
+	  }
+	
+	  /**
+	   *
+	   * @param {ContentType[]} contentTypes
+	   */
+	
+	
+	  _createClass(ContentBrowserView, [{
+	    key: 'updateList',
+	    value: function updateList(contentTypes) {
+	      if (this.listElement) {
+	        this.listElement.remove();
+	      }
+	
+	      this.listElement = this.renderContentTypeList(contentTypes);
+	      this.rootElement.appendChild(this.listElement);
+	    }
+	
+	    /**
+	     *
+	     * @param {ContentType[]} contentTypes
+	     */
+	
+	  }, {
+	    key: 'renderContentTypeList',
+	    value: function renderContentTypeList(contentTypes) {
+	      var listElement = document.createElement('ul');
+	      listElement.className = 'content-type-list';
+	
+	      contentTypes.map(this.renderContentTypeRow).forEach(listElement.appendChild.bind(listElement));
+	
+	      return listElement;
+	    }
+	
+	    /**
+	     * Takes a Content Type configuration and creates a row dom
+	     *
+	     * @param {ContentType} contentType
+	     *
+	     * @return {HTMLElement}
+	     */
+	
+	  }, {
+	    key: 'renderContentTypeRow',
+	    value: function renderContentTypeRow(contentType) {
+	      // image
+	      var image = document.createElement('img');
+	      image.setAttribute('src', contentType.icon);
+	
+	      // button
+	      var button = document.createElement('span');
+	      button.className = "button";
+	      button.innerHTML = "Use";
+	
+	      // title
+	      var title = document.createElement('div');
+	      title.className = 'content-type-list-title';
+	      title.innerHTML = contentType.title;
+	
+	      // description
+	      var description = document.createElement('div');
+	      description.className = 'content-type-list-description';
+	      description.innerHTML = contentType.shortDescription;
+	
+	      // list item
+	      var row = document.createElement('li');
+	      row.id = 'content-type-' + contentType.id;
+	      row.setAttribute('data-id', contentType.id);
+	      row.appendChild(image);
+	      row.appendChild(button);
+	      row.appendChild(title);
+	      row.appendChild(description);
+	
+	      return row;
+	    }
+	
+	    /**
+	     * Returns the root element of the content browser
+	     *
+	     * @return {HTMLElement}
+	     */
+	
+	  }, {
+	    key: 'getElement',
+	    value: function getElement() {
+	      return this.rootElement;
+	    }
+	  }]);
+	
+	  return ContentBrowserView;
+	}();
+	
+	exports.default = ContentBrowserView;
+
+/***/ },
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -632,24 +835,38 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	var ContentBrowser = function () {
-	  function ContentBrowser(state) {
-	    _classCallCheck(this, ContentBrowser);
+	var HubServices = function () {
+	  /**
+	   * @param {string} rootUrl
+	   */
+	  function HubServices(_ref) {
+	    var rootUrl = _ref.rootUrl;
+	
+	    _classCallCheck(this, HubServices);
+	
+	    this.rootUrl = rootUrl;
 	  }
 	
-	  _createClass(ContentBrowser, [{
-	    key: "getElement",
-	    value: function getElement() {
-	      var res = document.createElement('div');
-	      res.innerHTML = "Hello world";
-	      return res;
+	  /**
+	   * Returns a list of content types
+	   *
+	   * @return {Promise.<ContentType[]>}
+	   */
+	
+	
+	  _createClass(HubServices, [{
+	    key: "contentTypes",
+	    value: function contentTypes() {
+	      return fetch(this.rootUrl + "/contenttypes").then(function (result) {
+	        return result.json();
+	      });
 	    }
 	  }]);
 	
-	  return ContentBrowser;
+	  return HubServices;
 	}();
 	
-	exports.default = ContentBrowser;
+	exports.default = HubServices;
 
 /***/ }
 /******/ ]);

@@ -1,0 +1,42 @@
+@import "../../../node_modules/h5p-sdk/src/styles/base/colors";
+@import "../../../node_modules/h5p-sdk/src/styles/base/variables";
+
+
+$text-list-title: 1.042em;
+
+.h5p-hub {
+  ul.content-type-list {
+    list-style: none;
+    padding: 1.25em 0;
+
+    li {
+      overflow: auto;
+      border-bottom: 1px solid #f5f5f5;
+      padding: $padding;
+    }
+
+    img {
+      max-width: 100px;
+      float: left;
+      margin-right: $padding;
+    }
+
+    .content-type-list-title {
+      font-size: $text-list-title;
+      line-height: 2em;
+      font-weight: 600;
+    }
+
+    .content-type-list-description {
+      color: $c6;
+      font-weight: 400;
+      font-size: $text-body-small;
+    }
+
+    .button {
+      float: right;
+      margin-left: $padding;
+      margin-top: 0.7em;
+    }
+  }
+}

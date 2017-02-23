@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 .button {
   font-size: 0.833em;
   text-decoration: none;
@@ -25,13 +26,8 @@
     padding: 10px; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
-  .panel .panel-body {
-    padding: 20px; }
   .panel [aria-hidden="true"] {
     display: none; }
-
-.tabcontainer .tabpanel {
-  padding: 20px; }
 
 .tabcontainer nav {
   background-color: #697585;
@@ -56,9 +52,34 @@
 .tabcontainer [aria-hidden="true"] {
   display: none; }
 
-.h5p-hub.panel {
-  border: 1px solid #697585; }
+.h5p-hub {
+  font-family: 'Open Sans', sans-serif; }
+  .h5p-hub.panel {
+    border: 1px solid #697585; }
+  .h5p-hub .panel-header {
+    background-color: white;
+    color: #697585; }
 
-.h5p-hub .panel-header {
-  background-color: white;
-  color: #697585; }
+.h5p-hub ul.content-type-list {
+  list-style: none;
+  padding: 1.25em 0; }
+  .h5p-hub ul.content-type-list li {
+    overflow: auto;
+    border-bottom: 1px solid #f5f5f5;
+    padding: 0.833em; }
+  .h5p-hub ul.content-type-list img {
+    max-width: 100px;
+    float: left;
+    margin-right: 0.833em; }
+  .h5p-hub ul.content-type-list .content-type-list-title {
+    font-size: 1.042em;
+    line-height: 2em;
+    font-weight: 600; }
+  .h5p-hub ul.content-type-list .content-type-list-description {
+    color: #747474;
+    font-weight: 400;
+    font-size: 0.833em; }
+  .h5p-hub ul.content-type-list .button {
+    float: right;
+    margin-left: 0.833em;
+    margin-top: 0.7em; }

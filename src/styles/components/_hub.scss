@@ -1,6 +1,9 @@
 @import "../../../node_modules/h5p-sdk/src/styles/base/colors";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 .h5p-hub {
+  font-family: 'Open Sans', sans-serif;
+
   &.panel {
     border: 1px solid $c1;
   }
