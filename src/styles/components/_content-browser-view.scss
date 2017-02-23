@@ -1,11 +1,14 @@
 .menu-group {
-  padding: $padding;
   background-color: $c1;
+  padding-top: 1.125em;
+  padding-bottom: 1.125em;
 }
 
 .menu {
   overflow: auto;
-  border-bottom: solid 1px white;
+  border-bottom: solid 1px $c3;
+  margin-left: 2.25em;
+  margin-right: 2.25em;
 
   & nav {
     float: right;
@@ -20,8 +23,10 @@
 }
 
 .input-group-wrapper {
-  padding: 5px;
-  margin-top: $padding;
+  margin-left:2.25em;
+  margin-right:2.25em;
+  margin-top: 1.25em;
+  padding: 0.333em;
   background-color: white;
   border-radius: 50px;
 }
