@@ -25,8 +25,18 @@ export default class Hub {
       sectionId: 'create-content'
     });
 
-    this.view.addTab('Create Content', this.contentBrowser.getElement());
-    this.view.addTab('Upload', this.uploadSection.getElement());
+    this.view.addTab({
+      title: 'Create Content',
+      id: 'create-content',
+      content: this.contentBrowser.getElement(),
+      selected: true
+    });
+
+    this.view.addTab({
+      title: 'Upload',
+      id: 'upload-section',
+      content: this.uploadSection.getElement()
+    });
   }
 
   /**

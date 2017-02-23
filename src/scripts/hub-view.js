@@ -52,7 +52,7 @@ export default class HubView {
     this.titleElement = document.createElement('div');
     this.titleElement.className += "panel-header icon-hub-icon";
     this.titleElement.setAttribute('aria-expanded', expanded.toString());
-    this.titleElement.setAttribute('aria-controls', 'panel-body-1');
+    this.titleElement.setAttribute('aria-controls', `panel-body-${sectionId}`);
     this.titleElement.innerHTML = title || '';
 
     /**
@@ -61,7 +61,7 @@ export default class HubView {
     this.bodyElement = document.createElement('div');
     this.bodyElement.className += "panel-body";
     this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
-    this.bodyElement.id = 'panel-body-1';
+    this.bodyElement.id = `panel-body-${sectionId}`;
     this.bodyElement.appendChild(this.tabContainerElement);
     if(!expanded){
       this.bodyElement.style.height = "0";
@@ -82,28 +82,31 @@ export default class HubView {
    * Adds a tab
    *
    * @param {string} title
+   * @param {string} id
    * @param {HTMLElement} content
+   * @param {boolean} selected
    */
-  addTab(title, content) {
-    let tab = document.createElement('li');
+  addTab({title, id, content, selected = false}) {
+    const tabId = `tab-${id}`;
+
+    const tab = document.createElement('li');
     tab.className += 'tab';
     tab.id ='tab1';
-    tab.setAttribute('aria-controls', 'panel1');
-    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('aria-controls', tabId);
+    tab.setAttribute('aria-selected', selected.toString());
     tab.setAttribute('role', 'tab');
-    tab.setAttribute('tabindex', '0');
     tab.innerHTML = title;
 
-    let tabpanel = document.createElement('div');
-    tabpanel.id ='panel1';
-    tabpanel.className += 'tabpanel';
-    tabpanel.setAttribute('aria-lablledby', 'tab1');
-    tabpanel.setAttribute('role', 'tabpanel');
-    tabpanel.setAttribute('tabindex', '0');
-    tabpanel.appendChild(content);
+    const tabPanel = document.createElement('div');
+    tabPanel.id ='panel1';
+    tabPanel.className += 'tabpanel';
+    tabPanel.setAttribute('aria-lablledby', tabId);
+    tabPanel.setAttribute('aria-hidden', (!selected).toString());
+    tabPanel.setAttribute('role', 'tabpanel');
+    tabPanel.appendChild(content);
 
     this.tablist.appendChild(tab);
-    this.tabContainerElement.appendChild(tabpanel);
+    this.tabContainerElement.appendChild(tabPanel);
   }
 
   /**
