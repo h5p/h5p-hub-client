@@ -5,17 +5,15 @@ export default class HubView {
   /**
    * @param {HubState} state
    */
-  constructor(state){
+  constructor(state) {
     this.renderTabPanel(state);
     this.renderPanel(state);
   }
 
   /**
    * Creates the dom for the tab panel
-   *
-   * @param {HubState}
    */
-  renderTabPanel(){
+  renderTabPanel() {
 
     /**
      * @type {HTMLElement}
@@ -43,32 +41,37 @@ export default class HubView {
   /**
    * Creates the dom for the panel
    *
-   * @param {HubState} state
+   * @param {string} title
+   * @param {string} sectionId
+   * @param {boolean} expanded
    */
-  renderPanel(state) {
+  renderPanel({title, sectionId, expanded = false}) {
     /**
      * @type {HTMLElement}
      */
     this.titleElement = document.createElement('div');
-    this.titleElement.className += "panel-header";
-    this.titleElement.setAttribute('aria-expanded', 'true');
+    this.titleElement.className += "panel-header icon-hub-icon";
+    this.titleElement.setAttribute('aria-expanded', expanded.toString());
     this.titleElement.setAttribute('aria-controls', 'panel-body-1');
-    this.titleElement.innerHTML = state.title;
+    this.titleElement.innerHTML = title;
 
     /**
      * @type {HTMLElement}
      */
     this.bodyElement = document.createElement('div');
     this.bodyElement.className += "panel-body";
-    this.bodyElement.setAttribute('aria-hidden', 'false');
+    this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
     this.bodyElement.id = 'panel-body-1';
     this.bodyElement.appendChild(this.tabContainerElement);
+    if(!expanded){
+      this.bodyElement.style.height = "0";
+    }
 
     /**
      * @type {HTMLElement}
      */
     this.rootElement = document.createElement('div');
-    this.rootElement.className += 'h5p-hub panel';
+    this.rootElement.className += `h5p-hub h5p-section-${sectionId} panel`;
     this.rootElement.appendChild(this.titleElement);
     this.rootElement.appendChild(this.bodyElement);
 
@@ -101,6 +104,15 @@ export default class HubView {
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabpanel);
+  }
+
+  /**
+   * Sets the section
+   *
+   * @param {string} sectionId
+   */
+  setSection(sectionId) {
+    this.rootElement.className = `h5p-hub h5p-section-${sectionId} panel`;
   }
 
   /**
