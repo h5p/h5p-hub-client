@@ -34,8 +34,6 @@ export default class HubView {
     this.tabContainerElement = document.createElement('div');
     this.tabContainerElement.className += 'tabcontainer';
     this.tabContainerElement.appendChild(this.tabListWrapper);
-
-    initTabPanel(this.tabContainerElement);
   }
 
   /**
@@ -88,17 +86,18 @@ export default class HubView {
    */
   addTab({title, id, content, selected = false}) {
     const tabId = `tab-${id}`;
+    const tabPanelId = `tab-panel-${id}`;
 
     const tab = document.createElement('li');
     tab.className += 'tab';
-    tab.id ='tab1';
-    tab.setAttribute('aria-controls', tabId);
+    tab.id = tabId;
+    tab.setAttribute('aria-controls', tabPanelId);
     tab.setAttribute('aria-selected', selected.toString());
     tab.setAttribute('role', 'tab');
     tab.innerHTML = title;
 
     const tabPanel = document.createElement('div');
-    tabPanel.id ='panel1';
+    tabPanel.id = tabPanelId;
     tabPanel.className += 'tabpanel';
     tabPanel.setAttribute('aria-lablledby', tabId);
     tabPanel.setAttribute('aria-hidden', (!selected).toString());
@@ -107,6 +106,10 @@ export default class HubView {
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabPanel);
+  }
+
+  initTabPanel() {
+    initTabPanel(this.tabContainerElement);
   }
 
   /**

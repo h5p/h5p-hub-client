@@ -37,6 +37,8 @@ export default class Hub {
       id: 'upload-section',
       content: this.uploadSection.getElement()
     });
+
+    this.view.initTabPanel();
   }
 
   /**

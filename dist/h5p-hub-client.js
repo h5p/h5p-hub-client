@@ -116,6 +116,8 @@
 	      id: 'upload-section',
 	      content: this.uploadSection.getElement()
 	    });
+	
+	    this.view.initTabPanel();
 	  }
 	
 	  /**
@@ -200,8 +202,6 @@
 	      this.tabContainerElement = document.createElement('div');
 	      this.tabContainerElement.className += 'tabcontainer';
 	      this.tabContainerElement.appendChild(this.tabListWrapper);
-	
-	      (0, _tabPanel2.default)(this.tabContainerElement);
 	    }
 	
 	    /**
@@ -271,17 +271,18 @@
 	          selected = _ref2$selected === undefined ? false : _ref2$selected;
 	
 	      var tabId = "tab-" + id;
+	      var tabPanelId = "tab-panel-" + id;
 	
 	      var tab = document.createElement('li');
 	      tab.className += 'tab';
-	      tab.id = 'tab1';
-	      tab.setAttribute('aria-controls', tabId);
+	      tab.id = tabId;
+	      tab.setAttribute('aria-controls', tabPanelId);
 	      tab.setAttribute('aria-selected', selected.toString());
 	      tab.setAttribute('role', 'tab');
 	      tab.innerHTML = title;
 	
 	      var tabPanel = document.createElement('div');
-	      tabPanel.id = 'panel1';
+	      tabPanel.id = tabPanelId;
 	      tabPanel.className += 'tabpanel';
 	      tabPanel.setAttribute('aria-lablledby', tabId);
 	      tabPanel.setAttribute('aria-hidden', (!selected).toString());
@@ -290,6 +291,11 @@
 	
 	      this.tablist.appendChild(tab);
 	      this.tabContainerElement.appendChild(tabPanel);
+	    }
+	  }, {
+	    key: "initTabPanel",
+	    value: function initTabPanel() {
+	      (0, _tabPanel2.default)(this.tabContainerElement);
 	    }
 	
 	    /**
@@ -449,6 +455,7 @@
 	 * @function
 	 */
 	var setAttribute = exports.setAttribute = (0, _functional.curry)(function (name, value, el) {
+	  // console.log(name, value, el);
 	  el.setAttribute(name, value);
 	});
 	
@@ -751,13 +758,19 @@
 	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
 	
 	function init(element) {
-	  var tabs = getWhereRoleIsTab(element);
+	  // const tabs = getWhereRoleIsTab(element);
 	  var tabPanels = getWhereRoleIsTabpanel(element);
+	
+	  var tabs = element.querySelectorAll('[role="tab"]');
+	
+	  console.log(tabs);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
 	
 	      setAllAriaSelectedFalse(tabs);
+	      console.log(event);
+	      console.log(tabPanels);
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
