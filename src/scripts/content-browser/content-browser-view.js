@@ -6,10 +6,15 @@ export default class ContentBrowserView {
     this.rootElement.appendChild(this.renderMenuGroup());
   }
 
-  renderMenuItem(title) {
+  renderMenuItem(title, index) {
     const tab = document.createElement('li');
     tab.setAttribute('tabindex', '0');
     tab.innerHTML = title;
+
+    //TODO remove after demo
+    if (index === 0) {
+      tab.setAttribute('aria-selected', 'true');
+    }
     return tab;
   };
 

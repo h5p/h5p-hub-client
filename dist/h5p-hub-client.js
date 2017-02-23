@@ -880,10 +880,15 @@
 	
 	  _createClass(ContentBrowserView, [{
 	    key: 'renderMenuItem',
-	    value: function renderMenuItem(title) {
+	    value: function renderMenuItem(title, index) {
 	      var tab = document.createElement('li');
 	      tab.setAttribute('tabindex', '0');
 	      tab.innerHTML = title;
+	
+	      //TODO remove after demo
+	      if (index === 0) {
+	        tab.setAttribute('aria-selected', 'true');
+	      }
 	      return tab;
 	    }
 	  }, {
