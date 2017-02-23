@@ -1,0 +1,31 @@
+.menu-group {
+  padding: $padding;
+  background-color: $c1;
+}
+
+.menu {
+  overflow: auto;
+  border-bottom: solid 1px white;
+
+  & nav {
+    float: right;
+  }
+
+  .menu-title {
+    float: left;
+    text-align: center;
+    color: white;
+    font-style: italic;
+  }
+}
+
+.input-group-wrapper {
+  padding: 5px;
+  margin-top: $padding;
+  background-color: white;
+  border-radius: 50px;
+}
+
+.input-group {
+  background-color: white;
+}

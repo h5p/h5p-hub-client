@@ -851,46 +851,67 @@
 	    this.state = state;
 	
 	    this.rootElement = document.createElement('div');
-	    this.rootElement.appendChild(this.renderContentTypeFilters());
-	    this.rootElement.appendChild(this.renderInputGroup());
+	    this.rootElement.appendChild(this.renderMenuGroup());
 	  }
 	
 	  _createClass(ContentBrowserView, [{
-	    key: 'renderContentTypeFilters',
-	    value: function renderContentTypeFilters(state) {
-	      var tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	    key: 'renderMenuItem',
+	    value: function renderMenuItem(title) {
+	      var tab = document.createElement('li');
+	      tab.setAttribute('tabindex', '0');
+	      tab.innerHTML = title;
+	      return tab;
+	    }
+	  }, {
+	    key: 'renderMenu',
+	    value: function renderMenu(state) {
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
-	      var tablist = document.createElement('ul');
-	      tablist.className += "tablist";
-	      tablist.setAttribute('role', 'tablist');
-	
-	      tabs.map(this.createTab).forEach(tablist.appendChild.bind(tablist));
+	      var menuItemList = document.createElement('ul');
+	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	      menuItems.map(this.renderMenuItem).forEach(menuItemList.appendChild.bind(menuItemList));
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
-	      this.tabListWrapper = document.createElement('nav');
-	      this.tabListWrapper.appendChild(tablist);
+	      var menuItemListWrapper = document.createElement('nav');
+	      menuItemListWrapper.appendChild(menuItemList);
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
-	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.className += 'tabcontainer';
-	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	      var menuTitle = document.createElement('div');
+	      menuTitle.className = "menu-title";
+	      menuTitle.innerHTML = "Browse content types";
 	
-	      (0, _tabPanel2.default)(this.tabContainerElement);
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      var menu = document.createElement('div');
+	      menu.className = "menu";
+	      menu.appendChild(menuTitle);
+	      menu.appendChild(menuItemListWrapper);
 	
-	      return this.tabContainerElement;
+	      return menu;
+	    }
+	  }, {
+	    key: 'renderMenuGroup',
+	    value: function renderMenuGroup() {
+	      var menuGroup = document.createElement('div');
+	      menuGroup.className = 'menu-group';
+	      var menu = this.renderMenu();
+	      var inputGroup = this.renderInputGroup();
+	      menuGroup.appendChild(menu);
+	      menuGroup.appendChild(inputGroup);
+	      return menuGroup;
 	    }
 	  }, {
 	    key: 'renderInputField',
 	    value: function renderInputField() {
 	      var inputField = document.createElement('input');
-	      inputField.className = 'hub-search';
+	      inputField.className = 'hub-search shadow';
 	      inputField.setAttribute('type', 'text');
 	      inputField.setAttribute('placeholder', "Search for Content Types");
 	      return inputField;
@@ -907,32 +928,24 @@
 	    key: 'renderInputGroup',
 	    value: function renderInputGroup(buttonTitle) {
 	      var inputGroup = document.createElement('div');
-	      inputGroup.className = 'input-group rounded';
+	      inputGroup.className = 'input-group rounded shadow';
 	      inputGroup.appendChild(this.renderInputField());
 	      inputGroup.appendChild(this.renderInputButton(buttonTitle));
-	      return inputGroup;
-	    }
-	  }, {
-	    key: 'createTab',
-	    value: function createTab(config, index) {
-	      var tab = document.createElement('li');
-	      tab.className = 'tab';
-	      tab.id = 'tab' + index;
-	      tab.setAttribute('aria-selected', 'true');
-	      tab.setAttribute('role', 'tab');
-	      tab.setAttribute('tabindex', '0');
-	      tab.innerHTML = config;
 	
-	      return tab;
-	    }
-	  }, {
-	    key: 'updateList',
+	      var inputGroupWrapper = document.createElement('div');
+	      inputGroupWrapper.className = 'input-group-wrapper rounded';
+	      inputGroupWrapper.appendChild(inputGroup);
 	
+	      return inputGroupWrapper;
+	    }
 	
 	    /**
 	     *
 	     * @param {ContentType[]} contentTypes
 	     */
+	
+	  }, {
+	    key: 'updateList',
 	    value: function updateList(contentTypes) {
 	      if (this.listElement) {
 	        this.listElement.remove();
