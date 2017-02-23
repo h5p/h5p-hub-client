@@ -143,12 +143,15 @@ input:focus {
     margin-top: 0.7em; }
 
 .menu-group {
-  padding: 0.833em;
-  background-color: #697585; }
+  background-color: #697585;
+  padding-top: 1.125em;
+  padding-bottom: 1.125em; }
 
 .menu {
   overflow: auto;
-  border-bottom: solid 1px white; }
+  border-bottom: solid 1px #f3f3f3;
+  margin-left: 2.25em;
+  margin-right: 2.25em; }
   .menu nav {
     float: right; }
   .menu .menu-title {
@@ -158,10 +161,15 @@ input:focus {
     font-style: italic; }
 
 .input-group-wrapper {
-  padding: 5px;
-  margin-top: 0.833em;
+  margin-left: 2.25em;
+  margin-right: 2.25em;
+  margin-top: 1.25em;
+  padding: 0.333em;
   background-color: white;
   border-radius: 50px; }
 
 .input-group {
   background-color: white; }
+
+.input-button {
+  font-size: 2.5em; }

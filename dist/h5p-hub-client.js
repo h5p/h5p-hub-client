@@ -919,8 +919,7 @@
 	    key: 'renderInputButton',
 	    value: function renderInputButton(title) {
 	      var inputButton = document.createElement('div');
-	      inputButton.className = 'input-button';
-	      inputButton.innerHTML = "Search";
+	      inputButton.className = 'input-button icon-search';
 	      return inputButton;
 	    }
 	  }, {
