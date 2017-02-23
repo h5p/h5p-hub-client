@@ -5,43 +5,60 @@ export default class ContentBrowserView {
     this.state = state;
 
     this.rootElement = document.createElement('div');
-    this.rootElement.appendChild(this.renderContentTypeFilters());
-    this.rootElement.appendChild(this.renderInputGroup());
+    this.rootElement.appendChild(this.renderMenuGroup());
   }
 
-  renderContentTypeFilters(state) {
-    let tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+  renderMenuItem(title) {
+    const tab = document.createElement('li');
+    tab.setAttribute('tabindex', '0');
+    tab.innerHTML = title;
+    return tab;
+  };
+
+  renderMenu(state) {
 
     /**
      * @type {HTMLElement}
      */
-    const tablist = document.createElement('ul');
-    tablist.className += "tablist";
-    tablist.setAttribute ('role', 'tablist');
-
-    tabs
-      .map(this.createTab)
-      .forEach(tablist.appendChild.bind(tablist));
-
+    const menuItemList = document.createElement('ul');
+    let menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+    menuItems
+      .map(this.renderMenuItem)
+      .forEach(menuItemList.appendChild.bind(menuItemList));
 
     /**
      * @type {HTMLElement}
      */
-     this.tabListWrapper = document.createElement('nav');
-     this.tabListWrapper.appendChild(tablist);
+    const menuItemListWrapper = document.createElement('nav');
+    menuItemListWrapper.appendChild(menuItemList);
 
     /**
      * @type {HTMLElement}
      */
-    this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.className += 'tabcontainer';
-    this.tabContainerElement.appendChild(this.tabListWrapper);
+    const menuTitle = document.createElement('div');
+    menuTitle.className = "menu-title";
+    menuTitle.innerHTML = "Browse content types";
 
-    initTabPanel(this.tabContainerElement);
+    /**
+     * @type {HTMLElement}
+     */
+    const menu = document.createElement('div');
+    menu.className = "menu";
+    menu.appendChild(menuTitle);
+    menu.appendChild(menuItemListWrapper);
 
-    return this.tabContainerElement;
+    return menu;
   }
 
+  renderMenuGroup() {
+    const menuGroup = document.createElement('div');
+    menuGroup.className = 'menu-group';
+    const menu = this.renderMenu();
+    const inputGroup = this.renderInputGroup();
+    menuGroup.appendChild(menu);
+    menuGroup.appendChild(inputGroup);
+    return menuGroup;
+  }
 
   renderInputField() {
     const inputField = document.createElement('input');
@@ -65,18 +82,6 @@ export default class ContentBrowserView {
     inputGroup.appendChild(this.renderInputButton(buttonTitle));
     return inputGroup;
   }
-
-  createTab(config, index) {
-    const tab = document.createElement('li');
-    tab.className = 'tab';
-    tab.id ='tab' + index;
-    tab.setAttribute('aria-selected', 'true');
-    tab.setAttribute('role', 'tab');
-    tab.setAttribute('tabindex', '0');
-    tab.innerHTML = config;
-
-    return tab;
-  };
 
 
   /**

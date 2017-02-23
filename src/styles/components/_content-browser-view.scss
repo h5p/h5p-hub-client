@@ -1,0 +1,18 @@
+.menu-group {
+  padding: $padding;
+  background-color: $c1;
+}
+
+.menu {
+  overflow: auto;
+  border-bottom: solid 1px white;
+
+  & nav {
+    float: right;
+  }
+
+  .menu-title {
+    float: left;
+    text-align: center;
+  }
+}
