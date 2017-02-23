@@ -71,7 +71,7 @@
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
-	var _uploadSection = __webpack_require__(10);
+	var _uploadSection = __webpack_require__(11);
 	
 	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
@@ -455,7 +455,6 @@
 	 * @function
 	 */
 	var setAttribute = exports.setAttribute = (0, _functional.curry)(function (name, value, el) {
-	  // console.log(name, value, el);
 	  el.setAttribute(name, value);
 	});
 	
@@ -758,19 +757,13 @@
 	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
 	
 	function init(element) {
-	  // const tabs = getWhereRoleIsTab(element);
+	  var tabs = getWhereRoleIsTab(element);
 	  var tabPanels = getWhereRoleIsTabpanel(element);
-	
-	  var tabs = element.querySelectorAll('[role="tab"]');
-	
-	  console.log(tabs);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
 	
 	      setAllAriaSelectedFalse(tabs);
-	      console.log(event);
-	      console.log(tabPanels);
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
@@ -797,9 +790,9 @@
 	
 	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
 	
-	var _hubServices = __webpack_require__(9);
+	var _search = __webpack_require__(9);
 	
-	var _hubServices2 = _interopRequireDefault(_hubServices);
+	var _search2 = _interopRequireDefault(_search);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -833,13 +826,19 @@
 	    _classCallCheck(this, ContentBrowser);
 	
 	    this.view = new _contentBrowserView2.default(state);
-	    this.services = new _hubServices2.default({
-	      rootUrl: '/test/mock/api'
+	
+	    // controller
+	    this.searchService = new _search2.default();
+	
+	    // initialize by search
+	    this.searchService.search("").then(function (contentTypes) {
+	      return _this.view.updateList(contentTypes);
 	    });
 	
-	    // get content types
-	    this.services.contentTypes().then(function (contentTypes) {
-	      return _this.view.updateList(contentTypes);
+	    // Todo Use event system
+	    this.view.inputFieldElement.addEventListener('keyup', function (event) {
+	      var query = event.target.value;
+	      _this.searchService.search(query).then(_this.view.updateList.bind(_this.view));
 	    });
 	  }
 	
@@ -857,7 +856,7 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	'use strict';
 	
@@ -866,12 +865,6 @@
 	});
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _tabPanel = __webpack_require__(6);
-	
-	var _tabPanel2 = _interopRequireDefault(_tabPanel);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -945,6 +938,7 @@
 	      inputField.className = 'hub-search shadow';
 	      inputField.setAttribute('type', 'text');
 	      inputField.setAttribute('placeholder', "Search for Content Types");
+	      this.inputFieldElement = inputField;
 	      return inputField;
 	    }
 	  }, {
@@ -1063,6 +1057,89 @@
 
 /***/ },
 /* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _functional = __webpack_require__(5);
+	
+	var _hubServices = __webpack_require__(10);
+	
+	var _hubServices2 = _interopRequireDefault(_hubServices);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * Checks if a needle is found in the haystack.
+	 * Not case sensitive
+	 *
+	 * @param {string} needle
+	 * @param {string} haystack
+	 * @return {boolean}
+	 */
+	var hasSubString = function hasSubString(needle, haystack) {
+	  return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+	};
+	
+	/**
+	 * Filters a list of content types based on a query
+	 * @type {Function}
+	 *
+	 * @param {string} query
+	 * @param {ContentType[]} contentTypes
+	 */
+	var filterByQuery = (0, _functional.curry)(function (query, contentTypes) {
+	  return contentTypes.filter(function (contentType) {
+	    return hasSubString(query, contentType.title) || hasSubString(query, contentType.shortDescription);
+	  });
+	});
+	
+	/**
+	 * @class
+	 */
+	
+	var SearchService = function () {
+	  function SearchService() {
+	    _classCallCheck(this, SearchService);
+	
+	    this.services = new _hubServices2.default({
+	      rootUrl: '/test/mock/api'
+	    });
+	
+	    this.contentTypes = this.services.contentTypes();
+	  }
+	
+	  /**
+	   * Performs a search
+	   *
+	   * @param {String} query
+	   *
+	   * @return {Promise<ContentType[]>}
+	   */
+	
+	
+	  _createClass(SearchService, [{
+	    key: "search",
+	    value: function search(query) {
+	      return this.contentTypes.then(filterByQuery(query));
+	    }
+	  }]);
+	
+	  return SearchService;
+	}();
+	
+	exports.default = SearchService;
+
+/***/ },
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1109,7 +1186,7 @@
 	exports.default = HubServices;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";

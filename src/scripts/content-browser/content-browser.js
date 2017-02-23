@@ -1,5 +1,5 @@
 import ContentBrowserView from "./content-browser-view";
-import HubServices from "../hub-services";
+import SearchService from "../search/search";
 
 /**
  * @typedef {object} ContentType
@@ -25,13 +25,20 @@ import HubServices from "../hub-services";
 export default class ContentBrowser {
   constructor(state){
     this.view = new ContentBrowserView(state);
-    this.services = new HubServices({
-      rootUrl: '/test/mock/api'
-    });
 
-    // get content types
-    this.services.contentTypes()
+    // controller
+    this.searchService = new SearchService();
+
+    // initialize by search
+    this.searchService.search("")
       .then(contentTypes => this.view.updateList(contentTypes));
+
+    // Todo Use event system
+    this.view.inputFieldElement.addEventListener('keyup', event => {
+      let query = event.target.value;
+      this.searchService.search(query)
+        .then(this.view.updateList.bind(this.view));
+    });
   }
 
   getElement() {

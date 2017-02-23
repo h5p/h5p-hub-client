@@ -1,5 +1,3 @@
-import initTabPanel from "../../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
-
 export default class ContentBrowserView {
   constructor(state) {
     this.state = state;
@@ -64,7 +62,8 @@ export default class ContentBrowserView {
     const inputField = document.createElement('input');
     inputField.className = 'hub-search shadow';
     inputField.setAttribute('type', 'text');
-    inputField.setAttribute('placeholder', "Search for Content Types")
+    inputField.setAttribute('placeholder', "Search for Content Types");
+    this.inputFieldElement = inputField;
     return inputField;
   }
 
