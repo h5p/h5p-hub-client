@@ -1,5 +1,5 @@
 import initPanel from "../../node_modules/h5p-sdk/src/scripts/components/panel"
-//import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
+import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
 
 export default class HubView {
   /**
@@ -13,9 +13,9 @@ export default class HubView {
   /**
    * Creates the dom for the tab panel
    *
-   * @param {HubState} state
+   * @param {HubState}
    */
-  renderTabPanel(state){
+  renderTabPanel(){
 
     /**
      * @type {HTMLElement}
@@ -27,8 +27,17 @@ export default class HubView {
     /**
      * @type {HTMLElement}
      */
+     this.tabListWrapper = document.createElement('nav');
+     this.tabListWrapper.appendChild(this.tablist);
+
+    /**
+     * @type {HTMLElement}
+     */
     this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.appendChild(this.tablist);
+    this.tabContainerElement.className += 'tabcontainer';
+    this.tabContainerElement.appendChild(this.tabListWrapper);
+
+    initTabPanel(this.tabContainerElement);
   }
 
   /**
@@ -74,14 +83,19 @@ export default class HubView {
    */
   addTab(title, content) {
     let tab = document.createElement('li');
+    tab.className += 'tab';
+    tab.id ='tab1';
+    tab.setAttribute('aria-controls', 'panel1');
+    tab.setAttribute('aria-selected', 'true');
+    tab.setAttribute('role', 'tab');
+    tab.setAttribute('tabindex', '0');
     tab.innerHTML = title;
 
     let tabpanel = document.createElement('div');
-    tabpanel.id ='tab1';
-    tabpanel.className += 'tab';
-    tabpanel.setAttribute('aria-controls', 'panel1');
-    tabpanel.setAttribute('aria-selected', 'true');
-    tabpanel.setAttribute('role', 'tab');
+    tabpanel.id ='panel1';
+    tabpanel.className += 'tabpanel';
+    tabpanel.setAttribute('aria-lablledby', 'tab1');
+    tabpanel.setAttribute('role', 'tabpanel');
     tabpanel.setAttribute('tabindex', '0');
     tabpanel.appendChild(content);
 

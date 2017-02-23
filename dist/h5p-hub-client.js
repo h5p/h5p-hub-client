@@ -67,9 +67,13 @@
 	
 	var _hubView2 = _interopRequireDefault(_hubView);
 	
-	var _contentBrowser = __webpack_require__(6);
+	var _contentBrowser = __webpack_require__(7);
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
+	
+	var _tabPanel = __webpack_require__(6);
+	
+	var _tabPanel2 = _interopRequireDefault(_tabPanel);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -98,9 +102,84 @@
 	    });
 	
 	    this.view.addTab('Create Content', this.contentBrowser.getElement());
+	
+	    var browserContainer = document.createElement('div');
+	    browserContainer.innerHTML = 'content';
+	    this.view.addTab('Create Content', browserContainer);
+	
+	    this.createContentFilters();
 	  }
 	
 	  _createClass(Hub, [{
+	    key: 'creatInputField',
+	    value: function creatInputField() {
+	      var inputField = document.createElement('input');
+	      inputField.className += 'hub-search';
+	      inputField.setAttribute('type', 'text');
+	      inputField.setAttribute('placeholder', "Search for Content Types");
+	      return inputField;
+	    }
+	  }, {
+	    key: 'createInputButton',
+	    value: function createInputButton(title) {
+	      var inputButton = document.createElement('div');
+	      inputButton.className += 'input-button';
+	      inputButton.innerHTML = title;
+	      return inputButton;
+	    }
+	  }, {
+	    key: 'createInputGroup',
+	    value: function createInputGroup(buttonTitle) {
+	      var inputGroup = document.createElement('div');
+	      inputGroup.className += 'input-group rounded';
+	      inputGroup.appendChild(this.createInputField());
+	      inputGroup.appendChild(this.createInputButton(buttonTitle));
+	      return inputGroup;
+	    }
+	  }, {
+	    key: 'createTab',
+	    value: function createTab(config, index) {
+	      var tab = document.createElement('li');
+	      tab.className += 'tab';
+	      tab.id = 'tab' + index;
+	      tab.setAttribute('aria-selected', 'true');
+	      tab.setAttribute('role', 'tab');
+	      tab.setAttribute('tabindex', '0');
+	      tab.innerHTML = config;
+	
+	      return tab;
+	    }
+	  }, {
+	    key: 'createContentFilters',
+	    value: function createContentFilters() {
+	
+	      var tabs = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      var tablist = document.createElement('ul');
+	      tablist.className += "tablist";
+	      tablist.setAttribute('role', 'tablist');
+	
+	      tabs.map(this.createTab).forEach(tablist.appendChild.bind(tablist));
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabContainerElement = document.createElement('div');
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	
+	      (0, _tabPanel2.default)(this.tabContainerElement);
+	    }
+	  }, {
 	    key: 'getElement',
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -128,11 +207,13 @@
 	
 	var _panel2 = _interopRequireDefault(_panel);
 	
+	var _tabPanel = __webpack_require__(6);
+	
+	var _tabPanel2 = _interopRequireDefault(_tabPanel);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	//import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
 	
 	var HubView = function () {
 	  /**
@@ -148,13 +229,13 @@
 	  /**
 	   * Creates the dom for the tab panel
 	   *
-	   * @param {HubState} state
+	   * @param {HubState}
 	   */
 	
 	
 	  _createClass(HubView, [{
 	    key: "renderTabPanel",
-	    value: function renderTabPanel(state) {
+	    value: function renderTabPanel() {
 	
 	      /**
 	       * @type {HTMLElement}
@@ -166,8 +247,17 @@
 	      /**
 	       * @type {HTMLElement}
 	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(this.tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
 	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.appendChild(this.tablist);
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	
+	      (0, _tabPanel2.default)(this.tabContainerElement);
 	    }
 	
 	    /**
@@ -219,14 +309,19 @@
 	    key: "addTab",
 	    value: function addTab(title, content) {
 	      var tab = document.createElement('li');
+	      tab.className += 'tab';
+	      tab.id = 'tab1';
+	      tab.setAttribute('aria-controls', 'panel1');
+	      tab.setAttribute('aria-selected', 'true');
+	      tab.setAttribute('role', 'tab');
+	      tab.setAttribute('tabindex', '0');
 	      tab.innerHTML = title;
 	
 	      var tabpanel = document.createElement('div');
-	      tabpanel.id = 'tab1';
-	      tabpanel.className += 'tab';
-	      tabpanel.setAttribute('aria-controls', 'panel1');
-	      tabpanel.setAttribute('aria-selected', 'true');
-	      tabpanel.setAttribute('role', 'tab');
+	      tabpanel.id = 'panel1';
+	      tabpanel.className += 'tabpanel';
+	      tabpanel.setAttribute('aria-lablledby', 'tab1');
+	      tabpanel.setAttribute('role', 'tabpanel');
 	      tabpanel.setAttribute('tabindex', '0');
 	      tabpanel.appendChild(content);
 	
@@ -635,6 +730,64 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = init;
+	
+	var _elements = __webpack_require__(4);
+	
+	var _functional = __webpack_require__(5);
+	
+	/**
+	 * @type {function}
+	 */
+	var getWhereRoleIsTab = (0, _elements.querySelectorAll)('[role="tab"]');
+	
+	/**
+	 * @type {function}
+	 */
+	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	
+	/**
+	 * @type {function}
+	 */
+	var setAllAriaHiddenTrue = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
+	
+	/**
+	 * @type {function}
+	 */
+	var setAriaSelectedFalse = (0, _elements.setAttribute)('aria-selected', 'false');
+	
+	/**
+	 * @type {function}
+	 */
+	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
+	
+	function init(element) {
+	  var tabs = getWhereRoleIsTab(element);
+	  var tabpanels = getWhereRoleIsTabpanel(element);
+	
+	  tabs.forEach(function (tab) {
+	    tab.addEventListener('click', function (event) {
+	
+	      setAllAriaSelectedFalse(tabs);
+	      event.target.setAttribute('aria-selected', 'true');
+	
+	      setAllAriaHiddenTrue(tabpanels);
+	      var tabpanelId = event.target.getAttribute('aria-controls');
+	      var targetTabpanel = document.getElementById(tabpanelId);
+	      targetTabpanel.setAttribute('aria-hidden', 'false');
+	    });
+	  });
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
@@ -643,11 +796,11 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _contentBrowserView = __webpack_require__(7);
+	var _contentBrowserView = __webpack_require__(8);
 	
 	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
 	
-	var _hubServices = __webpack_require__(8);
+	var _hubServices = __webpack_require__(9);
 	
 	var _hubServices2 = _interopRequireDefault(_hubServices);
 	
@@ -706,7 +859,7 @@
 	exports.default = ContentBrowser;
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -822,7 +975,7 @@
 	exports.default = ContentBrowserView;
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
