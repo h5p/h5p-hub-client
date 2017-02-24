@@ -8,7 +8,9 @@ import UploadSection from './upload-section/upload-section';
  * @property {string} sectionId
  * @property {boolean} expanded
  */
-
+/**
+ * @class
+ */
 export default class Hub {
   /**
    * @param {HubState} state
@@ -25,6 +27,7 @@ export default class Hub {
       sectionId: 'create-content'
     });
 
+    // tab panel
     this.view.addTab({
       title: 'Create Content',
       id: 'create-content',

@@ -71,7 +71,7 @@
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
-	var _uploadSection = __webpack_require__(11);
+	var _uploadSection = __webpack_require__(15);
 	
 	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
@@ -85,7 +85,9 @@
 	 * @property {string} sectionId
 	 * @property {boolean} expanded
 	 */
-	
+	/**
+	 * @class
+	 */
 	var Hub = function () {
 	  /**
 	   * @param {HubState} state
@@ -104,6 +106,7 @@
 	      sectionId: 'create-content'
 	    });
 	
+	    // tab panel
 	    this.view.addTab({
 	      title: 'Create Content',
 	      id: 'create-content',
@@ -794,6 +797,14 @@
 	
 	var _search2 = _interopRequireDefault(_search);
 	
+	var _contentTypeList = __webpack_require__(11);
+	
+	var _contentTypeList2 = _interopRequireDefault(_contentTypeList);
+	
+	var _contentTypeDetail = __webpack_require__(13);
+	
+	var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -829,16 +840,20 @@
 	
 	    // controller
 	    this.searchService = new _search2.default();
+	    this.contentTypeList = new _contentTypeList2.default();
+	    this.contentTypeDetail = new _contentTypeDetail2.default();
+	
+	    // set sub view (TODO find other way)
+	    this.view.getElement().appendChild(this.contentTypeList.getElement());
+	
+	    // registers
+	    this.view.onInputFieldKeyDown(function (text) {
+	      this.searchService.search(text).then(this.contentTypeList.update.bind(this.contentTypeList));
+	    }, this);
 	
 	    // initialize by search
 	    this.searchService.search("").then(function (contentTypes) {
-	      return _this.view.updateList(contentTypes);
-	    });
-	
-	    // Todo Use event system
-	    this.view.inputFieldElement.addEventListener('keyup', function (event) {
-	      var query = event.target.value;
-	      _this.searchService.search(query).then(_this.view.updateList.bind(_this.view));
+	      return _this.contentTypeList.update(contentTypes);
 	    });
 	  }
 	
@@ -878,7 +893,24 @@
 	    this.rootElement.appendChild(this.renderMenuGroup());
 	  }
 	
+	  /**
+	   * Adds a listener to the input field, and registers a callback with it
+	   *
+	   * @param {function} callback
+	   * @param {object} [scope]
+	   */
+	
+	
 	  _createClass(ContentBrowserView, [{
+	    key: 'onInputFieldKeyDown',
+	    value: function onInputFieldKeyDown(callback, scope) {
+	      var _this = this;
+	
+	      this.inputFieldElement.addEventListener('keyup', function (event) {
+	        callback.call(scope || _this, event.target.value, _this.inputFieldElement);
+	      });
+	    }
+	  }, {
 	    key: 'renderMenuItem',
 	    value: function renderMenuItem(title, index) {
 	      var tab = document.createElement('li');
@@ -894,7 +926,6 @@
 	  }, {
 	    key: 'renderMenu',
 	    value: function renderMenu(state) {
-	
 	      /**
 	       * @type {HTMLElement}
 	       */
@@ -966,80 +997,6 @@
 	      inputGroupWrapper.appendChild(inputGroup);
 	
 	      return inputGroupWrapper;
-	    }
-	
-	    /**
-	     *
-	     * @param {ContentType[]} contentTypes
-	     */
-	
-	  }, {
-	    key: 'updateList',
-	    value: function updateList(contentTypes) {
-	      if (this.listElement) {
-	        this.listElement.remove();
-	      }
-	
-	      this.listElement = this.renderContentTypeList(contentTypes);
-	      this.rootElement.appendChild(this.listElement);
-	    }
-	
-	    /**
-	     *
-	     * @param {ContentType[]} contentTypes
-	     */
-	
-	  }, {
-	    key: 'renderContentTypeList',
-	    value: function renderContentTypeList(contentTypes) {
-	      var listElement = document.createElement('ul');
-	      listElement.className = 'content-type-list';
-	
-	      contentTypes.map(this.renderContentTypeRow).forEach(listElement.appendChild.bind(listElement));
-	
-	      return listElement;
-	    }
-	
-	    /**
-	     * Takes a Content Type configuration and creates a row dom
-	     *
-	     * @param {ContentType} contentType
-	     *
-	     * @return {HTMLElement}
-	     */
-	
-	  }, {
-	    key: 'renderContentTypeRow',
-	    value: function renderContentTypeRow(contentType) {
-	      // image
-	      var image = document.createElement('img');
-	      image.setAttribute('src', contentType.icon);
-	
-	      // button
-	      var button = document.createElement('span');
-	      button.className = "button";
-	      button.innerHTML = "Use";
-	
-	      // title
-	      var title = document.createElement('div');
-	      title.className = 'content-type-list-title';
-	      title.innerHTML = contentType.title;
-	
-	      // description
-	      var description = document.createElement('div');
-	      description.className = 'content-type-list-description';
-	      description.innerHTML = contentType.shortDescription;
-	
-	      // list item
-	      var row = document.createElement('li');
-	      row.id = 'content-type-' + contentType.id;
-	      row.setAttribute('data-id', contentType.id);
-	      row.appendChild(image);
-	      row.appendChild(button);
-	      row.appendChild(title);
-	      row.appendChild(description);
-	
-	      return row;
 	    }
 	
 	    /**
@@ -1192,6 +1149,243 @@
 
 /***/ },
 /* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _contentTypeListView = __webpack_require__(12);
+	
+	var _contentTypeListView2 = _interopRequireDefault(_contentTypeListView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ContentTypeList = function () {
+	  function ContentTypeList(state) {
+	    _classCallCheck(this, ContentTypeList);
+	
+	    this.view = new _contentTypeListView2.default(state);
+	  }
+	
+	  /**
+	   *
+	   * @param {ContentType[]} contentTypes
+	   */
+	
+	
+	  _createClass(ContentTypeList, [{
+	    key: "update",
+	    value: function update(contentTypes) {
+	      this.view.updateList(contentTypes);
+	    }
+	  }, {
+	    key: "getElement",
+	    value: function getElement() {
+	      return this.view.getElement();
+	    }
+	  }]);
+	
+	  return ContentTypeList;
+	}();
+	
+	exports.default = ContentTypeList;
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ContentTypeListView = function () {
+	  function ContentTypeListView(state) {
+	    _classCallCheck(this, ContentTypeListView);
+	
+	    this.state = state;
+	    this.rootElement = document.createElement('div');
+	  }
+	
+	  /**
+	   *
+	   * @param {ContentType[]} contentTypes
+	   */
+	
+	
+	  _createClass(ContentTypeListView, [{
+	    key: 'updateList',
+	    value: function updateList(contentTypes) {
+	      if (this.listElement) {
+	        this.listElement.remove();
+	      }
+	
+	      this.listElement = this.renderContentTypeList(contentTypes);
+	      this.rootElement.appendChild(this.listElement);
+	    }
+	
+	    /**
+	     *
+	     * @param {ContentType[]} contentTypes
+	     */
+	
+	  }, {
+	    key: 'renderContentTypeList',
+	    value: function renderContentTypeList(contentTypes) {
+	      var listElement = document.createElement('ul');
+	      listElement.className = 'content-type-list';
+	
+	      contentTypes.map(this.renderContentTypeRow).forEach(listElement.appendChild.bind(listElement));
+	
+	      return listElement;
+	    }
+	
+	    /**
+	     * Takes a Content Type configuration and creates a row dom
+	     *
+	     * @param {ContentType} contentType
+	     *
+	     * @return {HTMLElement}
+	     */
+	
+	  }, {
+	    key: 'renderContentTypeRow',
+	    value: function renderContentTypeRow(contentType) {
+	      // image
+	      var image = document.createElement('img');
+	      image.setAttribute('src', contentType.icon);
+	
+	      // button
+	      var button = document.createElement('span');
+	      button.className = "button";
+	      button.innerHTML = "Use";
+	
+	      // title
+	      var title = document.createElement('div');
+	      title.className = 'content-type-list-title';
+	      title.innerHTML = contentType.title;
+	
+	      // description
+	      var description = document.createElement('div');
+	      description.className = 'content-type-list-description';
+	      description.innerHTML = contentType.shortDescription;
+	
+	      // list item
+	      var row = document.createElement('li');
+	      row.id = 'content-type-' + contentType.id;
+	      row.setAttribute('data-id', contentType.id);
+	      row.appendChild(image);
+	      row.appendChild(button);
+	      row.appendChild(title);
+	      row.appendChild(description);
+	
+	      return row;
+	    }
+	  }, {
+	    key: 'getElement',
+	    value: function getElement() {
+	      return this.rootElement;
+	    }
+	  }]);
+	
+	  return ContentTypeListView;
+	}();
+	
+	exports.default = ContentTypeListView;
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _contentTypeDetailView = __webpack_require__(14);
+	
+	var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ContentTypeDetail = function () {
+	  function ContentTypeDetail(state) {
+	    _classCallCheck(this, ContentTypeDetail);
+	
+	    this.view = new _contentTypeDetailView2.default(state);
+	  }
+	
+	  _createClass(ContentTypeDetail, [{
+	    key: "getElement",
+	    value: function getElement() {
+	      return this.view.getElement();
+	    }
+	  }]);
+	
+	  return ContentTypeDetail;
+	}();
+	
+	exports.default = ContentTypeDetail;
+
+/***/ },
+/* 14 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var ContentTypeDetailView = function () {
+	  function ContentTypeDetailView(state) {
+	    _classCallCheck(this, ContentTypeDetailView);
+	
+	    this.state = state;
+	    this.render();
+	  }
+	
+	  _createClass(ContentTypeDetailView, [{
+	    key: "render",
+	    value: function render() {
+	      this.rootElement = document.createElement('div');
+	      this.rootElement.innerHTML = "detailview";
+	    }
+	  }, {
+	    key: "getElement",
+	    value: function getElement() {
+	      return this.rootElement;
+	    }
+	  }]);
+	
+	  return ContentTypeDetailView;
+	}();
+	
+	exports.default = ContentTypeDetailView;
+
+/***/ },
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";

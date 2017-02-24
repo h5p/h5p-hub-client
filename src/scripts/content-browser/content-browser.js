@@ -1,5 +1,7 @@
 import ContentBrowserView from "./content-browser-view";
 import SearchService from "../search/search";
+import ContentTypeList from '../content-type-list/content-type-list';
+import ContentTypeDetail from '../content-type-detail/content-type-detail';
 
 /**
  * @typedef {object} ContentType
@@ -28,17 +30,21 @@ export default class ContentBrowser {
 
     // controller
     this.searchService = new SearchService();
+    this.contentTypeList = new ContentTypeList();
+    this.contentTypeDetail = new ContentTypeDetail();
+
+    // set sub view (TODO find other way)
+    this.view.getElement().appendChild(this.contentTypeList.getElement());
+
+    // registers
+    this.view.onInputFieldKeyDown(function(text){
+      this.searchService.search(text)
+        .then(this.contentTypeList.update.bind(this.contentTypeList));
+    }, this);
 
     // initialize by search
     this.searchService.search("")
-      .then(contentTypes => this.view.updateList(contentTypes));
-
-    // Todo Use event system
-    this.view.inputFieldElement.addEventListener('keyup', event => {
-      let query = event.target.value;
-      this.searchService.search(query)
-        .then(this.view.updateList.bind(this.view));
-    });
+      .then(contentTypes => this.contentTypeList.update(contentTypes));
   }
 
   getElement() {
