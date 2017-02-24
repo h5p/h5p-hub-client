@@ -97,6 +97,9 @@ input:focus {
   color: #f3f3f3;
   cursor: pointer; }
 
+.menu nav li[aria-selected="true"] {
+  box-shadow: inset 0 -5px #0a78d1; }
+
 .h5p-hub {
   font-family: 'Open Sans', sans-serif; }
   .h5p-hub.panel {

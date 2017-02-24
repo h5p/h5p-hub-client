@@ -75,6 +75,8 @@
 	
 	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
+	var _errors = __webpack_require__(16);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -121,6 +123,16 @@
 	    });
 	
 	    this.view.initTabPanel();
+	
+	    var content = '\n        <h3>This content type requires a newer core version.</h1>\n        <p>Contact your system administrator to provide you with the necessary updates.</p>\n        <button class="button">Contact administrator</button>';
+	
+	    var config = {
+	      type: 'success',
+	      dismissible: true,
+	      content: content
+	    };
+	
+	    console.log((0, _errors.renderMessage)(config));
 	  }
 	
 	  /**
@@ -1419,6 +1431,32 @@
 	}();
 	
 	exports.default = UploadSection;
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var renderMessage = exports.renderMessage = function renderMessage(config) {
+	  var closeButton = document.createElement('div');
+	  closeButton.className = 'close';
+	  closeButton.innerHTML = '&#x2715';
+	
+	  var messageContent = document.createElement('div');
+	  messageContent.className = 'message-content';
+	  messageContent.innerHTML = config.content;
+	
+	  var messageWrapper = document.createElement('div');
+	  messageWrapper.className = 'message' + ' ' + ('' + config.type) + (config.dismissible ? ' dismissible' : '');
+	  messageWrapper.appendChild(closeButton);
+	  messageWrapper.appendChild(messageContent);
+	
+	  return messageWrapper;
+	};
 
 /***/ }
 /******/ ]);
