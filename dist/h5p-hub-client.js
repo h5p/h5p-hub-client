@@ -1217,7 +1217,7 @@
 	 *
 	 * @param  {string[]}         ids
 	 * @param  {ContentType[]}    contentTypes
-	 * @return {ContentType[]}      
+	 * @return {ContentType[]}
 	 */
 	var contentTypeInIds = (0, _functional.curry)(function (ids, contentType) {
 	  return ids.some(function (id) {
@@ -1239,7 +1239,7 @@
 	
 	    // Set up lunr index
 	    this.index = (0, _lunr2.default)(function () {
-	      this.field('title');
+	      this.field('title', { boost: 10 });
 	      this.field('shortDescription');
 	      this.ref('id');
 	    });

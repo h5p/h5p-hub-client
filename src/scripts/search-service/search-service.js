@@ -31,7 +31,7 @@ const filterByQuery = curry(function(query, contentTypes) {
  *
  * @param  {string[]}         ids
  * @param  {ContentType[]}    contentTypes
- * @return {ContentType[]}      
+ * @return {ContentType[]}
  */
 const contentTypeInIds = curry(function(ids, contentType) {
   return ids.some(id => contentType.id == id);
@@ -48,7 +48,7 @@ export default class SearchService {
 
     // Set up lunr index
     this.index = lunr(function (){
-      this.field('title');
+      this.field('title', {boost: 10});
       this.field('shortDescription');
       this.ref('id');
     });
