@@ -1297,6 +1297,13 @@
 	    value: function search(query) {
 	      var _this = this;
 	
+	      // Display all content types by default
+	      if (query === '') {
+	        return this.contentTypes.then(function (contentTypes) {
+	          return contentTypes;
+	        });
+	      }
+	
 	      return this.contentTypes.then(function (contentTypes) {
 	        return _this.index.search(query).map(function (result) {
 	          return result.ref;

@@ -47,6 +47,11 @@ export default class SearchService {
    * @return {Promise<ContentType[]>}
    */
   search(query) {
+    // Display all content types by default
+    if (query === '') {
+      return this.contentTypes.then(contentTypes => contentTypes);
+    }
+
     return this.contentTypes.then(contentTypes => {
       return this.index.search(query)
         .map(result => result.ref)
