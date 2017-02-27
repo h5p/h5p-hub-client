@@ -1,10 +1,5 @@
-<<<<<<< HEAD:src/scripts/content-browser/content-browser.js
-import ContentBrowserView from "./content-browser-view";
-import SearchService from "../search-service/search-service";
-=======
 import ContentTypeSectionView from "./content-type-section-view";
-import SearchService from "../search/search";
->>>>>>> 3d9cb7942b30e8e291340eb1bb748075b696a04e:src/scripts/content-type-section/content-type-section.js
+import SearchService from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';

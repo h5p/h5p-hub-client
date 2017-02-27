@@ -69,9 +69,9 @@
 	
 	var _hubView2 = _interopRequireDefault(_hubView);
 	
-	var _contentBrowser = __webpack_require__(7);
+	var _contentTypeSection = __webpack_require__(7);
 	
-	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
+	var _contentTypeSection2 = _interopRequireDefault(_contentTypeSection);
 	
 	var _uploadSection = __webpack_require__(17);
 	
@@ -112,7 +112,7 @@
 	    _extends(this, (0, _eventful.Eventful)());
 	
 	    // controllers
-	    this.contentBrowser = new _contentBrowser2.default();
+	    this.contentTypeSection = new _contentTypeSection2.default();
 	    this.uploadSection = new _uploadSection2.default();
 	
 	    // services
@@ -121,10 +121,10 @@
 	    });
 	
 	    // propagate controller events
-	    this.propagate(['select'], this.contentBrowser);
+	    this.propagate(['select'], this.contentTypeSection);
 	
 	    // handle events
-	    this.contentBrowser.on('select', function (_ref) {
+	    this.contentTypeSection.on('select', function (_ref) {
 	      var id = _ref.id;
 	
 	      _this.view.closePanel();
@@ -143,7 +143,7 @@
 	    this.view.addTab({
 	      title: 'Create Content',
 	      id: 'create-content',
-	      content: this.contentBrowser.getElement(),
+	      content: this.contentTypeSection.getElement(),
 	      selected: true
 	    });
 	
@@ -845,9 +845,9 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _contentBrowserView = __webpack_require__(8);
+	var _contentTypeSectionView = __webpack_require__(8);
 	
-	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
+	var _contentTypeSectionView2 = _interopRequireDefault(_contentTypeSectionView);
 	
 	var _searchService = __webpack_require__(10);
 	
@@ -868,20 +868,20 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
-	 * @class ContentBrowser
+	 * @class ContentTypeSection
 	 * @mixes Eventful
 	 */
-	var ContentBrowser = function () {
-	  function ContentBrowser(state) {
+	var ContentTypeSection = function () {
+	  function ContentTypeSection(state) {
 	    var _this = this;
 	
-	    _classCallCheck(this, ContentBrowser);
+	    _classCallCheck(this, ContentTypeSection);
 	
 	    // add event system
 	    _extends(this, (0, _eventful.Eventful)());
 	
 	    // add view
-	    this.view = new _contentBrowserView2.default(state);
+	    this.view = new _contentTypeSectionView2.default(state);
 	
 	    // controller
 	    this.searchService = new _searchService2.default();
@@ -920,17 +920,17 @@
 	    });
 	  }
 	
-	  _createClass(ContentBrowser, [{
+	  _createClass(ContentTypeSection, [{
 	    key: "getElement",
 	    value: function getElement() {
 	      return this.view.getElement();
 	    }
 	  }]);
 	
-	  return ContentBrowser;
+	  return ContentTypeSection;
 	}();
 	
-	exports.default = ContentBrowser;
+	exports.default = ContentTypeSection;
 
 /***/ },
 /* 8 */
@@ -1212,6 +1212,13 @@
 	  });
 	});
 	
+	/**
+	 * Filters a list of content types based on an array of ids
+	 *
+	 * @param  {string[]}         ids
+	 * @param  {ContentType[]}    contentTypes
+	 * @return {ContentType[]}      
+	 */
 	var contentTypeInIds = (0, _functional.curry)(function (ids, contentType) {
 	  return ids.some(function (id) {
 	    return contentType.id == id;
@@ -1237,8 +1244,8 @@
 	      this.ref('id');
 	    });
 	
-	    this.contentTypes = this.services.contentTypes();
-	    this.contentTypes.then((0, _functional.forEach)(this.addToIndex.bind(this)));
+	    this.contentTypes = this.services.contentTypes(); // Get content types
+	    this.contentTypes.then((0, _functional.forEach)(this.addToIndex.bind(this))); // Add content types to search index
 	  }
 	
 	  /**
@@ -1272,7 +1279,6 @@
 	      var ids = this.index.search(query).map(function (result) {
 	        return result.ref;
 	      });
-	      console.log(this.contentTypes.then((0, _functional.filter)(contentTypeInIds(ids))));
 	      return this.contentTypes.then((0, _functional.filter)(contentTypeInIds(ids)));
 	    }
 	  }]);
@@ -1295,6 +1301,24 @@
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @typedef {object} ContentType
+	 * @property {string} id
+	 * @property {string} title
+	 * @property {string} shortDescription
+	 * @property {string} longDescription
+	 * @property {string} icon
+	 * @property {string} created
+	 * @property {string} update
+	 * @property {boolean} recommended
+	 * @property {number} timesDownloaded
+	 * @property {string[]} screenshots
+	 * @property {string} exampleContent
+	 * @property {string[]} keywords
+	 * @property {string[]} categories
+	 * @property {string} license
+	 */
 	
 	var HubServices = function () {
 	  /**
@@ -1335,6 +1359,22 @@
 	    key: "contentType",
 	    value: function contentType(id) {
 	      return fetch(this.rootUrl + "/contenttypes/" + id).then(function (result) {
+	        return result.json();
+	      });
+	    }
+	
+	    /**
+	     * Installs a content type on the server
+	     *
+	     * @param {string} id
+	     *
+	     * @return {Promise.<ContentType>}
+	     */
+	
+	  }, {
+	    key: "installContentType",
+	    value: function installContentType(id) {
+	      return fetch(this.rootUrl + "/contenttypes/" + id + "/install").then(function (result) {
 	        return result.json();
 	      });
 	    }
@@ -2960,7 +3000,6 @@
 	      }
 	    }
 	
-<<<<<<< HEAD
 	    // Step 5
 	    re = re_5;
 	    if (re.test(w)) {
@@ -2973,32 +3012,6 @@
 	        w = stem;
 	      }
 	    }
-=======
-	/**
-	 * @typedef {object} ContentType
-	 * @property {string} id
-	 * @property {string} title
-	 * @property {string} shortDescription
-	 * @property {string} longDescription
-	 * @property {string} icon
-	 * @property {string} created
-	 * @property {string} update
-	 * @property {boolean} recommended
-	 * @property {number} timesDownloaded
-	 * @property {string[]} screenshots
-	 * @property {string} exampleContent
-	 * @property {string[]} keywords
-	 * @property {string[]} categories
-	 * @property {string} license
-	 */
-	
-	var HubServices = function () {
-	  /**
-	   * @param {string} rootUrl
-	   */
-	  function HubServices(_ref) {
-	    var rootUrl = _ref.rootUrl;
->>>>>>> 3d9cb7942b30e8e291340eb1bb748075b696a04e
 	
 	    re = re_5_1;
 	    re2 = re_mgr1;
@@ -3225,7 +3238,6 @@
 	  this.length = 0
 	}
 	
-<<<<<<< HEAD
 	/**
 	 * Loads a previously serialised token store
 	 *
@@ -3235,32 +3247,6 @@
 	 */
 	lunr.TokenStore.load = function (serialisedData) {
 	  var store = new this
-=======
-	  }, {
-	    key: "contentType",
-	    value: function contentType(id) {
-	      return fetch(this.rootUrl + "/contenttypes/" + id).then(function (result) {
-	        return result.json();
-	      });
-	    }
-	
-	    /**
-	     * Installs a content type on the server
-	     *
-	     * @param {string} id
-	     *
-	     * @return {Promise.<ContentType>}
-	     */
-	
-	  }, {
-	    key: "installContentType",
-	    value: function installContentType(id) {
-	      return fetch(this.rootUrl + "/contenttypes/" + id + "/install").then(function (result) {
-	        return result.json();
-	      });
-	    }
-	  }]);
->>>>>>> 3d9cb7942b30e8e291340eb1bb748075b696a04e
 	
 	  store.root = serialisedData.root
 	  store.length = serialisedData.length
