@@ -87,7 +87,7 @@ export default class HubView {
      * @type {HTMLElement}
      */
     this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.className += 'tabcontainer';
+    this.tabContainerElement.className += 'tab-panel';
     this.tabContainerElement.appendChild(this.tabListWrapper);
   }
 

@@ -305,7 +305,7 @@
 	       * @type {HTMLElement}
 	       */
 	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.className += 'tab-panel';
 	      this.tabContainerElement.appendChild(this.tabListWrapper);
 	    }
 	
@@ -791,7 +791,7 @@
 	/**
 	 * @type {function}
 	 */
-	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
 	
 	/**
 	 * @type {function}
@@ -815,7 +815,7 @@
 	
 	function init(element) {
 	  var tabs = getWhereRoleIsTab(element);
-	  var tabPanels = getWhereRoleIsTabpanel(element);
+	  var tabPanels = getWhereRoleIsTabPanel(element);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
@@ -824,8 +824,10 @@
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
+	
 	      var tabPanelId = event.target.getAttribute('aria-controls');
 	      var targetTabPanel = element.querySelector('#' + tabPanelId);
+	
 	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
@@ -983,31 +985,48 @@
 	  }, {
 	    key: 'renderMenuItem',
 	    value: function renderMenuItem(title, index) {
-	      var tab = document.createElement('li');
-	      tab.setAttribute('tabindex', '0');
-	      tab.innerHTML = title;
+	      var element = document.createElement('li');
+	      element.setAttribute('role', 'menuitem');
+	      element.innerHTML = title;
 	
 	      //TODO remove after demo
 	      if (index === 0) {
-	        tab.setAttribute('aria-selected', 'true');
+	        element.setAttribute('aria-selected', 'true');
 	      }
-	      return tab;
+	
+	      return element;
 	    }
 	  }, {
 	    key: 'renderMenu',
+	
+	
+	    /*
+	    *   <nav>
+	     <ul role="menubar" class="h5p-menu">
+	     <li role="menuitem" aria-selected="true">My Content Types</li>
+	     <li role="menuitem">Newest</li>
+	     <li role="menuitem">Most Popular</li>
+	     <li role="menuitem">Recomended</li>
+	     </ul>
+	     </nav>
+	    * */
+	
 	    value: function renderMenu(state) {
 	      /**
 	       * @type {HTMLElement}
 	       */
-	      var menuItemList = document.createElement('ul');
+	      var menubar = document.createElement('ul');
+	      menubar.setAttribute('role', 'menubar');
+	      menubar.className = 'h5p-menu';
+	
 	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
-	      menuItems.map(this.renderMenuItem).forEach(menuItemList.appendChild.bind(menuItemList));
+	      menuItems.map(this.renderMenuItem).forEach(menubar.appendChild.bind(menubar));
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
 	      var menuItemListWrapper = document.createElement('nav');
-	      menuItemListWrapper.appendChild(menuItemList);
+	      menuItemListWrapper.appendChild(menubar);
 	
 	      /**
 	       * @type {HTMLElement}
@@ -3642,7 +3661,7 @@
 	
 	      // button
 	      var button = document.createElement('span');
-	      button.className = "button";
+	      button.className = "button button-primary";
 	      button.innerHTML = "Use";
 	      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
 	      relayClickEventAs('select', this, button);

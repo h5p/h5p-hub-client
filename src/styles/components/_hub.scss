@@ -37,6 +37,17 @@
     }
   }
 
+  .tab-panel {
+    > nav > ul {
+      background-color: $c4;
+      border-bottom: none;
+
+      li {
+        color: $c3;
+      }
+    }
+  }
+
   &.h5p-section-create-content {
     border: 1px solid $ac1;
   }

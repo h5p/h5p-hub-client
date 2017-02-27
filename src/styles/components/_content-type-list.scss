@@ -14,9 +14,11 @@ $text-list-title: 1.042em;
     }
 
     li {
+      width: 100%;
       overflow: auto;
       border-bottom: 1px solid #f5f5f5;
       padding: $padding;
+      box-sizing: border-box;
     }
 
     img {

@@ -24,32 +24,47 @@ export default class ContentBrowserView {
   }
 
   renderMenuItem(title, index) {
-    const tab = document.createElement('li');
-    tab.setAttribute('tabindex', '0');
-    tab.innerHTML = title;
+    const element = document.createElement('li');
+    element.setAttribute('role', 'menuitem');
+    element.innerHTML = title;
 
     //TODO remove after demo
     if (index === 0) {
-      tab.setAttribute('aria-selected', 'true');
+      element.setAttribute('aria-selected', 'true');
     }
-    return tab;
+
+    return element;
   };
+
+  /*
+  *   <nav>
+   <ul role="menubar" class="h5p-menu">
+   <li role="menuitem" aria-selected="true">My Content Types</li>
+   <li role="menuitem">Newest</li>
+   <li role="menuitem">Most Popular</li>
+   <li role="menuitem">Recomended</li>
+   </ul>
+   </nav>
+  * */
 
   renderMenu(state) {
     /**
      * @type {HTMLElement}
      */
-    const menuItemList = document.createElement('ul');
+    const menubar = document.createElement('ul');
+    menubar.setAttribute('role', 'menubar');
+    menubar.className = 'h5p-menu';
+
     let menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
     menuItems
       .map(this.renderMenuItem)
-      .forEach(menuItemList.appendChild.bind(menuItemList));
+      .forEach(menubar.appendChild.bind(menubar));
 
     /**
      * @type {HTMLElement}
      */
     const menuItemListWrapper = document.createElement('nav');
-    menuItemListWrapper.appendChild(menuItemList);
+    menuItemListWrapper.appendChild(menubar);
 
     /**
      * @type {HTMLElement}
