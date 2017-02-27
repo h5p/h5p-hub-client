@@ -1,5 +1,5 @@
 import HubView from './hub-view';
-import ContentBrowser from './content-browser/content-browser';
+import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
 import { Eventful } from './mixins/eventful';
@@ -25,7 +25,7 @@ export default class Hub {
     Object.assign(this, Eventful());
 
     // controllers
-    this.contentBrowser = new ContentBrowser();
+    this.contentTypeSection = new ContentTypeSection();
     this.uploadSection = new UploadSection();
 
     // services
@@ -34,10 +34,10 @@ export default class Hub {
     });
 
     // propagate controller events
-    this.propagate(['select'], this.contentBrowser);
+    this.propagate(['select'], this.contentTypeSection);
 
     // handle events
-    this.contentBrowser.on('select', ({id}) => {
+    this.contentTypeSection.on('select', ({id}) => {
       this.view.closePanel();
       this.services.contentType(id)
         .then(({title}) => this.view.setTitle(title));
@@ -52,7 +52,7 @@ export default class Hub {
     this.view.addTab({
       title: 'Create Content',
       id: 'create-content',
-      content: this.contentBrowser.getElement(),
+      content: this.contentTypeSection.getElement(),
       selected: true
     });
 

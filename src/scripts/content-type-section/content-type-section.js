@@ -1,20 +1,20 @@
-import ContentBrowserView from "./content-browser-view";
+import ContentTypeSectionView from "./content-type-section-view";
 import SearchService from "../search/search";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
 
 /**
- * @class ContentBrowser
+ * @class ContentTypeSection
  * @mixes Eventful
  */
-export default class ContentBrowser {
+export default class ContentTypeSection {
   constructor(state) {
     // add event system
     Object.assign(this, Eventful());
 
     // add view
-    this.view = new ContentBrowserView(state);
+    this.view = new ContentTypeSectionView(state);
 
     // controller
     this.searchService = new SearchService();
