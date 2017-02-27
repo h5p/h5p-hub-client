@@ -34,14 +34,16 @@ export default class Hub {
     });
 
     // propagate controller events
-    this.propagate(['select'], this.contentTypeSection);
+    this.propagate(['select', 'resize'], this.contentTypeSection);
 
     // handle events
-    this.contentTypeSection.on('select', ({id}) => {
+    this.on('select', ({id}) => {
       this.view.closePanel();
       this.services.contentType(id)
         .then(({title}) => this.view.setTitle(title));
     });
+
+    this.on('resize', () => this.view.resize());
 
     // views
     this.view = new HubView({

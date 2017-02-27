@@ -36,17 +36,6 @@ export default class ContentBrowserView {
     return element;
   };
 
-  /*
-  *   <nav>
-   <ul role="menubar" class="h5p-menu">
-   <li role="menuitem" aria-selected="true">My Content Types</li>
-   <li role="menuitem">Newest</li>
-   <li role="menuitem">Most Popular</li>
-   <li role="menuitem">Recomended</li>
-   </ul>
-   </nav>
-  * */
-
   renderMenu(state) {
     /**
      * @type {HTMLElement}
@@ -55,7 +44,7 @@ export default class ContentBrowserView {
     menubar.setAttribute('role', 'menubar');
     menubar.className = 'h5p-menu';
 
-    let menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+    let menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Recommended'];
     menuItems
       .map(this.renderMenuItem)
       .forEach(menubar.appendChild.bind(menubar));

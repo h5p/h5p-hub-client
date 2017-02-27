@@ -1,6 +1,21 @@
 import initPanel from "../../node_modules/h5p-sdk/src/scripts/components/panel"
 import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
+import { attributeEquals } from "../../node_modules/h5p-sdk/src/scripts/utils/elements";
 
+/**
+ * @const
+ * @type {string}
+ */
+const ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
+
+/**
+ * @type {function}
+ */
+const isExpanded = attributeEquals(ATTRIBUTE_ARIA_EXPANDED, 'true');
+
+/**
+ * @class
+ */
 export default class HubView {
   /**
    * @param {HubState} state
@@ -24,6 +39,15 @@ export default class HubView {
    */
   setTitle(title) {
     this.titleElement.innerHTML = title;
+  }
+
+  /**
+   * Resize the body of the panel
+   */
+  resize(){
+    if(isExpanded(this.titleElement)) {
+      this.bodyElement.style.height = `${this.bodyElement.scrollHeight}px`
+    }
   }
 
   /**

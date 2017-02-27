@@ -34,11 +34,13 @@ export default class ContentTypeSection {
       this.contentTypeList.hide();
       this.contentTypeDetail.loadById(id);
       this.contentTypeDetail.show();
+      this.fire('resize');
     });
 
     this.contentTypeDetail.on('close', () => {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
+      this.fire('resize');
     });
 
     this.view.onInputFieldKeyDown(function(text){
