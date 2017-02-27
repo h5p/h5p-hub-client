@@ -2,15 +2,8 @@ import {curry, forEach, filter} from "../../../node_modules/h5p-sdk/src/scripts/
 import HubServices from "../hub-services";
 import lunr from "../../../node_modules/lunr"
 
-/**
- * Filters a list of content types based on an array of ids
- *
- * @param  {string[]}         ids
- * @param  {ContentType[]}    contentTypes
- * @return {ContentType[]}
- */
-const contentTypeInIds = curry(function(ids, contentType) {
-  return ids.some(id => contentType.id == id);
+const findContentTypeById = curry(function(contentTypes, id) {
+  return contentTypes.filter(contentType => contentType.id === id)[0];
 });
 
 /**
@@ -24,7 +17,7 @@ export default class SearchService {
 
     // Set up lunr index
     this.index = lunr(function (){
-      this.field('title', {boost: 10});
+      this.field('title', {boost: 100});
       this.field('shortDescription');
       this.ref('id');
     });
@@ -54,7 +47,10 @@ export default class SearchService {
    * @return {Promise<ContentType[]>}
    */
   search(query) {
-    const ids = this.index.search(query).map(result => result.ref);
-    return this.contentTypes.then(filter(contentTypeInIds(ids)));
+    return this.contentTypes.then(contentTypes => {
+      return this.index.search(query)
+        .map(result => result.ref)
+        .map(findContentTypeById(contentTypes))
+    });
   }
 }

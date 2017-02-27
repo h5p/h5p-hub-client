@@ -432,6 +432,11 @@
 	var setAriaHiddenFalse = (0, _elements.setAttribute)('aria-hidden', 'false');
 	
 	/**
+	 * @type {function}
+	 */
+	var isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
+	
+	/**
 	 * @type {Function}
 	 */
 	var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
@@ -471,6 +476,11 @@
 	    titleEl.addEventListener('click', function (event) {
 	      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
 	    });
+	
+	    // set height to 0, if aria-hidden
+	    if (isHidden(bodyEl)) {
+	      bodyEl.style.height = "0";
+	    }
 	  }
 	
 	  return element;
@@ -791,7 +801,7 @@
 	/**
 	 * @type {function}
 	 */
-	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
 	
 	/**
 	 * @type {function}
@@ -815,7 +825,7 @@
 	
 	function init(element) {
 	  var tabs = getWhereRoleIsTab(element);
-	  var tabPanels = getWhereRoleIsTabpanel(element);
+	  var tabPanels = getWhereRoleIsTabPanel(element);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
@@ -824,8 +834,10 @@
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
+	
 	      var tabPanelId = event.target.getAttribute('aria-controls');
 	      var targetTabPanel = element.querySelector('#' + tabPanelId);
+	
 	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
@@ -1204,17 +1216,10 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
-	/**
-	 * Filters a list of content types based on an array of ids
-	 *
-	 * @param  {string[]}         ids
-	 * @param  {ContentType[]}    contentTypes
-	 * @return {ContentType[]}
-	 */
-	var contentTypeInIds = (0, _functional.curry)(function (ids, contentType) {
-	  return ids.some(function (id) {
-	    return contentType.id == id;
-	  });
+	var findContentTypeById = (0, _functional.curry)(function (contentTypes, id) {
+	  return contentTypes.filter(function (contentType) {
+	    return contentType.id === id;
+	  })[0];
 	});
 	
 	/**
@@ -1231,7 +1236,7 @@
 	
 	    // Set up lunr index
 	    this.index = (0, _lunr2.default)(function () {
-	      this.field('title', { boost: 10 });
+	      this.field('title', { boost: 100 });
 	      this.field('shortDescription');
 	      this.ref('id');
 	    });
@@ -1268,10 +1273,13 @@
 	  }, {
 	    key: "search",
 	    value: function search(query) {
-	      var ids = this.index.search(query).map(function (result) {
-	        return result.ref;
+	      var _this = this;
+	
+	      return this.contentTypes.then(function (contentTypes) {
+	        return _this.index.search(query).map(function (result) {
+	          return result.ref;
+	        }).map(findContentTypeById(contentTypes));
 	      });
-	      return this.contentTypes.then((0, _functional.filter)(contentTypeInIds(ids)));
 	    }
 	  }]);
 	
