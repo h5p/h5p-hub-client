@@ -4,27 +4,8 @@ import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
 
-
 /**
- * @typedef {object} ContentType
- * @property {string} id
- * @property {string} title
- * @property {string} shortDescription
- * @property {string} longDescription
- * @property {string} icon
- * @property {string} created
- * @property {string} update
- * @property {boolean} recommended
- * @property {number} timesDownloaded
- * @property {string[]} screenshots
- * @property {string} exampleContent
- * @property {string[]} keywords
- * @property {string[]} categories
- * @property {string} license
- */
-
-/**
- * @class
+ * @class ContentBrowser
  * @mixes Eventful
  */
 export default class ContentBrowser {
@@ -44,6 +25,10 @@ export default class ContentBrowser {
     this.view.getElement().appendChild(this.contentTypeList.getElement());
     this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 
+    // propagate events
+    this.propagate(['select'], this.contentTypeList);
+    this.propagate(['select'], this.contentTypeDetail);
+
     // registers listeners
     this.contentTypeList.on('row-selected', ({id}) => {
       this.contentTypeList.hide();
@@ -51,7 +36,7 @@ export default class ContentBrowser {
       this.contentTypeDetail.show();
     });
 
-    this.contentTypeDetail.on('close', event => {
+    this.contentTypeDetail.on('close', () => {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
     });
@@ -63,7 +48,9 @@ export default class ContentBrowser {
 
     // initialize by search
     this.searchService.search("")
-      .then(contentTypes => this.contentTypeList.update(contentTypes));
+      .then(contentTypes => {
+        this.contentTypeList.update(contentTypes)
+      });
   }
 
   getElement() {

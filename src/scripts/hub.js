@@ -1,6 +1,8 @@
 import HubView from './hub-view';
 import ContentBrowser from './content-browser/content-browser';
 import UploadSection from './upload-section/upload-section';
+import HubServices from './hub-services';
+import { Eventful } from './mixins/eventful';
 
 /**
  * @typedef {object} HubState
@@ -10,6 +12,7 @@ import UploadSection from './upload-section/upload-section';
  */
 /**
  * @class
+ * @mixes Eventful
  */
 export default class Hub {
   /**
@@ -18,9 +21,27 @@ export default class Hub {
   constructor(state){
     this.state = state;
 
+    // add event system
+    Object.assign(this, Eventful());
+
     // controllers
     this.contentBrowser = new ContentBrowser();
     this.uploadSection = new UploadSection();
+
+    // services
+    this.services = new HubServices({
+      rootUrl: '/test/mock/api'
+    });
+
+    // propagate controller events
+    this.propagate(['select'], this.contentBrowser);
+
+    // handle events
+    this.contentBrowser.on('select', ({id}) => {
+      this.view.closePanel();
+      this.services.contentType(id)
+        .then(({title}) => this.view.setTitle(title));
+    });
 
     // views
     this.view = new HubView({
