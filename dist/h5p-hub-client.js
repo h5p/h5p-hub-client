@@ -121,10 +121,10 @@
 	    });
 	
 	    // propagate controller events
-	    this.propagate(['select'], this.contentTypeSection);
+	    this.propagate(['select', 'resize'], this.contentTypeSection);
 	
 	    // handle events
-	    this.contentTypeSection.on('select', function (_ref) {
+	    this.on('select', function (_ref) {
 	      var id = _ref.id;
 	
 	      _this.view.closePanel();
@@ -132,6 +132,10 @@
 	        var title = _ref2.title;
 	        return _this.view.setTitle(title);
 	      });
+	    });
+	
+	    this.on('resize', function () {
+	      return _this.view.resize();
 	    });
 	
 	    // views
@@ -195,9 +199,26 @@
 	
 	var _tabPanel2 = _interopRequireDefault(_tabPanel);
 	
+	var _elements = __webpack_require__(4);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @const
+	 * @type {string}
+	 */
+	var ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
+	
+	/**
+	 * @type {function}
+	 */
+	var isExpanded = (0, _elements.attributeEquals)(ATTRIBUTE_ARIA_EXPANDED, 'true');
+	
+	/**
+	 * @class
+	 */
 	
 	var HubView = function () {
 	  /**
@@ -231,6 +252,19 @@
 	    key: "setTitle",
 	    value: function setTitle(title) {
 	      this.titleElement.innerHTML = title;
+	    }
+	
+	    /**
+	     * Resize the body of the panel
+	     */
+	
+	  }, {
+	    key: "resize",
+	    value: function resize() {
+	      console.log('resize');
+	      if (isExpanded(this.titleElement)) {
+	        this.bodyElement.style.height = this.bodyElement.scrollHeight + "px";
+	      }
 	    }
 	
 	    /**
@@ -432,6 +466,11 @@
 	var setAriaHiddenFalse = (0, _elements.setAttribute)('aria-hidden', 'false');
 	
 	/**
+	 * @type {function}
+	 */
+	var isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
+	
+	/**
 	 * @type {Function}
 	 */
 	var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
@@ -439,6 +478,7 @@
 	
 	  if (isExpanded(titleEl)) {
 	    setAriaHiddenFalse(bodyElement);
+	    console.log(bodyElement.offsetHeight + 'px');
 	    bodyElement.style.height = bodyElement.scrollHeight + 'px';
 	  } else {
 	    setAriaHiddenTrue(bodyElement);
@@ -470,6 +510,10 @@
 	    // Set click listener that toggles aria-expanded
 	    titleEl.addEventListener('click', function (event) {
 	      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
+	    });
+	
+	    toggleBodyVisibility(bodyEl, {
+	      target: titleEl
 	    });
 	  }
 	
@@ -905,11 +949,13 @@
 	      _this.contentTypeList.hide();
 	      _this.contentTypeDetail.loadById(id);
 	      _this.contentTypeDetail.show();
+	      _this.fire('resize');
 	    });
 	
 	    this.contentTypeDetail.on('close', function () {
 	      _this.contentTypeDetail.hide();
 	      _this.contentTypeList.show();
+	      _this.fire('resize');
 	    });
 	
 	    this.view.onInputFieldKeyDown(function (text) {
@@ -998,19 +1044,6 @@
 	    }
 	  }, {
 	    key: 'renderMenu',
-	
-	
-	    /*
-	    *   <nav>
-	     <ul role="menubar" class="h5p-menu">
-	     <li role="menuitem" aria-selected="true">My Content Types</li>
-	     <li role="menuitem">Newest</li>
-	     <li role="menuitem">Most Popular</li>
-	     <li role="menuitem">Recomended</li>
-	     </ul>
-	     </nav>
-	    * */
-	
 	    value: function renderMenu(state) {
 	      /**
 	       * @type {HTMLElement}
@@ -1019,7 +1052,7 @@
 	      menubar.setAttribute('role', 'menubar');
 	      menubar.className = 'h5p-menu';
 	
-	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
+	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Recommended'];
 	      menuItems.map(this.renderMenuItem).forEach(menubar.appendChild.bind(menubar));
 	
 	      /**
@@ -1150,7 +1183,7 @@
 	     * Fire event. If any of the listeners returns false, return false
 	     *
 	     * @param {string} type
-	     * @param {object} event
+	     * @param {object} [event]
 	     *
 	     * @function
 	     * @return {boolean}

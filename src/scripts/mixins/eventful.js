@@ -32,7 +32,7 @@ export const Eventful = () => ({
    * Fire event. If any of the listeners returns false, return false
    *
    * @param {string} type
-   * @param {object} event
+   * @param {object} [event]
    *
    * @function
    * @return {boolean}
