@@ -791,7 +791,7 @@
 	/**
 	 * @type {function}
 	 */
-	var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
 	
 	/**
 	 * @type {function}
@@ -815,7 +815,7 @@
 	
 	function init(element) {
 	  var tabs = getWhereRoleIsTab(element);
-	  var tabPanels = getWhereRoleIsTabPanel(element);
+	  var tabPanels = getWhereRoleIsTabpanel(element);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
@@ -824,10 +824,8 @@
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
-	
 	      var tabPanelId = event.target.getAttribute('aria-controls');
 	      var targetTabPanel = element.querySelector('#' + tabPanelId);
-	
 	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
@@ -3618,10 +3616,7 @@
 	  }, {
 	    key: "updateList",
 	    value: function updateList(contentTypes) {
-	      // debugger;
-	      console.log(this.rootElement);
 	      if (this.rootElement) {
-	        // this.rootElement.childNodes.forEach(node => node.remove());
 	        while (this.rootElement.firstChild) {
 	          this.rootElement.removeChild(this.rootElement.firstChild);
 	        }
