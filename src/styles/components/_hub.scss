@@ -38,6 +38,8 @@
   }
 
   .tab-panel {
+    border: none;
+
     > nav > ul {
       background-color: $c4;
       border-bottom: none;

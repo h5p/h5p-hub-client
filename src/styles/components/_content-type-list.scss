@@ -8,6 +8,8 @@ $text-list-title: 1.042em;
   ul.content-type-list {
     list-style: none;
     padding: 1.25em 0;
+    height: 500px;
+    overflow: auto;
 
     &[aria-hidden="true"] {
       display: none;
