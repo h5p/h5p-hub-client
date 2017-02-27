@@ -1,5 +1,5 @@
 import ContentTypeSectionView from "./content-type-section-view";
-import SearchService from "../search/search";
+import SearchService from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
