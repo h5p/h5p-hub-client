@@ -2,6 +2,8 @@ import ContentBrowserView from "./content-browser-view";
 import SearchService from "../search/search";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
+import {Eventful} from '../mixins/eventful';
+
 
 /**
  * @typedef {object} ContentType
@@ -23,9 +25,14 @@ import ContentTypeDetail from '../content-type-detail/content-type-detail';
 
 /**
  * @class
+ * @mixes Eventful
  */
 export default class ContentBrowser {
-  constructor(state){
+  constructor(state) {
+    // add event system
+    Object.assign(this, Eventful());
+
+    // add view
     this.view = new ContentBrowserView(state);
 
     // controller
@@ -35,8 +42,20 @@ export default class ContentBrowser {
 
     // set sub view (TODO find other way)
     this.view.getElement().appendChild(this.contentTypeList.getElement());
+    this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 
-    // registers
+    // registers listeners
+    this.contentTypeList.on('row-selected', ({id}) => {
+      this.contentTypeList.hide();
+      this.contentTypeDetail.loadById(id);
+      this.contentTypeDetail.show();
+    });
+
+    this.contentTypeDetail.on('close', event => {
+      this.contentTypeDetail.hide();
+      this.contentTypeList.show();
+    });
+
     this.view.onInputFieldKeyDown(function(text){
       this.searchService.search(text)
         .then(this.contentTypeList.update.bind(this.contentTypeList));

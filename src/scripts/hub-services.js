@@ -15,4 +15,16 @@ export default class HubServices {
     return fetch(`${this.rootUrl}/contenttypes`)
       .then(result => result.json());
   }
+
+  /**
+   * Returns a Content Type
+   *
+   * @param {string} id
+   *
+   * @return {Promise.<ContentType>}
+   */
+  contentType(id) {
+    return fetch(`${this.rootUrl}/contenttypes/${id}`)
+      .then(result => result.json());
+  }
 }

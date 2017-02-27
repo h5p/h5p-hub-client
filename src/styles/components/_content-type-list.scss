@@ -9,6 +9,10 @@ $text-list-title: 1.042em;
     list-style: none;
     padding: 1.25em 0;
 
+    &[aria-hidden="true"] {
+      display: none;
+    }
+
     li {
       overflow: auto;
       border-bottom: 1px solid #f5f5f5;

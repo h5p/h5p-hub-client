@@ -1,0 +1,7 @@
+.h5p-hub {
+  .content-type-detail {
+    &[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}

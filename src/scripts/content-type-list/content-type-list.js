@@ -1,8 +1,26 @@
 import ContetTypeListView from "./content-type-list-view";
+import {Eventful} from '../mixins/eventful';
 
-export default class ContentTypeList{
+/**
+ * @class
+ * @mixes Eventful
+ */
+export default class ContentTypeList {
   constructor(state) {
+    // add event system
+    Object.assign(this, Eventful());
+
+    // add the view
     this.view = new ContetTypeListView(state);
+    this.propagate(['row-selected'], this.view);
+  }
+
+  hide() {
+    this.view.hide();
+  }
+
+  show() {
+    this.view.show();
   }
 
   /**

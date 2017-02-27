@@ -1,6 +1,11 @@
+import {Eventful} from '../mixins/eventful';
+
 export default class ContentBrowserView {
   constructor(state) {
     this.state = state;
+
+    // add event system
+    Object.assign(this, Eventful());
 
     this.rootElement = document.createElement('div');
     this.rootElement.appendChild(this.renderMenuGroup());

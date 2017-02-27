@@ -1,7 +1,70 @@
+import { curry } from "../../../node_modules/h5p-sdk/src/scripts/utils/functional";
+import { setAttribute, getAttribute } from "../../../node_modules/h5p-sdk/src/scripts/utils/elements";
+import { Eventful } from '../mixins/eventful';
+
+/**
+ * @constant {string}
+ */
+const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
+
+/**
+ * @function
+ */
+const hide = setAttribute('aria-hidden', 'true');
+
+/**
+ * @function
+ */
+const show = setAttribute('aria-hidden', 'false');
+
+/**
+ * Propagates row selection trough the event system
+ *
+ * @param {Eventful} eventful
+ * @param {HTMLElement} element
+ *
+ * @function
+ * @return {HTMLElement}
+ */
+const relayClickEventAs = curry(function(type, eventful, element) {
+  element.addEventListener('click', event => {
+    eventful.fire(type, {
+      element: element,
+      id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
+    })
+  });
+
+  return element;
+});
+
+/**
+ * @class
+ * @mixes Eventful
+ */
 export default class ContentTypeListView {
   constructor(state) {
     this.state = state;
-    this.rootElement = document.createElement('div');
+
+    // add event system
+    Object.assign(this, Eventful());
+
+    // create root element
+    this.rootElement = document.createElement('ul');
+    this.rootElement.className = 'content-type-list';
+  }
+
+  /**
+   * Hides the root element
+   */
+  hide() {
+    hide(this.rootElement);
+  }
+
+  /**
+   * Shows the root element
+   */
+  show() {
+    show(this.rootElement);
   }
 
   /**
@@ -10,26 +73,24 @@ export default class ContentTypeListView {
    */
   updateList(contentTypes) {
     if(this.listElement){
-      this.listElement.remove();
+      this.rootElement.childNodes.forEach(node => node.remove());
     }
 
-    this.listElement = this.renderContentTypeList(contentTypes);
-    this.rootElement.appendChild(this.listElement);
+    this.renderContentTypeList(contentTypes)
+      .forEach(this.rootElement.appendChild.bind(this.rootElement));
   }
 
   /**
+   * Applies create rows, and add to the list
    *
    * @param {ContentType[]} contentTypes
+   *
+   * @return {HTMLElement[]}
    */
   renderContentTypeList(contentTypes) {
-    const listElement = document.createElement('ul');
-    listElement.className = 'content-type-list';
-
-    contentTypes
+    return contentTypes
       .map(this.renderContentTypeRow)
-      .forEach(listElement.appendChild.bind(listElement));
-
-    return listElement;
+      .map(relayClickEventAs('row-selected', this))
   }
 
   /**
@@ -62,7 +123,7 @@ export default class ContentTypeListView {
     // list item
     const row = document.createElement('li');
     row.id = `content-type-${contentType.id}`;
-    row.setAttribute('data-id', contentType.id);
+    row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
     row.appendChild(image);
     row.appendChild(button);
     row.appendChild(title);

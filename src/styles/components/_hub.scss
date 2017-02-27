@@ -17,20 +17,20 @@
 
   &.panel {
     border: 1px solid $c1;
+
+    &>.panel-header {
+      background-color: white;
+      color: $c1;
+
+      &:after {
+        @include h5p-hub-icon("\e924");
+        font-size: 1.3em;
+        float: right;
+      }
+    }
   }
 
   &.h5p-section-create-content {
     border: 1px solid $ac1;
-  }
-
-  .panel-header {
-    background-color: white;
-    color: $c1;
-
-    &:after {
-      @include h5p-hub-icon("\e924");
-      font-size: 1.3em;
-      float: right;
-    }
   }
 }

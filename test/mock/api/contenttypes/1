@@ -1,0 +1,30 @@
+{
+  "id": "1",
+  "title": "Interactive Video",
+  "shortDescription": "Create videos enriched with interactions",
+  "longDescription": "An HTML5 based interactive video content type allowing users to add multiple choice and  fill in the blank questions, pop-up text and other types of interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video on WordPress, Moodle and Drupal.",
+  "icon": "/test/mock/images/iv.png",
+  "created": "2017-02-20",
+  "update": "2017-02-21",
+  "recommended": true,
+  "timesDownloaded": 2,
+  "screenshots": [
+    "course-presentation-meta-data/screenshots/1.jpg",
+    "course-presentation-meta-data/screenshots/2.jpg",
+    "course-presentation-meta-data/screenshots/3.jpg",
+    "course-presentation-meta-data/screenshots/4.jpg",
+    "course-presentation-meta-data/screenshots/5.jpg",
+    "course-presentation-meta-data/screenshots/6.jpg",
+    "course-presentation-meta-data/screenshots/7.jpg"
+  ],
+  "exampleContent": "https://www.api.h5p.org/course-presentation/example-content",
+  "keywords":[
+    "video"
+  ],
+  "categories":
+  [
+    "learning",
+    "enterprise"
+  ],
+  "license": "MIT"
+}

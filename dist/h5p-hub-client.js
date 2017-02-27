@@ -71,7 +71,7 @@
 	
 	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
 	
-	var _uploadSection = __webpack_require__(15);
+	var _uploadSection = __webpack_require__(16);
 	
 	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
@@ -787,23 +787,27 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _contentBrowserView = __webpack_require__(8);
 	
 	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
 	
-	var _search = __webpack_require__(9);
+	var _search = __webpack_require__(10);
 	
 	var _search2 = _interopRequireDefault(_search);
 	
-	var _contentTypeList = __webpack_require__(11);
+	var _contentTypeList = __webpack_require__(12);
 	
 	var _contentTypeList2 = _interopRequireDefault(_contentTypeList);
 	
-	var _contentTypeDetail = __webpack_require__(13);
+	var _contentTypeDetail = __webpack_require__(14);
 	
 	var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
+	
+	var _eventful = __webpack_require__(9);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -829,6 +833,7 @@
 	
 	/**
 	 * @class
+	 * @mixes Eventful
 	 */
 	var ContentBrowser = function () {
 	  function ContentBrowser(state) {
@@ -836,6 +841,10 @@
 	
 	    _classCallCheck(this, ContentBrowser);
 	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
+	    // add view
 	    this.view = new _contentBrowserView2.default(state);
 	
 	    // controller
@@ -845,8 +854,22 @@
 	
 	    // set sub view (TODO find other way)
 	    this.view.getElement().appendChild(this.contentTypeList.getElement());
+	    this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 	
-	    // registers
+	    // registers listeners
+	    this.contentTypeList.on('row-selected', function (_ref) {
+	      var id = _ref.id;
+	
+	      _this.contentTypeList.hide();
+	      _this.contentTypeDetail.loadById(id);
+	      _this.contentTypeDetail.show();
+	    });
+	
+	    this.contentTypeDetail.on('close', function (event) {
+	      _this.contentTypeDetail.hide();
+	      _this.contentTypeList.show();
+	    });
+	
 	    this.view.onInputFieldKeyDown(function (text) {
 	      this.searchService.search(text).then(this.contentTypeList.update.bind(this.contentTypeList));
 	    }, this);
@@ -871,7 +894,7 @@
 
 /***/ },
 /* 8 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
@@ -879,7 +902,11 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _eventful = __webpack_require__(9);
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -888,6 +915,9 @@
 	    _classCallCheck(this, ContentBrowserView);
 	
 	    this.state = state;
+	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
 	
 	    this.rootElement = document.createElement('div');
 	    this.rootElement.appendChild(this.renderMenuGroup());
@@ -1019,6 +1049,80 @@
 
 /***/ },
 /* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * @mixin
+	 */
+	var Eventful = exports.Eventful = function Eventful() {
+	  return {
+	    listeners: {},
+	
+	    /**
+	     * Listen to event
+	     *
+	     * @param {string} type
+	     * @param {function} listener
+	     * @param {object} [scope]
+	     *
+	     * @function
+	     */
+	    on: function on(type, listener, scope) {
+	      /**
+	       * @typedef {object} Trigger
+	       * @property {function} listener
+	       * @property {object} scope
+	       */
+	      var trigger = {
+	        'listener': listener,
+	        'scope': scope
+	      };
+	
+	      this.listeners[type] = this.listeners[type] || [];
+	      this.listeners[type].push(trigger);
+	    },
+	
+	    /**
+	     * Fire event. If any of the listeners returns false, return false
+	     *
+	     * @param {string} type
+	     * @param {object} event
+	     *
+	     * @function
+	     * @return {boolean}
+	     */
+	    fire: function fire(type, event) {
+	      var triggers = this.listeners[type] || [];
+	
+	      return triggers.every(function (trigger) {
+	        return trigger.listener.call(trigger.scope || this, event) !== false;
+	      });
+	    },
+	
+	    /**
+	     * Listens for events on another Eventful, and propagate it trough this Eventful
+	     *
+	     * @param {string[]} types
+	     * @param {Eventful} eventful
+	     */
+	    propagate: function propagate(types, eventful) {
+	      var self = this;
+	      types.forEach(function (type) {
+	        return eventful.on(type, function (event) {
+	          return self.fire(type, event);
+	        });
+	      });
+	    }
+	  };
+	};
+
+/***/ },
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1031,7 +1135,7 @@
 	
 	var _functional = __webpack_require__(5);
 	
-	var _hubServices = __webpack_require__(10);
+	var _hubServices = __webpack_require__(11);
 	
 	var _hubServices2 = _interopRequireDefault(_hubServices);
 	
@@ -1101,7 +1205,7 @@
 	exports.default = SearchService;
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1140,6 +1244,22 @@
 	        return result.json();
 	      });
 	    }
+	
+	    /**
+	     * Returns a Content Type
+	     *
+	     * @param {string} id
+	     *
+	     * @return {Promise.<ContentType>}
+	     */
+	
+	  }, {
+	    key: "contentType",
+	    value: function contentType(id) {
+	      return fetch(this.rootUrl + "/contenttypes/" + id).then(function (result) {
+	        return result.json();
+	      });
+	    }
 	  }]);
 	
 	  return HubServices;
@@ -1148,45 +1268,68 @@
 	exports.default = HubServices;
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _contentTypeListView = __webpack_require__(12);
+	var _contentTypeListView = __webpack_require__(13);
 	
 	var _contentTypeListView2 = _interopRequireDefault(_contentTypeListView);
+	
+	var _eventful = __webpack_require__(9);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/**
+	 * @class
+	 * @mixes Eventful
+	 */
 	var ContentTypeList = function () {
 	  function ContentTypeList(state) {
 	    _classCallCheck(this, ContentTypeList);
 	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
+	    // add the view
 	    this.view = new _contentTypeListView2.default(state);
+	    this.propagate(['row-selected'], this.view);
 	  }
 	
-	  /**
-	   *
-	   * @param {ContentType[]} contentTypes
-	   */
-	
-	
 	  _createClass(ContentTypeList, [{
-	    key: "update",
+	    key: 'hide',
+	    value: function hide() {
+	      this.view.hide();
+	    }
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this.view.show();
+	    }
+	
+	    /**
+	     *
+	     * @param {ContentType[]} contentTypes
+	     */
+	
+	  }, {
+	    key: 'update',
 	    value: function update(contentTypes) {
 	      this.view.updateList(contentTypes);
 	    }
 	  }, {
-	    key: "getElement",
+	    key: 'getElement',
 	    value: function getElement() {
 	      return this.view.getElement();
 	    }
@@ -1198,42 +1341,100 @@
 	exports.default = ContentTypeList;
 
 /***/ },
-/* 12 */
-/***/ function(module, exports) {
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _functional = __webpack_require__(5);
+	
+	var _elements = __webpack_require__(4);
+	
+	var _eventful = __webpack_require__(9);
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @constant {string}
+	 */
+	var ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
+	
+	/**
+	 * @function
+	 */
+	var _hide = (0, _elements.setAttribute)('aria-hidden', 'true');
+	
+	/**
+	 * @function
+	 */
+	var _show = (0, _elements.setAttribute)('aria-hidden', 'false');
+	
+	/**
+	 * Propagates row selection trough the event system
+	 *
+	 * @param {Eventful} eventful
+	 * @param {HTMLElement} element
+	 *
+	 * @function
+	 * @return {HTMLElement}
+	 */
+	var relayClickEventAs = (0, _functional.curry)(function (type, eventful, element) {
+	  element.addEventListener('click', function (event) {
+	    eventful.fire(type, {
+	      element: element,
+	      id: (0, _elements.getAttribute)(ATTRIBUTE_CONTENT_TYPE_ID, element)
+	    });
+	  });
+	
+	  return element;
+	});
+	
+	/**
+	 * @class
+	 * @mixes Eventful
+	 */
 	
 	var ContentTypeListView = function () {
 	  function ContentTypeListView(state) {
 	    _classCallCheck(this, ContentTypeListView);
 	
 	    this.state = state;
-	    this.rootElement = document.createElement('div');
+	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
+	    // create root element
+	    this.rootElement = document.createElement('ul');
+	    this.rootElement.className = 'content-type-list';
 	  }
 	
 	  /**
-	   *
-	   * @param {ContentType[]} contentTypes
+	   * Hides the root element
 	   */
 	
 	
 	  _createClass(ContentTypeListView, [{
-	    key: 'updateList',
-	    value: function updateList(contentTypes) {
-	      if (this.listElement) {
-	        this.listElement.remove();
-	      }
+	    key: "hide",
+	    value: function hide() {
+	      _hide(this.rootElement);
+	    }
 	
-	      this.listElement = this.renderContentTypeList(contentTypes);
-	      this.rootElement.appendChild(this.listElement);
+	    /**
+	     * Shows the root element
+	     */
+	
+	  }, {
+	    key: "show",
+	    value: function show() {
+	      _show(this.rootElement);
 	    }
 	
 	    /**
@@ -1242,14 +1443,29 @@
 	     */
 	
 	  }, {
-	    key: 'renderContentTypeList',
+	    key: "updateList",
+	    value: function updateList(contentTypes) {
+	      if (this.listElement) {
+	        this.rootElement.childNodes.forEach(function (node) {
+	          return node.remove();
+	        });
+	      }
+	
+	      this.renderContentTypeList(contentTypes).forEach(this.rootElement.appendChild.bind(this.rootElement));
+	    }
+	
+	    /**
+	     * Applies create rows, and add to the list
+	     *
+	     * @param {ContentType[]} contentTypes
+	     *
+	     * @return {HTMLElement[]}
+	     */
+	
+	  }, {
+	    key: "renderContentTypeList",
 	    value: function renderContentTypeList(contentTypes) {
-	      var listElement = document.createElement('ul');
-	      listElement.className = 'content-type-list';
-	
-	      contentTypes.map(this.renderContentTypeRow).forEach(listElement.appendChild.bind(listElement));
-	
-	      return listElement;
+	      return contentTypes.map(this.renderContentTypeRow).map(relayClickEventAs('row-selected', this));
 	    }
 	
 	    /**
@@ -1261,7 +1477,7 @@
 	     */
 	
 	  }, {
-	    key: 'renderContentTypeRow',
+	    key: "renderContentTypeRow",
 	    value: function renderContentTypeRow(contentType) {
 	      // image
 	      var image = document.createElement('img');
@@ -1284,8 +1500,8 @@
 	
 	      // list item
 	      var row = document.createElement('li');
-	      row.id = 'content-type-' + contentType.id;
-	      row.setAttribute('data-id', contentType.id);
+	      row.id = "content-type-" + contentType.id;
+	      row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
 	      row.appendChild(image);
 	      row.appendChild(button);
 	      row.appendChild(title);
@@ -1294,7 +1510,7 @@
 	      return row;
 	    }
 	  }, {
-	    key: 'getElement',
+	    key: "getElement",
 	    value: function getElement() {
 	      return this.rootElement;
 	    }
@@ -1306,7 +1522,7 @@
 	exports.default = ContentTypeListView;
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1315,11 +1531,19 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _contentTypeDetailView = __webpack_require__(14);
+	var _contentTypeDetailView = __webpack_require__(15);
 	
 	var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
+	
+	var _hubServices = __webpack_require__(11);
+	
+	var _hubServices2 = _interopRequireDefault(_hubServices);
+	
+	var _eventful = __webpack_require__(9);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -1329,10 +1553,54 @@
 	  function ContentTypeDetail(state) {
 	    _classCallCheck(this, ContentTypeDetail);
 	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
 	    this.view = new _contentTypeDetailView2.default(state);
+	    this.services = new _hubServices2.default({
+	      rootUrl: '/test/mock/api'
+	    });
+	
+	    this.propagate(['close'], this.view);
 	  }
 	
 	  _createClass(ContentTypeDetail, [{
+	    key: "hide",
+	    value: function hide() {
+	      this.view.hide();
+	    }
+	  }, {
+	    key: "show",
+	    value: function show() {
+	      this.view.show();
+	    }
+	
+	    /**
+	     * Loads a Content Type description
+	     *
+	     * @param {string} id
+	     *
+	     * @return {Promise.<ContentType>}
+	     */
+	
+	  }, {
+	    key: "loadById",
+	    value: function loadById(id) {
+	      this.services.contentType(id).then(this.update.bind(this));
+	    }
+	
+	    /**
+	     * Updates the view with the content type data
+	     *
+	     * @param {ContentType} contentType
+	     */
+	
+	  }, {
+	    key: "update",
+	    value: function update(contentType) {
+	      this.view.title(contentType.title).longDescription(contentType.longDescription).image(contentType.icon);
+	    }
+	  }, {
 	    key: "getElement",
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -1345,8 +1613,8 @@
 	exports.default = ContentTypeDetail;
 
 /***/ },
-/* 14 */
-/***/ function(module, exports) {
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
@@ -1354,23 +1622,228 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
+	var _elements = __webpack_require__(4);
+	
+	var _functional = __webpack_require__(5);
+	
+	var _eventful = __webpack_require__(9);
+	
+	var _panel = __webpack_require__(3);
+	
+	var _panel2 = _interopRequireDefault(_panel);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	/**
+	 * @function
+	 */
+	var _hide = (0, _elements.setAttribute)('aria-hidden', 'true');
+	
+	/**
+	 * @function
+	 */
+	var _show = (0, _elements.setAttribute)('aria-hidden', 'false');
+	
+	/**
+	 * Propagates row selection trough the event system
+	 *
+	 * @param {Eventful} eventful
+	 * @param {HTMLElement} element
+	 *
+	 * @function
+	 * @return {HTMLElement}
+	 */
+	var relayClickEventAs = (0, _functional.curry)(function (type, eventful, element) {
+	  element.addEventListener('click', function (event) {
+	    eventful.fire(type, {
+	      element: element
+	    });
+	  });
+	
+	  return element;
+	});
 	
 	var ContentTypeDetailView = function () {
 	  function ContentTypeDetailView(state) {
 	    _classCallCheck(this, ContentTypeDetailView);
 	
-	    this.state = state;
-	    this.render();
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
+	    // image
+	    this.imageElement = document.createElement('img');
+	    this.imageElement.className = 'img-responsive';
+	
+	    // title
+	    this.titleElement = document.createElement('h2');
+	    this.titleElement.className = 'content-type-detail';
+	    this.titleElement.innerHTML = 'title';
+	
+	    // back button
+	    var backButtonElement = document.createElement('div');
+	    backButtonElement.className = 'back-button';
+	    backButtonElement.innerHTML = '<-';
+	    relayClickEventAs('close', this, backButtonElement);
+	
+	    // detail
+	    this.longDescriptioneElement = document.createElement('div');
+	    this.longDescriptioneElement.className = 'content-type-detail';
+	    this.longDescriptioneElement.innerHTML = 'description';
+	
+	    // demo button
+	    var demoButton = document.createElement('span');
+	    demoButton.className = 'button';
+	    demoButton.innerHTML = 'Content Demo';
+	    relayClickEventAs('select', this, demoButton);
+	
+	    // use button
+	    var useButton = document.createElement('span');
+	    useButton.className = 'button';
+	    useButton.innerHTML = 'Use';
+	    relayClickEventAs('select', this, useButton);
+	
+	    // install button
+	    var installButton = document.createElement('span');
+	    installButton.className = 'button button-inverse';
+	    installButton.innerHTML = 'Install';
+	    relayClickEventAs('install', this, installButton);
+	
+	    // use button
+	    this.useButton = document.createElement('span');
+	    this.useButton.className = 'button';
+	    this.useButton.innerHTML = 'Use';
+	
+	    // licence panel
+	    var licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
+	
+	    // panel group
+	    var panelGroupElement = document.createElement('div');
+	    panelGroupElement.className = 'panel-group';
+	    panelGroupElement.appendChild(licencePanel);
+	
+	    // add root element
+	    this.rootElement = document.createElement('div');
+	    this.rootElement.className = 'content-type-detail';
+	    this.rootElement.setAttribute('aria-hidden', 'true');
+	    this.rootElement.appendChild(backButtonElement);
+	    this.rootElement.appendChild(this.imageElement);
+	    this.rootElement.appendChild(this.titleElement);
+	    this.rootElement.appendChild(this.longDescriptioneElement);
+	    this.rootElement.appendChild(demoButton);
+	    this.rootElement.appendChild(useButton);
+	    this.rootElement.appendChild(installButton);
+	    this.rootElement.appendChild(panelGroupElement);
 	  }
 	
+	  /*
+	  *   <div class="panel-group">
+	   <div class="panel">
+	   <div class="panel-header" aria-expanded="true" aria-controls="panel-body-1">Title</div>
+	   <div id="panel-body-1" class="panel-body" aria-hidden="false">
+	   <div class="panel-body-inner">
+	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
+	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
+	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
+	   </div>
+	   </div>
+	   </div>
+	  * */
+	
 	  _createClass(ContentTypeDetailView, [{
-	    key: "render",
-	    value: function render() {
-	      this.rootElement = document.createElement('div');
-	      this.rootElement.innerHTML = "detailview";
+	    key: "createPanel",
+	    value: function createPanel(title, body, bodyId) {
+	      var headerEl = document.createElement('div');
+	      headerEl.className = 'panel-header';
+	      headerEl.setAttribute('aria-expanded', 'false');
+	      headerEl.setAttribute('aria-controls', bodyId);
+	      headerEl.innerHTML = title;
+	
+	      var bodyInnerEl = document.createElement('div');
+	      bodyInnerEl.className = 'panel-body-inner';
+	      bodyInnerEl.innerHTML = body;
+	
+	      var bodyEl = document.createElement('div');
+	      bodyEl.className = 'panel-body';
+	      bodyEl.id = bodyId;
+	      bodyEl.setAttribute('aria-hidden', 'true');
+	      bodyEl.appendChild(bodyInnerEl);
+	
+	      var panelEl = document.createElement('div');
+	      panelEl.className = 'panel';
+	      panelEl.appendChild(headerEl);
+	      panelEl.appendChild(bodyEl);
+	
+	      (0, _panel2.default)(panelEl);
+	
+	      return panelEl;
+	    }
+	
+	    /**
+	     * Sets the image
+	     *
+	     * @param {string} src
+	     * @return {ContentTypeDetailView}
+	     */
+	
+	  }, {
+	    key: "image",
+	    value: function image(src) {
+	      this.imageElement.setAttribute('src', src);
+	      return this;
+	    }
+	
+	    /**
+	     * Sets the title
+	     *
+	     * @param {string} title
+	     * @return {ContentTypeDetailView}
+	     */
+	
+	  }, {
+	    key: "title",
+	    value: function title(_title) {
+	      this.titleElement.innerHTML = _title;
+	      return this;
+	    }
+	
+	    /**
+	     * Sets the long description
+	     *
+	     * @param {string} text
+	     * @return {ContentTypeDetailView}
+	     */
+	
+	  }, {
+	    key: "longDescription",
+	    value: function longDescription(text) {
+	      this.longDescriptioneElement.innerHTML = text;
+	      return this;
+	    }
+	
+	    /**
+	     * Hides the root element
+	     */
+	
+	  }, {
+	    key: "hide",
+	    value: function hide() {
+	      _hide(this.rootElement);
+	    }
+	
+	    /**
+	     * Shows the root element
+	     */
+	
+	  }, {
+	    key: "show",
+	    value: function show() {
+	      _show(this.rootElement);
 	    }
 	  }, {
 	    key: "getElement",
@@ -1385,7 +1858,7 @@
 	exports.default = ContentTypeDetailView;
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
