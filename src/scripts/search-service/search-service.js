@@ -3,30 +3,6 @@ import HubServices from "../hub-services";
 import lunr from "../../../node_modules/lunr"
 
 /**
- * Checks if a needle is found in the haystack.
- * Not case sensitive
- *
- * @param {string} needle
- * @param {string} haystack
- * @return {boolean}
- */
-const hasSubString = function(needle, haystack) {
-  return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-};
-
-/**
- * Filters a list of content types based on a query
- * @type {Function}
- *
- * @param {string} query
- * @param {ContentType[]} contentTypes
- */
-const filterByQuery = curry(function(query, contentTypes) {
-  return contentTypes
-    .filter(contentType => hasSubString(query, contentType.title) || hasSubString(query, contentType.shortDescription));
-});
-
-/**
  * Filters a list of content types based on an array of ids
  *
  * @param  {string[]}         ids

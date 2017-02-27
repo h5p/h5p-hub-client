@@ -74,8 +74,10 @@ export default class ContentTypeListView {
    * @param {ContentType[]} contentTypes
    */
   updateList(contentTypes) {
-    if(this.listElement){
-      this.rootElement.childNodes.forEach(node => node.remove());
+    if(this.rootElement){
+      while(this.rootElement.firstChild ){
+        this.rootElement.removeChild(this.rootElement.firstChild);
+      }
     }
 
     this.renderContentTypeList(contentTypes)

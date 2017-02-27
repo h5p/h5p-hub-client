@@ -1188,31 +1188,6 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
-	 * Checks if a needle is found in the haystack.
-	 * Not case sensitive
-	 *
-	 * @param {string} needle
-	 * @param {string} haystack
-	 * @return {boolean}
-	 */
-	var hasSubString = function hasSubString(needle, haystack) {
-	  return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-	};
-	
-	/**
-	 * Filters a list of content types based on a query
-	 * @type {Function}
-	 *
-	 * @param {string} query
-	 * @param {ContentType[]} contentTypes
-	 */
-	var filterByQuery = (0, _functional.curry)(function (query, contentTypes) {
-	  return contentTypes.filter(function (contentType) {
-	    return hasSubString(query, contentType.title) || hasSubString(query, contentType.shortDescription);
-	  });
-	});
-	
-	/**
 	 * Filters a list of content types based on an array of ids
 	 *
 	 * @param  {string[]}         ids
@@ -3624,10 +3599,13 @@
 	  }, {
 	    key: "updateList",
 	    value: function updateList(contentTypes) {
-	      if (this.listElement) {
-	        this.rootElement.childNodes.forEach(function (node) {
-	          return node.remove();
-	        });
+	      // debugger;
+	      console.log(this.rootElement);
+	      if (this.rootElement) {
+	        // this.rootElement.childNodes.forEach(node => node.remove());
+	        while (this.rootElement.firstChild) {
+	          this.rootElement.removeChild(this.rootElement.firstChild);
+	        }
 	      }
 	
 	      this.renderContentTypeList(contentTypes).forEach(this.rootElement.appendChild.bind(this.rootElement));
