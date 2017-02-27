@@ -5,95 +5,9 @@
   text-decoration: none;
   padding: 0.708em 1.375em;
   border-radius: 1.375em;
-  background-color: #f5f5f5;
-  color: #1f2227;
-  display: inline-block;
-  cursor: pointer;
-  border: transparent; }
-  .button:hover {
-    background-color: white; }
-  .button:focus {
-    background-color: white; }
-  .button:active {
-    background-color: gainsboro; }
-  .button[disabled] {
-    background-color: white; }
-
-.button.button-primary {
-  font-size: 0.833em;
-  text-decoration: none;
-  padding: 0.708em 1.375em;
-  border-radius: 1.375em;
   background-color: #0a78d1;
   color: white;
-  display: inline-block;
-  cursor: pointer;
   border: transparent; }
-  .button.button-primary:hover {
-    background-color: #1a93f4; }
-  .button.button-primary:focus {
-    background-color: #1a93f4; }
-  .button.button-primary:active {
-    background-color: #085ca0; }
-  .button.button-primary[disabled] {
-    background-color: #acd8fb; }
-
-.button.button-warning {
-  font-size: 0.833em;
-  text-decoration: none;
-  padding: 0.708em 1.375em;
-  border-radius: 1.375em;
-  background-color: #ffcc33;
-  color: white;
-  display: inline-block;
-  cursor: pointer;
-  border: transparent; }
-  .button.button-warning:hover {
-    background-color: #ffd966; }
-  .button.button-warning:focus {
-    background-color: #ffd966; }
-  .button.button-warning:active {
-    background-color: #ffbf00; }
-  .button.button-warning[disabled] {
-    background-color: white; }
-
-.button.button-success {
-  font-size: 0.833em;
-  text-decoration: none;
-  padding: 0.708em 1.375em;
-  border-radius: 1.375em;
-  background-color: #00aa54;
-  color: white;
-  display: inline-block;
-  cursor: pointer;
-  border: transparent; }
-  .button.button-success:hover {
-    background-color: #00dd6d; }
-  .button.button-success:focus {
-    background-color: #00dd6d; }
-  .button.button-success:active {
-    background-color: #00773b; }
-  .button.button-success[disabled] {
-    background-color: #77ffba; }
-
-.button.button-error {
-  font-size: 0.833em;
-  text-decoration: none;
-  padding: 0.708em 1.375em;
-  border-radius: 1.375em;
-  background-color: #c64750;
-  color: white;
-  display: inline-block;
-  cursor: pointer;
-  border: transparent; }
-  .button.button-error:hover {
-    background-color: #d26e75; }
-  .button.button-error:focus {
-    background-color: #d26e75; }
-  .button.button-error:active {
-    background-color: #a6343c; }
-  .button.button-error[disabled] {
-    background-color: #f6e3e4; }
 
 .button-inverse {
   font-size: 0.833em;
@@ -102,18 +16,7 @@
   border-radius: 1.375em;
   background-color: white;
   color: #0a78d1;
-  display: inline-block;
-  cursor: pointer;
-  border: transparent;
   border: 0.083em #0a78d1 solid; }
-  .button-inverse:hover {
-    background-color: white; }
-  .button-inverse:focus {
-    background-color: white; }
-  .button-inverse:active {
-    background-color: #e6e6e6; }
-  .button-inverse[disabled] {
-    background-color: white; }
 
 .input-group {
   display: flex;
@@ -142,22 +45,17 @@ input:focus {
   cursor: pointer; }
 
 .panel {
-  border: 0.042em solid #dadde0; }
+  border: thin solid #697585; }
   .panel .panel-header {
-    background-color: #f5f5f5;
-    color: #1f2227;
+    background-color: #697585;
+    color: white;
+    border: 0.042em;
     padding: 0.833em; }
     .panel .panel-header[aria-expanded] {
       cursor: pointer; }
   .panel .panel-body {
     overflow: hidden;
     transition: height 200ms; }
-    .panel .panel-body .panel-body-inner {
-      border-top: 0.042em solid #dadde0;
-      padding: 0.833em; }
-
-.panel-group .panel:not(:first-child) {
-  margin-top: -1px; }
 
 .tabcontainer nav {
   background-color: #474f5a;
