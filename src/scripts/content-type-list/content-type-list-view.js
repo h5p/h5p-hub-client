@@ -109,7 +109,7 @@ export default class ContentTypeListView {
 
     // button
     const button = document.createElement('span');
-    button.className = "button";
+    button.className = "button button-primary";
     button.innerHTML = "Use";
     button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
     relayClickEventAs('select', this, button);

@@ -69,9 +69,9 @@
 	
 	var _hubView2 = _interopRequireDefault(_hubView);
 	
-	var _contentBrowser = __webpack_require__(7);
+	var _contentTypeSection = __webpack_require__(7);
 	
-	var _contentBrowser2 = _interopRequireDefault(_contentBrowser);
+	var _contentTypeSection2 = _interopRequireDefault(_contentTypeSection);
 	
 	var _uploadSection = __webpack_require__(16);
 	
@@ -112,7 +112,7 @@
 	    _extends(this, (0, _eventful.Eventful)());
 	
 	    // controllers
-	    this.contentBrowser = new _contentBrowser2.default();
+	    this.contentTypeSection = new _contentTypeSection2.default();
 	    this.uploadSection = new _uploadSection2.default();
 	
 	    // services
@@ -121,10 +121,10 @@
 	    });
 	
 	    // propagate controller events
-	    this.propagate(['select'], this.contentBrowser);
+	    this.propagate(['select'], this.contentTypeSection);
 	
 	    // handle events
-	    this.contentBrowser.on('select', function (_ref) {
+	    this.contentTypeSection.on('select', function (_ref) {
 	      var id = _ref.id;
 	
 	      _this.view.closePanel();
@@ -143,7 +143,7 @@
 	    this.view.addTab({
 	      title: 'Create Content',
 	      id: 'create-content',
-	      content: this.contentBrowser.getElement(),
+	      content: this.contentTypeSection.getElement(),
 	      selected: true
 	    });
 	
@@ -305,7 +305,7 @@
 	       * @type {HTMLElement}
 	       */
 	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.className += 'tab-panel';
 	      this.tabContainerElement.appendChild(this.tabListWrapper);
 	    }
 	
@@ -791,7 +791,7 @@
 	/**
 	 * @type {function}
 	 */
-	var getWhereRoleIsTabpanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+	var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
 	
 	/**
 	 * @type {function}
@@ -815,7 +815,7 @@
 	
 	function init(element) {
 	  var tabs = getWhereRoleIsTab(element);
-	  var tabPanels = getWhereRoleIsTabpanel(element);
+	  var tabPanels = getWhereRoleIsTabPanel(element);
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
@@ -824,8 +824,10 @@
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
+	
 	      var tabPanelId = event.target.getAttribute('aria-controls');
 	      var targetTabPanel = element.querySelector('#' + tabPanelId);
+	
 	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
@@ -845,9 +847,9 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _contentBrowserView = __webpack_require__(8);
+	var _contentTypeSectionView = __webpack_require__(8);
 	
-	var _contentBrowserView2 = _interopRequireDefault(_contentBrowserView);
+	var _contentTypeSectionView2 = _interopRequireDefault(_contentTypeSectionView);
 	
 	var _search = __webpack_require__(10);
 	
@@ -868,20 +870,20 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
-	 * @class ContentBrowser
+	 * @class ContentTypeSection
 	 * @mixes Eventful
 	 */
-	var ContentBrowser = function () {
-	  function ContentBrowser(state) {
+	var ContentTypeSection = function () {
+	  function ContentTypeSection(state) {
 	    var _this = this;
 	
-	    _classCallCheck(this, ContentBrowser);
+	    _classCallCheck(this, ContentTypeSection);
 	
 	    // add event system
 	    _extends(this, (0, _eventful.Eventful)());
 	
 	    // add view
-	    this.view = new _contentBrowserView2.default(state);
+	    this.view = new _contentTypeSectionView2.default(state);
 	
 	    // controller
 	    this.searchService = new _search2.default();
@@ -920,17 +922,17 @@
 	    });
 	  }
 	
-	  _createClass(ContentBrowser, [{
+	  _createClass(ContentTypeSection, [{
 	    key: "getElement",
 	    value: function getElement() {
 	      return this.view.getElement();
 	    }
 	  }]);
 	
-	  return ContentBrowser;
+	  return ContentTypeSection;
 	}();
 	
-	exports.default = ContentBrowser;
+	exports.default = ContentTypeSection;
 
 /***/ },
 /* 8 */
@@ -983,31 +985,48 @@
 	  }, {
 	    key: 'renderMenuItem',
 	    value: function renderMenuItem(title, index) {
-	      var tab = document.createElement('li');
-	      tab.setAttribute('tabindex', '0');
-	      tab.innerHTML = title;
+	      var element = document.createElement('li');
+	      element.setAttribute('role', 'menuitem');
+	      element.innerHTML = title;
 	
 	      //TODO remove after demo
 	      if (index === 0) {
-	        tab.setAttribute('aria-selected', 'true');
+	        element.setAttribute('aria-selected', 'true');
 	      }
-	      return tab;
+	
+	      return element;
 	    }
 	  }, {
 	    key: 'renderMenu',
+	
+	
+	    /*
+	    *   <nav>
+	     <ul role="menubar" class="h5p-menu">
+	     <li role="menuitem" aria-selected="true">My Content Types</li>
+	     <li role="menuitem">Newest</li>
+	     <li role="menuitem">Most Popular</li>
+	     <li role="menuitem">Recomended</li>
+	     </ul>
+	     </nav>
+	    * */
+	
 	    value: function renderMenu(state) {
 	      /**
 	       * @type {HTMLElement}
 	       */
-	      var menuItemList = document.createElement('ul');
+	      var menubar = document.createElement('ul');
+	      menubar.setAttribute('role', 'menubar');
+	      menubar.className = 'h5p-menu';
+	
 	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Reccomended'];
-	      menuItems.map(this.renderMenuItem).forEach(menuItemList.appendChild.bind(menuItemList));
+	      menuItems.map(this.renderMenuItem).forEach(menubar.appendChild.bind(menubar));
 	
 	      /**
 	       * @type {HTMLElement}
 	       */
 	      var menuItemListWrapper = document.createElement('nav');
-	      menuItemListWrapper.appendChild(menuItemList);
+	      menuItemListWrapper.appendChild(menubar);
 	
 	      /**
 	       * @type {HTMLElement}
@@ -1561,7 +1580,7 @@
 	
 	      // button
 	      var button = document.createElement('span');
-	      button.className = "button";
+	      button.className = "button button-primary";
 	      button.innerHTML = "Use";
 	      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
 	      relayClickEventAs('select', this, button);
