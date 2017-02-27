@@ -61,6 +61,8 @@
 	  value: true
 	});
 	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _hubView = __webpack_require__(2);
@@ -75,6 +77,12 @@
 	
 	var _uploadSection2 = _interopRequireDefault(_uploadSection);
 	
+	var _hubServices = __webpack_require__(11);
+	
+	var _hubServices2 = _interopRequireDefault(_hubServices);
+	
+	var _eventful = __webpack_require__(9);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -87,19 +95,44 @@
 	 */
 	/**
 	 * @class
+	 * @mixes Eventful
 	 */
 	var Hub = function () {
 	  /**
 	   * @param {HubState} state
 	   */
 	  function Hub(state) {
+	    var _this = this;
+	
 	    _classCallCheck(this, Hub);
 	
 	    this.state = state;
 	
+	    // add event system
+	    _extends(this, (0, _eventful.Eventful)());
+	
 	    // controllers
 	    this.contentBrowser = new _contentBrowser2.default();
 	    this.uploadSection = new _uploadSection2.default();
+	
+	    // services
+	    this.services = new _hubServices2.default({
+	      rootUrl: '/test/mock/api'
+	    });
+	
+	    // propagate controller events
+	    this.propagate(['select'], this.contentBrowser);
+	
+	    // handle events
+	    this.contentBrowser.on('select', function (_ref) {
+	      var id = _ref.id;
+	
+	      _this.view.closePanel();
+	      _this.services.contentType(id).then(function (_ref2) {
+	        var title = _ref2.title;
+	        return _this.view.setTitle(title);
+	      });
+	    });
 	
 	    // views
 	    this.view = new _hubView2.default({
@@ -178,33 +211,26 @@
 	  }
 	
 	  /**
-	   * Creates the dom for the tab panel
+	   * Closes the panel
 	   */
 	
 	
 	  _createClass(HubView, [{
-	    key: "renderTabPanel",
-	    value: function renderTabPanel() {
+	    key: "closePanel",
+	    value: function closePanel() {
+	      this.titleElement.setAttribute('aria-expanded', 'false');
+	    }
 	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      this.tablist = document.createElement('ul');
-	      this.tablist.className += "tablist";
-	      this.tablist.setAttribute('role', 'tablist');
+	    /**
+	     * Sets the title
+	     *
+	     * @param {string} title
+	     */
 	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      this.tabListWrapper = document.createElement('nav');
-	      this.tabListWrapper.appendChild(this.tablist);
-	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      this.tabContainerElement = document.createElement('div');
-	      this.tabContainerElement.className += 'tabcontainer';
-	      this.tabContainerElement.appendChild(this.tabListWrapper);
+	  }, {
+	    key: "setTitle",
+	    value: function setTitle(title) {
+	      this.titleElement.innerHTML = title;
 	    }
 	
 	    /**
@@ -253,6 +279,34 @@
 	      this.rootElement.appendChild(this.bodyElement);
 	
 	      (0, _panel2.default)(this.rootElement);
+	    }
+	
+	    /**
+	     * Creates the dom for the tab panel
+	     */
+	
+	  }, {
+	    key: "renderTabPanel",
+	    value: function renderTabPanel() {
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tablist = document.createElement('ul');
+	      this.tablist.className += "tablist";
+	      this.tablist.setAttribute('role', 'tablist');
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabListWrapper = document.createElement('nav');
+	      this.tabListWrapper.appendChild(this.tablist);
+	
+	      /**
+	       * @type {HTMLElement}
+	       */
+	      this.tabContainerElement = document.createElement('div');
+	      this.tabContainerElement.className += 'tabcontainer';
+	      this.tabContainerElement.appendChild(this.tabListWrapper);
 	    }
 	
 	    /**
@@ -814,25 +868,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
-	 * @typedef {object} ContentType
-	 * @property {string} id
-	 * @property {string} title
-	 * @property {string} shortDescription
-	 * @property {string} longDescription
-	 * @property {string} icon
-	 * @property {string} created
-	 * @property {string} update
-	 * @property {boolean} recommended
-	 * @property {number} timesDownloaded
-	 * @property {string[]} screenshots
-	 * @property {string} exampleContent
-	 * @property {string[]} keywords
-	 * @property {string[]} categories
-	 * @property {string} license
-	 */
-	
-	/**
-	 * @class
+	 * @class ContentBrowser
 	 * @mixes Eventful
 	 */
 	var ContentBrowser = function () {
@@ -856,6 +892,10 @@
 	    this.view.getElement().appendChild(this.contentTypeList.getElement());
 	    this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 	
+	    // propagate events
+	    this.propagate(['select'], this.contentTypeList);
+	    this.propagate(['select'], this.contentTypeDetail);
+	
 	    // registers listeners
 	    this.contentTypeList.on('row-selected', function (_ref) {
 	      var id = _ref.id;
@@ -865,7 +905,7 @@
 	      _this.contentTypeDetail.show();
 	    });
 	
-	    this.contentTypeDetail.on('close', function (event) {
+	    this.contentTypeDetail.on('close', function () {
 	      _this.contentTypeDetail.hide();
 	      _this.contentTypeList.show();
 	    });
@@ -876,7 +916,7 @@
 	
 	    // initialize by search
 	    this.searchService.search("").then(function (contentTypes) {
-	      return _this.contentTypeList.update(contentTypes);
+	      _this.contentTypeList.update(contentTypes);
 	    });
 	  }
 	
@@ -2920,6 +2960,7 @@
 	      }
 	    }
 	
+<<<<<<< HEAD
 	    // Step 5
 	    re = re_5;
 	    if (re.test(w)) {
@@ -2932,6 +2973,32 @@
 	        w = stem;
 	      }
 	    }
+=======
+	/**
+	 * @typedef {object} ContentType
+	 * @property {string} id
+	 * @property {string} title
+	 * @property {string} shortDescription
+	 * @property {string} longDescription
+	 * @property {string} icon
+	 * @property {string} created
+	 * @property {string} update
+	 * @property {boolean} recommended
+	 * @property {number} timesDownloaded
+	 * @property {string[]} screenshots
+	 * @property {string} exampleContent
+	 * @property {string[]} keywords
+	 * @property {string[]} categories
+	 * @property {string} license
+	 */
+	
+	var HubServices = function () {
+	  /**
+	   * @param {string} rootUrl
+	   */
+	  function HubServices(_ref) {
+	    var rootUrl = _ref.rootUrl;
+>>>>>>> 3d9cb7942b30e8e291340eb1bb748075b696a04e
 	
 	    re = re_5_1;
 	    re2 = re_mgr1;
@@ -3158,6 +3225,7 @@
 	  this.length = 0
 	}
 	
+<<<<<<< HEAD
 	/**
 	 * Loads a previously serialised token store
 	 *
@@ -3167,6 +3235,32 @@
 	 */
 	lunr.TokenStore.load = function (serialisedData) {
 	  var store = new this
+=======
+	  }, {
+	    key: "contentType",
+	    value: function contentType(id) {
+	      return fetch(this.rootUrl + "/contenttypes/" + id).then(function (result) {
+	        return result.json();
+	      });
+	    }
+	
+	    /**
+	     * Installs a content type on the server
+	     *
+	     * @param {string} id
+	     *
+	     * @return {Promise.<ContentType>}
+	     */
+	
+	  }, {
+	    key: "installContentType",
+	    value: function installContentType(id) {
+	      return fetch(this.rootUrl + "/contenttypes/" + id + "/install").then(function (result) {
+	        return result.json();
+	      });
+	    }
+	  }]);
+>>>>>>> 3d9cb7942b30e8e291340eb1bb748075b696a04e
 	
 	  store.root = serialisedData.root
 	  store.length = serialisedData.length
@@ -3401,7 +3495,7 @@
 	
 	    // add the view
 	    this.view = new _contentTypeListView2.default(state);
-	    this.propagate(['row-selected'], this.view);
+	    this.propagate(['row-selected', 'select'], this.view);
 	  }
 	
 	  _createClass(ContentTypeList, [{
@@ -3488,7 +3582,9 @@
 	    eventful.fire(type, {
 	      element: element,
 	      id: (0, _elements.getAttribute)(ATTRIBUTE_CONTENT_TYPE_ID, element)
-	    });
+	    }, false);
+	
+	    event.preventDefault();
 	  });
 	
 	  return element;
@@ -3562,7 +3658,7 @@
 	  }, {
 	    key: "renderContentTypeList",
 	    value: function renderContentTypeList(contentTypes) {
-	      return contentTypes.map(this.renderContentTypeRow).map(relayClickEventAs('row-selected', this));
+	      return contentTypes.map(this.renderContentTypeRow.bind(this)).map(relayClickEventAs('row-selected', this));
 	    }
 	
 	    /**
@@ -3584,6 +3680,8 @@
 	      var button = document.createElement('span');
 	      button.className = "button";
 	      button.innerHTML = "Use";
+	      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+	      relayClickEventAs('select', this, button);
 	
 	      // title
 	      var title = document.createElement('div');
@@ -3646,6 +3744,10 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/**
+	 * @class
+	 * @mixes Eventful
+	 */
 	var ContentTypeDetail = function () {
 	  function ContentTypeDetail(state) {
 	    _classCallCheck(this, ContentTypeDetail);
@@ -3653,19 +3755,34 @@
 	    // add event system
 	    _extends(this, (0, _eventful.Eventful)());
 	
-	    this.view = new _contentTypeDetailView2.default(state);
+	    // services
 	    this.services = new _hubServices2.default({
 	      rootUrl: '/test/mock/api'
 	    });
 	
-	    this.propagate(['close'], this.view);
+	    // views
+	    this.view = new _contentTypeDetailView2.default(state);
+	    this.view.on('install', this.install, this);
+	
+	    // propagate events
+	    this.propagate(['close', 'select'], this.view);
 	  }
+	
+	  /**
+	   * Hides the detail view
+	   */
+	
 	
 	  _createClass(ContentTypeDetail, [{
 	    key: "hide",
 	    value: function hide() {
 	      this.view.hide();
 	    }
+	
+	    /**
+	     * Shows the detail view
+	     */
+	
 	  }, {
 	    key: "show",
 	    value: function show() {
@@ -3687,6 +3804,24 @@
 	    }
 	
 	    /**
+	     * Loads a Content Type description
+	     *
+	     * @param {string} id
+	     *
+	     * @return {Promise.<ContentType>}
+	     */
+	
+	  }, {
+	    key: "install",
+	    value: function install(_ref) {
+	      var id = _ref.id;
+	
+	      return this.services.installContentType(id).then(function (contentType) {
+	        return console.debug('TODO, gui updates');
+	      });
+	    }
+	
+	    /**
 	     * Updates the view with the content type data
 	     *
 	     * @param {ContentType} contentType
@@ -3695,8 +3830,18 @@
 	  }, {
 	    key: "update",
 	    value: function update(contentType) {
-	      this.view.title(contentType.title).longDescription(contentType.longDescription).image(contentType.icon);
+	      this.view.setId(contentType.id);
+	      this.view.setTitle(contentType.title);
+	      this.view.setLongDescription(contentType.longDescription);
+	      this.view.setImage(contentType.icon);
 	    }
+	
+	    /**
+	     * Returns the root html element
+	     *
+	     * @return {HTMLElement}
+	     */
+	
 	  }, {
 	    key: "getElement",
 	    value: function getElement() {
@@ -3738,6 +3883,11 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	/**
+	 * @constant {string}
+	 */
+	var ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
+	
+	/**
 	 * @function
 	 */
 	var _hide = (0, _elements.setAttribute)('aria-hidden', 'true');
@@ -3759,7 +3909,8 @@
 	var relayClickEventAs = (0, _functional.curry)(function (type, eventful, element) {
 	  element.addEventListener('click', function (event) {
 	    eventful.fire(type, {
-	      element: element
+	      element: element,
+	      id: (0, _elements.getAttribute)(ATTRIBUTE_CONTENT_TYPE_ID, element)
 	    });
 	  });
 	
@@ -3800,21 +3951,16 @@
 	    relayClickEventAs('select', this, demoButton);
 	
 	    // use button
-	    var useButton = document.createElement('span');
-	    useButton.className = 'button';
-	    useButton.innerHTML = 'Use';
-	    relayClickEventAs('select', this, useButton);
-	
-	    // install button
-	    var installButton = document.createElement('span');
-	    installButton.className = 'button button-inverse';
-	    installButton.innerHTML = 'Install';
-	    relayClickEventAs('install', this, installButton);
-	
-	    // use button
 	    this.useButton = document.createElement('span');
 	    this.useButton.className = 'button';
 	    this.useButton.innerHTML = 'Use';
+	    relayClickEventAs('select', this, this.useButton);
+	
+	    // install button
+	    this.installButton = document.createElement('span');
+	    this.installButton.className = 'button button-inverse';
+	    this.installButton.innerHTML = 'Install';
+	    relayClickEventAs('install', this, this.installButton);
 	
 	    // licence panel
 	    var licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
@@ -3833,24 +3979,21 @@
 	    this.rootElement.appendChild(this.titleElement);
 	    this.rootElement.appendChild(this.longDescriptioneElement);
 	    this.rootElement.appendChild(demoButton);
-	    this.rootElement.appendChild(useButton);
-	    this.rootElement.appendChild(installButton);
+	    this.rootElement.appendChild(this.useButton);
+	    this.rootElement.appendChild(this.installButton);
 	    this.rootElement.appendChild(panelGroupElement);
 	  }
 	
-	  /*
-	  *   <div class="panel-group">
-	   <div class="panel">
-	   <div class="panel-header" aria-expanded="true" aria-controls="panel-body-1">Title</div>
-	   <div id="panel-body-1" class="panel-body" aria-hidden="false">
-	   <div class="panel-body-inner">
-	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-	   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-	   </div>
-	   </div>
-	   </div>
-	  * */
+	  /**
+	   * Creates a panel
+	   *
+	   * @param {string} title
+	   * @param {string} body
+	   * @param {string} bodyId
+	   *
+	   * @return {HTMLElement}
+	   */
+	
 	
 	  _createClass(ContentTypeDetailView, [{
 	    key: "createPanel",
@@ -3885,42 +4028,49 @@
 	     * Sets the image
 	     *
 	     * @param {string} src
-	     * @return {ContentTypeDetailView}
 	     */
 	
 	  }, {
-	    key: "image",
-	    value: function image(src) {
+	    key: "setImage",
+	    value: function setImage(src) {
 	      this.imageElement.setAttribute('src', src);
-	      return this;
+	    }
+	
+	    /**
+	     * Sets the title
+	     *
+	     * @param {string} id
+	     */
+	
+	  }, {
+	    key: "setId",
+	    value: function setId(id) {
+	      this.installButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
+	      this.useButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
 	    }
 	
 	    /**
 	     * Sets the title
 	     *
 	     * @param {string} title
-	     * @return {ContentTypeDetailView}
 	     */
 	
 	  }, {
-	    key: "title",
-	    value: function title(_title) {
-	      this.titleElement.innerHTML = _title;
-	      return this;
+	    key: "setTitle",
+	    value: function setTitle(title) {
+	      this.titleElement.innerHTML = title;
 	    }
 	
 	    /**
 	     * Sets the long description
 	     *
 	     * @param {string} text
-	     * @return {ContentTypeDetailView}
 	     */
 	
 	  }, {
-	    key: "longDescription",
-	    value: function longDescription(text) {
+	    key: "setLongDescription",
+	    value: function setLongDescription(text) {
 	      this.longDescriptioneElement.innerHTML = text;
-	      return this;
 	    }
 	
 	    /**
@@ -3942,6 +4092,12 @@
 	    value: function show() {
 	      _show(this.rootElement);
 	    }
+	
+	    /**
+	     * Returns the root html element
+	     * @return {HTMLElement}
+	     */
+	
 	  }, {
 	    key: "getElement",
 	    value: function getElement() {

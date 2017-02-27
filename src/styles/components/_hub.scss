@@ -21,6 +21,13 @@
     &>.panel-header {
       background-color: white;
       color: $c1;
+      font-style: italic;
+      font-weight: 600;
+
+      &:before {
+        font-style: normal;
+        margin-right: 1em;
+      }
 
       &:after {
         @include h5p-hub-icon("\e924");

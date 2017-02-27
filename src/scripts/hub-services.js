@@ -1,3 +1,21 @@
+/**
+ * @typedef {object} ContentType
+ * @property {string} id
+ * @property {string} title
+ * @property {string} shortDescription
+ * @property {string} longDescription
+ * @property {string} icon
+ * @property {string} created
+ * @property {string} update
+ * @property {boolean} recommended
+ * @property {number} timesDownloaded
+ * @property {string[]} screenshots
+ * @property {string} exampleContent
+ * @property {string[]} keywords
+ * @property {string[]} categories
+ * @property {string} license
+ */
+
 export default class HubServices {
   /**
    * @param {string} rootUrl
@@ -25,6 +43,18 @@ export default class HubServices {
    */
   contentType(id) {
     return fetch(`${this.rootUrl}/contenttypes/${id}`)
+      .then(result => result.json());
+  }
+
+  /**
+   * Installs a content type on the server
+   *
+   * @param {string} id
+   *
+   * @return {Promise.<ContentType>}
+   */
+  installContentType(id) {
+    return fetch(`${this.rootUrl}/contenttypes/${id}/install`)
       .then(result => result.json());
   }
 }

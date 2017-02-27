@@ -106,7 +106,12 @@ input:focus {
     border: 1px solid #697585; }
     .h5p-hub.panel > .panel-header {
       background-color: white;
-      color: #697585; }
+      color: #697585;
+      font-style: italic;
+      font-weight: 600; }
+      .h5p-hub.panel > .panel-header:before {
+        font-style: normal;
+        margin-right: 1em; }
       .h5p-hub.panel > .panel-header:after {
         font-family: 'h5p' !important;
         content: "";

@@ -31,7 +31,9 @@ const relayClickEventAs = curry(function(type, eventful, element) {
     eventful.fire(type, {
       element: element,
       id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
-    })
+    }, false);
+
+    event.preventDefault();
   });
 
   return element;
@@ -89,7 +91,7 @@ export default class ContentTypeListView {
    */
   renderContentTypeList(contentTypes) {
     return contentTypes
-      .map(this.renderContentTypeRow)
+      .map(this.renderContentTypeRow.bind(this))
       .map(relayClickEventAs('row-selected', this))
   }
 
@@ -109,6 +111,8 @@ export default class ContentTypeListView {
     const button = document.createElement('span');
     button.className = "button";
     button.innerHTML = "Use";
+    button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+    relayClickEventAs('select', this, button);
 
     // title
     const title = document.createElement('div');

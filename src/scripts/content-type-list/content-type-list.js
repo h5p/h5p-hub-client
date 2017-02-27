@@ -12,7 +12,7 @@ export default class ContentTypeList {
 
     // add the view
     this.view = new ContetTypeListView(state);
-    this.propagate(['row-selected'], this.view);
+    this.propagate(['row-selected', 'select'], this.view);
   }
 
   hide() {

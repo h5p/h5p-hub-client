@@ -11,29 +11,19 @@ export default class HubView {
   }
 
   /**
-   * Creates the dom for the tab panel
+   * Closes the panel
    */
-  renderTabPanel() {
+  closePanel() {
+    this.titleElement.setAttribute('aria-expanded', 'false')
+  }
 
-    /**
-     * @type {HTMLElement}
-     */
-    this.tablist = document.createElement('ul');
-    this.tablist.className += "tablist";
-    this.tablist.setAttribute ('role', 'tablist');
-
-    /**
-     * @type {HTMLElement}
-     */
-     this.tabListWrapper = document.createElement('nav');
-     this.tabListWrapper.appendChild(this.tablist);
-
-    /**
-     * @type {HTMLElement}
-     */
-    this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.className += 'tabcontainer';
-    this.tabContainerElement.appendChild(this.tabListWrapper);
+  /**
+   * Sets the title
+   *
+   * @param {string} title
+   */
+  setTitle(title) {
+    this.titleElement.innerHTML = title;
   }
 
   /**
@@ -74,6 +64,31 @@ export default class HubView {
     this.rootElement.appendChild(this.bodyElement);
 
     initPanel(this.rootElement);
+  }
+
+  /**
+   * Creates the dom for the tab panel
+   */
+  renderTabPanel() {
+    /**
+     * @type {HTMLElement}
+     */
+    this.tablist = document.createElement('ul');
+    this.tablist.className += "tablist";
+    this.tablist.setAttribute ('role', 'tablist');
+
+    /**
+     * @type {HTMLElement}
+     */
+    this.tabListWrapper = document.createElement('nav');
+    this.tabListWrapper.appendChild(this.tablist);
+
+    /**
+     * @type {HTMLElement}
+     */
+    this.tabContainerElement = document.createElement('div');
+    this.tabContainerElement.className += 'tabcontainer';
+    this.tabContainerElement.appendChild(this.tabListWrapper);
   }
 
   /**

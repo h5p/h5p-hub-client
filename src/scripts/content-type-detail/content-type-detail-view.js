@@ -4,6 +4,11 @@ import { Eventful } from '../mixins/eventful';
 import initPanel from "../../../node_modules/h5p-sdk/src/scripts/components/panel"
 
 /**
+ * @constant {string}
+ */
+const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
+
+/**
  * @function
  */
 const hide = setAttribute('aria-hidden', 'true');
@@ -26,6 +31,7 @@ const relayClickEventAs = curry(function(type, eventful, element) {
   element.addEventListener('click', event => {
     eventful.fire(type, {
       element: element,
+      id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
     })
   });
 
@@ -64,21 +70,16 @@ export default class ContentTypeDetailView {
     relayClickEventAs('select', this, demoButton);
 
     // use button
-    const useButton = document.createElement('span');
-    useButton.className = 'button';
-    useButton.innerHTML = 'Use';
-    relayClickEventAs('select', this, useButton);
-
-    // install button
-    const installButton = document.createElement('span');
-    installButton.className = 'button button-inverse';
-    installButton.innerHTML = 'Install';
-    relayClickEventAs('install', this, installButton);
-
-    // use button
     this.useButton = document.createElement('span');
     this.useButton.className = 'button';
     this.useButton.innerHTML = 'Use';
+    relayClickEventAs('select', this, this.useButton);
+
+    // install button
+    this.installButton = document.createElement('span');
+    this.installButton.className = 'button button-inverse';
+    this.installButton.innerHTML = 'Install';
+    relayClickEventAs('install', this, this.installButton);
 
     // licence panel
     const licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
@@ -97,25 +98,20 @@ export default class ContentTypeDetailView {
     this.rootElement.appendChild(this.titleElement);
     this.rootElement.appendChild(this.longDescriptioneElement);
     this.rootElement.appendChild(demoButton);
-    this.rootElement.appendChild(useButton);
-    this.rootElement.appendChild(installButton);
+    this.rootElement.appendChild(this.useButton);
+    this.rootElement.appendChild(this.installButton);
     this.rootElement.appendChild(panelGroupElement);
   }
 
-  /*
-  *   <div class="panel-group">
-   <div class="panel">
-   <div class="panel-header" aria-expanded="true" aria-controls="panel-body-1">Title</div>
-   <div id="panel-body-1" class="panel-body" aria-hidden="false">
-   <div class="panel-body-inner">
-   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-   <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-   </div>
-   </div>
-   </div>
-  * */
-
+  /**
+   * Creates a panel
+   *
+   * @param {string} title
+   * @param {string} body
+   * @param {string} bodyId
+   *
+   * @return {HTMLElement}
+   */
   createPanel(title, body, bodyId) {
     const headerEl = document.createElement('div');
     headerEl.className = 'panel-header';
@@ -147,33 +143,37 @@ export default class ContentTypeDetailView {
    * Sets the image
    *
    * @param {string} src
-   * @return {ContentTypeDetailView}
    */
-  image(src) {
+  setImage(src) {
     this.imageElement.setAttribute('src', src);
-    return this;
+  }
+
+  /**
+   * Sets the title
+   *
+   * @param {string} id
+   */
+  setId(id) {
+    this.installButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
+    this.useButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
   }
 
   /**
    * Sets the title
    *
    * @param {string} title
-   * @return {ContentTypeDetailView}
    */
-  title(title) {
+  setTitle(title) {
     this.titleElement.innerHTML = title;
-    return this;
   }
 
   /**
    * Sets the long description
    *
    * @param {string} text
-   * @return {ContentTypeDetailView}
    */
-  longDescription(text) {
+  setLongDescription(text) {
     this.longDescriptioneElement.innerHTML = text;
-    return this;
   }
 
   /**
@@ -190,6 +190,10 @@ export default class ContentTypeDetailView {
     show(this.rootElement);
   }
 
+  /**
+   * Returns the root html element
+   * @return {HTMLElement}
+   */
   getElement() {
     return this.rootElement;
   }

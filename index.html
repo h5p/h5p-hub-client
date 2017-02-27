@@ -20,7 +20,12 @@
   <script type="text/javascript">H5P = {};</script>
   <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
-    document.querySelector('p').appendChild((new H5P.HubClient()).getElement());
+    const hubClient = new H5P.HubClient();
+    hubClient.on('select', event => {
+      console.debug('Content Type Selected', event);
+    });
+
+    document.querySelector('p').appendChild(hubClient.getElement());
   </script>
 </body>
 </html>
