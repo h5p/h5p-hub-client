@@ -16,11 +16,11 @@
   <h2>Other stuff</h2>
   <p>Hello</p>
 </div>
-
   <script type="text/javascript">H5P = {};</script>
   <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
-    const hubClient = new H5P.HubClient();
+    const hubClient = new H5P.HubClient({
+    });
     hubClient.on('select', event => {
       console.debug('Content Type Selected', event);
     });

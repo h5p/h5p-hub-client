@@ -16,7 +16,7 @@ export default class SearchService {
     });
 
     // Set up lunr index
-    this.index = lunr(function (){
+    this.index = lunr(function() {
       this.field('title', {boost: 100});
       this.field('shortDescription');
       this.ref('id');
