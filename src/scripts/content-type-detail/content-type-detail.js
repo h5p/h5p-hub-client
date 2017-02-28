@@ -59,8 +59,8 @@ export default class ContentTypeDetail {
    */
    install({id}) {
      return this.services.contentType(id)
-       .then(contentType => contentType.id)
-       .then(this.services.installContentType(id))
+       .then(contentType => contentType.machineName)
+       .then(machineName => this.services.installContentType(machineName))
        .then(contentType => console.debug('TODO, gui updates'))
    }
 
