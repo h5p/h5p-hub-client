@@ -1259,7 +1259,9 @@
 	    // Set up lunr index
 	    this.index = (0, _lunr2.default)(function () {
 	      this.field('title', { boost: 100 });
-	      this.field('shortDescription');
+	      this.field('summary');
+	      this.field('description');
+	      this.field('keywords');
 	      this.ref('id');
 	    });
 	
@@ -1279,7 +1281,7 @@
 	    value: function addToIndex(contentType) {
 	      this.index.add({
 	        title: contentType.title,
-	        shortDescription: contentType.shortDescription,
+	        summary: contentType.shortDescription,
 	        id: contentType.id
 	      });
 	    }
@@ -1296,6 +1298,13 @@
 	    key: "search",
 	    value: function search(query) {
 	      var _this = this;
+	
+	      // Display all content types by default
+	      if (query === '') {
+	        return this.contentTypes.then(function (contentTypes) {
+	          return contentTypes;
+	        });
+	      }
 	
 	      return this.contentTypes.then(function (contentTypes) {
 	        return _this.index.search(query).map(function (result) {

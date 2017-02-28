@@ -18,7 +18,9 @@ export default class SearchService {
     // Set up lunr index
     this.index = lunr(function() {
       this.field('title', {boost: 100});
-      this.field('shortDescription');
+      this.field('summary');
+      this.field('description');
+      this.field('keywords');
       this.ref('id');
     });
 
@@ -34,7 +36,7 @@ export default class SearchService {
   addToIndex(contentType) {
     this.index.add({
       title: contentType.title,
-      shortDescription: contentType.shortDescription,
+      summary: contentType.shortDescription,
       id: contentType.id
     });
   }
@@ -47,6 +49,11 @@ export default class SearchService {
    * @return {Promise<ContentType[]>}
    */
   search(query) {
+    // Display all content types by default
+    if (query === '') {
+      return this.contentTypes.then(contentTypes => contentTypes);
+    }
+
     return this.contentTypes.then(contentTypes => {
       return this.index.search(query)
         .map(result => result.ref)
