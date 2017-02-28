@@ -6,6 +6,7 @@ H5P Content Hub and H5P Content Type Hub
 ### HTML
 
 ```html
+<div id="hub-client"></div>
 <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
 ```
 
@@ -19,4 +20,7 @@ var hubClient = new H5P.HubClient({
 hubClient.on('select', event => {
   // use data in event
 });
+
+document.getElementById('hub-client').appendChild(hubClient.getElement());
+
 ```

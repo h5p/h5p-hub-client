@@ -1,7 +1,7 @@
 {
   "id": "1",
   "title": "Interactive Video",
-  "shortDescription": "Create videos enriched with interactions",
+  "summary": "Create videos enriched with interactions",
   "longDescription": "An HTML5 based interactive video content type allowing users to add multiple choice and  fill in the blank questions, pop-up text and other types of interactions to their videos using only a web browser. Make your videos more engaging with H5P and interactive video on WordPress, Moodle and Drupal.",
   "icon": "/test/mock/images/iv.png",
   "created": "2017-02-20",

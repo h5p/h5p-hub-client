@@ -124,7 +124,7 @@ export default class ContentTypeListView {
     // description
     const description = document.createElement('div');
     description.className = 'content-type-list-description';
-    description.innerHTML = contentType.shortDescription;
+    description.innerHTML = contentType.summary;
 
     // list item
     const row = document.createElement('li');

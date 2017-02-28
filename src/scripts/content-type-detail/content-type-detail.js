@@ -13,7 +13,7 @@ export default class ContentTypeDetail {
 
     // services
     this.services = new HubServices({
-      rootUrl: '/test/mock/api'
+      apiRootUrl: state.apiRootUrl
     });
 
     // views

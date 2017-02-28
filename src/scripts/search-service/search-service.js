@@ -10,9 +10,13 @@ const findContentTypeById = curry(function(contentTypes, id) {
  * @class
  */
 export default class SearchService {
-  constructor() {
+  /**
+   * @param {object} state
+   * @param {string} state.apiRootUrl
+   */
+  constructor(state) {
     this.services = new HubServices({
-      rootUrl: '/test/mock/api'
+      apiRootUrl: state.apiRootUrl
     });
 
     // Set up lunr index
@@ -36,7 +40,7 @@ export default class SearchService {
   addToIndex(contentType) {
     this.index.add({
       title: contentType.title,
-      summary: contentType.shortDescription,
+      summary: contentType.summary,
       id: contentType.id
     });
   }

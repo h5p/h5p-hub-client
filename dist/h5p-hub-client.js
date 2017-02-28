@@ -92,6 +92,7 @@
 	 * @property {string} title
 	 * @property {string} sectionId
 	 * @property {boolean} expanded
+	 * @property {string} apiRootUrl
 	 */
 	/**
 	 * @class
@@ -102,72 +103,89 @@
 	   * @param {HubState} state
 	   */
 	  function Hub(state) {
-	    var _this = this;
-	
 	    _classCallCheck(this, Hub);
-	
-	    this.state = state;
 	
 	    // add event system
 	    _extends(this, (0, _eventful.Eventful)());
 	
 	    // controllers
-	    this.contentTypeSection = new _contentTypeSection2.default();
-	    this.uploadSection = new _uploadSection2.default();
-	
-	    // services
-	    this.services = new _hubServices2.default({
-	      rootUrl: '/test/mock/api'
-	    });
-	
-	    // propagate controller events
-	    this.propagate(['select', 'resize'], this.contentTypeSection);
-	
-	    // handle events
-	    this.on('select', function (_ref) {
-	      var id = _ref.id;
-	
-	      _this.view.closePanel();
-	      _this.services.contentType(id).then(function (_ref2) {
-	        var title = _ref2.title;
-	        return _this.view.setTitle(title);
-	      });
-	    });
-	
-	    this.on('resize', function () {
-	      return _this.view.resize();
-	    });
+	    this.contentTypeSection = new _contentTypeSection2.default(state);
+	    this.uploadSection = new _uploadSection2.default(state);
 	
 	    // views
 	    this.view = new _hubView2.default({
 	      sectionId: 'create-content'
 	    });
 	
-	    // tab panel
-	    this.view.addTab({
-	      title: 'Create Content',
-	      id: 'create-content',
-	      content: this.contentTypeSection.getElement(),
-	      selected: true
+	    // services
+	    this.services = new _hubServices2.default({
+	      apiRootUrl: state.apiRootUrl
 	    });
 	
-	    this.view.addTab({
-	      title: 'Upload',
-	      id: 'upload-section',
-	      content: this.uploadSection.getElement()
-	    });
+	    // propag ate controller events
+	    this.propagate(['select', 'resize'], this.contentTypeSection);
 	
-	    this.view.initTabPanel();
+	    // handle events
+	    this.on('select', this.setPanelTitle, this);
+	    this.on('select', this.view.closePanel, this.view);
+	    this.on('resize', this.view.resize, this.view);
+	
+	    this.initTabPanel();
 	  }
 	
 	  /**
-	   * Returns the root element in the view
+	   * Sets the title of the panel
 	   *
-	   * @return {HTMLElement}
+	   * @param {string} id
 	   */
 	
 	
 	  _createClass(Hub, [{
+	    key: 'setPanelTitle',
+	    value: function setPanelTitle(_ref) {
+	      var _this = this;
+	
+	      var id = _ref.id;
+	
+	      this.services.contentType(id).then(function (_ref2) {
+	        var title = _ref2.title;
+	        return _this.view.setTitle(title);
+	      });
+	    }
+	
+	    /**
+	     * Initiates the tab panel
+	     */
+	
+	  }, {
+	    key: 'initTabPanel',
+	    value: function initTabPanel() {
+	      var _this2 = this;
+	
+	      var tabConfigs = [{
+	        title: 'Create Content',
+	        id: 'create-content',
+	        content: this.contentTypeSection.getElement(),
+	        selected: true
+	      }, {
+	        title: 'Upload',
+	        id: 'upload-section',
+	        content: this.uploadSection.getElement()
+	      }];
+	
+	      tabConfigs.forEach(function (tabConfig) {
+	        return _this2.view.addTab(tabConfig);
+	      });
+	      this.view.initTabPanel();
+	    }
+	
+	    /**
+	     * Returns the root element in the view
+	     *
+	     * @return {HTMLElement}
+	     */
+	
+	  }, {
 	    key: 'getElement',
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -894,6 +912,9 @@
 	 * @mixes Eventful
 	 */
 	var ContentTypeSection = function () {
+	  /**
+	   * @param {HubState} state
+	   */
 	  function ContentTypeSection(state) {
 	    var _this = this;
 	
@@ -906,9 +927,9 @@
 	    this.view = new _contentTypeSectionView2.default(state);
 	
 	    // controller
-	    this.searchService = new _searchService2.default();
+	    this.searchService = new _searchService2.default({ apiRootUrl: state.apiRootUrl });
 	    this.contentTypeList = new _contentTypeList2.default();
-	    this.contentTypeDetail = new _contentTypeDetail2.default();
+	    this.contentTypeDetail = new _contentTypeDetail2.default({ apiRootUrl: state.apiRootUrl });
 	
 	    // add menu items
 	    ['My Content Types', 'Newest', 'Most Popular', 'Recommended'].forEach(function (menuText) {
@@ -944,7 +965,7 @@
 	
 	      // initialize by search
 	      this.searchService.search("").then(function (contentTypes) {
-	        _this2.contentTypeList.update(contentTypes);
+	        return _this2.contentTypeList.update(contentTypes);
 	      });
 	    }
 	
@@ -1304,11 +1325,15 @@
 	 */
 	
 	var SearchService = function () {
-	  function SearchService() {
+	  /**
+	   * @param {object} state
+	   * @param {string} state.apiRootUrl
+	   */
+	  function SearchService(state) {
 	    _classCallCheck(this, SearchService);
 	
 	    this.services = new _hubServices2.default({
-	      rootUrl: '/test/mock/api'
+	      apiRootUrl: state.apiRootUrl
 	    });
 	
 	    // Set up lunr index
@@ -1336,7 +1361,7 @@
 	    value: function addToIndex(contentType) {
 	      this.index.add({
 	        title: contentType.title,
-	        summary: contentType.shortDescription,
+	        summary: contentType.summary,
 	        id: contentType.id
 	      });
 	    }
@@ -1378,7 +1403,7 @@
 /* 11 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -1392,7 +1417,7 @@
 	 * @typedef {object} ContentType
 	 * @property {string} id
 	 * @property {string} title
-	 * @property {string} shortDescription
+	 * @property {string} summary
 	 * @property {string} longDescription
 	 * @property {string} icon
 	 * @property {string} created
@@ -1408,14 +1433,25 @@
 	
 	var HubServices = function () {
 	  /**
-	   * @param {string} rootUrl
+	   * @param {string} apiRootUrl
 	   */
 	  function HubServices(_ref) {
-	    var rootUrl = _ref.rootUrl;
+	    var apiRootUrl = _ref.apiRootUrl;
 	
 	    _classCallCheck(this, HubServices);
 	
-	    this.rootUrl = rootUrl;
+	    this.apiRootUrl = apiRootUrl;
+	
+	    if (!window.cachedContentTypes) {
+	      window.cachedContentTypes = fetch(this.apiRootUrl + 'content_type_cache', {
+	        method: 'GET',
+	        credentials: 'include'
+	      }).then(function (result) {
+	        return result.json();
+	      }).then(function (json) {
+	        return json.libraries;
+	      });
+	    }
 	  }
 	
 	  /**
@@ -1426,11 +1462,9 @@
 	
 	
 	  _createClass(HubServices, [{
-	    key: "contentTypes",
+	    key: 'contentTypes',
 	    value: function contentTypes() {
-	      return fetch(this.rootUrl + "/contenttypes").then(function (result) {
-	        return result.json();
-	      });
+	      return window.cachedContentTypes;
 	    }
 	
 	    /**
@@ -1442,11 +1476,18 @@
 	     */
 	
 	  }, {
-	    key: "contentType",
+	    key: 'contentType',
 	    value: function contentType(id) {
-	      return fetch(this.rootUrl + "/contenttypes/" + id).then(function (result) {
-	        return result.json();
+	      return window.cachedContentTypes.then(function (contentTypes) {
+	        return contentTypes.filter(function (contentType) {
+	          return contentType.id === id;
+	        })[0];
 	      });
+	
+	      /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {
+	        method: 'GET',
+	        credentials: 'include'
+	      }).then(result => result.json());*/
 	    }
 	
 	    /**
@@ -1458,9 +1499,12 @@
 	     */
 	
 	  }, {
-	    key: "installContentType",
+	    key: 'installContentType',
 	    value: function installContentType(id) {
-	      return fetch(this.rootUrl + "/contenttypes/" + id + "/install").then(function (result) {
+	      return fetch(this.apiRootUrl + 'content_type_cache/' + id + '/install', {
+	        method: 'GET',
+	        credentials: 'include'
+	      }).then(function (result) {
 	        return result.json();
 	      });
 	    }
@@ -3763,7 +3807,7 @@
 	      // description
 	      var description = document.createElement('div');
 	      description.className = 'content-type-list-description';
-	      description.innerHTML = contentType.shortDescription;
+	      description.innerHTML = contentType.summary;
 	
 	      // list item
 	      var row = document.createElement('li');
@@ -3829,7 +3873,7 @@
 	
 	    // services
 	    this.services = new _hubServices2.default({
-	      rootUrl: '/test/mock/api'
+	      apiRootUrl: state.apiRootUrl
 	    });
 	
 	    // views

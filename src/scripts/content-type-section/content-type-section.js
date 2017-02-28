@@ -9,6 +9,9 @@ import {Eventful} from '../mixins/eventful';
  * @mixes Eventful
  */
 export default class ContentTypeSection {
+  /**
+   * @param {HubState} state
+   */
   constructor(state) {
     // add event system
     Object.assign(this, Eventful());
@@ -17,9 +20,9 @@ export default class ContentTypeSection {
     this.view = new ContentTypeSectionView(state);
 
     // controller
-    this.searchService = new SearchService();
+    this.searchService = new SearchService({ apiRootUrl: state.apiRootUrl });
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail();
+    this.contentTypeDetail = new ContentTypeDetail({ apiRootUrl: state.apiRootUrl });
 
     // add menu items
     ['My Content Types', 'Newest', 'Most Popular', 'Recommended']
@@ -48,9 +51,7 @@ export default class ContentTypeSection {
   initContentTypeList() {
     // initialize by search
     this.searchService.search("")
-      .then(contentTypes => {
-        this.contentTypeList.update(contentTypes)
-      });
+      .then(contentTypes => this.contentTypeList.update(contentTypes));
   }
 
   /**
