@@ -434,55 +434,46 @@
 	var _functional = __webpack_require__(5);
 	
 	/**
-	 * @const
-	 * @type {string}
+	 * @type {function}
 	 */
-	var ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
+	var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
 	
 	/**
 	 * @type {function}
 	 */
-	var selectExpandable = (0, _elements.querySelector)('[aria-expanded]');
+	var hide = (0, _elements.setAttribute)('aria-hidden', 'true');
 	
 	/**
 	 * @type {function}
 	 */
-	var getAriaControls = (0, _elements.getAttribute)('aria-controls');
+	var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 	
 	/**
-	 * @type {function}
+	 * Toggles the body visibility
+	 *
+	 * @param {HTMLElement} bodyElement
+	 * @param {boolean} isExpanded
 	 */
-	var isExpanded = (0, _elements.attributeEquals)(ATTRIBUTE_ARIA_EXPANDED, 'true');
-	
-	/**
-	 * @type {function}
-	 */
-	var setAriaHiddenTrue = (0, _elements.setAttribute)('aria-hidden', 'true');
-	
-	/**
-	 * @type {function}
-	 */
-	var setAriaHiddenFalse = (0, _elements.setAttribute)('aria-hidden', 'false');
-	
-	/**
-	 * @type {function}
-	 */
-	var isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
-	
-	/**
-	 * @type {Function}
-	 */
-	var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
-	  var titleEl = mutation.target;
-	
-	  if (isExpanded(titleEl)) {
-	    setAriaHiddenFalse(bodyElement);
-	    console.log(bodyElement.offsetHeight + 'px');
+	var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
+	  if (isExpanded) {
+	    show(bodyElement);
 	    bodyElement.style.height = bodyElement.scrollHeight + 'px';
 	  } else {
-	    setAriaHiddenTrue(bodyElement);
+	    hide(bodyElement);
 	    bodyElement.style.height = "0";
 	  }
+	};
+	
+	/**
+	 * Handles changes to aria-expanded
+	 *
+	 * @param {HTMLElement} bodyElement
+	 * @param {MutationRecord} event
+	 *
+	 * @function
+	 */
+	var onAriaExpandedChange = (0, _functional.curry)(function (bodyElement, event) {
+	  toggleBodyVisibility(bodyElement, isExpanded(event.target));
 	});
 	
 	/**
@@ -492,28 +483,26 @@
 	 * @return {HTMLElement}
 	 */
 	function init(element) {
-	  var titleEl = selectExpandable(element);
-	  var bodyId = getAriaControls(titleEl);
+	  var titleEl = element.querySelector('[aria-expanded]');
+	  var bodyId = titleEl.getAttribute('aria-controls');
 	  var bodyEl = element.querySelector('#' + bodyId);
 	
 	  if (titleEl) {
 	    // set observer on title for aria-expanded
-	    var observer = new MutationObserver((0, _functional.forEach)(toggleBodyVisibility(bodyEl)));
+	    var observer = new MutationObserver((0, _functional.forEach)(onAriaExpandedChange(bodyEl)));
 	
 	    observer.observe(titleEl, {
 	      attributes: true,
 	      attributeOldValue: true,
-	      attributeFilter: [ATTRIBUTE_ARIA_EXPANDED]
+	      attributeFilter: ["aria-expanded"]
 	    });
 	
 	    // Set click listener that toggles aria-expanded
 	    titleEl.addEventListener('click', function (event) {
-	      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
+	      (0, _elements.toggleAttribute)("aria-expanded", event.target);
 	    });
 	
-	    toggleBodyVisibility(bodyEl, {
-	      target: titleEl
-	    });
+	    toggleBodyVisibility(bodyEl, isExpanded(titleEl));
 	  }
 	
 	  return element;
@@ -829,16 +818,6 @@
 	/**
 	 * @type {function}
 	 */
-	var getWhereRoleIsTab = (0, _elements.querySelectorAll)('[role="tab"]');
-	
-	/**
-	 * @type {function}
-	 */
-	var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
-	
-	/**
-	 * @type {function}
-	 */
 	var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
 	
 	/**
@@ -849,28 +828,26 @@
 	/**
 	 * @type {function}
 	 */
-	var setAriaSelectedFalse = (0, _elements.setAttribute)('aria-selected', 'false');
+	var unSelectAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-selected', 'false'));
 	
 	/**
-	 * @type {function}
+	 * Initiates a tab panel
+	 *
+	 * @param {HTMLElement} element
 	 */
-	var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
-	
 	function init(element) {
-	  var tabs = getWhereRoleIsTab(element);
-	  var tabPanels = getWhereRoleIsTabPanel(element);
+	  var tabs = element.querySelectorAll('[role="tab"]');
+	  var tabPanels = element.querySelectorAll('[role="tabpanel"]');
 	
 	  tabs.forEach(function (tab) {
 	    tab.addEventListener('click', function (event) {
 	
-	      setAllAriaSelectedFalse(tabs);
+	      unSelectAll(tabs);
 	      event.target.setAttribute('aria-selected', 'true');
 	
 	      hideAll(tabPanels);
 	
 	      var tabPanelId = event.target.getAttribute('aria-controls');
-	      var targetTabPanel = element.querySelector('#' + tabPanelId);
-	
 	      show(element.querySelector('#' + tabPanelId));
 	    });
 	  });
