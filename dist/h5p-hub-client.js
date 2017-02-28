@@ -946,39 +946,95 @@
 	    this.propagate(['select'], this.contentTypeList);
 	    this.propagate(['select'], this.contentTypeDetail);
 	
-	    // registers listeners
-	    this.view.on('search', function (_ref) {
-	      var query = _ref.query;
+	    // register listeners
+	    this.view.on('search', this.search, this);
+	    this.view.on('menu-selected', this.applySearchFilter, this);
+	    this.contentTypeList.on('row-selected', this.showDetailView, this);
+	    this.contentTypeDetail.on('close', this.closeDetailView, this);
 	
-	      _this.searchService.search(query).then(_this.contentTypeList.update.bind(_this.contentTypeList));
-	    });
-	
-	    this.view.on('menu-selected', function (event) {
-	      console.debug('ContentTypeSection: menu was clicked!', event);
-	    });
-	
-	    this.contentTypeList.on('row-selected', function (_ref2) {
-	      var id = _ref2.id;
-	
-	      _this.contentTypeList.hide();
-	      _this.contentTypeDetail.loadById(id);
-	      _this.contentTypeDetail.show();
-	      _this.fire('resize');
-	    });
-	
-	    this.contentTypeDetail.on('close', function () {
-	      _this.contentTypeDetail.hide();
-	      _this.contentTypeList.show();
-	      _this.fire('resize');
-	    });
-	
-	    // initialize by search
-	    this.searchService.search("").then(function (contentTypes) {
-	      _this.contentTypeList.update(contentTypes);
-	    });
+	    this.initContentTypeList();
 	  }
 	
+	  /**
+	   * Initiates the content type list with a search
+	   */
+	
+	
 	  _createClass(ContentTypeSection, [{
+	    key: "initContentTypeList",
+	    value: function initContentTypeList() {
+	      var _this2 = this;
+	
+	      // initialize by search
+	      this.searchService.search("").then(function (contentTypes) {
+	        _this2.contentTypeList.update(contentTypes);
+	      });
+	    }
+	
+	    /**
+	     * Executes a search and updates the content type list
+	     *
+	     * @param {string} query
+	     */
+	
+	  }, {
+	    key: "search",
+	    value: function search(_ref) {
+	      var _this3 = this;
+	
+	      var query = _ref.query;
+	
+	      this.searchService.search(query).then(function (contentTypes) {
+	        return _this3.contentTypeList.update(contentTypes);
+	      });
+	    }
+	
+	    /**
+	     * Should apply a search filter
+	     */
+	
+	  }, {
+	    key: "applySearchFilter",
+	    value: function applySearchFilter() {
+	      console.debug('ContentTypeSection: menu was clicked!', event);
+	    }
+	
+	    /**
+	     * Shows detail view
+	     *
+	     * @param {string} id
+	     */
+	
+	  }, {
+	    key: "showDetailView",
+	    value: function showDetailView(_ref2) {
+	      var id = _ref2.id;
+	
+	      this.contentTypeList.hide();
+	      this.contentTypeDetail.loadById(id);
+	      this.contentTypeDetail.show();
+	      this.fire('resize');
+	    }
+	
+	    /**
+	     * Close detail view
+	     */
+	
+	  }, {
+	    key: "closeDetailView",
+	    value: function closeDetailView() {
+	      this.contentTypeDetail.hide();
+	      this.contentTypeList.show();
+	      this.fire('resize');
+	    }
+	
+	    /**
+	     * Returns the element
+	     *
+	     * @return {HTMLElement}
+	     */
+	
+	  }, {
 	    key: "getElement",
 	    value: function getElement() {
 	      return this.view.getElement();
@@ -1008,7 +1064,15 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	/**
+	 * @class ContentBrowserView
+	 * @mixes Eventful
+	 */
 	var ContentBrowserView = function () {
+	  /**
+	   * @constructor
+	   * @param {object} state
+	   */
 	  function ContentBrowserView(state) {
 	    _classCallCheck(this, ContentBrowserView);
 	
@@ -1059,7 +1123,7 @@
 	        element.setAttribute('aria-selected', 'true');
 	      }
 	
-	      // add to menubar
+	      // add to menu bar
 	      this.menuBarElement.appendChild(element);
 	
 	      return element;

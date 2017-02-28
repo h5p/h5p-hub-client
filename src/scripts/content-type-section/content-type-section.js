@@ -34,28 +34,18 @@ export default class ContentTypeSection {
     this.propagate(['select'], this.contentTypeDetail);
 
     // register listeners
-    this.view.on('search', ({query}) => {
-      this.searchService.search(query)
-        .then(this.contentTypeList.update.bind(this.contentTypeList));
-    });
+    this.view.on('search', this.search, this);
+    this.view.on('menu-selected', this.applySearchFilter, this);
+    this.contentTypeList.on('row-selected', this.showDetailView, this);
+    this.contentTypeDetail.on('close', this.closeDetailView, this);
 
-    this.view.on('menu-selected', event => {
-      console.debug('ContentTypeSection: menu was clicked!', event);
-    });
+    this.initContentTypeList();
+  }
 
-    this.contentTypeList.on('row-selected', ({id}) => {
-      this.contentTypeList.hide();
-      this.contentTypeDetail.loadById(id);
-      this.contentTypeDetail.show();
-      this.fire('resize');
-    });
-
-    this.contentTypeDetail.on('close', () => {
-      this.contentTypeDetail.hide();
-      this.contentTypeList.show();
-      this.fire('resize');
-    });
-
+  /**
+   * Initiates the content type list with a search
+   */
+  initContentTypeList() {
     // initialize by search
     this.searchService.search("")
       .then(contentTypes => {
@@ -63,6 +53,50 @@ export default class ContentTypeSection {
       });
   }
 
+  /**
+   * Executes a search and updates the content type list
+   *
+   * @param {string} query
+   */
+  search({query}) {
+    this.searchService.search(query)
+      .then(contentTypes => this.contentTypeList.update(contentTypes));
+  }
+
+  /**
+   * Should apply a search filter
+   */
+  applySearchFilter() {
+    console.debug('ContentTypeSection: menu was clicked!', event);
+  }
+
+  /**
+   * Shows detail view
+   *
+   * @param {string} id
+   */
+  showDetailView({id}) {
+    this.contentTypeList.hide();
+    this.contentTypeDetail.loadById(id);
+    this.contentTypeDetail.show();
+    this.fire('resize');
+  }
+
+
+  /**
+   * Close detail view
+   */
+  closeDetailView() {
+    this.contentTypeDetail.hide();
+    this.contentTypeList.show();
+    this.fire('resize');
+  }
+
+  /**
+   * Returns the element
+   *
+   * @return {HTMLElement}
+   */
   getElement() {
     return this.view.getElement();
   }
