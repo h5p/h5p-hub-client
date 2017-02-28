@@ -1,109 +1,116 @@
 import {Eventful} from '../mixins/eventful';
 
+/**
+ * @class ContentBrowserView
+ * @mixes Eventful
+ */
 export default class ContentBrowserView {
+  /**
+   * @constructor
+   * @param {object} state
+   */
   constructor(state) {
-    this.state = state;
-
     // add event system
     Object.assign(this, Eventful());
 
-    this.rootElement = document.createElement('div');
-    this.rootElement.appendChild(this.renderMenuGroup());
+    // create elements
+    const menu = this.createMenuElement();
+    const inputGroup = this.createInputGroupElement();
+
+    // menu group
+    const menuGroup = document.createElement('div');
+    menuGroup.className = 'menu-group';
+    menuGroup.appendChild(menu);
+    menuGroup.appendChild(inputGroup);
+
+    // root element
+    this.rootElement  = document.createElement('div');
+    this.rootElement.appendChild(menuGroup);
   }
 
   /**
-   * Adds a listener to the input field, and registers a callback with it
+   * Adds a menu item
    *
-   * @param {function} callback
-   * @param {object} [scope]
+   * @param {string} text
+   *
+   * @return {HTMLElement}
    */
-  onInputFieldKeyDown(callback, scope) {
-    this.inputFieldElement.addEventListener('keyup', event => {
-      callback.call(scope || this, event.target.value, this.inputFieldElement);
-    });
-  }
-
-  renderMenuItem(title, index) {
+  addMenuItem(text) {
     const element = document.createElement('li');
     element.setAttribute('role', 'menuitem');
-    element.innerHTML = title;
+    element.innerHTML = text;
 
-    //TODO remove after demo
-    if (index === 0) {
+    element.addEventListener('click', event => {
+      this.fire('menu-selected', {
+        element: event.target
+      });
+    });
+
+    // sets first to be selected
+    if(this.menuBarElement.childElementCount < 1) {
       element.setAttribute('aria-selected', 'true');
     }
 
+    // add to menu bar
+    this.menuBarElement.appendChild(element);
+
     return element;
-  };
+  }
 
-  renderMenu(state) {
-    /**
-     * @type {HTMLElement}
-     */
-    const menubar = document.createElement('ul');
-    menubar.setAttribute('role', 'menubar');
-    menubar.className = 'h5p-menu';
+  /**
+   * Creates the menu bar element
+   *
+   * @return {Element}
+   */
+  createMenuElement() {
+    this.menuBarElement = document.createElement('ul');
+    this.menuBarElement.setAttribute('role', 'menubar');
+    this.menuBarElement.className = 'h5p-menu';
 
-    let menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Recommended'];
-    menuItems
-      .map(this.renderMenuItem)
-      .forEach(menubar.appendChild.bind(menubar));
+    const navElement = document.createElement('nav');
+    navElement.appendChild(this.menuBarElement);
 
-    /**
-     * @type {HTMLElement}
-     */
-    const menuItemListWrapper = document.createElement('nav');
-    menuItemListWrapper.appendChild(menubar);
+    const title = document.createElement('div');
+    title.className = "menu-title";
+    title.innerHTML = "Browse content types";
 
-    /**
-     * @type {HTMLElement}
-     */
-    const menuTitle = document.createElement('div');
-    menuTitle.className = "menu-title";
-    menuTitle.innerHTML = "Browse content types";
-
-    /**
-     * @type {HTMLElement}
-     */
     const menu = document.createElement('div');
     menu.className = "menu";
-    menu.appendChild(menuTitle);
-    menu.appendChild(menuItemListWrapper);
+    menu.appendChild(title);
+    menu.appendChild(navElement);
 
     return menu;
   }
 
-  renderMenuGroup() {
-    const menuGroup = document.createElement('div');
-    menuGroup.className = 'menu-group';
-    const menu = this.renderMenu();
-    const inputGroup = this.renderInputGroup();
-    menuGroup.appendChild(menu);
-    menuGroup.appendChild(inputGroup);
-    return menuGroup;
-  }
-
-  renderInputField() {
+  /**
+   * Creates the input group used for search
+   *
+   * @return {HTMLElement}
+   */
+  createInputGroupElement() {
+    // input field
     const inputField = document.createElement('input');
     inputField.className = 'hub-search shadow';
     inputField.setAttribute('type', 'text');
     inputField.setAttribute('placeholder', "Search for Content Types");
-    this.inputFieldElement = inputField;
-    return inputField;
-  }
+    inputField.addEventListener('keyup', event => {
+      this.fire('search', {
+        element: event.target,
+        query: event.target.value
+      });
+    });
 
-  renderInputButton(title) {
+    // input button
     const inputButton = document.createElement('div');
     inputButton.className = 'input-button icon-search';
-    return inputButton;
-  }
 
-  renderInputGroup(buttonTitle) {
+    // input group
     const inputGroup = document.createElement('div');
     inputGroup.className = 'input-group rounded shadow';
-    inputGroup.appendChild(this.renderInputField());
-    inputGroup.appendChild(this.renderInputButton(buttonTitle));
+    inputGroup.appendChild(inputField);
+    inputGroup.appendChild(inputButton);
 
+    // wrapper
     const inputGroupWrapper = document.createElement('div');
     inputGroupWrapper.className = 'input-group-wrapper rounded';
     inputGroupWrapper.appendChild(inputGroup);

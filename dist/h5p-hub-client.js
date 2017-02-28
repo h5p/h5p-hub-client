@@ -477,6 +477,7 @@
 	
 	  if (isExpanded(titleEl)) {
 	    setAriaHiddenFalse(bodyElement);
+	    console.log(bodyElement.offsetHeight + 'px');
 	    bodyElement.style.height = bodyElement.scrollHeight + 'px';
 	  } else {
 	    setAriaHiddenTrue(bodyElement);
@@ -510,10 +511,9 @@
 	      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
 	    });
 	
-	    // set height to 0, if aria-hidden
-	    if (isHidden(bodyEl)) {
-	      bodyEl.style.height = "0";
-	    }
+	    toggleBodyVisibility(bodyEl, {
+	      target: titleEl
+	    });
 	  }
 	
 	  return element;
@@ -933,6 +933,11 @@
 	    this.contentTypeList = new _contentTypeList2.default();
 	    this.contentTypeDetail = new _contentTypeDetail2.default();
 	
+	    // add menu items
+	    ['My Content Types', 'Newest', 'Most Popular', 'Recommended'].forEach(function (menuText) {
+	      return _this.view.addMenuItem(menuText);
+	    });
+	
 	    // set sub view (TODO find other way)
 	    this.view.getElement().appendChild(this.contentTypeList.getElement());
 	    this.view.getElement().appendChild(this.contentTypeDetail.getElement());
@@ -942,8 +947,18 @@
 	    this.propagate(['select'], this.contentTypeDetail);
 	
 	    // registers listeners
-	    this.contentTypeList.on('row-selected', function (_ref) {
-	      var id = _ref.id;
+	    this.view.on('search', function (_ref) {
+	      var query = _ref.query;
+	
+	      _this.searchService.search(query).then(_this.contentTypeList.update.bind(_this.contentTypeList));
+	    });
+	
+	    this.view.on('menu-selected', function (event) {
+	      console.debug('ContentTypeSection: menu was clicked!', event);
+	    });
+	
+	    this.contentTypeList.on('row-selected', function (_ref2) {
+	      var id = _ref2.id;
 	
 	      _this.contentTypeList.hide();
 	      _this.contentTypeDetail.loadById(id);
@@ -956,10 +971,6 @@
 	      _this.contentTypeList.show();
 	      _this.fire('resize');
 	    });
-	
-	    this.view.onInputFieldKeyDown(function (text) {
-	      this.searchService.search(text).then(this.contentTypeList.update.bind(this.contentTypeList));
-	    }, this);
 	
 	    // initialize by search
 	    this.searchService.search("").then(function (contentTypes) {
@@ -1001,118 +1012,121 @@
 	  function ContentBrowserView(state) {
 	    _classCallCheck(this, ContentBrowserView);
 	
-	    this.state = state;
-	
 	    // add event system
 	    _extends(this, (0, _eventful.Eventful)());
 	
+	    // create elements
+	    var menu = this.createMenuElement();
+	    var inputGroup = this.createInputGroupElement();
+	
+	    // menu group
+	    var menuGroup = document.createElement('div');
+	    menuGroup.className = 'menu-group';
+	    menuGroup.appendChild(menu);
+	    menuGroup.appendChild(inputGroup);
+	
+	    // root element
 	    this.rootElement = document.createElement('div');
-	    this.rootElement.appendChild(this.renderMenuGroup());
+	    this.rootElement.appendChild(menuGroup);
 	  }
 	
 	  /**
-	   * Adds a listener to the input field, and registers a callback with it
+	   * Adds a menu item
 	   *
-	   * @param {function} callback
-	   * @param {object} [scope]
+	   * @param {string} text
+	   *
+	   * @return {HTMLElement}
 	   */
 	
 	
 	  _createClass(ContentBrowserView, [{
-	    key: 'onInputFieldKeyDown',
-	    value: function onInputFieldKeyDown(callback, scope) {
+	    key: 'addMenuItem',
+	    value: function addMenuItem(text) {
 	      var _this = this;
 	
-	      this.inputFieldElement.addEventListener('keyup', function (event) {
-	        callback.call(scope || _this, event.target.value, _this.inputFieldElement);
-	      });
-	    }
-	  }, {
-	    key: 'renderMenuItem',
-	    value: function renderMenuItem(title, index) {
 	      var element = document.createElement('li');
 	      element.setAttribute('role', 'menuitem');
-	      element.innerHTML = title;
+	      element.innerHTML = text;
 	
-	      //TODO remove after demo
-	      if (index === 0) {
+	      element.addEventListener('click', function (event) {
+	        _this.fire('menu-selected', {
+	          element: event.target
+	        });
+	      });
+	
+	      // sets first to be selected
+	      if (this.menuBarElement.childElementCount < 1) {
 	        element.setAttribute('aria-selected', 'true');
 	      }
 	
+	      // add to menubar
+	      this.menuBarElement.appendChild(element);
+	
 	      return element;
 	    }
+	
+	    /**
+	     * Creates the menu bar element
+	     *
+	     * @return {Element}
+	     */
+	
 	  }, {
-	    key: 'renderMenu',
-	    value: function renderMenu(state) {
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      var menubar = document.createElement('ul');
-	      menubar.setAttribute('role', 'menubar');
-	      menubar.className = 'h5p-menu';
+	    key: 'createMenuElement',
+	    value: function createMenuElement() {
+	      this.menuBarElement = document.createElement('ul');
+	      this.menuBarElement.setAttribute('role', 'menubar');
+	      this.menuBarElement.className = 'h5p-menu';
 	
-	      var menuItems = ['My Content Types', 'Newest', 'Most Popular', 'Recommended'];
-	      menuItems.map(this.renderMenuItem).forEach(menubar.appendChild.bind(menubar));
+	      var navElement = document.createElement('nav');
+	      navElement.appendChild(this.menuBarElement);
 	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      var menuItemListWrapper = document.createElement('nav');
-	      menuItemListWrapper.appendChild(menubar);
+	      var title = document.createElement('div');
+	      title.className = "menu-title";
+	      title.innerHTML = "Browse content types";
 	
-	      /**
-	       * @type {HTMLElement}
-	       */
-	      var menuTitle = document.createElement('div');
-	      menuTitle.className = "menu-title";
-	      menuTitle.innerHTML = "Browse content types";
-	
-	      /**
-	       * @type {HTMLElement}
-	       */
 	      var menu = document.createElement('div');
 	      menu.className = "menu";
-	      menu.appendChild(menuTitle);
-	      menu.appendChild(menuItemListWrapper);
+	      menu.appendChild(title);
+	      menu.appendChild(navElement);
 	
 	      return menu;
 	    }
+	
+	    /**
+	     * Creates the input group used for search
+	     *
+	     * @return {HTMLElement}
+	     */
+	
 	  }, {
-	    key: 'renderMenuGroup',
-	    value: function renderMenuGroup() {
-	      var menuGroup = document.createElement('div');
-	      menuGroup.className = 'menu-group';
-	      var menu = this.renderMenu();
-	      var inputGroup = this.renderInputGroup();
-	      menuGroup.appendChild(menu);
-	      menuGroup.appendChild(inputGroup);
-	      return menuGroup;
-	    }
-	  }, {
-	    key: 'renderInputField',
-	    value: function renderInputField() {
+	    key: 'createInputGroupElement',
+	    value: function createInputGroupElement() {
+	      var _this2 = this;
+	
+	      // input field
 	      var inputField = document.createElement('input');
 	      inputField.className = 'hub-search shadow';
 	      inputField.setAttribute('type', 'text');
 	      inputField.setAttribute('placeholder', "Search for Content Types");
-	      this.inputFieldElement = inputField;
-	      return inputField;
-	    }
-	  }, {
-	    key: 'renderInputButton',
-	    value: function renderInputButton(title) {
+	      inputField.addEventListener('keyup', function (event) {
+	        _this2.fire('search', {
+	          element: event.target,
+	          query: event.target.value
+	        });
+	      });
+	
+	      // input button
 	      var inputButton = document.createElement('div');
 	      inputButton.className = 'input-button icon-search';
-	      return inputButton;
-	    }
-	  }, {
-	    key: 'renderInputGroup',
-	    value: function renderInputGroup(buttonTitle) {
+	
+	      // input group
 	      var inputGroup = document.createElement('div');
 	      inputGroup.className = 'input-group rounded shadow';
-	      inputGroup.appendChild(this.renderInputField());
-	      inputGroup.appendChild(this.renderInputButton(buttonTitle));
+	      inputGroup.appendChild(inputField);
+	      inputGroup.appendChild(inputButton);
 	
+	      // wrapper
 	      var inputGroupWrapper = document.createElement('div');
 	      inputGroupWrapper.className = 'input-group-wrapper rounded';
 	      inputGroupWrapper.appendChild(inputGroup);

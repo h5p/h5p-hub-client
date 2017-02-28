@@ -21,6 +21,10 @@ export default class ContentTypeSection {
     this.contentTypeList = new ContentTypeList();
     this.contentTypeDetail = new ContentTypeDetail();
 
+    // add menu items
+    ['My Content Types', 'Newest', 'Most Popular', 'Recommended']
+      .forEach(menuText => this.view.addMenuItem(menuText));
+
     // set sub view (TODO find other way)
     this.view.getElement().appendChild(this.contentTypeList.getElement());
     this.view.getElement().appendChild(this.contentTypeDetail.getElement());
@@ -29,7 +33,16 @@ export default class ContentTypeSection {
     this.propagate(['select'], this.contentTypeList);
     this.propagate(['select'], this.contentTypeDetail);
 
-    // registers listeners
+    // register listeners
+    this.view.on('search', ({query}) => {
+      this.searchService.search(query)
+        .then(this.contentTypeList.update.bind(this.contentTypeList));
+    });
+
+    this.view.on('menu-selected', event => {
+      console.debug('ContentTypeSection: menu was clicked!', event);
+    });
+
     this.contentTypeList.on('row-selected', ({id}) => {
       this.contentTypeList.hide();
       this.contentTypeDetail.loadById(id);
@@ -42,11 +55,6 @@ export default class ContentTypeSection {
       this.contentTypeList.show();
       this.fire('resize');
     });
-
-    this.view.onInputFieldKeyDown(function(text){
-      this.searchService.search(text)
-        .then(this.contentTypeList.update.bind(this.contentTypeList));
-    }, this);
 
     // initialize by search
     this.searchService.search("")
