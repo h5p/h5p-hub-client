@@ -10,7 +10,7 @@
  * @property {boolean} recommended
  * @property {number} timesDownloaded
  * @property {string[]} screenshots
- * @property {string} exampleContent
+ * @property {string} example
  * @property {string[]} keywords
  * @property {string[]} categories
  * @property {string} license

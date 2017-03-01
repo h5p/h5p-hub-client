@@ -1,14 +1,38 @@
 @import "~h5p-sdk/src/styles/base/colors";
+@import "~h5p-sdk/src/styles/base/variables";
 @import "~susy/sass/susy";
 
 .h5p-hub {
   .content-type-detail {
-    .description {
-      @include span(3 of 12)
-    }
+    padding: $padding;
 
     &[aria-hidden="true"] {
       display: none;
+    }
+
+    .container {
+      @include container;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .image-wrapper {
+      @include span(first 4 of 12);
+    }
+
+    .text-details {
+      @include span(last 8 of 12);
+    }
+
+    .button-bar {
+      overflow: auto;
+      margin-bottom: $padding;
+
+      .button {
+        float: right;
+      }
     }
 
     .back-button:before {

@@ -29,7 +29,7 @@ export default class HubView {
    * Closes the panel
    */
   closePanel() {
-    this.titleElement.setAttribute('aria-expanded', 'false')
+    this.title.setAttribute('aria-expanded', 'false')
   }
 
   /**
@@ -38,14 +38,14 @@ export default class HubView {
    * @param {string} title
    */
   setTitle(title) {
-    this.titleElement.innerHTML = title;
+    this.title.innerHTML = title;
   }
 
   /**
    * Resize the body of the panel
    */
   resize(){
-    if(isExpanded(this.titleElement)) {
+    if(isExpanded(this.title)) {
       this.bodyElement.style.height = `${this.bodyElement.scrollHeight}px`
     }
   }
@@ -61,11 +61,11 @@ export default class HubView {
     /**
      * @type {HTMLElement}
      */
-    this.titleElement = document.createElement('div');
-    this.titleElement.className += "panel-header icon-hub-icon";
-    this.titleElement.setAttribute('aria-expanded', expanded.toString());
-    this.titleElement.setAttribute('aria-controls', `panel-body-${sectionId}`);
-    this.titleElement.innerHTML = title || '';
+    this.title = document.createElement('div');
+    this.title.className += "panel-header icon-hub-icon";
+    this.title.setAttribute('aria-expanded', expanded.toString());
+    this.title.setAttribute('aria-controls', `panel-body-${sectionId}`);
+    this.title.innerHTML = title || '';
 
     /**
      * @type {HTMLElement}
@@ -84,7 +84,7 @@ export default class HubView {
      */
     this.rootElement = document.createElement('div');
     this.rootElement.className += `h5p-hub h5p-section-${sectionId} panel`;
-    this.rootElement.appendChild(this.titleElement);
+    this.rootElement.appendChild(this.title);
     this.rootElement.appendChild(this.bodyElement);
 
     initPanel(this.rootElement);

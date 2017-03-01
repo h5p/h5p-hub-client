@@ -462,7 +462,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @property {boolean} recommended
  * @property {number} timesDownloaded
  * @property {string[]} screenshots
- * @property {string} exampleContent
+ * @property {string} example
  * @property {string[]} keywords
  * @property {string[]} categories
  * @property {string} license
@@ -2861,6 +2861,27 @@ var _hide = (0, _elements.setAttribute)('aria-hidden', 'true');
 var _show = (0, _elements.setAttribute)('aria-hidden', 'false');
 
 /**
+ * Toggles the visibility if an element
+ *
+ * @param {HTMLElement} element
+ * @param {boolean} visible
+ */
+var toggleVisibility = function toggleVisibility(element, visible) {
+  return (visible ? _show : _hide)(element);
+};
+
+/**
+ * Checks if a string is empty
+ *
+ * @param {string} text
+ *
+ * @return {boolean}
+ */
+var isEmpty = function isEmpty(text) {
+  return typeof text === 'string' && text.length === 0;
+};
+
+/**
  * Propagates row selection trough the event system
  *
  * @param {Eventful} eventful
@@ -2880,6 +2901,11 @@ var relayClickEventAs = (0, _functional.curry)(function (type, eventful, element
   return element;
 });
 
+/**
+ * @class
+ * @mixes Eventful
+ */
+
 var ContentTypeDetailView = function () {
   function ContentTypeDetailView(state) {
     _classCallCheck(this, ContentTypeDetailView);
@@ -2887,42 +2913,63 @@ var ContentTypeDetailView = function () {
     // add event system
     _extends(this, (0, _eventful.Eventful)());
 
-    // image
-    this.imageElement = document.createElement('img');
-    this.imageElement.className = 'img-responsive';
-
-    // title
-    this.titleElement = document.createElement('h2');
-    this.titleElement.className = 'title';
-    this.titleElement.innerHTML = 'title';
-
     // back button
     var backButtonElement = document.createElement('div');
     backButtonElement.className = 'back-button icon-arrow-thick';
     relayClickEventAs('close', this, backButtonElement);
 
-    // detail
-    this.descriptioneElement = document.createElement('div');
-    this.descriptioneElement.className = 'description';
-    this.descriptioneElement.innerHTML = 'description';
+    // image
+    this.image = document.createElement('img');
+    this.image.className = 'img-responsive';
+
+    var imageWrapperElement = document.createElement('div');
+    imageWrapperElement.className = 'image-wrapper';
+    imageWrapperElement.appendChild(this.image);
+
+    // title
+    this.title = document.createElement('h2');
+    this.title.className = 'title';
+
+    // description
+    this.description = document.createElement('p');
+    this.description.className = 'description';
 
     // demo button
-    var demoButton = document.createElement('span');
-    demoButton.className = 'button';
-    demoButton.innerHTML = 'Content Demo';
-    relayClickEventAs('select', this, demoButton);
+    this.demoButton = document.createElement('a');
+    this.demoButton.className = 'button';
+    this.demoButton.innerHTML = 'Content Demo';
+    this.demoButton.setAttribute('target', '_blank');
+    _hide(this.demoButton);
+
+    var textDetails = document.createElement('div');
+    textDetails.className = 'text-details';
+    textDetails.appendChild(this.title);
+    textDetails.appendChild(this.description);
+    textDetails.appendChild(this.demoButton);
+
+    var detailsElement = document.createElement('div');
+    detailsElement.className = 'container';
+    detailsElement.appendChild(imageWrapperElement);
+    detailsElement.appendChild(textDetails);
 
     // use button
     this.useButton = document.createElement('span');
     this.useButton.className = 'button';
     this.useButton.innerHTML = 'Use';
+    _hide(this.useButton);
     relayClickEventAs('select', this, this.useButton);
 
     // install button
     this.installButton = document.createElement('span');
     this.installButton.className = 'button button-inverse';
     this.installButton.innerHTML = 'Install';
+    _hide(this.installButton);
     relayClickEventAs('install', this, this.installButton);
+
+    var buttonBar = document.createElement('div');
+    buttonBar.className = 'button-bar';
+    buttonBar.appendChild(this.useButton);
+    buttonBar.appendChild(this.installButton);
 
     // licence panel
     var licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
@@ -2941,12 +2988,8 @@ var ContentTypeDetailView = function () {
     this.rootElement.className = 'content-type-detail';
     this.rootElement.setAttribute('aria-hidden', 'true');
     this.rootElement.appendChild(backButtonElement);
-    this.rootElement.appendChild(this.imageElement);
-    this.rootElement.appendChild(this.titleElement);
-    this.rootElement.appendChild(this.descriptioneElement);
-    this.rootElement.appendChild(demoButton);
-    this.rootElement.appendChild(this.useButton);
-    this.rootElement.appendChild(this.installButton);
+    this.rootElement.appendChild(detailsElement);
+    this.rootElement.appendChild(buttonBar);
     this.rootElement.appendChild(panelGroupElement);
   }
 
@@ -2999,7 +3042,7 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setImage",
     value: function setImage(src) {
-      this.imageElement.setAttribute('src', src);
+      this.image.setAttribute('src', src);
     }
 
     /**
@@ -3024,7 +3067,7 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setTitle",
     value: function setTitle(title) {
-      this.titleElement.innerHTML = title;
+      this.title.innerHTML = title;
     }
 
     /**
@@ -3036,7 +3079,33 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setDescription",
     value: function setDescription(text) {
-      this.descriptioneElement.innerHTML = text;
+      this.description.innerHTML = text;
+    }
+
+    /**
+     * Sets the example url
+     *
+     * @param {string} url
+     */
+
+  }, {
+    key: "setExample",
+    value: function setExample(url) {
+      this.demoButton.setAttribute('href', url || '#');
+      toggleVisibility(this.demoButton, !isEmpty(url));
+    }
+
+    /**
+     * Sets if the content type is installed
+     *
+     * @param {boolean} installed
+     */
+
+  }, {
+    key: "setIsInstalled",
+    value: function setIsInstalled(installed) {
+      toggleVisibility(this.useButton, installed);
+      toggleVisibility(this.installButton, !installed);
     }
 
     /**
@@ -3201,6 +3270,8 @@ var ContentTypeDetail = function () {
       this.view.setTitle(contentType.title);
       this.view.setDescription(contentType.description);
       this.view.setImage(contentType.icon);
+      this.view.setExample(contentType.example);
+      this.view.setIsInstalled(!!contentType.installed);
     }
 
     /**
@@ -3887,7 +3958,7 @@ var HubView = function () {
   _createClass(HubView, [{
     key: "closePanel",
     value: function closePanel() {
-      this.titleElement.setAttribute('aria-expanded', 'false');
+      this.title.setAttribute('aria-expanded', 'false');
     }
 
     /**
@@ -3899,7 +3970,7 @@ var HubView = function () {
   }, {
     key: "setTitle",
     value: function setTitle(title) {
-      this.titleElement.innerHTML = title;
+      this.title.innerHTML = title;
     }
 
     /**
@@ -3909,7 +3980,7 @@ var HubView = function () {
   }, {
     key: "resize",
     value: function resize() {
-      if (isExpanded(this.titleElement)) {
+      if (isExpanded(this.title)) {
         this.bodyElement.style.height = this.bodyElement.scrollHeight + "px";
       }
     }
@@ -3933,11 +4004,11 @@ var HubView = function () {
       /**
        * @type {HTMLElement}
        */
-      this.titleElement = document.createElement('div');
-      this.titleElement.className += "panel-header icon-hub-icon";
-      this.titleElement.setAttribute('aria-expanded', expanded.toString());
-      this.titleElement.setAttribute('aria-controls', "panel-body-" + sectionId);
-      this.titleElement.innerHTML = title || '';
+      this.title = document.createElement('div');
+      this.title.className += "panel-header icon-hub-icon";
+      this.title.setAttribute('aria-expanded', expanded.toString());
+      this.title.setAttribute('aria-controls', "panel-body-" + sectionId);
+      this.title.innerHTML = title || '';
 
       /**
        * @type {HTMLElement}
@@ -3956,7 +4027,7 @@ var HubView = function () {
        */
       this.rootElement = document.createElement('div');
       this.rootElement.className += "h5p-hub h5p-section-" + sectionId + " panel";
-      this.rootElement.appendChild(this.titleElement);
+      this.rootElement.appendChild(this.title);
       this.rootElement.appendChild(this.bodyElement);
 
       (0, _panel2.default)(this.rootElement);

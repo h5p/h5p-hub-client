@@ -40,6 +40,10 @@
   .tab-panel {
     border: none;
 
+    [aria-hidden='true'] {
+      display: none;
+    }
+
     > nav > ul {
       background-color: $c4;
       border-bottom: none;

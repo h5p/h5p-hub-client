@@ -74,6 +74,8 @@ export default class ContentTypeDetail {
     this.view.setTitle(contentType.title);
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
+    this.view.setExample(contentType.example);
+    this.view.setIsInstalled(!!contentType.installed);
   }
 
   /**

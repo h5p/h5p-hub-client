@@ -19,6 +19,23 @@ const hide = setAttribute('aria-hidden', 'true');
 const show = setAttribute('aria-hidden', 'false');
 
 /**
+ * Toggles the visibility if an element
+ *
+ * @param {HTMLElement} element
+ * @param {boolean} visible
+ */
+const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
+
+/**
+ * Checks if a string is empty
+ *
+ * @param {string} text
+ *
+ * @return {boolean}
+ */
+const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
+
+/**
  * Propagates row selection trough the event system
  *
  * @param {Eventful} eventful
@@ -38,47 +55,72 @@ const relayClickEventAs = curry(function(type, eventful, element) {
   return element;
 });
 
+/**
+ * @class
+ * @mixes Eventful
+ */
 export default class ContentTypeDetailView {
   constructor(state) {
     // add event system
     Object.assign(this, Eventful());
-
-    // image
-    this.imageElement = document.createElement('img');
-    this.imageElement.className = 'img-responsive';
-
-    // title
-    this.titleElement = document.createElement('h2');
-    this.titleElement.className = 'title';
-    this.titleElement.innerHTML = 'title';
 
     // back button
     const backButtonElement = document.createElement('div');
     backButtonElement.className = 'back-button icon-arrow-thick';
     relayClickEventAs('close', this, backButtonElement);
 
-    // detail
-    this.descriptioneElement = document.createElement('div');
-    this.descriptioneElement.className = 'description';
-    this.descriptioneElement.innerHTML = 'description';
+    // image
+    this.image = document.createElement('img');
+    this.image.className = 'img-responsive';
+
+    const imageWrapperElement = document.createElement('div');
+    imageWrapperElement.className = 'image-wrapper';
+    imageWrapperElement.appendChild(this.image);
+
+    // title
+    this.title = document.createElement('h2');
+    this.title.className = 'title';
+
+    // description
+    this.description = document.createElement('p');
+    this.description.className = 'description';
 
     // demo button
-    const demoButton = document.createElement('span');
-    demoButton.className = 'button';
-    demoButton.innerHTML = 'Content Demo';
-    relayClickEventAs('select', this, demoButton);
+    this.demoButton = document.createElement('a');
+    this.demoButton.className = 'button';
+    this.demoButton.innerHTML = 'Content Demo';
+    this.demoButton.setAttribute('target', '_blank');
+    hide(this.demoButton);
+
+    const textDetails = document.createElement('div');
+    textDetails.className = 'text-details';
+    textDetails.appendChild(this.title);
+    textDetails.appendChild(this.description);
+    textDetails.appendChild(this.demoButton);
+
+    const detailsElement = document.createElement('div');
+    detailsElement.className = 'container';
+    detailsElement.appendChild(imageWrapperElement);
+    detailsElement.appendChild(textDetails);
 
     // use button
     this.useButton = document.createElement('span');
     this.useButton.className = 'button';
     this.useButton.innerHTML = 'Use';
+    hide(this.useButton);
     relayClickEventAs('select', this, this.useButton);
 
     // install button
     this.installButton = document.createElement('span');
     this.installButton.className = 'button button-inverse';
     this.installButton.innerHTML = 'Install';
+    hide(this.installButton);
     relayClickEventAs('install', this, this.installButton);
+
+    const buttonBar = document.createElement('div');
+    buttonBar.className = 'button-bar';
+    buttonBar.appendChild(this.useButton);
+    buttonBar.appendChild(this.installButton);
 
     // licence panel
     const licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
@@ -97,12 +139,8 @@ export default class ContentTypeDetailView {
     this.rootElement.className = 'content-type-detail';
     this.rootElement.setAttribute('aria-hidden', 'true');
     this.rootElement.appendChild(backButtonElement);
-    this.rootElement.appendChild(this.imageElement);
-    this.rootElement.appendChild(this.titleElement);
-    this.rootElement.appendChild(this.descriptioneElement);
-    this.rootElement.appendChild(demoButton);
-    this.rootElement.appendChild(this.useButton);
-    this.rootElement.appendChild(this.installButton);
+    this.rootElement.appendChild(detailsElement);
+    this.rootElement.appendChild(buttonBar);
     this.rootElement.appendChild(panelGroupElement);
   }
 
@@ -148,7 +186,7 @@ export default class ContentTypeDetailView {
    * @param {string} src
    */
   setImage(src) {
-    this.imageElement.setAttribute('src', src);
+    this.image.setAttribute('src', src);
   }
 
   /**
@@ -167,7 +205,7 @@ export default class ContentTypeDetailView {
    * @param {string} title
    */
   setTitle(title) {
-    this.titleElement.innerHTML = title;
+    this.title.innerHTML = title;
   }
 
   /**
@@ -176,7 +214,27 @@ export default class ContentTypeDetailView {
    * @param {string} text
    */
   setDescription(text) {
-    this.descriptioneElement.innerHTML = text;
+    this.description.innerHTML = text;
+  }
+
+  /**
+   * Sets the example url
+   *
+   * @param {string} url
+   */
+  setExample(url) {
+    this.demoButton.setAttribute('href', url || '#');
+    toggleVisibility(this.demoButton, !isEmpty(url));
+  }
+
+  /**
+   * Sets if the content type is installed
+   *
+   * @param {boolean} installed
+   */
+  setIsInstalled(installed) {
+    toggleVisibility(this.useButton, installed);
+    toggleVisibility(this.installButton, !installed);
   }
 
   /**
