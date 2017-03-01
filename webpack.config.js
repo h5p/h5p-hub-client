@@ -31,9 +31,9 @@ const config = {
         test: /\.scss$/,
         use: extractSass.extract({
           use: [{
-            loader: "css-loader"
+            loader: "css-loader?sourceMap"
           }, {
-            loader: "sass-loader"
+            loader: "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
           }],
 
           fallback: "style-loader"
