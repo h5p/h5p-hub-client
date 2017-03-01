@@ -57,10 +57,12 @@ export default class ContentTypeDetail {
    *
    * @return {Promise.<ContentType>}
    */
-  install({ id }) {
-    return this.services.installContentType(id)
-      .then(contentType => console.debug('TODO, gui updates'))
-  }
+   install({id}) {
+     return this.services.contentType(id)
+       .then(contentType => contentType.machineName)
+       .then(machineName => this.services.installContentType(machineName))
+       .then(contentType => console.debug('TODO, gui updates'))
+   }
 
   /**
    * Updates the view with the content type data

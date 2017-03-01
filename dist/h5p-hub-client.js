@@ -3175,9 +3175,15 @@ var ContentTypeDetail = function () {
   }, {
     key: "install",
     value: function install(_ref) {
+      var _this = this;
+
       var id = _ref.id;
 
-      return this.services.installContentType(id).then(function (contentType) {
+      return this.services.contentType(id).then(function (contentType) {
+        return contentType.machineName;
+      }).then(function (machineName) {
+        return _this.services.installContentType(machineName);
+      }).then(function (contentType) {
         return console.debug('TODO, gui updates');
       });
     }
