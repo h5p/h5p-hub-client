@@ -241,8 +241,6 @@ input:focus {
       content: " ";
       display: block;
       clear: both; }
-  .h5p-hub .content-type-detail img {
-    max-width: 100%; }
   .h5p-hub .content-type-detail .image-wrapper {
     width: 32.20339%;
     float: left;
@@ -328,3 +326,5 @@ input:focus {
 
 .input-button {
   font-size: 2.5em; }
+
+/*# sourceMappingURL=h5p-hub-client.css.map*/

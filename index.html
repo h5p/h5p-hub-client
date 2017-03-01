@@ -21,7 +21,8 @@
   <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
     const hubClient = new H5P.HubClient({
-      apiRootUrl: '/test/mock/api/'
+      apiRootUrl: '/test/mock/api/',
+      expanded: true
     });
 
     hubClient.on('select', event => {
