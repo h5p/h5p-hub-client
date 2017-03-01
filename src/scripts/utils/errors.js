@@ -4,19 +4,20 @@
  * @param  {string}   config.content      message content usually a 'h3' and a 'p'
  * @return {HTMLElement} div containing the message element
  */
-export const renderMessage = function(config) {
+export const renderErrorMessage = function(message) {
+  console.log(message);
   const closeButton = document.createElement('div');
   closeButton.className = 'close';
   closeButton.innerHTML = '&#x2715';
 
   const messageContent = document.createElement('div');
   messageContent.className = 'message-content';
-  messageContent.innerHTML = config.content;
+  messageContent.innerHTML = message.content;
 
   const messageWrapper = document.createElement('div');
-  messageWrapper.className = 'message' + ' ' + `${config.type}` + (config.dismissible ? ' dismissible' : '');
+  messageWrapper.className = 'message' + ' ' + `${message.type}` + (message.dismissible ? ' dismissible' : '');
   messageWrapper.appendChild(closeButton);
   messageWrapper.appendChild(messageContent);
-
+  console.log(messageWrapper);
   return messageWrapper;
 };

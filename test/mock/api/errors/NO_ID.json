@@ -1,0 +1,6 @@
+{
+  "messageCode": "NO_ID",
+  "type": "error",
+  "content": "No library id was specified for the endpoint",
+  "dismissible": true
+}

@@ -24,12 +24,30 @@ export default class HubServices {
     this.apiRootUrl = apiRootUrl;
 
     if(!window.cachedContentTypes){
-      window.cachedContentTypes = fetch(`${this.apiRootUrl}content_type_cache`, {
+      window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_ID.json`, {
         method: 'GET',
         credentials: 'include'
-      }).then(result => result.json()).then(json => json.libraries);
+      })
+      .then(result => result.json())
+      .then(this.isValid)
+      .then(json => json.libraries);
     }
 
+  }
+
+  /**
+   *
+   * @param  {Object} response
+   * @return {Promise<ContentType[] | ErrorMessage>}
+   */
+  isValid(response) {
+    if (response.errorCode) {
+      return Promise.reject(response);
+    }
+
+    else {
+      return Promise.resolve(response);
+    }
   }
 
   /**

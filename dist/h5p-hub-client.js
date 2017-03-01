@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 18);
+/******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -480,25 +480,41 @@ var HubServices = function () {
     this.apiRootUrl = apiRootUrl;
 
     if (!window.cachedContentTypes) {
-      window.cachedContentTypes = fetch(this.apiRootUrl + 'content_type_cache', {
+      window.cachedContentTypes = fetch(this.apiRootUrl + 'errors/NO_ID.json', {
         method: 'GET',
         credentials: 'include'
       }).then(function (result) {
         return result.json();
-      }).then(function (json) {
+      }).then(this.isValid).then(function (json) {
         return json.libraries;
       });
     }
   }
 
   /**
-   * Returns a list of content types
    *
-   * @return {Promise.<ContentType[]>}
+   * @param  {Object} response
+   * @return {Promise<ContentType[] | ErrorMessage>}
    */
 
 
   _createClass(HubServices, [{
+    key: 'isValid',
+    value: function isValid(response) {
+      if (response.errorCode) {
+        return Promise.reject(response);
+      } else {
+        return Promise.resolve(response);
+      }
+    }
+
+    /**
+     * Returns a list of content types
+     *
+     * @return {Promise.<ContentType[]>}
+     */
+
+  }, {
     key: 'contentTypes',
     value: function contentTypes() {
       return window.cachedContentTypes;
@@ -569,46 +585,54 @@ var _elements = __webpack_require__(2);
 var _functional = __webpack_require__(1);
 
 /**
- * @type {function}
+ * @const
+ * @type {string}
  */
-var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
+var ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
 
 /**
  * @type {function}
  */
-var hide = (0, _elements.setAttribute)('aria-hidden', 'true');
+var selectExpandable = (0, _elements.querySelector)('[aria-expanded]');
 
 /**
  * @type {function}
  */
-var show = (0, _elements.setAttribute)('aria-hidden', 'false');
+var getAriaControls = (0, _elements.getAttribute)('aria-controls');
 
 /**
- * Toggles the body visibility
- *
- * @param {HTMLElement} bodyElement
- * @param {boolean} isExpanded
+ * @type {function}
  */
-var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
-  if (isExpanded) {
-    show(bodyElement);
+var isExpanded = (0, _elements.attributeEquals)(ATTRIBUTE_ARIA_EXPANDED, 'true');
+
+/**
+ * @type {function}
+ */
+var setAriaHiddenTrue = (0, _elements.setAttribute)('aria-hidden', 'true');
+
+/**
+ * @type {function}
+ */
+var setAriaHiddenFalse = (0, _elements.setAttribute)('aria-hidden', 'false');
+
+/**
+ * @type {function}
+ */
+var isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
+
+/**
+ * @type {Function}
+ */
+var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
+  var titleEl = mutation.target;
+
+  if (isExpanded(titleEl)) {
+    setAriaHiddenFalse(bodyElement);
     bodyElement.style.height = bodyElement.scrollHeight + 'px';
   } else {
-    hide(bodyElement);
+    setAriaHiddenTrue(bodyElement);
     bodyElement.style.height = "0";
   }
-};
-
-/**
- * Handles changes to aria-expanded
- *
- * @param {HTMLElement} bodyElement
- * @param {MutationRecord} event
- *
- * @function
- */
-var onAriaExpandedChange = (0, _functional.curry)(function (bodyElement, event) {
-  toggleBodyVisibility(bodyElement, isExpanded(event.target));
 });
 
 /**
@@ -618,26 +642,29 @@ var onAriaExpandedChange = (0, _functional.curry)(function (bodyElement, event) 
  * @return {HTMLElement}
  */
 function init(element) {
-  var titleEl = element.querySelector('[aria-expanded]');
-  var bodyId = titleEl.getAttribute('aria-controls');
+  var titleEl = selectExpandable(element);
+  var bodyId = getAriaControls(titleEl);
   var bodyEl = element.querySelector('#' + bodyId);
 
   if (titleEl) {
     // set observer on title for aria-expanded
-    var observer = new MutationObserver((0, _functional.forEach)(onAriaExpandedChange(bodyEl)));
+    var observer = new MutationObserver((0, _functional.forEach)(toggleBodyVisibility(bodyEl)));
 
     observer.observe(titleEl, {
       attributes: true,
       attributeOldValue: true,
-      attributeFilter: ["aria-expanded"]
+      attributeFilter: [ATTRIBUTE_ARIA_EXPANDED]
     });
 
     // Set click listener that toggles aria-expanded
     titleEl.addEventListener('click', function (event) {
-      (0, _elements.toggleAttribute)("aria-expanded", event.target);
+      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
     });
 
-    toggleBodyVisibility(bodyEl, isExpanded(titleEl));
+    // set height to 0, if aria-hidden
+    if (isHidden(bodyEl)) {
+      bodyEl.style.height = "0";
+    }
   }
 
   return element;
@@ -827,6 +854,16 @@ var _functional = __webpack_require__(1);
 /**
  * @type {function}
  */
+var getWhereRoleIsTab = (0, _elements.querySelectorAll)('[role="tab"]');
+
+/**
+ * @type {function}
+ */
+var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
+
+/**
+ * @type {function}
+ */
 var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
 
 /**
@@ -837,26 +874,28 @@ var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 /**
  * @type {function}
  */
-var unSelectAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-selected', 'false'));
+var setAriaSelectedFalse = (0, _elements.setAttribute)('aria-selected', 'false');
 
 /**
- * Initiates a tab panel
- *
- * @param {HTMLElement} element
+ * @type {function}
  */
+var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
+
 function init(element) {
-  var tabs = element.querySelectorAll('[role="tab"]');
-  var tabPanels = element.querySelectorAll('[role="tabpanel"]');
+  var tabs = getWhereRoleIsTab(element);
+  var tabPanels = getWhereRoleIsTabPanel(element);
 
   tabs.forEach(function (tab) {
     tab.addEventListener('click', function (event) {
 
-      unSelectAll(tabs);
+      setAllAriaSelectedFalse(tabs);
       event.target.setAttribute('aria-selected', 'true');
 
       hideAll(tabPanels);
 
       var tabPanelId = event.target.getAttribute('aria-controls');
+      var targetTabPanel = element.querySelector('#' + tabPanelId);
+
       show(element.querySelector('#' + tabPanelId));
     });
   });
@@ -3756,6 +3795,8 @@ var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
 var _eventful = __webpack_require__(0);
 
+var _errors = __webpack_require__(18);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3814,12 +3855,15 @@ var ContentTypeSection = function () {
   _createClass(ContentTypeSection, [{
     key: "initContentTypeList",
     value: function initContentTypeList() {
-      var _this2 = this;
-
       // initialize by search
-      this.searchService.search("").then(function (contentTypes) {
-        return _this2.contentTypeList.update(contentTypes);
-      });
+      // this.searchService.search("")
+      //   .then(contentTypes => this.contentTypeList.update(contentTypes))
+      //   .catch(error => this.prependErrorMessage(error));
+    }
+  }, {
+    key: "prependErrorMessage",
+    value: function prependErrorMessage(config) {
+      var errorMessage = (0, _errors.renderErrorMessage)(config);
     }
 
     /**
@@ -3831,12 +3875,12 @@ var ContentTypeSection = function () {
   }, {
     key: "search",
     value: function search(_ref) {
-      var _this3 = this;
+      var _this2 = this;
 
       var query = _ref.query;
 
       this.searchService.search(query).then(function (contentTypes) {
-        return _this3.contentTypeList.update(contentTypes);
+        return _this2.contentTypeList.update(contentTypes);
       });
     }
 
@@ -4288,6 +4332,40 @@ exports.default = UploadSection;
 
 /***/ }),
 /* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @param  {string}   config.type         type of the message: info, success, error
+ * @param  {boolean}  config.dismissible  whether the message can be dismissed
+ * @param  {string}   config.content      message content usually a 'h3' and a 'p'
+ * @return {HTMLElement} div containing the message element
+ */
+var renderErrorMessage = exports.renderErrorMessage = function renderErrorMessage(message) {
+  console.log(message);
+  var closeButton = document.createElement('div');
+  closeButton.className = 'close';
+  closeButton.innerHTML = '&#x2715';
+
+  var messageContent = document.createElement('div');
+  messageContent.className = 'message-content';
+  messageContent.innerHTML = message.content;
+
+  var messageWrapper = document.createElement('div');
+  messageWrapper.className = 'message' + ' ' + ('' + message.type) + (message.dismissible ? ' dismissible' : '');
+  messageWrapper.appendChild(closeButton);
+  messageWrapper.appendChild(messageContent);
+  console.log(messageWrapper);
+  return messageWrapper;
+};
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
