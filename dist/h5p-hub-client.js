@@ -538,7 +538,7 @@ var HubServices = function () {
   }, {
     key: 'installContentType',
     value: function installContentType(id) {
-      return fetch(this.apiRootUrl + 'content_type_cache/' + id + '/install', {
+      return fetch(this.apiRootUrl + 'library_install?id=' + id, {
         method: 'GET',
         credentials: 'include'
       }).then(function (result) {
