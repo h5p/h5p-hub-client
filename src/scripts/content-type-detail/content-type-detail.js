@@ -70,7 +70,7 @@ export default class ContentTypeDetail {
   update(contentType) {
     this.view.setId(contentType.id);
     this.view.setTitle(contentType.title);
-    this.view.setLongDescription(contentType.longDescription);
+    this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
   }
 

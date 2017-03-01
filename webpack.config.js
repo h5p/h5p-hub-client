@@ -1,27 +1,47 @@
 var path = require('path');
-var WebpackAutoInject = require('webpack-auto-inject-version');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
+const extractSass = new ExtractTextPlugin({
+  filename: "h5p-hub-client.css"
+});
+
+
+const config = {
   entry: "./src/entries/dist.js",
-  devtool:  'source-map',
-  plugins: [
-    new WebpackAutoInject()
-  ],
   output: {
-    path: path.join(__dirname, '/dist'),
+    path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js"
   },
+  resolve: {
+    modules: [
+      path.resolve('./src'),
+      path.resolve('./node_modules'),
+      path.resolve('./node_modules/h5p-sdk/src/scripts')
+    ]
+  },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.js$/,
-        include: [
-          path.resolve(__dirname, "node_modules/h5p-sdk/src/scripts"),
-          path.resolve(__dirname, "src/scripts"),
-          path.resolve(__dirname, "src/entries")
-        ],
-        loader: 'babel'
+        test: /\.(js|jsx)$/,
+        use: 'babel-loader'
+      },
+      {
+        test: /\.scss$/,
+        loader: extractSass.extract({
+          loader: [{
+            loader: "css-loader"
+          }, {
+            loader: "sass-loader"
+          }],
+
+          fallbackLoader: "style-loader"
+        })
       }
     ]
-  }
+  },
+  plugins: [
+    extractSass
+  ]
 };
+
+module.exports = config;

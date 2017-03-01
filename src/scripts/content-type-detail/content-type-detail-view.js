@@ -1,7 +1,7 @@
-import { setAttribute, getAttribute } from "../../../node_modules/h5p-sdk/src/scripts/utils/elements";
-import { curry } from "../../../node_modules/h5p-sdk/src/scripts/utils/functional";
+import { setAttribute, getAttribute } from "utils/elements";
+import { curry } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
-import initPanel from "../../../node_modules/h5p-sdk/src/scripts/components/panel"
+import initPanel from "components/panel"
 
 /**
  * @constant {string}
@@ -49,19 +49,18 @@ export default class ContentTypeDetailView {
 
     // title
     this.titleElement = document.createElement('h2');
-    this.titleElement.className = 'content-type-detail';
+    this.titleElement.className = 'title';
     this.titleElement.innerHTML = 'title';
 
     // back button
     const backButtonElement = document.createElement('div');
-    backButtonElement.className = 'back-button';
-    backButtonElement.innerHTML = '<-';
+    backButtonElement.className = 'back-button icon-arrow-thick';
     relayClickEventAs('close', this, backButtonElement);
 
     // detail
-    this.longDescriptioneElement = document.createElement('div');
-    this.longDescriptioneElement.className = 'content-type-detail';
-    this.longDescriptioneElement.innerHTML = 'description';
+    this.descriptioneElement = document.createElement('div');
+    this.descriptioneElement.className = 'description';
+    this.descriptioneElement.innerHTML = 'description';
 
     // demo button
     const demoButton = document.createElement('span');
@@ -83,11 +82,15 @@ export default class ContentTypeDetailView {
 
     // licence panel
     const licencePanel = this.createPanel('The Licence Info', 'ipsum lorum', 'licence-panel');
+    const pluginsPanel = this.createPanel('Available plugins', 'ipsum lorum', 'plugins-panel');
+    const publisherPanel = this.createPanel('Publisher Info', 'ipsum lorum', 'publisher-panel');
 
     // panel group
     const panelGroupElement = document.createElement('div');
     panelGroupElement.className = 'panel-group';
     panelGroupElement.appendChild(licencePanel);
+    panelGroupElement.appendChild(pluginsPanel);
+    panelGroupElement.appendChild(publisherPanel);
 
     // add root element
     this.rootElement = document.createElement('div');
@@ -96,7 +99,7 @@ export default class ContentTypeDetailView {
     this.rootElement.appendChild(backButtonElement);
     this.rootElement.appendChild(this.imageElement);
     this.rootElement.appendChild(this.titleElement);
-    this.rootElement.appendChild(this.longDescriptioneElement);
+    this.rootElement.appendChild(this.descriptioneElement);
     this.rootElement.appendChild(demoButton);
     this.rootElement.appendChild(this.useButton);
     this.rootElement.appendChild(this.installButton);
@@ -172,8 +175,8 @@ export default class ContentTypeDetailView {
    *
    * @param {string} text
    */
-  setLongDescription(text) {
-    this.longDescriptioneElement.innerHTML = text;
+  setDescription(text) {
+    this.descriptioneElement.innerHTML = text;
   }
 
   /**

@@ -1,7 +1,19 @@
+@import "~h5p-sdk/src/styles/base/colors";
+@import "~susy/sass/susy";
+
 .h5p-hub {
   .content-type-detail {
+    .description {
+      @include span(3 of 12)
+    }
+
     &[aria-hidden="true"] {
       display: none;
+    }
+
+    .back-button:before {
+      font-size: 2em;
+      color: $text-dark;
     }
   }
 }

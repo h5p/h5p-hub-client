@@ -1,5 +1,5 @@
-import { curry } from "../../../node_modules/h5p-sdk/src/scripts/utils/functional";
-import { setAttribute, getAttribute } from "../../../node_modules/h5p-sdk/src/scripts/utils/elements";
+import { curry } from "utils/functional";
+import { setAttribute, getAttribute } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 
 /**

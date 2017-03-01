@@ -19,7 +19,7 @@ export default class Hub {
   /**
    * @param {HubState} state
    */
-  constructor(state){
+  constructor(state) {
     // add event system
     Object.assign(this, Eventful());
 
@@ -49,13 +49,21 @@ export default class Hub {
   }
 
   /**
+   * Returns the promise of a content type
+   * @param {string} id
+   * @return {Promise.<ContentType>}
+   */
+  getContentType(id) {
+    return this.services.contentType(id);
+  }
+
+  /**
    * Sets the title of the panel
    *
    * @param {string} id
    */
   setPanelTitle({id}) {
-    this.services.contentType(id)
-      .then(({title}) => this.view.setTitle(title));
+    this.getContentType(id).then(({title}) => this.view.setTitle(title));
   }
 
   /**

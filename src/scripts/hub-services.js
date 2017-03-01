@@ -3,7 +3,7 @@
  * @property {string} id
  * @property {string} title
  * @property {string} summary
- * @property {string} longDescription
+ * @property {string} description
  * @property {string} icon
  * @property {string} created
  * @property {string} update

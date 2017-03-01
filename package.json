@@ -5,16 +5,14 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack",
-    "watch-build": "webpack --watch",
-    "build-css": "node-sass --include-path scss src/styles/main.scss dist/h5p-hub-client.css",
-    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
+    "watch": "webpack --watch",
     "dev": "lite-server"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/h5p/h5p-hub.git"
   },
-  "author": "Timothy Lim",
+  "author": "Joubel AS",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/h5p/h5p-hub/issues"
@@ -22,34 +20,28 @@
   "homepage": "https://github.com/h5p/h5p-hub#readme",
   "dependencies": {
     "h5p-sdk": "../h5p-sdk",
-    "lunr": "^1.0.0",
-    "susy": "^2.2.12"
+    "lunr": "^1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",
-    "babel-preset-es2015": "^6.22.0",
-    "babel-loader": "^6.2.4",
-    "babel-plugin-transform-object-assign": "^6.8.0",
-    "babel-runtime": "^6.11.6",
+    "babel-loader": "^6.3.2",
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-preset-latest": "^6.22.0",
     "browsersync": "0.0.1-security",
-    "exports-loader": "^0.6.3",
-    "expose-loader": "^0.7.1",
-    "extract-text-webpack-plugin": "^1.0.1",
-    "file-loader": "^0.9.0",
-    "imports-loader": "^0.7.0",
+    "css-loader": "^0.26.2",
+    "extract-text-webpack-plugin": "^2.0.0",
     "jasmine-core": "^2.4.1",
-    "json-loader": "^0.5.4",
     "karma": "^1.1.2",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2",
-    "karma-webpack": "^1.7.0",
     "lite-server": "^2.2.2",
     "node-sass": "^4.5.0",
     "nodemon": "^1.11.0",
-    "style-loader": "^0.13.1",
-    "webpack": "^1.12.14",
-    "webpack-auto-inject-version": "^0.2.11"
+    "sass-loader": "^6.0.2",
+    "style-loader": "^0.13.2",
+    "susy": "^2.2.12",
+    "webpack": "^2.2.1"
   }
 }

@@ -1,6 +1,6 @@
-import {curry, forEach, filter} from "../../../node_modules/h5p-sdk/src/scripts/utils/functional"
+import {curry, forEach, filter} from "utils/functional"
 import HubServices from "../hub-services";
-import lunr from "../../../node_modules/lunr"
+import lunr from "lunr"
 
 const findContentTypeById = curry(function(contentTypes, id) {
   return contentTypes.filter(contentType => contentType.id === id)[0];

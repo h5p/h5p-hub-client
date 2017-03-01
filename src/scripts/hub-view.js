@@ -1,6 +1,6 @@
-import initPanel from "../../node_modules/h5p-sdk/src/scripts/components/panel"
-import initTabPanel from "../../node_modules/h5p-sdk/src/scripts/components/tab-panel"
-import { attributeEquals } from "../../node_modules/h5p-sdk/src/scripts/utils/elements";
+import initPanel from "components/panel"
+import initTabPanel from "components/tab-panel"
+import { attributeEquals } from "utils/elements";
 
 /**
  * @const
