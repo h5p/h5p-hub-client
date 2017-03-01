@@ -28,9 +28,7 @@ export default class Hub {
     this.uploadSection = new UploadSection(state);
 
     // views
-    this.view = new HubView({
-      sectionId: 'create-content'
-    });
+    this.view = new HubView(state);
 
     // services
     this.services = new HubServices({

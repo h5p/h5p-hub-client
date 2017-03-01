@@ -14,10 +14,6 @@
       @include container;
     }
 
-    img {
-      max-width: 100%;
-    }
-
     .image-wrapper {
       @include span(first 4 of 12);
     }

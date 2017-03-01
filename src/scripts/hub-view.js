@@ -57,15 +57,15 @@ export default class HubView {
    * @param {string} sectionId
    * @param {boolean} expanded
    */
-  renderPanel({title, sectionId, expanded = false}) {
+  renderPanel({title = '', sectionId = 'create-content', expanded = false}) {
     /**
      * @type {HTMLElement}
      */
     this.title = document.createElement('div');
     this.title.className += "panel-header icon-hub-icon";
-    this.title.setAttribute('aria-expanded', expanded.toString());
+    this.title.setAttribute('aria-expanded', (!!expanded).toString());
     this.title.setAttribute('aria-controls', `panel-body-${sectionId}`);
-    this.title.innerHTML = title || '';
+    this.title.innerHTML = title;
 
     /**
      * @type {HTMLElement}
@@ -76,6 +76,7 @@ export default class HubView {
     this.bodyElement.id = `panel-body-${sectionId}`;
     this.bodyElement.appendChild(this.tabContainerElement);
     if(!expanded){
+      console.log('expanded set style');
       this.bodyElement.style.height = "0";
     }
 
@@ -93,7 +94,7 @@ export default class HubView {
   /**
    * Creates the dom for the tab panel
    */
-  renderTabPanel() {
+  renderTabPanel(state) {
     /**
      * @type {HTMLElement}
      */

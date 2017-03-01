@@ -590,12 +590,12 @@ var show = (0, _elements.setAttribute)('aria-hidden', 'false');
  * @param {boolean} isExpanded
  */
 var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
-  if (isExpanded) {
-    show(bodyElement);
-    bodyElement.style.height = bodyElement.scrollHeight + 'px';
-  } else {
+  if (!isExpanded) {
     hide(bodyElement);
     bodyElement.style.height = "0";
+  } else if (bodyElement.scrollHeight > 0) {
+    show(bodyElement);
+    bodyElement.style.height = bodyElement.scrollHeight + 'px';
   }
 };
 
@@ -4019,6 +4019,7 @@ var HubView = function () {
       this.bodyElement.id = "panel-body-" + sectionId;
       this.bodyElement.appendChild(this.tabContainerElement);
       if (!expanded) {
+        console.log('expanded set style');
         this.bodyElement.style.height = "0";
       }
 
