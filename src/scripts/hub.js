@@ -3,6 +3,7 @@ import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
 import { Eventful } from './mixins/eventful';
+import {renderErrorMessage} from './utils/errors';
 
 /**
  * @typedef {object} HubState
@@ -35,13 +36,13 @@ export default class Hub {
       apiRootUrl: state.apiRootUrl
     });
 
-    // propag ate controller events
-    this.propagate(['select'], this.contentTypeSection);
+    // propagate controller events
+    this.propagate(['select', 'error'], this.contentTypeSection);
 
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
-
+    
     this.initTabPanel()
   }
 

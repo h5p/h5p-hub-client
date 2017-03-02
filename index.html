@@ -29,6 +29,13 @@
       console.debug('Content Type Selected', event);
     });
 
+    hubClient.on('error', event => {
+      console.debug('error caught', event);
+      //render error message
+      // const message = H5P.HubClient.renderErrorMessage(event);
+      // document.body.appendChild(message);
+    });
+
     document.getElementById('hub-client').appendChild(hubClient.getElement());
   </script>
 </body>

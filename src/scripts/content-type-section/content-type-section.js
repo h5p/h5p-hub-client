@@ -3,6 +3,7 @@ import SearchService from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
+import {renderErrorMessage} from '../utils/errors';
 
 /**
  * @class ContentTypeSection
@@ -51,7 +52,8 @@ export default class ContentTypeSection {
   initContentTypeList() {
     // initialize by search
     this.searchService.search("")
-      .then(contentTypes => this.contentTypeList.update(contentTypes));
+      .then(contentTypes => this.contentTypeList.update(contentTypes))
+      .catch(error => this.fire('error', error));
   }
 
   /**

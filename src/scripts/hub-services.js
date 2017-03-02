@@ -1,32 +1,21 @@
 /**
  * @typedef {object} ContentType
- * @property {string} machineName
- * @property {string} majorVersion
- * @property {string} minorVersion
- * @property {string} patchVersion
- * @property {string} h5pMajorVersion
- * @property {string} h5pMinorVersion
+ * @property {string} id
  * @property {string} title
  * @property {string} summary
  * @property {string} description
- * @property {string} createdAt
- * @property {string} updatedAt
- * @property {string} isRecommended
- * @property {string} popularity
- * @property {object[]} screenshots
- * @property {string} license
+ * @property {string} icon
+ * @property {string} created
+ * @property {string} update
+ * @property {boolean} recommended
+ * @property {number} timesDownloaded
+ * @property {string[]} screenshots
  * @property {string} example
- * @property {string} tutorial
  * @property {string[]} keywords
  * @property {string[]} categories
- * @property {string} owner
- * @property {boolean} installed
- * @property {boolean} restricted
+ * @property {string} license
  */
 
-/**
- * @class
- */
 export default class HubServices {
   /**
    * @param {string} apiRootUrl
@@ -35,12 +24,29 @@ export default class HubServices {
     this.apiRootUrl = apiRootUrl;
 
     if(!window.cachedContentTypes){
-      window.cachedContentTypes = fetch(`${this.apiRootUrl}content_type_cache`, {
+      window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_ID.json`, {
         method: 'GET',
         credentials: 'include'
-      }).then(result => result.json()).then(json => json.libraries);
+      })
+      .then(result => result.json())
+      .then(this.isValid)
+      .then(json => json.libraries);
+    }
+  }
+
+  /**
+   *
+   * @param  {Object} response
+   * @return {Promise<ContentType[] | ErrorMessage>}
+   */
+  isValid(response) {
+    if (response.messageCode) {
+      return Promise.reject(response);
     }
 
+    else {
+      return Promise.resolve(response);
+    }
   }
 
   /**
@@ -55,13 +61,13 @@ export default class HubServices {
   /**
    * Returns a Content Type
    *
-   * @param {string} machineName
+   * @param {string} id
    *
    * @return {Promise.<ContentType>}
    */
-  contentType(machineName) {
+  contentType(id) {
     return window.cachedContentTypes.then(contentTypes => {
-      return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
+      return contentTypes.filter(contentType => contentType.id === id)[0];
     });
 
     /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {
