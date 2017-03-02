@@ -452,22 +452,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @typedef {object} ContentType
- * @property {string} id
+ * @property {string} machineName
+ * @property {string} majorVersion
+ * @property {string} minorVersion
+ * @property {string} patchVersion
+ * @property {string} h5pMajorVersion
+ * @property {string} h5pMinorVersion
  * @property {string} title
  * @property {string} summary
  * @property {string} description
- * @property {string} icon
- * @property {string} created
- * @property {string} update
- * @property {boolean} recommended
- * @property {number} timesDownloaded
- * @property {string[]} screenshots
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ * @property {string} isRecommended
+ * @property {string} popularity
+ * @property {object[]} screenshots
+ * @property {string} license
  * @property {string} example
+ * @property {string} tutorial
  * @property {string[]} keywords
  * @property {string[]} categories
- * @property {string} license
+ * @property {string} owner
+ * @property {boolean} installed
+ * @property {boolean} restricted
  */
 
+/**
+ * @class
+ */
 var HubServices = function () {
   /**
    * @param {string} apiRootUrl
@@ -507,17 +518,17 @@ var HubServices = function () {
     /**
      * Returns a Content Type
      *
-     * @param {string} id
+     * @param {string} machineName
      *
      * @return {Promise.<ContentType>}
      */
 
   }, {
     key: 'contentType',
-    value: function contentType(id) {
+    value: function contentType(machineName) {
       return window.cachedContentTypes.then(function (contentTypes) {
         return contentTypes.filter(function (contentType) {
-          return contentType.id === id;
+          return contentType.machineName === machineName;
         })[0];
       });
 
@@ -592,11 +603,11 @@ var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
   if (!isExpanded) {
     hide(bodyElement);
-    bodyElement.style.height = "0";
-  } else if (bodyElement.scrollHeight > 0) {
-    show(bodyElement);
-    bodyElement.style.height = bodyElement.scrollHeight + 'px';
-  }
+    //bodyElement.style.height = "0";
+  } else /*if(bodyElement.scrollHeight > 0)*/{
+      show(bodyElement);
+      //bodyElement.style.height = `${bodyElement.scrollHeight}px`;
+    }
 };
 
 /**
@@ -714,27 +725,26 @@ var Hub = function () {
     });
 
     // propag ate controller events
-    this.propagate(['select', 'resize'], this.contentTypeSection);
+    this.propagate(['select'], this.contentTypeSection);
 
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
-    this.on('resize', this.view.resize, this.view);
 
     this.initTabPanel();
   }
 
   /**
    * Returns the promise of a content type
-   * @param {string} id
+   * @param {string} machineName
    * @return {Promise.<ContentType>}
    */
 
 
   _createClass(Hub, [{
     key: 'getContentType',
-    value: function getContentType(id) {
-      return this.services.contentType(id);
+    value: function getContentType(machineName) {
+      return this.services.contentType(machineName);
     }
 
     /**
@@ -3264,7 +3274,7 @@ var ContentTypeDetail = function () {
   }, {
     key: "update",
     value: function update(contentType) {
-      this.view.setId(contentType.id);
+      this.view.setId(contentType.machineName);
       this.view.setTitle(contentType.title);
       this.view.setDescription(contentType.description);
       this.view.setImage(contentType.icon);
@@ -3440,7 +3450,7 @@ var ContentTypeListView = function () {
       var button = document.createElement('span');
       button.className = "button button-primary";
       button.innerHTML = "Use";
-      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
       relayClickEventAs('select', this, button);
 
       // title
@@ -3455,8 +3465,8 @@ var ContentTypeListView = function () {
 
       // list item
       var row = document.createElement('li');
-      row.id = "content-type-" + contentType.id;
-      row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+      row.id = "content-type-" + contentType.machineName;
+      row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
       row.appendChild(image);
       row.appendChild(button);
       row.appendChild(title);
@@ -3862,7 +3872,6 @@ var ContentTypeSection = function () {
       this.contentTypeList.hide();
       this.contentTypeDetail.loadById(id);
       this.contentTypeDetail.show();
-      this.fire('resize');
     }
 
     /**
@@ -3874,7 +3883,6 @@ var ContentTypeSection = function () {
     value: function closeDetailView() {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
-      this.fire('resize');
     }
 
     /**
@@ -3972,18 +3980,6 @@ var HubView = function () {
     }
 
     /**
-     * Resize the body of the panel
-     */
-
-  }, {
-    key: "resize",
-    value: function resize() {
-      if (isExpanded(this.title)) {
-        this.bodyElement.style.height = this.bodyElement.scrollHeight + "px";
-      }
-    }
-
-    /**
      * Creates the dom for the panel
      *
      * @param {string} title
@@ -4013,14 +4009,13 @@ var HubView = function () {
       /**
        * @type {HTMLElement}
        */
-      this.bodyElement = document.createElement('div');
-      this.bodyElement.className += "panel-body";
-      this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
-      this.bodyElement.id = "panel-body-" + sectionId;
-      this.bodyElement.appendChild(this.tabContainerElement);
+      this.body = document.createElement('div');
+      this.body.className += "panel-body";
+      this.body.setAttribute('aria-hidden', (!expanded).toString());
+      this.body.id = "panel-body-" + sectionId;
+      this.body.appendChild(this.tabContainerElement);
       if (!expanded) {
-        console.log('expanded set style');
-        this.bodyElement.style.height = "0";
+        this.body.style.height = "0";
       }
 
       /**
@@ -4029,7 +4024,7 @@ var HubView = function () {
       this.rootElement = document.createElement('div');
       this.rootElement.className += "h5p-hub h5p-section-" + sectionId + " panel";
       this.rootElement.appendChild(this.title);
-      this.rootElement.appendChild(this.bodyElement);
+      this.rootElement.appendChild(this.body);
 
       (0, _panel2.default)(this.rootElement);
     }
@@ -4165,9 +4160,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var findContentTypeById = (0, _functional.curry)(function (contentTypes, id) {
+var findContentTypeByMachineName = (0, _functional.curry)(function (contentTypes, machineName) {
   return contentTypes.filter(function (contentType) {
-    return contentType.id === id;
+    return contentType.machineName === machineName;
   })[0];
 });
 
@@ -4213,7 +4208,7 @@ var SearchService = function () {
       this.index.add({
         title: contentType.title,
         summary: contentType.summary,
-        id: contentType.id
+        id: contentType.machineName
       });
     }
 
@@ -4240,7 +4235,7 @@ var SearchService = function () {
       return this.contentTypes.then(function (contentTypes) {
         return _this.index.search(query).map(function (result) {
           return result.ref;
-        }).map(findContentTypeById(contentTypes));
+        }).map(findContentTypeByMachineName(contentTypes));
       });
     }
   }]);

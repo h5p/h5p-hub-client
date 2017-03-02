@@ -42,15 +42,6 @@ export default class HubView {
   }
 
   /**
-   * Resize the body of the panel
-   */
-  resize(){
-    if(isExpanded(this.title)) {
-      this.bodyElement.style.height = `${this.bodyElement.scrollHeight}px`
-    }
-  }
-
-  /**
    * Creates the dom for the panel
    *
    * @param {string} title
@@ -70,14 +61,13 @@ export default class HubView {
     /**
      * @type {HTMLElement}
      */
-    this.bodyElement = document.createElement('div');
-    this.bodyElement.className += "panel-body";
-    this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
-    this.bodyElement.id = `panel-body-${sectionId}`;
-    this.bodyElement.appendChild(this.tabContainerElement);
+    this.body = document.createElement('div');
+    this.body.className += "panel-body";
+    this.body.setAttribute('aria-hidden', (!expanded).toString());
+    this.body.id = `panel-body-${sectionId}`;
+    this.body.appendChild(this.tabContainerElement);
     if(!expanded){
-      console.log('expanded set style');
-      this.bodyElement.style.height = "0";
+      this.body.style.height = "0";
     }
 
     /**
@@ -86,7 +76,7 @@ export default class HubView {
     this.rootElement = document.createElement('div');
     this.rootElement.className += `h5p-hub h5p-section-${sectionId} panel`;
     this.rootElement.appendChild(this.title);
-    this.rootElement.appendChild(this.bodyElement);
+    this.rootElement.appendChild(this.body);
 
     initPanel(this.rootElement);
   }

@@ -2,8 +2,8 @@ import {curry, forEach, filter} from "utils/functional"
 import HubServices from "../hub-services";
 import lunr from "lunr"
 
-const findContentTypeById = curry(function(contentTypes, id) {
-  return contentTypes.filter(contentType => contentType.id === id)[0];
+const findContentTypeByMachineName = curry(function(contentTypes, machineName) {
+  return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
 });
 
 /**
@@ -41,7 +41,7 @@ export default class SearchService {
     this.index.add({
       title: contentType.title,
       summary: contentType.summary,
-      id: contentType.id
+      id: contentType.machineName
     });
   }
 
@@ -61,7 +61,7 @@ export default class SearchService {
     return this.contentTypes.then(contentTypes => {
       return this.index.search(query)
         .map(result => result.ref)
-        .map(findContentTypeById(contentTypes))
+        .map(findContentTypeByMachineName(contentTypes))
     });
   }
 }

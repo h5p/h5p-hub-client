@@ -36,23 +36,22 @@ export default class Hub {
     });
 
     // propag ate controller events
-    this.propagate(['select', 'resize'], this.contentTypeSection);
+    this.propagate(['select'], this.contentTypeSection);
 
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
-    this.on('resize', this.view.resize, this.view);
 
     this.initTabPanel()
   }
 
   /**
    * Returns the promise of a content type
-   * @param {string} id
+   * @param {string} machineName
    * @return {Promise.<ContentType>}
    */
-  getContentType(id) {
-    return this.services.contentType(id);
+  getContentType(machineName) {
+    return this.services.contentType(machineName);
   }
 
   /**

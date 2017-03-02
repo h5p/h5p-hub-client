@@ -113,7 +113,7 @@ export default class ContentTypeListView {
     const button = document.createElement('span');
     button.className = "button button-primary";
     button.innerHTML = "Use";
-    button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+    button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
     relayClickEventAs('select', this, button);
 
     // title
@@ -128,8 +128,8 @@ export default class ContentTypeListView {
 
     // list item
     const row = document.createElement('li');
-    row.id = `content-type-${contentType.id}`;
-    row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+    row.id = `content-type-${contentType.machineName}`;
+    row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
     row.appendChild(image);
     row.appendChild(button);
     row.appendChild(title);

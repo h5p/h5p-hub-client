@@ -80,7 +80,6 @@ export default class ContentTypeSection {
     this.contentTypeList.hide();
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
-    this.fire('resize');
   }
 
 
@@ -90,7 +89,6 @@ export default class ContentTypeSection {
   closeDetailView() {
     this.contentTypeDetail.hide();
     this.contentTypeList.show();
-    this.fire('resize');
   }
 
   /**
