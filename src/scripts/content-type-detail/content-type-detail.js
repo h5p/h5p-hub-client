@@ -70,7 +70,7 @@ export default class ContentTypeDetail {
    * @param {ContentType} contentType
    */
   update(contentType) {
-    this.view.setId(contentType.id);
+    this.view.setId(contentType.machineName);
     this.view.setTitle(contentType.title);
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);

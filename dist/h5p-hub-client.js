@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -46,7 +46,7 @@
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -55,13 +55,13 @@
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 19);
 /******/ })
@@ -452,22 +452,33 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 /**
  * @typedef {object} ContentType
- * @property {string} id
+ * @property {string} machineName
+ * @property {string} majorVersion
+ * @property {string} minorVersion
+ * @property {string} patchVersion
+ * @property {string} h5pMajorVersion
+ * @property {string} h5pMinorVersion
  * @property {string} title
  * @property {string} summary
  * @property {string} description
- * @property {string} icon
- * @property {string} created
- * @property {string} update
- * @property {boolean} recommended
- * @property {number} timesDownloaded
- * @property {string[]} screenshots
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ * @property {string} isRecommended
+ * @property {string} popularity
+ * @property {object[]} screenshots
+ * @property {string} license
  * @property {string} example
+ * @property {string} tutorial
  * @property {string[]} keywords
  * @property {string[]} categories
- * @property {string} license
+ * @property {string} owner
+ * @property {boolean} installed
+ * @property {boolean} restricted
  */
 
+/**
+ * @class
+ */
 var HubServices = function () {
   /**
    * @param {string} apiRootUrl
@@ -523,17 +534,17 @@ var HubServices = function () {
     /**
      * Returns a Content Type
      *
-     * @param {string} id
+     * @param {string} machineName
      *
      * @return {Promise.<ContentType>}
      */
 
   }, {
     key: 'contentType',
-    value: function contentType(id) {
+    value: function contentType(machineName) {
       return window.cachedContentTypes.then(function (contentTypes) {
         return contentTypes.filter(function (contentType) {
-          return contentType.id === id;
+          return contentType.machineName === machineName;
         })[0];
       });
 
@@ -585,54 +596,46 @@ var _elements = __webpack_require__(2);
 var _functional = __webpack_require__(1);
 
 /**
- * @const
- * @type {string}
+ * @type {function}
  */
-var ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
+var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
 
 /**
  * @type {function}
  */
-var selectExpandable = (0, _elements.querySelector)('[aria-expanded]');
+var hide = (0, _elements.setAttribute)('aria-hidden', 'true');
 
 /**
  * @type {function}
  */
-var getAriaControls = (0, _elements.getAttribute)('aria-controls');
+var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 
 /**
- * @type {function}
+ * Toggles the body visibility
+ *
+ * @param {HTMLElement} bodyElement
+ * @param {boolean} isExpanded
  */
-var isExpanded = (0, _elements.attributeEquals)(ATTRIBUTE_ARIA_EXPANDED, 'true');
-
-/**
- * @type {function}
- */
-var setAriaHiddenTrue = (0, _elements.setAttribute)('aria-hidden', 'true');
-
-/**
- * @type {function}
- */
-var setAriaHiddenFalse = (0, _elements.setAttribute)('aria-hidden', 'false');
-
-/**
- * @type {function}
- */
-var isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
-
-/**
- * @type {Function}
- */
-var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutation) {
-  var titleEl = mutation.target;
-
-  if (isExpanded(titleEl)) {
-    setAriaHiddenFalse(bodyElement);
+var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
+  if (isExpanded) {
+    show(bodyElement);
     bodyElement.style.height = bodyElement.scrollHeight + 'px';
   } else {
-    setAriaHiddenTrue(bodyElement);
+    hide(bodyElement);
     bodyElement.style.height = "0";
   }
+};
+
+/**
+ * Handles changes to aria-expanded
+ *
+ * @param {HTMLElement} bodyElement
+ * @param {MutationRecord} event
+ *
+ * @function
+ */
+var onAriaExpandedChange = (0, _functional.curry)(function (bodyElement, event) {
+  toggleBodyVisibility(bodyElement, isExpanded(event.target));
 });
 
 /**
@@ -642,29 +645,26 @@ var toggleBodyVisibility = (0, _functional.curry)(function (bodyElement, mutatio
  * @return {HTMLElement}
  */
 function init(element) {
-  var titleEl = selectExpandable(element);
-  var bodyId = getAriaControls(titleEl);
+  var titleEl = element.querySelector('[aria-expanded]');
+  var bodyId = titleEl.getAttribute('aria-controls');
   var bodyEl = element.querySelector('#' + bodyId);
 
   if (titleEl) {
     // set observer on title for aria-expanded
-    var observer = new MutationObserver((0, _functional.forEach)(toggleBodyVisibility(bodyEl)));
+    var observer = new MutationObserver((0, _functional.forEach)(onAriaExpandedChange(bodyEl)));
 
     observer.observe(titleEl, {
       attributes: true,
       attributeOldValue: true,
-      attributeFilter: [ATTRIBUTE_ARIA_EXPANDED]
+      attributeFilter: ["aria-expanded"]
     });
 
     // Set click listener that toggles aria-expanded
     titleEl.addEventListener('click', function (event) {
-      (0, _elements.toggleAttribute)(ATTRIBUTE_ARIA_EXPANDED, event.target);
+      (0, _elements.toggleAttribute)("aria-expanded", event.target);
     });
 
-    // set height to 0, if aria-hidden
-    if (isHidden(bodyEl)) {
-      bodyEl.style.height = "0";
-    }
+    toggleBodyVisibility(bodyEl, isExpanded(titleEl));
   }
 
   return element;
@@ -733,9 +733,7 @@ var Hub = function () {
     this.uploadSection = new _uploadSection2.default(state);
 
     // views
-    this.view = new _hubView2.default({
-      sectionId: 'create-content'
-    });
+    this.view = new _hubView2.default(state);
 
     // services
     this.services = new _hubServices2.default({
@@ -743,27 +741,26 @@ var Hub = function () {
     });
 
     // propag ate controller events
-    this.propagate(['select', 'resize'], this.contentTypeSection);
+    this.propagate(['select'], this.contentTypeSection);
 
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
-    this.on('resize', this.view.resize, this.view);
 
     this.initTabPanel();
   }
 
   /**
    * Returns the promise of a content type
-   * @param {string} id
+   * @param {string} machineName
    * @return {Promise.<ContentType>}
    */
 
 
   _createClass(Hub, [{
     key: 'getContentType',
-    value: function getContentType(id) {
-      return this.services.contentType(id);
+    value: function getContentType(machineName) {
+      return this.services.contentType(machineName);
     }
 
     /**
@@ -854,16 +851,6 @@ var _functional = __webpack_require__(1);
 /**
  * @type {function}
  */
-var getWhereRoleIsTab = (0, _elements.querySelectorAll)('[role="tab"]');
-
-/**
- * @type {function}
- */
-var getWhereRoleIsTabPanel = (0, _elements.querySelectorAll)('[role="tabpanel"]');
-
-/**
- * @type {function}
- */
 var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
 
 /**
@@ -874,28 +861,26 @@ var show = (0, _elements.setAttribute)('aria-hidden', 'false');
 /**
  * @type {function}
  */
-var setAriaSelectedFalse = (0, _elements.setAttribute)('aria-selected', 'false');
+var unSelectAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-selected', 'false'));
 
 /**
- * @type {function}
+ * Initiates a tab panel
+ *
+ * @param {HTMLElement} element
  */
-var setAllAriaSelectedFalse = (0, _functional.forEach)(setAriaSelectedFalse);
-
 function init(element) {
-  var tabs = getWhereRoleIsTab(element);
-  var tabPanels = getWhereRoleIsTabPanel(element);
+  var tabs = element.querySelectorAll('[role="tab"]');
+  var tabPanels = element.querySelectorAll('[role="tabpanel"]');
 
   tabs.forEach(function (tab) {
     tab.addEventListener('click', function (event) {
 
-      setAllAriaSelectedFalse(tabs);
+      unSelectAll(tabs);
       event.target.setAttribute('aria-selected', 'true');
 
       hideAll(tabPanels);
 
       var tabPanelId = event.target.getAttribute('aria-controls');
-      var targetTabPanel = element.querySelector('#' + tabPanelId);
-
       show(element.querySelector('#' + tabPanelId));
     });
   });
@@ -3305,7 +3290,7 @@ var ContentTypeDetail = function () {
   }, {
     key: "update",
     value: function update(contentType) {
-      this.view.setId(contentType.id);
+      this.view.setId(contentType.machineName);
       this.view.setTitle(contentType.title);
       this.view.setDescription(contentType.description);
       this.view.setImage(contentType.icon);
@@ -3477,13 +3462,6 @@ var ContentTypeListView = function () {
       var image = document.createElement('img');
       image.setAttribute('src', contentType.icon);
 
-      // button
-      var button = document.createElement('span');
-      button.className = "button button-primary";
-      button.innerHTML = "Use";
-      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
-      relayClickEventAs('select', this, button);
-
       // title
       var title = document.createElement('div');
       title.className = 'content-type-list-title';
@@ -3496,14 +3474,38 @@ var ContentTypeListView = function () {
 
       // list item
       var row = document.createElement('li');
-      row.id = "content-type-" + contentType.id;
-      row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.id);
+      row.id = "content-type-" + contentType.machineName;
+      row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
       row.appendChild(image);
-      row.appendChild(button);
+      row.appendChild(this.createButtonElement(contentType));
       row.appendChild(title);
       row.appendChild(description);
 
       return row;
+    }
+
+    /**
+     *
+     * @param {ContentType} contentType
+     */
+
+  }, {
+    key: "createButtonElement",
+    value: function createButtonElement(contentType) {
+      var button = document.createElement('span');
+
+      if (contentType.installed) {
+        button.className = "button button-primary";
+        button.innerHTML = "Use";
+        button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
+        relayClickEventAs('select', this, button);
+      } else {
+        button.className = "button button-inverse";
+        button.innerHTML = "install";
+        // no functionality, uses click event on row
+      }
+
+      return button;
     }
   }, {
     key: "getElement",
@@ -3908,7 +3910,6 @@ var ContentTypeSection = function () {
       this.contentTypeList.hide();
       this.contentTypeDetail.loadById(id);
       this.contentTypeDetail.show();
-      this.fire('resize');
     }
 
     /**
@@ -3920,7 +3921,6 @@ var ContentTypeSection = function () {
     value: function closeDetailView() {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
-      this.fire('resize');
     }
 
     /**
@@ -4018,18 +4018,6 @@ var HubView = function () {
     }
 
     /**
-     * Resize the body of the panel
-     */
-
-  }, {
-    key: "resize",
-    value: function resize() {
-      if (isExpanded(this.title)) {
-        this.bodyElement.style.height = this.bodyElement.scrollHeight + "px";
-      }
-    }
-
-    /**
      * Creates the dom for the panel
      *
      * @param {string} title
@@ -4040,8 +4028,10 @@ var HubView = function () {
   }, {
     key: "renderPanel",
     value: function renderPanel(_ref) {
-      var title = _ref.title,
-          sectionId = _ref.sectionId,
+      var _ref$title = _ref.title,
+          title = _ref$title === undefined ? '' : _ref$title,
+          _ref$sectionId = _ref.sectionId,
+          sectionId = _ref$sectionId === undefined ? 'create-content' : _ref$sectionId,
           _ref$expanded = _ref.expanded,
           expanded = _ref$expanded === undefined ? false : _ref$expanded;
 
@@ -4050,21 +4040,18 @@ var HubView = function () {
        */
       this.title = document.createElement('div');
       this.title.className += "panel-header icon-hub-icon";
-      this.title.setAttribute('aria-expanded', expanded.toString());
+      this.title.setAttribute('aria-expanded', (!!expanded).toString());
       this.title.setAttribute('aria-controls', "panel-body-" + sectionId);
-      this.title.innerHTML = title || '';
+      this.title.innerHTML = title;
 
       /**
        * @type {HTMLElement}
        */
-      this.bodyElement = document.createElement('div');
-      this.bodyElement.className += "panel-body";
-      this.bodyElement.setAttribute('aria-hidden', (!expanded).toString());
-      this.bodyElement.id = "panel-body-" + sectionId;
-      this.bodyElement.appendChild(this.tabContainerElement);
-      if (!expanded) {
-        this.bodyElement.style.height = "0";
-      }
+      this.body = document.createElement('div');
+      this.body.className += "panel-body";
+      this.body.setAttribute('aria-hidden', (!expanded).toString());
+      this.body.id = "panel-body-" + sectionId;
+      this.body.appendChild(this.tabContainerElement);
 
       /**
        * @type {HTMLElement}
@@ -4072,7 +4059,7 @@ var HubView = function () {
       this.rootElement = document.createElement('div');
       this.rootElement.className += "h5p-hub h5p-section-" + sectionId + " panel";
       this.rootElement.appendChild(this.title);
-      this.rootElement.appendChild(this.bodyElement);
+      this.rootElement.appendChild(this.body);
 
       (0, _panel2.default)(this.rootElement);
     }
@@ -4083,7 +4070,7 @@ var HubView = function () {
 
   }, {
     key: "renderTabPanel",
-    value: function renderTabPanel() {
+    value: function renderTabPanel(state) {
       /**
        * @type {HTMLElement}
        */
@@ -4208,9 +4195,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var findContentTypeById = (0, _functional.curry)(function (contentTypes, id) {
+var findContentTypeByMachineName = (0, _functional.curry)(function (contentTypes, machineName) {
   return contentTypes.filter(function (contentType) {
-    return contentType.id === id;
+    return contentType.machineName === machineName;
   })[0];
 });
 
@@ -4256,7 +4243,7 @@ var SearchService = function () {
       this.index.add({
         title: contentType.title,
         summary: contentType.summary,
-        id: contentType.id
+        id: contentType.machineName
       });
     }
 
@@ -4283,7 +4270,7 @@ var SearchService = function () {
       return this.contentTypes.then(function (contentTypes) {
         return _this.index.search(query).map(function (result) {
           return result.ref;
-        }).map(findContentTypeById(contentTypes));
+        }).map(findContentTypeByMachineName(contentTypes));
       });
     }
   }]);
@@ -4379,3 +4366,4 @@ H5P.HubClient = __webpack_require__(5).default;
 
 /***/ })
 /******/ ]);
+//# sourceMappingURL=h5p-hub-client.js.map

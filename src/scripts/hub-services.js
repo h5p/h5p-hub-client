@@ -1,21 +1,32 @@
 /**
  * @typedef {object} ContentType
- * @property {string} id
+ * @property {string} machineName
+ * @property {string} majorVersion
+ * @property {string} minorVersion
+ * @property {string} patchVersion
+ * @property {string} h5pMajorVersion
+ * @property {string} h5pMinorVersion
  * @property {string} title
  * @property {string} summary
  * @property {string} description
- * @property {string} icon
- * @property {string} created
- * @property {string} update
- * @property {boolean} recommended
- * @property {number} timesDownloaded
- * @property {string[]} screenshots
+ * @property {string} createdAt
+ * @property {string} updatedAt
+ * @property {string} isRecommended
+ * @property {string} popularity
+ * @property {object[]} screenshots
+ * @property {string} license
  * @property {string} example
+ * @property {string} tutorial
  * @property {string[]} keywords
  * @property {string[]} categories
- * @property {string} license
+ * @property {string} owner
+ * @property {boolean} installed
+ * @property {boolean} restricted
  */
 
+/**
+ * @class
+ */
 export default class HubServices {
   /**
    * @param {string} apiRootUrl
@@ -62,13 +73,13 @@ export default class HubServices {
   /**
    * Returns a Content Type
    *
-   * @param {string} id
+   * @param {string} machineName
    *
    * @return {Promise.<ContentType>}
    */
-  contentType(id) {
+  contentType(machineName) {
     return window.cachedContentTypes.then(contentTypes => {
-      return contentTypes.filter(contentType => contentType.id === id)[0];
+      return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
     });
 
     /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {

@@ -3,19 +3,15 @@
 @import "~susy/sass/susy";
 
 .h5p-hub {
+  [aria-hidden="true"] {
+    display: none;
+  }
+
   .content-type-detail {
     padding: $padding;
 
-    &[aria-hidden="true"] {
-      display: none;
-    }
-
     .container {
       @include container;
-    }
-
-    img {
-      max-width: 100%;
     }
 
     .image-wrapper {

@@ -14,14 +14,15 @@
     <div id="hub-client"></div>
 
     <h2>Other stuff</h2>
-    <p>Hello</p>
+    <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
   </div>
 
   <script type="text/javascript">H5P = {};</script>
   <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
     const hubClient = new H5P.HubClient({
-      apiRootUrl: '/test/mock/api/'
+      apiRootUrl: '/test/mock/api/',
+      expanded: true
     });
 
     hubClient.on('select', event => {
