@@ -51,13 +51,9 @@ export default class ContentTypeSection {
    */
   initContentTypeList() {
     // initialize by search
-    // this.searchService.search("")
-    //   .then(contentTypes => this.contentTypeList.update(contentTypes))
-    //   .catch(error => this.prependErrorMessage(error));
-  }
-
-  prependErrorMessage(config) {
-    const errorMessage = renderErrorMessage(config);
+    this.searchService.search("")
+      .then(contentTypes => this.contentTypeList.update(contentTypes))
+      .catch(error => this.fire('error', error));
   }
 
   /**

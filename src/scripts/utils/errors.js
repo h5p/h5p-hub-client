@@ -4,7 +4,9 @@
  * @param  {string}   config.content      message content usually a 'h3' and a 'p'
  * @return {HTMLElement} div containing the message element
  */
-export const renderErrorMessage = function(message) {
+
+//TODO handle strings, html, badly formed object
+export default function renderErrorMessage(message) {
   console.log(message);
   const closeButton = document.createElement('div');
   closeButton.className = 'close';

@@ -28,8 +28,7 @@ export default class SearchService {
       this.ref('id');
     });
 
-    this.contentTypes = this.services.contentTypes(); // Get content types
-    this.contentTypes.then(forEach(this.addToIndex.bind(this))); // Add content types to search index
+    this.contentTypes = this.services.contentTypes().then(forEach(this.addToIndex.bind(this))); // Add content types to search index
   }
 
   /**
