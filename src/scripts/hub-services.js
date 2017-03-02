@@ -24,7 +24,7 @@ export default class HubServices {
     this.apiRootUrl = apiRootUrl;
 
     if(!window.cachedContentTypes){
-      window.cachedContentTypes = fetch(`${this.apiRootUrl}content_type_cache`, {
+      window.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -83,7 +83,7 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   installContentType(id) {
-    return fetch(`${this.apiRootUrl}library_install?id=${id}`, {
+    return fetch(`${this.apiRootUrl}library-install?id=${id}`, {
       method: 'POST',
       credentials: 'include',
       body: ''

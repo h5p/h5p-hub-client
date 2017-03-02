@@ -517,7 +517,7 @@ var HubServices = function () {
     this.apiRootUrl = apiRootUrl;
 
     if (!window.cachedContentTypes) {
-      window.cachedContentTypes = fetch(this.apiRootUrl + 'content_type_cache', {
+      window.cachedContentTypes = fetch(this.apiRootUrl + 'content-type-cache', {
         method: 'GET',
         credentials: 'include'
       }).then(function (result) {
@@ -591,7 +591,7 @@ var HubServices = function () {
   }, {
     key: 'installContentType',
     value: function installContentType(id) {
-      return fetch(this.apiRootUrl + 'library_install?id=' + id, {
+      return fetch(this.apiRootUrl + 'library-install?id=' + id, {
         method: 'POST',
         credentials: 'include',
         body: ''
@@ -644,13 +644,13 @@ var show = (0, _elements.setAttribute)('aria-hidden', 'false');
  * @param {boolean} isExpanded
  */
 var toggleBodyVisibility = function toggleBodyVisibility(bodyElement, isExpanded) {
-  if (!isExpanded) {
+  if (isExpanded) {
+    show(bodyElement);
+    bodyElement.style.height = bodyElement.scrollHeight + 'px';
+  } else {
     hide(bodyElement);
-    //bodyElement.style.height = "0";
-  } else /*if(bodyElement.scrollHeight > 0)*/{
-      show(bodyElement);
-      //bodyElement.style.height = `${bodyElement.scrollHeight}px`;
-    }
+    bodyElement.style.height = "0";
+  }
 };
 
 /**
