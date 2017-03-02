@@ -60,13 +60,13 @@ export default class HubServices {
   /**
    * Returns a Content Type
    *
-   * @param {string} id
+   * @param {string} machineName
    *
    * @return {Promise.<ContentType>}
    */
-  contentType(id) {
+  contentType(machineName) {
     return window.cachedContentTypes.then(contentTypes => {
-      return contentTypes.filter(contentType => contentType.id === id)[0];
+      return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
     });
 
     /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {

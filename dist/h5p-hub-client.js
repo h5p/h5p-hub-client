@@ -560,17 +560,17 @@ var HubServices = function () {
     /**
      * Returns a Content Type
      *
-     * @param {string} id
+     * @param {string} machineName
      *
      * @return {Promise.<ContentType>}
      */
 
   }, {
     key: 'contentType',
-    value: function contentType(id) {
+    value: function contentType(machineName) {
       return window.cachedContentTypes.then(function (contentTypes) {
         return contentTypes.filter(function (contentType) {
-          return contentType.id === id;
+          return contentType.machineName === machineName;
         })[0];
       });
 
@@ -4245,6 +4245,24 @@ var findContentTypeByMachineName = (0, _functional.curry)(function (contentTypes
 });
 
 /**
+ * Adds a content type to the search index
+ *
+ * @param  {lunr.Index} index
+ * @param  {ContentType} contentType
+ *
+ * @return {ContentType}
+ */
+var addToIndex = (0, _functional.curry)(function (index, contentType) {
+  index.add({
+    title: contentType.title,
+    summary: contentType.summary,
+    id: contentType.machineName
+  });
+
+  return contentType;
+});
+
+/**
  * @class
  */
 
@@ -4269,37 +4287,19 @@ var SearchService = function () {
       this.ref('id');
     });
 
-    this.contentTypes = this.services.contentTypes().then((0, _functional.map)(this.addToIndex.bind(this))); // Add content types to search index
+    this.contentTypes = this.services.contentTypes().then((0, _functional.map)(addToIndex(this.index))); // Add content types to search index
   }
 
   /**
-   * addToIndex - Adds a content type to the search index
+   * Performs a search
    *
-   * @param  {Object} contentType
+   * @param {String} query
+   *
+   * @return {Promise<ContentType[]>}
    */
 
 
   _createClass(SearchService, [{
-    key: "addToIndex",
-    value: function addToIndex(contentType) {
-      this.index.add({
-        title: contentType.title,
-        summary: contentType.summary,
-        id: contentType.machineName
-      });
-
-      return contentType;
-    }
-
-    /**
-     * Performs a search
-     *
-     * @param {String} query
-     *
-     * @return {Promise<ContentType[]>}
-     */
-
-  }, {
     key: "search",
     value: function search(query) {
       var _this = this;

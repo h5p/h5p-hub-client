@@ -6,6 +6,25 @@ const findContentTypeByMachineName = curry(function(contentTypes, machineName) {
   return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
 });
 
+
+/**
+ * Adds a content type to the search index
+ *
+ * @param  {lunr.Index} index
+ * @param  {ContentType} contentType
+ *
+ * @return {ContentType}
+ */
+const addToIndex = curry((index, contentType) => {
+  index.add({
+    title: contentType.title,
+    summary: contentType.summary,
+    id: contentType.machineName
+  });
+
+  return contentType;
+});
+
 /**
  * @class
  */
@@ -28,22 +47,8 @@ export default class SearchService {
       this.ref('id');
     });
 
-    this.contentTypes = this.services.contentTypes().then(map(this.addToIndex.bind(this))); // Add content types to search index
-  }
-
-  /**
-   * addToIndex - Adds a content type to the search index
-   *
-   * @param  {Object} contentType
-   */
-  addToIndex(contentType) {
-    this.index.add({
-      title: contentType.title,
-      summary: contentType.summary,
-      id: contentType.machineName
-    });
-
-    return contentType;
+    this.contentTypes = this.services.contentTypes()
+      .then(map(addToIndex(this.index))); // Add content types to search index
   }
 
   /**
