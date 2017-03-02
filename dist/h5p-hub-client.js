@@ -550,8 +550,9 @@ var HubServices = function () {
     key: 'installContentType',
     value: function installContentType(id) {
       return fetch(this.apiRootUrl + 'library_install?id=' + id, {
-        method: 'GET',
-        credentials: 'include'
+        method: 'POST',
+        credentials: 'include',
+        body: ''
       }).then(function (result) {
         return result.json();
       });
@@ -2962,14 +2963,14 @@ var ContentTypeDetailView = function () {
 
     // use button
     this.useButton = document.createElement('span');
-    this.useButton.className = 'button';
+    this.useButton.className = 'button button-primary';
     this.useButton.innerHTML = 'Use';
     _hide(this.useButton);
     relayClickEventAs('select', this, this.useButton);
 
     // install button
     this.installButton = document.createElement('span');
-    this.installButton.className = 'button button-inverse';
+    this.installButton.className = 'button button-inverse-primary';
     this.installButton.innerHTML = 'Install';
     _hide(this.installButton);
     relayClickEventAs('install', this, this.installButton);
@@ -3428,7 +3429,7 @@ var ContentTypeListView = function () {
   }, {
     key: "renderContentTypeList",
     value: function renderContentTypeList(contentTypes) {
-      return contentTypes.map(this.renderContentTypeRow.bind(this)).map(relayClickEventAs('row-selected', this));
+      return contentTypes.map(this.createContentTypeRow.bind(this)).map(relayClickEventAs('row-selected', this));
     }
 
     /**
@@ -3440,8 +3441,8 @@ var ContentTypeListView = function () {
      */
 
   }, {
-    key: "renderContentTypeRow",
-    value: function renderContentTypeRow(contentType) {
+    key: "createContentTypeRow",
+    value: function createContentTypeRow(contentType) {
       // image
       var image = document.createElement('img');
       image.setAttribute('src', contentType.icon);
@@ -3484,13 +3485,20 @@ var ContentTypeListView = function () {
         button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
         relayClickEventAs('select', this, button);
       } else {
-        button.className = "button button-inverse";
+        button.className = "button button-inverse-primary";
         button.innerHTML = "install";
         // no functionality, uses click event on row
       }
 
       return button;
     }
+
+    /**
+     * Returns the root element
+     *
+     * @return {HTMLElement}
+     */
+
   }, {
     key: "getElement",
     value: function getElement() {

@@ -79,8 +79,9 @@ export default class HubServices {
    */
   installContentType(id) {
     return fetch(`${this.apiRootUrl}library_install?id=${id}`, {
-      method: 'GET',
-      credentials: 'include'
+      method: 'POST',
+      credentials: 'include',
+      body: ''
     }).then(result => result.json());
   }
 }

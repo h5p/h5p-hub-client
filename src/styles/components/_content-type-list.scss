@@ -21,6 +21,10 @@ $text-list-title: 1.042em;
       padding: $padding;
       box-sizing: border-box;
       cursor: pointer;
+
+      &:hover {
+        background-color: lighten($ac1, 55%);
+      }
     }
 
     img {

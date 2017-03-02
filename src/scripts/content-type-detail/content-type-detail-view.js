@@ -105,14 +105,14 @@ export default class ContentTypeDetailView {
 
     // use button
     this.useButton = document.createElement('span');
-    this.useButton.className = 'button';
+    this.useButton.className = 'button button-primary';
     this.useButton.innerHTML = 'Use';
     hide(this.useButton);
     relayClickEventAs('select', this, this.useButton);
 
     // install button
     this.installButton = document.createElement('span');
-    this.installButton.className = 'button button-inverse';
+    this.installButton.className = 'button button-inverse-primary';
     this.installButton.innerHTML = 'Install';
     hide(this.installButton);
     relayClickEventAs('install', this, this.installButton);

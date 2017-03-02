@@ -93,7 +93,7 @@ export default class ContentTypeListView {
    */
   renderContentTypeList(contentTypes) {
     return contentTypes
-      .map(this.renderContentTypeRow.bind(this))
+      .map(this.createContentTypeRow.bind(this))
       .map(relayClickEventAs('row-selected', this))
   }
 
@@ -104,7 +104,7 @@ export default class ContentTypeListView {
    *
    * @return {HTMLElement}
    */
-  renderContentTypeRow(contentType) {
+  createContentTypeRow(contentType) {
     // image
     const image = document.createElement('img');
     image.setAttribute('src', contentType.icon);
@@ -145,7 +145,7 @@ export default class ContentTypeListView {
       relayClickEventAs('select', this, button);
     }
     else {
-      button.className = "button button-inverse";
+      button.className = "button button-inverse-primary";
       button.innerHTML = "install";
       // no functionality, uses click event on row
     }
@@ -153,6 +153,11 @@ export default class ContentTypeListView {
     return button;
   }
 
+  /**
+   * Returns the root element
+   *
+   * @return {HTMLElement}
+   */
   getElement() {
     return this.rootElement;
   }

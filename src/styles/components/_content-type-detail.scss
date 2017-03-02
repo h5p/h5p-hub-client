@@ -31,9 +31,13 @@
       }
     }
 
-    .back-button:before {
+    .back-button {
       font-size: 2em;
       color: $text-dark;
+
+      &:hover {
+        color: lighten($text-dark, 20%);
+      }
     }
   }
 }
