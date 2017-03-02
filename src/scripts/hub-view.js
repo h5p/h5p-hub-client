@@ -66,9 +66,6 @@ export default class HubView {
     this.body.setAttribute('aria-hidden', (!expanded).toString());
     this.body.id = `panel-body-${sectionId}`;
     this.body.appendChild(this.tabContainerElement);
-    if(!expanded){
-      this.body.style.height = "0";
-    }
 
     /**
      * @type {HTMLElement}

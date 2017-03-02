@@ -109,13 +109,6 @@ export default class ContentTypeListView {
     const image = document.createElement('img');
     image.setAttribute('src', contentType.icon);
 
-    // button
-    const button = document.createElement('span');
-    button.className = "button button-primary";
-    button.innerHTML = "Use";
-    button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
-    relayClickEventAs('select', this, button);
-
     // title
     const title = document.createElement('div');
     title.className = 'content-type-list-title';
@@ -131,11 +124,33 @@ export default class ContentTypeListView {
     row.id = `content-type-${contentType.machineName}`;
     row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
     row.appendChild(image);
-    row.appendChild(button);
+    row.appendChild(this.createButtonElement(contentType));
     row.appendChild(title);
     row.appendChild(description);
 
     return row;
+  }
+
+  /**
+   *
+   * @param {ContentType} contentType
+   */
+  createButtonElement(contentType) {
+    const button = document.createElement('span');
+
+    if(contentType.installed) {
+      button.className = "button button-primary";
+      button.innerHTML = "Use";
+      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
+      relayClickEventAs('select', this, button);
+    }
+    else {
+      button.className = "button button-inverse";
+      button.innerHTML = "install";
+      // no functionality, uses click event on row
+    }
+
+    return button;
   }
 
   getElement() {
