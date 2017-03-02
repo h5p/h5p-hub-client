@@ -81,7 +81,7 @@ export default class ContentTypeListView {
     }
 
     this.renderContentTypeList(contentTypes)
-      .forEach(this.rootElement.appendChild.bind(this.rootElement));
+      .forEach(contentType => this.rootElement.appendChild(contentType));
   }
 
   /**
@@ -93,7 +93,7 @@ export default class ContentTypeListView {
    */
   renderContentTypeList(contentTypes) {
     return contentTypes
-      .map(this.createContentTypeRow.bind(this))
+      .map(contentType => this.createContentTypeRow(contentType))
       .map(relayClickEventAs('row-selected', this))
   }
 

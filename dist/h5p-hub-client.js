@@ -517,7 +517,7 @@ var HubServices = function () {
     this.apiRootUrl = apiRootUrl;
 
     if (!window.cachedContentTypes) {
-      window.cachedContentTypes = fetch(this.apiRootUrl + 'errors/NO_ID.json', {
+      window.cachedContentTypes = fetch(this.apiRootUrl + 'content_type_cache', {
         method: 'GET',
         credentials: 'include'
       }).then(function (result) {
@@ -3453,13 +3453,17 @@ var ContentTypeListView = function () {
   }, {
     key: "updateList",
     value: function updateList(contentTypes) {
+      var _this = this;
+
       if (this.rootElement) {
         while (this.rootElement.firstChild) {
           this.rootElement.removeChild(this.rootElement.firstChild);
         }
       }
 
-      this.renderContentTypeList(contentTypes).forEach(this.rootElement.appendChild.bind(this.rootElement));
+      this.renderContentTypeList(contentTypes).forEach(function (contentType) {
+        return _this.rootElement.appendChild(contentType);
+      });
     }
 
     /**
@@ -3473,7 +3477,11 @@ var ContentTypeListView = function () {
   }, {
     key: "renderContentTypeList",
     value: function renderContentTypeList(contentTypes) {
-      return contentTypes.map(this.createContentTypeRow.bind(this)).map(relayClickEventAs('row-selected', this));
+      var _this2 = this;
+
+      return contentTypes.map(function (contentType) {
+        return _this2.createContentTypeRow(contentType);
+      }).map(relayClickEventAs('row-selected', this));
     }
 
     /**
@@ -4261,7 +4269,7 @@ var SearchService = function () {
       this.ref('id');
     });
 
-    this.contentTypes = this.services.contentTypes().then((0, _functional.forEach)(this.addToIndex.bind(this))); // Add content types to search index
+    this.contentTypes = this.services.contentTypes().then((0, _functional.map)(this.addToIndex.bind(this))); // Add content types to search index
   }
 
   /**
@@ -4279,6 +4287,8 @@ var SearchService = function () {
         summary: contentType.summary,
         id: contentType.machineName
       });
+
+      return contentType;
     }
 
     /**
@@ -4296,9 +4306,7 @@ var SearchService = function () {
 
       // Display all content types by default
       if (query === '') {
-        return this.contentTypes.then(function (contentTypes) {
-          return contentTypes;
-        });
+        return this.contentTypes;
       }
 
       return this.contentTypes.then(function (contentTypes) {

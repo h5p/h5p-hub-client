@@ -24,7 +24,7 @@ export default class HubServices {
     this.apiRootUrl = apiRootUrl;
 
     if(!window.cachedContentTypes){
-      window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_ID.json`, {
+      window.cachedContentTypes = fetch(`${this.apiRootUrl}content_type_cache`, {
         method: 'GET',
         credentials: 'include'
       })
@@ -43,7 +43,6 @@ export default class HubServices {
     if (response.messageCode) {
       return Promise.reject(response);
     }
-
     else {
       return Promise.resolve(response);
     }

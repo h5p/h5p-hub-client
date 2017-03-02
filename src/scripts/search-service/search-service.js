@@ -1,4 +1,4 @@
-import {curry, forEach, filter} from "utils/functional"
+import {curry, map, filter} from "utils/functional"
 import HubServices from "../hub-services";
 import lunr from "lunr"
 
@@ -28,7 +28,7 @@ export default class SearchService {
       this.ref('id');
     });
 
-    this.contentTypes = this.services.contentTypes().then(forEach(this.addToIndex.bind(this))); // Add content types to search index
+    this.contentTypes = this.services.contentTypes().then(map(this.addToIndex.bind(this))); // Add content types to search index
   }
 
   /**
@@ -42,6 +42,8 @@ export default class SearchService {
       summary: contentType.summary,
       id: contentType.machineName
     });
+
+    return contentType;
   }
 
   /**
@@ -54,7 +56,7 @@ export default class SearchService {
   search(query) {
     // Display all content types by default
     if (query === '') {
-      return this.contentTypes.then(contentTypes => contentTypes);
+      return this.contentTypes;
     }
 
     return this.contentTypes.then(contentTypes => {
