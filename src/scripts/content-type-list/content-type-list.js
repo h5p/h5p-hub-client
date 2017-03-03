@@ -44,6 +44,7 @@ export default class ContentTypeList {
    */
   update(contentTypes) {
     this.view.updateList(contentTypes);
+    this.fire('update-content-type-list', {});
   }
 
   /**

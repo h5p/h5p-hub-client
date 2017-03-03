@@ -7,19 +7,27 @@
 
 //TODO handle strings, html, badly formed object
 export default function renderErrorMessage(message) {
-  console.log(message);
+  // console.log(message);
   const closeButton = document.createElement('div');
   closeButton.className = 'close';
   closeButton.innerHTML = '&#x2715';
 
   const messageContent = document.createElement('div');
   messageContent.className = 'message-content';
-  messageContent.innerHTML = message.content;
+  messageContent.innerHTML = '<h1>' + message.title + '</h1>' + '<p>' + message.content + '</p>';
 
   const messageWrapper = document.createElement('div');
   messageWrapper.className = 'message' + ' ' + `${message.type}` + (message.dismissible ? ' dismissible' : '');
   messageWrapper.appendChild(closeButton);
   messageWrapper.appendChild(messageContent);
+
+  if (message.button !== undefined) {
+    const messageButton = document.createElement('button');
+    messageButton.className = 'button';
+    messageButton.innerHTML = message.button;
+    messageWrapper.appendChild(messageButton);
+  }
+
   console.log(messageWrapper);
   return messageWrapper;
 };

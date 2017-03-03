@@ -36,7 +36,7 @@ export default class ContentTypeSection {
     this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 
     // propagate events
-    this.propagate(['select'], this.contentTypeList);
+    this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
     this.propagate(['select'], this.contentTypeDetail);
 
     // register listeners

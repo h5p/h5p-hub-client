@@ -63,7 +63,9 @@ export default class Hub {
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
-    
+    // only initialize the main panel if no errors have occured when updating the content type list
+    this.contentTypeSection.on('update-content-type-list', this.view.initializePanel.bind(this.view), this.contentTypeSection);
+
     this.initTabPanel()
   }
 

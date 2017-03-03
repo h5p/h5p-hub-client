@@ -35,10 +35,10 @@ npm run dev
 ```javascript
 var hubClient = new H5P.HubClient({
   apiRootUrl: '/test/mock/api'
-});
-
-hubClient.on('select', event => {
+}).on('select', event => {
   // use data in event
+}).on('error', error => {
+  // handle error
 });
 
 document.getElementById('hub-client').appendChild(hubClient.getElement());

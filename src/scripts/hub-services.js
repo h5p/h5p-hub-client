@@ -24,6 +24,9 @@ export default class HubServices {
     this.apiRootUrl = apiRootUrl;
 
     if(!window.cachedContentTypes){
+      // TODO remove this when done testing for errors
+      // window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_RESPONSE.json`, {
+
       window.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
         method: 'GET',
         credentials: 'include'
