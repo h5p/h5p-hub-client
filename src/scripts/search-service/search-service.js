@@ -68,6 +68,8 @@ const addToIndex = curry((index, contentType) => {
   index.add({
     title: contentType.title,
     summary: contentType.summary,
+    description: contentType.description,
+    keywords: contentType.keywords,
     id: contentType.machineName
   });
 
