@@ -36,8 +36,8 @@ export default class HubServices {
 
   /**
    *
-   * @param  {Object} response
-   * @return {Promise<ContentType[] | ErrorMessage>}
+   * @param  {ContentType[]|ErrorMessage} response
+   * @return {Promise<ContentType[]|ErrorMessage>}
    */
   isValid(response) {
     if (response.messageCode) {

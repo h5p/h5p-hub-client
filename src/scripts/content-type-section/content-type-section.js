@@ -8,6 +8,8 @@ import {renderErrorMessage} from '../utils/errors';
 /**
  * @class ContentTypeSection
  * @mixes Eventful
+ *
+ * @fires Hub#select
  */
 export default class ContentTypeSection {
   /**
