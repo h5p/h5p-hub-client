@@ -146,7 +146,7 @@ export default class ContentTypeListView {
     }
     else {
       button.className = "button button-inverse-primary";
-      button.innerHTML = "install";
+      button.innerHTML = "Get";
       // no functionality, uses click event on row
     }
 

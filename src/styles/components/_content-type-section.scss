@@ -1,3 +1,6 @@
+@import "../base/colors";
+@import "~h5p-sdk/src/styles/base/colors";
+
 .h5p-hub {
   .menu-group {
     background-color: $c1;
@@ -39,18 +42,16 @@
       margin-top: 1.125em;
       background-color: white;
       border-radius: 2em;
+
+      input {
+        font-style: italic;
+      }
     }
 
     .icon-search {
       font-size: 2.5em;
       top: 0.2em;
       right: 0.25em;
-    }
-  }
-
-  .h5p-section-create-content {
-    .icon-search {
-      color: $ac1;
     }
   }
 }

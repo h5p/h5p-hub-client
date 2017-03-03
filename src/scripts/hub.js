@@ -64,7 +64,9 @@ export default class Hub {
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
     // only initialize the main panel if no errors have occured when updating the content type list
-    this.contentTypeSection.on('update-content-type-list', this.view.initializePanel.bind(this.view), this.contentTypeSection);
+    this.view.on('tab-change', this.view.setSectionType, this.view);
+    this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
+    this.contentTypeSection.on('update-content-type-list', this.view.initializePanel.bind(this.view), this.view);
 
     this.initTabPanel()
   }
@@ -93,13 +95,13 @@ export default class Hub {
   initTabPanel() {
     const tabConfigs = [{
       title: 'Create Content',
-      id: 'create-content',
+      id: 'content-types',
       content: this.contentTypeSection.getElement(),
       selected: true
     },
     {
       title: 'Upload',
-      id: 'upload-section',
+      id: 'upload',
       content: this.uploadSection.getElement()
     }];
 
