@@ -39,8 +39,8 @@ export default class HubServices {
 
   /**
    *
-   * @param  {Object} response
-   * @return {Promise<ContentType[] | ErrorMessage>}
+   * @param  {ContentType[]|ErrorMessage} response
+   * @return {Promise<ContentType[]|ErrorMessage>}
    */
   isValid(response) {
     if (response.messageCode) {
@@ -86,7 +86,7 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   installContentType(id) {
-    return fetch(`${this.apiRootUrl}library_install?id=${id}`, {
+    return fetch(`${this.apiRootUrl}library-install?id=${id}`, {
       method: 'POST',
       credentials: 'include',
       body: ''

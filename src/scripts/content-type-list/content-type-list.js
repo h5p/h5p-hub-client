@@ -2,8 +2,16 @@ import ContetTypeListView from "./content-type-list-view";
 import {Eventful} from '../mixins/eventful';
 
 /**
+ * Row selected event
+ * @event ContentTypeList#row-selected
+ * @type {SelectedElement}
+ */
+/**
  * @class
  * @mixes Eventful
+ *
+ * @fires Hub#select
+ * @fires ContentTypeList#row-selected
  */
 export default class ContentTypeList {
   constructor(state) {
@@ -15,15 +23,22 @@ export default class ContentTypeList {
     this.propagate(['row-selected', 'select'], this.view);
   }
 
+  /**
+   * Hide this element
+   */
   hide() {
     this.view.hide();
   }
 
+  /**
+   * Show this element
+   */
   show() {
     this.view.show();
   }
 
   /**
+   * Update the list with new content types
    *
    * @param {ContentType[]} contentTypes
    */
@@ -32,6 +47,11 @@ export default class ContentTypeList {
     this.fire('update-content-type-list', {});
   }
 
+  /**
+   * Returns the views root element
+   *
+   * @return {HTMLElement}
+   */
   getElement() {
     return this.view.getElement();
   }

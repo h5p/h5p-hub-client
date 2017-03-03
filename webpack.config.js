@@ -8,7 +8,7 @@ const extractSass = new ExtractTextPlugin({
 
 const config = {
   entry: "./src/entries/dist.js",
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js",

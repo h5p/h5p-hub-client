@@ -533,8 +533,8 @@ var HubServices = function () {
 
   /**
    *
-   * @param  {Object} response
-   * @return {Promise<ContentType[] | ErrorMessage>}
+   * @param  {ContentType[]|ErrorMessage} response
+   * @return {Promise<ContentType[]|ErrorMessage>}
    */
 
 
@@ -594,7 +594,7 @@ var HubServices = function () {
   }, {
     key: 'installContentType',
     value: function installContentType(id) {
-      return fetch(this.apiRootUrl + 'library_install?id=' + id, {
+      return fetch(this.apiRootUrl + 'library-install?id=' + id, {
         method: 'POST',
         credentials: 'include',
         body: ''
@@ -747,8 +747,30 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @property {string} apiRootUrl
  */
 /**
+ * @typedef {object} ErrorMessage
+ * @property {string} message
+ * @property {string} errorCode
+ */
+/**
+ * @typedef {object} SelectedElement
+ * @property {HTMLElement} element
+ * @property {string} id
+ */
+/**
+ * Select event
+ * @event Hub#select
+ * @type {SelectedElement}
+ */
+/**
+ * Error event
+ * @event Hub#error
+ * @type {ErrorMessage}
+ */
+/**
  * @class
  * @mixes Eventful
+ * @fires Hub#select
+ * @fires Hub#error
  */
 var Hub = function () {
   /**
@@ -3594,8 +3616,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
+ * Row selected event
+ * @event ContentTypeList#row-selected
+ * @type {SelectedElement}
+ */
+/**
  * @class
  * @mixes Eventful
+ *
+ * @fires Hub#select
+ * @fires ContentTypeList#row-selected
  */
 var ContentTypeList = function () {
   function ContentTypeList(state) {
@@ -3609,11 +3639,21 @@ var ContentTypeList = function () {
     this.propagate(['row-selected', 'select'], this.view);
   }
 
+  /**
+   * Hide this element
+   */
+
+
   _createClass(ContentTypeList, [{
     key: 'hide',
     value: function hide() {
       this.view.hide();
     }
+
+    /**
+     * Show this element
+     */
+
   }, {
     key: 'show',
     value: function show() {
@@ -3621,6 +3661,7 @@ var ContentTypeList = function () {
     }
 
     /**
+     * Update the list with new content types
      *
      * @param {ContentType[]} contentTypes
      */
@@ -3631,6 +3672,13 @@ var ContentTypeList = function () {
       this.view.updateList(contentTypes);
       this.fire('update-content-type-list', {});
     }
+
+    /**
+     * Returns the views root element
+     *
+     * @return {HTMLElement}
+     */
+
   }, {
     key: 'getElement',
     value: function getElement() {
@@ -3856,6 +3904,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 /**
  * @class ContentTypeSection
  * @mixes Eventful
+ *
+ * @fires Hub#select
  */
 var ContentTypeSection = function () {
   /**

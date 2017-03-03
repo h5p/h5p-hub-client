@@ -4,7 +4,6 @@ import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
 import { Eventful } from './mixins/eventful';
 import {renderErrorMessage} from './utils/errors';
-
 /**
  * @typedef {object} HubState
  * @property {string} title
@@ -13,8 +12,30 @@ import {renderErrorMessage} from './utils/errors';
  * @property {string} apiRootUrl
  */
 /**
+ * @typedef {object} ErrorMessage
+ * @property {string} message
+ * @property {string} errorCode
+ */
+/**
+ * @typedef {object} SelectedElement
+ * @property {HTMLElement} element
+ * @property {string} id
+ */
+/**
+ * Select event
+ * @event Hub#select
+ * @type {SelectedElement}
+ */
+/**
+ * Error event
+ * @event Hub#error
+ * @type {ErrorMessage}
+ */
+/**
  * @class
  * @mixes Eventful
+ * @fires Hub#select
+ * @fires Hub#error
  */
 export default class Hub {
   /**
