@@ -41,6 +41,10 @@ hubClient.on('select', event => {
   // use data in event
 });
 
+hubClient.on('error', error => {
+  // handle error
+});
+
 document.getElementById('hub-client').appendChild(hubClient.getElement());
 
 ```
