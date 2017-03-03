@@ -78,12 +78,16 @@ export default class ContentTypeDetailView {
     imageWrapperElement.appendChild(this.image);
 
     // title
-    this.title = document.createElement('h2');
-    this.title.className = 'title';
+    this.title = document.createElement('h3');
+
+    // author
+    this.author = document.createElement('div');
+    this.author.className = 'author';
+    this.author.innerHTML = 'by Joubel'; // TODO Make dynamic
 
     // description
     this.description = document.createElement('p');
-    this.description.className = 'description';
+    this.description.className = 'small';
 
     // demo button
     this.demoButton = document.createElement('a');
@@ -95,6 +99,7 @@ export default class ContentTypeDetailView {
     const textDetails = document.createElement('div');
     textDetails.className = 'text-details';
     textDetails.appendChild(this.title);
+    textDetails.appendChild(this.author);
     textDetails.appendChild(this.description);
     textDetails.appendChild(this.demoButton);
 

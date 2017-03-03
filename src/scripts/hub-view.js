@@ -70,10 +70,17 @@ export default class HubView {
     /**
      * @type {HTMLElement}
      */
+    this.panel = document.createElement('div');
+    this.panel.className += `panel h5p-section-${sectionId}`;
+    this.panel.appendChild(this.title);
+    this.panel.appendChild(this.body);
+
+    /**
+     * @type {HTMLElement}
+     */
     this.rootElement = document.createElement('div');
-    this.rootElement.className += `h5p-hub h5p-section-${sectionId} panel`;
-    this.rootElement.appendChild(this.title);
-    this.rootElement.appendChild(this.body);
+    this.rootElement.className += `h5p h5p-hub`;
+    this.rootElement.appendChild(this.panel);
 
     initPanel(this.rootElement);
   }
@@ -145,7 +152,7 @@ export default class HubView {
    * @param {string} sectionId
    */
   setSection(sectionId) {
-    this.rootElement.className = `h5p-hub h5p-section-${sectionId} panel`;
+    this.panel.className = `h5p-section-${sectionId} panel`;
   }
 
   /**

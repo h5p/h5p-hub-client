@@ -17,8 +17,7 @@ $text-list-title: 1.042em;
 
     li {
       width: 100%;
-      border-bottom: 1px solid #f5f5f5;
-      padding: $padding;
+      padding: $gutter;
       box-sizing: border-box;
       cursor: pointer;
 
@@ -27,27 +26,28 @@ $text-list-title: 1.042em;
       }
     }
 
+    li:not(:last-child) {
+      border-bottom: 1px solid #f5f5f5;
+    }
+
     img {
       max-width: 100px;
       float: left;
-      margin-right: $padding;
+      margin-right: $gutter;
     }
 
-    .content-type-list-title {
-      font-size: $text-list-title;
+    h4 {
       line-height: 2em;
-      font-weight: 600;
+      margin: 0;
     }
 
-    .content-type-list-description {
+    .description {
       color: $c6;
-      font-weight: 400;
-      font-size: $text-body-small;
     }
 
     .button {
       float: right;
-      margin-left: $padding;
+      margin-left: $gutter;
       margin-top: 0.7em;
     }
   }

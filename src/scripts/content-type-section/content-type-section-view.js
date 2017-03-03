@@ -90,7 +90,7 @@ export default class ContentBrowserView {
   createInputGroupElement() {
     // input field
     const inputField = document.createElement('input');
-    inputField.className = 'hub-search shadow';
+    inputField.className = 'form-control form-control-rounded';
     inputField.setAttribute('type', 'text');
     inputField.setAttribute('placeholder', "Search for Content Types");
     inputField.addEventListener('keyup', event => {
@@ -102,20 +102,15 @@ export default class ContentBrowserView {
 
     // input button
     const inputButton = document.createElement('div');
-    inputButton.className = 'input-button icon-search';
+    inputButton.className = 'input-group-addon icon-search';
 
     // input group
     const inputGroup = document.createElement('div');
-    inputGroup.className = 'input-group rounded shadow';
+    inputGroup.className = 'input-group';
     inputGroup.appendChild(inputField);
     inputGroup.appendChild(inputButton);
 
-    // wrapper
-    const inputGroupWrapper = document.createElement('div');
-    inputGroupWrapper.className = 'input-group-wrapper rounded';
-    inputGroupWrapper.appendChild(inputGroup);
-
-    return inputGroupWrapper;
+    return inputGroup;
   }
 
   /**

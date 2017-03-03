@@ -8,7 +8,7 @@
   }
 
   .content-type-detail {
-    padding: $padding;
+    padding: $gutter;
 
     .container {
       @include container;
@@ -24,7 +24,7 @@
 
     .button-bar {
       overflow: auto;
-      margin-bottom: $padding;
+      margin-bottom: $gutter;
 
       .button {
         float: right;

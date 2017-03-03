@@ -12,6 +12,7 @@ export const Eventful = () => ({
    * @param {object} [scope]
    *
    * @function
+   * @return {Eventful}
    */
   on: function(type, listener, scope) {
     /**
@@ -26,6 +27,8 @@ export const Eventful = () => ({
 
     this.listeners[type] = this.listeners[type] || [];
     this.listeners[type].push(trigger);
+
+    return this;
   },
 
   /**
