@@ -62,8 +62,12 @@
       }
     }
 
-    &.h5p-section-create-content {
+    &.h5p-section-content-types {
       @include section($color-section-content-types);
+    }
+
+    &.h5p-section-content {
+      @include section($color-section-content);
     }
 
     &.h5p-section-upload {

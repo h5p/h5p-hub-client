@@ -95,7 +95,7 @@ export default class Hub {
   initTabPanel() {
     const tabConfigs = [{
       title: 'Create Content',
-      id: 'create-content',
+      id: 'content-types',
       content: this.contentTypeSection.getElement(),
       selected: true
     },

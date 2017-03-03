@@ -82,7 +82,7 @@ export default class HubView {
    * @param {string} sectionId
    * @param {boolean} expanded
    */
-  renderPanel({title = '', sectionId = 'create-content', expanded = false}) {
+  renderPanel({title = '', sectionId = 'content-types', expanded = false}) {
     /**
      * @type {HTMLElement}
      */
