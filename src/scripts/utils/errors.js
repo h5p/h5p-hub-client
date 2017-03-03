@@ -20,6 +20,14 @@ export default function renderErrorMessage(message) {
   messageWrapper.className = 'message' + ' ' + `${message.type}` + (message.dismissible ? ' dismissible' : '');
   messageWrapper.appendChild(closeButton);
   messageWrapper.appendChild(messageContent);
-  // console.log(messageWrapper);
+
+  if (message.button !== undefined) {
+    const messageButton = document.createElement('button');
+    messageButton.className = 'button';
+    messageButton.innerHTML = message.button;
+    messageWrapper.appendChild(messageButton);
+  }
+
+  console.log(messageWrapper);
   return messageWrapper;
 };
