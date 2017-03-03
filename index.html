@@ -22,14 +22,10 @@
   <script type="text/javascript">
     const hubClient = new H5P.HubClient({
       apiRootUrl: '/test/mock/api/',
-      // expanded: true
-    });
-
-    hubClient.on('select', event => {
+      expanded: true
+    }).on('select', event => {
       console.debug('Content Type Selected', event);
-    });
-
-    hubClient.on('error', event => {
+    }).on('error', event => {
       console.debug('error caught', event);
       //render error message
       const message = H5P.HubClient.renderErrorMessage(event);

@@ -107,16 +107,16 @@ export default class ContentTypeListView {
   createContentTypeRow(contentType) {
     // image
     const image = document.createElement('img');
+    image.className = 'img-responsive';
     image.setAttribute('src', contentType.icon);
 
     // title
-    const title = document.createElement('div');
-    title.className = 'content-type-list-title';
+    const title = document.createElement('h4');
     title.innerHTML = contentType.title;
 
     // description
     const description = document.createElement('div');
-    description.className = 'content-type-list-description';
+    description.className = 'description';
     description.innerHTML = contentType.summary;
 
     // list item

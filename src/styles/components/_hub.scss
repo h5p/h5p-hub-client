@@ -12,10 +12,10 @@
   line-height: 1;
 }
 
-.h5p-hub {
+.h5p.h5p-hub {
   font-family: 'Open Sans', sans-serif;
 
-  &.panel {
+  .panel {
     border: 1px solid $c1;
 
     &>.panel-header {
@@ -35,6 +35,10 @@
         float: right;
       }
     }
+
+    &.h5p-section-create-content {
+      border: 1px solid $ac1;
+    }
   }
 
   .tab-panel {
@@ -52,9 +56,5 @@
         color: $c3;
       }
     }
-  }
-
-  &.h5p-section-create-content {
-    border: 1px solid $ac1;
   }
 }

@@ -1,16 +1,19 @@
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
 
+@import "~h5p-sdk/src/styles/components/reset";
+@import "~h5p-sdk/src/styles/components/typography";
 @import "~h5p-sdk/src/styles/components/button";
-@import "~h5p-sdk/src/styles/components/input-group";
+@import "~h5p-sdk/src/styles/components/images";
+@import "~h5p-sdk/src/styles/components/input-field";
 @import "~h5p-sdk/src/styles/components/panel";
 @import "~h5p-sdk/src/styles/components/tab-panel";
 @import "~h5p-sdk/src/styles/components/menu";
 @import "~h5p-sdk/src/styles/components/message";
 
 @import "components/hub";
+@import "components/content-type-section";
 @import "components/content-type-detail";
 @import "components/content-type-list";
-@import "components/content-browser-view";
 
 $orange: #db6f28;
