@@ -74,7 +74,13 @@ export default class HubView {
     this.rootElement.className += `h5p-hub h5p-section-${sectionId} panel`;
     this.rootElement.appendChild(this.title);
     this.rootElement.appendChild(this.body);
+  }
 
+  /**
+   * Give the panel attribiutes from h5p-sdk, e.g. opening and closing
+   * This is only called once no errors have occured in loading the hub 
+   */
+  initializePanel(){
     initPanel(this.rootElement);
   }
 

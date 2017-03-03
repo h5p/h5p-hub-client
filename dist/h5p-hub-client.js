@@ -455,20 +455,20 @@ exports.default = renderErrorMessage;
 
 //TODO handle strings, html, badly formed object
 function renderErrorMessage(message) {
-  console.log(message);
+  // console.log(message);
   var closeButton = document.createElement('div');
   closeButton.className = 'close';
   closeButton.innerHTML = '&#x2715';
 
   var messageContent = document.createElement('div');
   messageContent.className = 'message-content';
-  messageContent.innerHTML = message.content;
+  messageContent.innerHTML = '<h1>' + message.title + '</h1>' + '<p>' + message.content + '</p>';
 
   var messageWrapper = document.createElement('div');
   messageWrapper.className = 'message' + ' ' + ('' + message.type) + (message.dismissible ? ' dismissible' : '');
   messageWrapper.appendChild(closeButton);
   messageWrapper.appendChild(messageContent);
-  console.log(messageWrapper);
+  // console.log(messageWrapper);
   return messageWrapper;
 };
 
@@ -517,6 +517,9 @@ var HubServices = function () {
     this.apiRootUrl = apiRootUrl;
 
     if (!window.cachedContentTypes) {
+      // TODO remove this when done testing for errors
+      // window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_RESPONSE.json`, {
+
       window.cachedContentTypes = fetch(this.apiRootUrl + 'content_type_cache', {
         method: 'GET',
         credentials: 'include'
@@ -775,6 +778,8 @@ var Hub = function () {
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
+    // only initialize the main panel if no errors have occured when updating the content type list
+    this.contentTypeSection.on('update-content-type-list', this.view.initializePanel.bind(this.view), this.contentTypeSection);
 
     this.initTabPanel();
   }
@@ -3624,6 +3629,7 @@ var ContentTypeList = function () {
     key: 'update',
     value: function update(contentTypes) {
       this.view.updateList(contentTypes);
+      this.fire('update-content-type-list', {});
     }
   }, {
     key: 'getElement',
@@ -3881,7 +3887,7 @@ var ContentTypeSection = function () {
     this.view.getElement().appendChild(this.contentTypeDetail.getElement());
 
     // propagate events
-    this.propagate(['select'], this.contentTypeList);
+    this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
     this.propagate(['select'], this.contentTypeDetail);
 
     // register listeners
@@ -4103,7 +4109,16 @@ var HubView = function () {
       this.rootElement.className += "h5p-hub h5p-section-" + sectionId + " panel";
       this.rootElement.appendChild(this.title);
       this.rootElement.appendChild(this.body);
+    }
 
+    /**
+     * Give the panel attribiutes from h5p-sdk, e.g. opening and closing
+     * This is only called once no errors have occured in loading the hub 
+     */
+
+  }, {
+    key: "initializePanel",
+    value: function initializePanel() {
       (0, _panel2.default)(this.rootElement);
     }
 

@@ -22,7 +22,7 @@
   <script type="text/javascript">
     const hubClient = new H5P.HubClient({
       apiRootUrl: '/test/mock/api/',
-      expanded: true
+      // expanded: true
     });
 
     hubClient.on('select', event => {
@@ -32,8 +32,8 @@
     hubClient.on('error', event => {
       console.debug('error caught', event);
       //render error message
-      // const message = H5P.HubClient.renderErrorMessage(event);
-      // document.body.appendChild(message);
+      const message = H5P.HubClient.renderErrorMessage(event);
+      document.getElementById('hub-client').append(message);
     });
 
     document.getElementById('hub-client').appendChild(hubClient.getElement());
