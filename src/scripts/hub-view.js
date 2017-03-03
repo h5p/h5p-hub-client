@@ -1,26 +1,60 @@
 import initPanel from "components/panel"
 import initTabPanel from "components/tab-panel"
-import { attributeEquals } from "utils/elements";
+import { curry } from "utils/functional";
+import { attributeEquals, getAttribute, hasAttribute } from "utils/elements";
+import { Eventful } from './mixins/eventful';
 
 /**
- * @const
- * @type {string}
+ * Tab change event
+ * @event HubView#tab-change
+ * @type {SelectedElement}
  */
-const ATTRIBUTE_ARIA_EXPANDED = "aria-expanded";
-
 /**
- * @type {function}
+ * Panel open or close event
+ * @event HubView#panel-change
+ * @type {SelectedElement}
  */
-const isExpanded = attributeEquals(ATTRIBUTE_ARIA_EXPANDED, 'true');
+/**
+ * @constant {string}
+ */
+const ATTRIBUTE_DATA_ID = 'data-id';
+/**
+ * Propagates row selection trough the event system
+ *
+ * @param {Eventful} eventful
+ * @param {HTMLElement} element
+ *
+ * @function
+ * @return {HTMLElement}
+ */
+const relayClickEventAs = curry(function(type, eventful, element) {
+  element.addEventListener('click', event => {
+    eventful.fire(type, {
+      element: element,
+      id: getAttribute(ATTRIBUTE_DATA_ID, element)
+    }, false);
+
+    event.preventDefault();
+  });
+
+  return element;
+});
+
+const isOpen = hasAttribute('open');
 
 /**
  * @class
+ * @mixes Eventful
+ * @fires HubView#tab-change
  */
 export default class HubView {
   /**
    * @param {HubState} state
    */
   constructor(state) {
+    // add event system
+    Object.assign(this, Eventful());
+
     this.renderTabPanel(state);
     this.renderPanel(state);
   }
@@ -57,6 +91,7 @@ export default class HubView {
     this.title.setAttribute('aria-expanded', (!!expanded).toString());
     this.title.setAttribute('aria-controls', `panel-body-${sectionId}`);
     this.title.innerHTML = title;
+    relayClickEventAs('panel-change', this, this.title);
 
     /**
      * @type {HTMLElement}
@@ -72,9 +107,11 @@ export default class HubView {
      */
     this.panel = document.createElement('div');
     this.panel.className += `panel h5p-section-${sectionId}`;
+    if(expanded){
+      this.panel.setAttribute('open', '');
+    }
     this.panel.appendChild(this.title);
     this.panel.appendChild(this.body);
-
     /**
      * @type {HTMLElement}
      */
@@ -89,6 +126,18 @@ export default class HubView {
    */
   initializePanel(){
     initPanel(this.rootElement);
+  }
+
+  /**
+   * Set if panel is open, this is used for outer border color
+   */
+  togglePanelOpen() {
+    if(isOpen(this.panel)) {
+      this.panel.removeAttribute('open');
+    }
+    else {
+      this.panel.setAttribute('open', '');
+    }
   }
 
   /**
@@ -133,8 +182,10 @@ export default class HubView {
     tab.id = tabId;
     tab.setAttribute('aria-controls', tabPanelId);
     tab.setAttribute('aria-selected', selected.toString());
+    tab.setAttribute(ATTRIBUTE_DATA_ID, id);
     tab.setAttribute('role', 'tab');
     tab.innerHTML = title;
+    relayClickEventAs('tab-change', this, tab);
 
     const tabPanel = document.createElement('div');
     tabPanel.id = tabPanelId;
@@ -155,10 +206,10 @@ export default class HubView {
   /**
    * Sets the section
    *
-   * @param {string} sectionId
+   * @param {string} id
    */
-  setSection(sectionId) {
-    this.panel.className = `h5p-section-${sectionId} panel`;
+  setSectionType({id}) {
+    this.panel.className = `h5p-section-${id} panel`;
   }
 
   /**
