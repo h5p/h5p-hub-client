@@ -1,0 +1,30 @@
+// images will be base64 encoded by webpack
+$icon-arrow-up:   url('/src/images/arrow-line-up.svg');
+$icon-arrow-down: url('/src/images/arrow-line-down.svg');
+$icon-scroll-bar: url('/src/images/scrollbar-bars-icon.svg');
+
+@mixin scroll-bar($background-color, $button-color) {
+  &::-webkit-scrollbar {
+    background-color: $background-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $button-color $icon-scroll-bar no-repeat center;
+    background-size: 24px 100%;
+  }
+
+  &::-webkit-scrollbar-button:vertical {
+    background-color: $button-color;
+    background-size: 20px 20px;
+    background-position-x: -4px;
+    background-position-y: -3px;
+
+    &:decrement  {
+      background-image: $icon-arrow-up;
+    }
+
+    &:increment{
+      background-image: $icon-arrow-down;
+    }
+  }
+}

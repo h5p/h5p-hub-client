@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <style>* {fill: #ced6e3;} .cls-1 {fill: none;}</style>
+  <title>arrow-down</title>
+  <path d="M16,10.15l-.35-.35a.79.79,0,0,0-1.08,0l-2.43,2.43L9.69,9.79a.78.78,0,0,0-1.08,0l-.36.36a.76.76,0,0,0,0,1.08l3.32,3.32a.76.76,0,0,0,1.08,0L16,11.23a.76.76,0,0,0,0-1.08Z"/>
+  <rect class="cls-1" width="24" height="24"/>
+</svg>

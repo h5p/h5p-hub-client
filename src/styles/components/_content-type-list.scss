@@ -1,6 +1,8 @@
 @import "../base/colors";
+@import "../base/mixins";
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
+@import "~h5p-sdk/src/styles/base/mixins";
 
 $text-list-title: 1.042em;
 
@@ -9,12 +11,17 @@ $text-list-title: 1.042em;
     list-style: none;
     padding: 1.25em 0;
     margin: 0;
-    height: 500px;
+    height: 40em;
     overflow: auto;
+
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
+                0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
     &[aria-hidden="true"] {
       display: none;
     }
+
+    @include scroll-bar($c3, $c1);
 
     li {
       width: 100%;
