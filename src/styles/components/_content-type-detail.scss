@@ -4,7 +4,11 @@
 
 .h5p-hub {
   [aria-hidden="true"] {
-    display: none;
+    // Hack to replace display: none to allow for fade in transitions 
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
   }
 
   .content-type-detail {
