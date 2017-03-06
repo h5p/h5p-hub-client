@@ -4,10 +4,7 @@
 .h5p-hub {
   .menu-group {
     background-color: $c1;
-    padding-top: 1.125em;
-    padding-bottom: 2.250em;
-    padding-left: 2.250em;
-    padding-right: 2.250em;
+    padding: 1.125em;
 
     .menu {
       overflow: auto;
@@ -44,6 +41,7 @@
       border-radius: 2em;
 
       input {
+        padding-left: 1.5em;
         font-style: italic;
       }
     }

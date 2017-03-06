@@ -3,7 +3,7 @@ import initTabPanel from "components/tab-panel"
 import { curry } from "utils/functional";
 import { attributeEquals, getAttribute, hasAttribute } from "utils/elements";
 import { Eventful } from './mixins/eventful';
-
+import { relayClickEventAs } from './utils/events';
 /**
  * Tab change event
  * @event HubView#tab-change
@@ -18,28 +18,10 @@ import { Eventful } from './mixins/eventful';
  * @constant {string}
  */
 const ATTRIBUTE_DATA_ID = 'data-id';
+
 /**
- * Propagates row selection trough the event system
- *
- * @param {Eventful} eventful
- * @param {HTMLElement} element
- *
  * @function
- * @return {HTMLElement}
  */
-const relayClickEventAs = curry(function(type, eventful, element) {
-  element.addEventListener('click', event => {
-    eventful.fire(type, {
-      element: element,
-      id: getAttribute(ATTRIBUTE_DATA_ID, element)
-    }, false);
-
-    event.preventDefault();
-  });
-
-  return element;
-});
-
 const isOpen = hasAttribute('open');
 
 /**

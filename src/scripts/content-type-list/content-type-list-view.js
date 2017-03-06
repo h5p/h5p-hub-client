@@ -1,6 +1,7 @@
 import { curry } from "utils/functional";
 import { setAttribute, getAttribute } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
+import { relayClickEventAs } from '../utils/events';
 
 /**
  * @constant {string}
@@ -16,28 +17,6 @@ const hide = setAttribute('aria-hidden', 'true');
  * @function
  */
 const show = setAttribute('aria-hidden', 'false');
-
-/**
- * Propagates row selection trough the event system
- *
- * @param {Eventful} eventful
- * @param {HTMLElement} element
- *
- * @function
- * @return {HTMLElement}
- */
-const relayClickEventAs = curry(function(type, eventful, element) {
-  element.addEventListener('click', event => {
-    eventful.fire(type, {
-      element: element,
-      id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
-    }, false);
-
-    event.preventDefault();
-  });
-
-  return element;
-});
 
 /**
  * @class

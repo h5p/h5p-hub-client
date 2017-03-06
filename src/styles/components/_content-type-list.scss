@@ -4,8 +4,6 @@
 @import "~h5p-sdk/src/styles/base/variables";
 @import "~h5p-sdk/src/styles/base/mixins";
 
-$text-list-title: 1.042em;
-
 .h5p-hub {
   ul.content-type-list {
     list-style: none;
@@ -13,7 +11,6 @@ $text-list-title: 1.042em;
     margin: 0;
     height: 40em;
     overflow: auto;
-
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
                 0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
@@ -32,10 +29,10 @@ $text-list-title: 1.042em;
       &:hover {
         background-color: lighten($ac1, 55%);
       }
-    }
 
-    li:not(:last-child) {
-      border-bottom: 1px solid #f5f5f5;
+      &:not(:last-child) {
+        border-bottom: 1px solid #f5f5f5;
+      }
     }
 
     img {

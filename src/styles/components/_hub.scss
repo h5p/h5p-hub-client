@@ -78,16 +78,30 @@
   .tab-panel {
     border: none;
 
-    [aria-hidden='true'] {
-      display: none;
-    }
-
-    > nav > [role="tablist"] {
+    > nav > ul {
       background-color: $c4;
       border-bottom: none;
 
       [role="tab"] {
         color: $c3;
+
+        &[aria-selected='true'] {
+          &:before {
+            @include h5p-hub-icon("\e91b");
+            font-size: 1.6em;
+            margin-top: -1.5px;
+            float: left;
+          }
+        }
+
+        &[aria-selected='false'] {
+          &:before {
+            @include h5p-hub-icon("\e91d");
+            font-size: 1.6em;
+            margin-top: -1.5px;
+            float: left;
+          }
+        }
       }
     }
   }
