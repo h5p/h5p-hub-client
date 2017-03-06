@@ -7,7 +7,8 @@ export const relayClickEventAs = curry(function(type, eventful, element) {
       id: element.getAttribute('data-id')
     }, false);
 
-    event.preventDefault();
+    // don't bubble
+    event.stopPropagation();
   });
 
   return element;
