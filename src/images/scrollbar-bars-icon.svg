@@ -1,0 +1,16 @@
+<svg id="scrollbar_handle" data-name="scrollbar handle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #ced6e3;
+      }
+
+      .cls-2 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <title>scrollbar-bars-icon</title>
+  <path class="cls-1" d="M15.28,8.5c0,.24-.1.43-.24.43H9.62c-.14,0-.24-.19-.24-.43V7.65c0-.24.1-.43.24-.43H15c.14,0,.24.19.24.43Zm0,3.41c0,.24-.1.43-.24.43H9.62c-.14,0-.24-.19-.24-.43v-.85c0-.24.1-.43.24-.43H15c.14,0,.24.19.24.43Zm0,3.43c0,.24-.1.43-.24.43H9.62c-.14,0-.24-.19-.24-.43v-.85c0-.24.1-.43.24-.43H15c.14,0,.24.19.24.43Z"/>
+  <rect class="cls-2" width="24" height="24"/>
+</svg>

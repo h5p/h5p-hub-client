@@ -1,20 +1,29 @@
 @import "../base/colors";
+@import "../base/mixins";
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
-
-$text-list-title: 1.042em;
+@import "~h5p-sdk/src/styles/base/mixins";
 
 .h5p-hub {
   ul.content-type-list {
     list-style: none;
     padding: 1.25em 0;
     margin: 0;
-    height: 500px;
+    height: 40em;
     overflow: auto;
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
+                0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+
+    opacity: 1;
+    transition: opacity 0.1s linear;
 
     &[aria-hidden="true"] {
-      display: none;
+      display: inherit;
+      opacity: 0;
+
     }
+
+    @include scroll-bar($c3, $c1);
 
     li {
       width: 100%;
@@ -25,10 +34,10 @@ $text-list-title: 1.042em;
       &:hover {
         background-color: lighten($ac1, 55%);
       }
-    }
 
-    li:not(:last-child) {
-      border-bottom: 1px solid #f5f5f5;
+      &:not(:last-child) {
+        border-bottom: 1px solid #f5f5f5;
+      }
     }
 
     img {

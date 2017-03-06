@@ -1,11 +1,7 @@
 import { curry } from "utils/functional";
 import { setAttribute, getAttribute } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
-
-/**
- * @constant {string}
- */
-const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
+import { relayClickEventAs } from '../utils/events';
 
 /**
  * @function
@@ -18,30 +14,10 @@ const hide = setAttribute('aria-hidden', 'true');
 const show = setAttribute('aria-hidden', 'false');
 
 /**
- * Propagates row selection trough the event system
- *
- * @param {Eventful} eventful
- * @param {HTMLElement} element
- *
- * @function
- * @return {HTMLElement}
- */
-const relayClickEventAs = curry(function(type, eventful, element) {
-  element.addEventListener('click', event => {
-    eventful.fire(type, {
-      element: element,
-      id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
-    }, false);
-
-    event.preventDefault();
-  });
-
-  return element;
-});
-
-/**
  * @class
  * @mixes Eventful
+ * @fires Hub#select
+ * @fires ContentTypeList#row-selected
  */
 export default class ContentTypeListView {
   constructor(state) {
@@ -70,87 +46,61 @@ export default class ContentTypeListView {
   }
 
   /**
-   *
-   * @param {ContentType[]} contentTypes
+   * Removes all rows from root element
    */
-  updateList(contentTypes) {
+  removeAllRows() {
     if(this.rootElement){
-      while(this.rootElement.firstChild ){
+      while(this.rootElement.firstChild){
         this.rootElement.removeChild(this.rootElement.firstChild);
       }
     }
-
-    this.renderContentTypeList(contentTypes)
-      .forEach(contentType => this.rootElement.appendChild(contentType));
   }
 
   /**
-   * Applies create rows, and add to the list
+   * Adds a row
    *
-   * @param {ContentType[]} contentTypes
-   *
-   * @return {HTMLElement[]}
+   * @param {ContentType} contentType
    */
-  renderContentTypeList(contentTypes) {
-    return contentTypes
-      .map(contentType => this.createContentTypeRow(contentType))
-      .map(relayClickEventAs('row-selected', this))
+  addRow(contentType) {
+    const row = this.createContentTypeRow(contentType, this);
+    relayClickEventAs('row-selected', this, row);
+    this.rootElement.appendChild(row)
   }
 
   /**
    * Takes a Content Type configuration and creates a row dom
    *
    * @param {ContentType} contentType
+   * @param {Eventful} scope
    *
    * @return {HTMLElement}
    */
-  createContentTypeRow(contentType) {
-    // image
-    const image = document.createElement('img');
-    image.className = 'img-responsive';
-    image.setAttribute('src', contentType.icon);
+  createContentTypeRow(contentType, scope) {
+    // row item
+    const element = document.createElement('li');
+    element.id = `content-type-${contentType.machineName}`;
+    element.setAttribute('data-id', contentType.machineName);
 
-    // title
-    const title = document.createElement('h4');
-    title.innerHTML = contentType.title;
+    // create button config
+    const useButtonConfig = { text: 'Use', cls: 'button-primary' };
+    const installButtonConfig = { text: 'install', cls: 'button-inverse-primary'};
+    const button = contentType.installed ?  useButtonConfig: installButtonConfig;
 
-    // description
-    const description = document.createElement('div');
-    description.className = 'description';
-    description.innerHTML = contentType.summary;
+    // create html
+    element.innerHTML = `
+      <img class="img-responsive" src="${contentType.icon}">
+      <span class="button ${button.cls}" data-id="${contentType.machineName}">${button.text}</span>
+      <h4>${contentType.title}</h4>
+      <div class="description">${contentType.summary}</div>
+   `;
 
-    // list item
-    const row = document.createElement('li');
-    row.id = `content-type-${contentType.machineName}`;
-    row.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
-    row.appendChild(image);
-    row.appendChild(this.createButtonElement(contentType));
-    row.appendChild(title);
-    row.appendChild(description);
-
-    return row;
-  }
-
-  /**
-   *
-   * @param {ContentType} contentType
-   */
-  createButtonElement(contentType) {
-    const button = document.createElement('span');
-
-    if(contentType.installed) {
-      button.className = "button button-primary";
-      button.innerHTML = "Use";
-      button.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, contentType.machineName);
-      relayClickEventAs('select', this, button);
-    }
-    else {
-      button.className = "button button-inverse-primary";
-      button.innerHTML = "Get";
-      // no functionality, uses click event on row
+    // handle use button
+    const useButton = element.querySelector('.button-primary');
+    if(useButton){
+      relayClickEventAs('select', scope, useButton);
     }
 
-    return button;
+    return element;
   }
 
   /**

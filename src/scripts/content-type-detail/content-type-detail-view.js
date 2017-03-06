@@ -1,7 +1,8 @@
 import { setAttribute, getAttribute } from "utils/elements";
 import { curry } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
-import initPanel from "components/panel"
+import initPanel from "components/panel";
+import { relayClickEventAs } from '../utils/events';
 
 /**
  * @constant {string}
@@ -34,26 +35,6 @@ const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
  * @return {boolean}
  */
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
-
-/**
- * Propagates row selection trough the event system
- *
- * @param {Eventful} eventful
- * @param {HTMLElement} element
- *
- * @function
- * @return {HTMLElement}
- */
-const relayClickEventAs = curry(function(type, eventful, element) {
-  element.addEventListener('click', event => {
-    eventful.fire(type, {
-      element: element,
-      id: getAttribute(ATTRIBUTE_CONTENT_TYPE_ID, element)
-    })
-  });
-
-  return element;
-});
 
 /**
  * @class
