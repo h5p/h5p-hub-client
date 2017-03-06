@@ -104,7 +104,7 @@ export default class HubView {
 
   /**
    * Give the panel attribiutes from h5p-sdk, e.g. opening and closing
-   * This is only called once no errors have occured in loading the hub 
+   * This is only called once no errors have occured in loading the hub
    */
   initializePanel(){
     initPanel(this.rootElement);
@@ -179,6 +179,13 @@ export default class HubView {
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabPanel);
+  }
+
+  /**
+   * Adds an animated border to the bottom of the tab
+   */
+  addBottomBorder() {
+    this.tablist.appendChild(document.createElement('span'));
   }
 
   initTabPanel() {

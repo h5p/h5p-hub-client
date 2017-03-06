@@ -106,6 +106,7 @@ export default class Hub {
     }];
 
     tabConfigs.forEach(tabConfig => this.view.addTab(tabConfig));
+    this.view.addBottomBorder(); // Adds an animated bottom border to each tab
     this.view.initTabPanel();
   }
 

@@ -19,9 +19,12 @@
     border: 1px solid $color;
   }
 
-  [role="menuitem"][aria-selected="true"],
-  [role="tab"][aria-selected="true"] {
+  [role="menuitem"][aria-selected="true"] {
     @include box-shadow(0, -5px, 0, 0, $color, true);
+  }
+
+  [role="tab"][aria-selected="true"] ~ span{
+    background: $color;
   }
 
   .button.button-primary {
@@ -101,6 +104,19 @@
             margin-top: -1.5px;
             float: left;
           }
+        }
+
+        // Hardcoded transitions
+        &:nth-child(1) ~ span,
+        &:nth-child(1)[aria-selected="true"] ~ span {
+          width: 150px;
+          right: 0;
+        }
+
+        &:nth-child(2) ~ span,
+        &:nth-child(2)[aria-selected="true"] ~ span {
+          width: 120px;
+          right: -150px;
         }
       }
     }
