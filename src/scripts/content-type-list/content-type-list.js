@@ -7,11 +7,16 @@ import {Eventful} from '../mixins/eventful';
  * @type {SelectedElement}
  */
 /**
+ * Update content type list event
+ * @event ContentTypeList#update-content-type-list
+ * @type {SelectedElement}
+ */
+/**
  * @class
  * @mixes Eventful
- *
  * @fires Hub#select
  * @fires ContentTypeList#row-selected
+ * @fires ContentTypeList#update-content-type-list
  */
 export default class ContentTypeList {
   constructor(state) {
@@ -43,9 +48,11 @@ export default class ContentTypeList {
    * @param {ContentType[]} contentTypes
    */
   update(contentTypes) {
-    this.view.updateList(contentTypes);
+    this.view.removeAllRows();
+    contentTypes.forEach(this.view.addRow, this.view);
     this.fire('update-content-type-list', {});
   }
+
 
   /**
    * Returns the views root element

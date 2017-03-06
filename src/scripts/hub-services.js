@@ -1,21 +1,27 @@
 /**
  * @typedef {object} ContentType
- * @property {string} id
- * @property {string} title
+ * @property {string} machineName
+ * @property {string} majorVersion
+ * @property {string} minorVersion
+ * @property {string} patchVersion
+ * @property {string} h5pMajorVersion
+ * @property {string} h5pMinorVersion
  * @property {string} summary
  * @property {string} description
  * @property {string} icon
- * @property {string} created
- * @property {string} update
- * @property {boolean} recommended
- * @property {number} timesDownloaded
- * @property {string[]} screenshots
- * @property {string} example
- * @property {string[]} keywords
- * @property {string[]} categories
+ * @property {string} createdAt
+ * @property {string} updated_At
+ * @property {string} isRecommended
+ * @property {string} popularity
+ * @property {object[]} screenshots
  * @property {string} license
+ * @property {string} example
+ * @property {string} tutorial
+ * @property {string[]} keywords
+ * @property {string} owner
+ * @property {boolean} installed
+ * @property {boolean} restricted
  */
-
 export default class HubServices {
   /**
    * @param {string} apiRootUrl
