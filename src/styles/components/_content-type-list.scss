@@ -14,8 +14,13 @@
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
                 0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
+    opacity: 1;
+    transition: opacity 0.1s linear;
+
     &[aria-hidden="true"] {
-      display: none;
+      display: inherit;
+      opacity: 0;
+
     }
 
     @include scroll-bar($c3, $c1);

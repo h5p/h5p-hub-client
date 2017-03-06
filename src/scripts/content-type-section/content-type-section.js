@@ -31,9 +31,15 @@ export default class ContentTypeSection {
     ['My Content Types', 'Newest', 'Most Popular', 'Recommended']
       .forEach(menuText => this.view.addMenuItem(menuText));
 
-    // set sub view (TODO find other way)
-    this.view.getElement().appendChild(this.contentTypeList.getElement());
-    this.view.getElement().appendChild(this.contentTypeDetail.getElement());
+    // Element for holding list and details views
+    const section = document.createElement('div');
+    section.classList.add('content-type-section');
+
+    this.rootElement = section;
+    this.rootElement.appendChild(this.contentTypeList.getElement());
+    this.rootElement.appendChild(this.contentTypeDetail.getElement());
+
+    this.view.getElement().appendChild(this.rootElement);
 
     // propagate events
     this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
