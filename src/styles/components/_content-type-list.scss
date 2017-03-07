@@ -15,12 +15,13 @@
                 0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
     opacity: 1;
-    transition: opacity 0.1s linear;
+    transition: opacity 0.2s, visibility 0s linear 0s;
 
     &[aria-hidden="true"] {
       display: inherit;
       opacity: 0;
-
+      visibility: hidden;
+      transition: opacity 0.2s, visibility 0s linear 0.2s;
     }
 
     @include scroll-bar($c3, $c1);
