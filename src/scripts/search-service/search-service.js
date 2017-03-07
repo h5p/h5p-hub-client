@@ -1,11 +1,12 @@
-import {curry, map, filter} from "utils/functional"
-import HubServices from "../hub-services";
+import {curry, map, filter} from 'utils/functional'
+import HubServices from '../hub-services';
 
 /**
  * @class
- * The Search Service gets a content types from HubServices
- * then indexes them using lunrjs. It then searches through
- * the lunrjs index and returns content types that match the query.
+ * The Search Service gets a content type from hub-services.js
+ * in the form of a promise. It then generates a score based
+ * on the different weightings of the content type fields and
+ * sorts the results based on the generated score.
  */
 export default class SearchService {
   /**
@@ -42,7 +43,7 @@ export default class SearchService {
  */
 const filterByQuery = curry(function(query, contentTypes) {
   // Sort alphabetically upon initialization
-  if (query == "") {
+  if (query == '') {
     return contentTypes.sort(function(a,b){
       if(a.title < b.title) return -1;
       if(a.title > b.title) return 1;
@@ -51,42 +52,45 @@ const filterByQuery = curry(function(query, contentTypes) {
   }
 
   return contentTypes
-    .reduce((result, contentType) => {
-      result.push({
+    .map(function(contentType){
+      // Append a search score to each content type
+      let result = {
         contentType: contentType,
         score: getSearchScore(query, contentType)
-      })
+      };
+      console.log(result);
       return result;
-    }, [])
-    .filter(result => result.score > 0)
-    .sort((a,b) => b.score - a.score)
-    .map(result => result.contentType)
+    })
+    .filter(result => result.score > 0) // Only show hits
+    .sort((a,b) => b.score - a.score) // Sort by relevance
+    .map(result => result.contentType); // Unwrap result object
+
 });
 
 /**
  * Calculates weighting for different search terms based
  * on existence of substrings
  *
- * @param  {String} query
+ * @param  {string} query
  * @param  {Object} contentType
  * @return {int}
  */
 const getSearchScore = function(query, contentType) {
   let score = 0;
   if (hasSubString(query, contentType.title)) {
-    score += 20;
-  };
+    score += 100;
+  }
   if (hasSubString(query, contentType.summary)) {
     score += 5;
-  };
+  }
   if (hasSubString(query, contentType.description)) {
     score += 5;
-  };
+  }
   if (arrayHasSubString(query, contentType.keywords)) {
       score += 5;
-  };
+  }
   return score;
-}
+};
 
 /**
  * Checks if a needle is found in the haystack.

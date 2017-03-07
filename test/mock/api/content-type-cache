@@ -578,7 +578,7 @@
       "h5pMajorVersion": "1",
       "h5pMinorVersion": "12",
       "title": "Course Presentation",
-      "summary": "Summary Create a presentation with interactive slides",
+      "summary": "Create a presentation with interactive slides",
       "description": "Course presentations consist of slides with multimedia, text, and many different types of interactions like interactive summaries, multiple choice questions and interactive videos. Learners can experience new interactive learning material and test their knowledge and memory in Course Presentations. As always with H5P, content is editable in web browsers, and the Course Presentation activity type includes a WYSIWYG drag and drop based authoring tool. A typical use of the Course Presentation activity is to use a few slides to introduce a subject and follow these with a few more slides in which the user\u2019s knowledge is tested. Course Presentations may however be used in many different ways, including as a presentation tool for use in the classroom, or as a game where the usual navigation is replaced with navigation buttons on top of the slides to let the user make choices and see the consequences of their choices.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/college.svg",
       "createdAt": "1488375267",
