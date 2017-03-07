@@ -58,13 +58,11 @@ const filterByQuery = curry(function(query, contentTypes) {
         contentType: contentType,
         score: getSearchScore(query, contentType)
       };
-      console.log(result);
       return result;
     })
     .filter(result => result.score > 0) // Only show hits
     .sort((a,b) => b.score - a.score) // Sort by relevance
     .map(result => result.contentType); // Unwrap result object
-
 });
 
 /**
