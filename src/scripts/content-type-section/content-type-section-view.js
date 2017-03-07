@@ -90,6 +90,7 @@ export default class ContentBrowserView {
   createInputGroupElement() {
     // input field
     const inputField = document.createElement('input');
+    inputField.id = "search-bar";
     inputField.className = 'form-control form-control-rounded';
     inputField.setAttribute('type', 'text');
     inputField.setAttribute('placeholder', "Search for Content Types");
