@@ -97,7 +97,7 @@ export default class ContentTypeListView {
     // create html
     element.innerHTML = `
       <img class="img-responsive" src="${image}">
-      <span class="button ${button.cls}" data-id="${contentType.machineName}">${button.text}</span>
+      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0">${button.text}</span>
       <h4>${title}</h4>
       <div class="description">${description}</div>
    `;
