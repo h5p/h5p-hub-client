@@ -3,6 +3,7 @@ import { curry } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import { relayClickEventAs } from '../utils/events';
+import noIcon from '../../images/content-type-placeholder.svg';
 
 /**
  * @constant {string}
@@ -120,6 +121,10 @@ export default class ContentTypeDetailView {
     panelGroupElement.appendChild(pluginsPanel);
     panelGroupElement.appendChild(publisherPanel);
 
+    // images
+    this.carousel = document.createElement('ul');
+
+
     // add root element
     this.rootElement = document.createElement('div');
     this.rootElement.className = 'content-type-detail';
@@ -127,6 +132,7 @@ export default class ContentTypeDetailView {
     this.rootElement.appendChild(backButtonElement);
     this.rootElement.appendChild(detailsElement);
     this.rootElement.appendChild(buttonBar);
+    this.rootElement.appendChild(this.carousel);
     this.rootElement.appendChild(panelGroupElement);
   }
 
@@ -167,12 +173,24 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Add image to the carousel
+   *
+   * @param {object} image
+   */
+  addImageToCarousel(image) {
+    const item = document.createElement('li');
+    item.innerHTML = `<img src="${image.url}" alt="${image.alt}" style="width: 100px;"/>`;
+
+    this.carousel.appendChild(item);
+  }
+
+  /**
    * Sets the image
    *
    * @param {string} src
    */
   setImage(src) {
-    this.image.setAttribute('src', src);
+    this.image.setAttribute('src', src || noIcon);
   }
 
   /**

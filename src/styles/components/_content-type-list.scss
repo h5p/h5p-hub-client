@@ -24,13 +24,14 @@
       transition: opacity 0.2s, visibility 0s linear 0.2s;
     }
 
-    @include scroll-bar($c3, $c1);
+    @include scroll-bar($c3, lighten($c1, 20%));
 
     li {
       width: 100%;
       padding: $gutter;
       box-sizing: border-box;
       cursor: pointer;
+      overflow: auto;
 
       &:hover {
         background-color: lighten($ac1, 55%);
@@ -58,8 +59,7 @@
 
     .button {
       float: right;
-      margin-left: $gutter;
-      margin-top: 0.7em;
+      margin: $gutter ($gutter * 2);
     }
   }
 }

@@ -1,6 +1,7 @@
 @import "../base/colors";
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/mixins";
+@import "~h5p-sdk/src/styles/components/button";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 @mixin h5p-hub-icon($char) {
@@ -28,12 +29,11 @@
   }
 
   .button.button-primary {
-    background-color: $color;
+    @include button-filled($color, white);
   }
 
   .button.button-inverse-primary {
-    border-color: $color;
-    color: $color;
+    @include button-inverse(white, $color);
   }
 
   .icon-search {
@@ -43,6 +43,7 @@
 
 .h5p.h5p-hub {
   font-family: 'Open Sans', sans-serif;
+  margin-bottom: $gutter;
 
   .panel {
     border: 1px solid $c1;

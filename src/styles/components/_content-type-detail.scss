@@ -13,7 +13,6 @@
 
   .content-type-detail {
     padding: $gutter;
-
     display: inherit;
     opacity: 0;
     position: absolute;
@@ -21,8 +20,8 @@
     left: 0;
     height: auto;
     visibility: hidden;
+    overflow: auto;
     transform: translateX(100%);
-
     transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
 
     &[aria-hidden="false"] {
