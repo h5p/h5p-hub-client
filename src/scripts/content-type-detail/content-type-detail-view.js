@@ -3,6 +3,7 @@ import { curry } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import { relayClickEventAs } from '../utils/events';
+import noIcon from '../../images/content-type-placeholder.svg';
 
 /**
  * @constant {string}
@@ -189,7 +190,7 @@ export default class ContentTypeDetailView {
    * @param {string} src
    */
   setImage(src) {
-    this.image.setAttribute('src', src);
+    this.image.setAttribute('src', src || noIcon);
   }
 
   /**
