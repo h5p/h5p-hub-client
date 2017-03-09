@@ -39,6 +39,7 @@
     "karma-jasmine": "^1.0.2",
     "lite-server": "^2.2.2",
     "node-sass": "^4.5.0",
+    "resolve-url-loader": "^2.0.2",
     "nodemon": "^1.11.0",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.2",

@@ -13,15 +13,14 @@
 
   .content-type-detail {
     padding: $gutter;
-
     display: inherit;
     opacity: 0;
     position: absolute;
     top: 0;
     left: 0;
     visibility: hidden;
+    overflow: auto;
     transform: translateX(100%);
-
     transition: opacity 0.2s ease-out, transform 0.15s linear, visibility 0.2s ease-out;
 
     &[aria-hidden="false"] {
