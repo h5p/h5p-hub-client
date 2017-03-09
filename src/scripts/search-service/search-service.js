@@ -1,4 +1,4 @@
-import {curry, map, filter} from 'utils/functional'
+import {curry} from 'utils/functional'
 import HubServices from '../hub-services';
 
 /**
@@ -10,7 +10,7 @@ import HubServices from '../hub-services';
  */
 export default class SearchService {
   /**
-   * @param {object} state
+   * @param {Object} state
    * @param {string} state.apiRootUrl
    */
   constructor(state) {
@@ -119,4 +119,4 @@ const arrayHasSubString = function(subString, arr) {
   }
 
   return arr.some(string => hasSubString(subString, string));
-}
+};
