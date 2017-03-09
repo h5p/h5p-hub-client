@@ -32,10 +32,16 @@ import {renderErrorMessage} from './utils/errors';
  * @type {ErrorMessage}
  */
 /**
+ * Upload event
+ * @event Hub#upload
+ * @type {Object}
+ */
+/**
  * @class
  * @mixes Eventful
  * @fires Hub#select
  * @fires Hub#error
+ * @fires Hub#upload
  */
 export default class Hub {
   /**
@@ -59,6 +65,7 @@ export default class Hub {
 
     // propagate controller events
     this.propagate(['select', 'error'], this.contentTypeSection);
+    this.propagate(['upload'], this.uploadSection);
 
     // handle events
     this.on('select', this.setPanelTitle, this);
