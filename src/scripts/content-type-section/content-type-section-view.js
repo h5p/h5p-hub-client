@@ -90,6 +90,7 @@ export default class ContentBrowserView {
   createInputGroupElement() {
     // input field
     const inputField = document.createElement('input');
+    inputField.id = "search-bar";
     inputField.className = 'form-control form-control-rounded';
     inputField.setAttribute('type', 'text');
     inputField.setAttribute('placeholder', "Search for Content Types");
@@ -103,6 +104,9 @@ export default class ContentBrowserView {
     // input button
     const inputButton = document.createElement('div');
     inputButton.className = 'input-group-addon icon-search';
+    inputButton.onclick = function() {
+      this.parentElement.querySelector('#search-bar').focus()
+    };
 
     // input group
     const inputGroup = document.createElement('div');

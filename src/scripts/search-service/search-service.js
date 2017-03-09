@@ -1,12 +1,12 @@
-import {curry, map, filter} from "utils/functional"
-import HubServices from "../hub-services";
-import lunr from "lunr"
+import {curry, map, filter} from 'utils/functional'
+import HubServices from '../hub-services';
 
 /**
  * @class
- * The Search Service gets a content types from HubServices
- * then indexes them using lunrjs. It then searches through
- * the lunrjs index and returns content types that match the query.
+ * The Search Service gets a content type from hub-services.js
+ * in the form of a promise. It then generates a score based
+ * on the different weightings of the content type fields and
+ * sorts the results based on the generated score.
  */
 export default class SearchService {
   /**
@@ -18,18 +18,8 @@ export default class SearchService {
       apiRootUrl: state.apiRootUrl
     });
 
-    // Set up lunr index
-    this.index = lunr(function() {
-      this.field('title', {boost: 10}); // Certain fields can given a higher importance
-      this.field('summary');
-      this.field('description');
-      this.field('keywords');
-      this.ref('id'); //
-    });
-
     // Add content types to the search index
-    this.contentTypes = this.services.contentTypes()
-      .then(map(addToIndex(this.index)));
+    this.contentTypes = this.services.contentTypes();
   }
 
   /**
@@ -40,49 +30,93 @@ export default class SearchService {
    * @return {Promise<ContentType[]>} A promise of an array of content types
    */
   search(query) {
-    // Display all content types by default
-    if (query === '') {
-      return this.contentTypes;
-    }
-
-    // Otherwise, filter content types by a query
-    return this.contentTypes.then(contentTypes => {
-      return this.index.search(query)
-        .map(result => result.ref)
-        .map(findContentTypeByMachineName(contentTypes))
-    });
+    return this.contentTypes.then(filterByQuery(query));
   }
 }
 
 /**
- * Adds a content type to the lunrjs search index
- * creates an id for the index using the machine name
- * of the content type.
+ * Filters a list of content types based on a query
+ * @type {Function}
  *
- * @param  {lunr.Index} index
- * @param  {ContentType} contentType
- *
- * @return {ContentType}
+ * @param {string} query
+ * @param {ContentType[]} contentTypes
  */
-const addToIndex = curry((index, contentType) => {
-  index.add({
-    title: contentType.title,
-    summary: contentType.summary,
-    description: contentType.description,
-    keywords: contentType.keywords,
-    id: contentType.machineName
-  });
+const filterByQuery = curry(function(query, contentTypes) {
+  // Sort alphabetically upon initialization
+  if (query == '') {
+    return contentTypes.sort(function(a,b){
+      if(a.title < b.title) return -1;
+      if(a.title > b.title) return 1;
+      return 0;
+    });
+  }
 
-  return contentType;
+  return contentTypes
+    .map(function(contentType){
+      // Append a search score to each content type
+      let result = {
+        contentType: contentType,
+        score: getSearchScore(query, contentType)
+      };
+      return result;
+    })
+    .filter(result => result.score > 0) // Only show hits
+    .sort((a,b) => b.score - a.score) // Sort by relevance
+    .map(result => result.contentType); // Unwrap result object
 });
 
 /**
- * helper function
+ * Calculates weighting for different search terms based
+ * on existence of substrings
  *
- * @param  {ContentType[]}
- * @param  {string} machineName
- * @return {ContentType}
+ * @param  {string} query
+ * @param  {Object} contentType
+ * @return {int}
  */
-const findContentTypeByMachineName = curry(function(contentTypes, machineName) {
-  return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
-});
+const getSearchScore = function(query, contentType) {
+  let score = 0;
+  if (hasSubString(query, contentType.title)) {
+    score += 100;
+  }
+  if (hasSubString(query, contentType.summary)) {
+    score += 5;
+  }
+  if (hasSubString(query, contentType.description)) {
+    score += 5;
+  }
+  if (arrayHasSubString(query, contentType.keywords)) {
+      score += 5;
+  }
+  return score;
+};
+
+/**
+ * Checks if a needle is found in the haystack.
+ * Not case sensitive
+ *
+ * @param {string} needle
+ * @param {string} haystack
+ * @return {boolean}
+ */
+const hasSubString = function(needle, haystack) {
+  if (haystack === undefined) {
+    return false;
+  }
+
+  return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
+};
+
+/**
+ * Helper function, checks if array has contains a substring
+ *
+ * @param  {String} subString
+ * @param  {Array} arr
+ * @return {boolean}
+ */
+const arrayHasSubString = function(subString, arr) {
+  if (arr === undefined) {
+    return false;
+  }
+
+  return arr.some(string => hasSubString(subString, string));
+}

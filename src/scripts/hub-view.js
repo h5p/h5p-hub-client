@@ -119,6 +119,7 @@ export default class HubView {
     }
     else {
       this.panel.setAttribute('open', '');
+      setTimeout(function(){document.querySelector('#search-bar').focus()},20);
     }
   }
 
