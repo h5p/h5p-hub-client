@@ -113,7 +113,7 @@ export default class HubView {
     }
     else {
       panel.setAttribute('open', '');
-      setTimeout(function(){panel.querySelector('#search-bar').focus()},20);
+      setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
     }
   }
 
