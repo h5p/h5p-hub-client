@@ -50,6 +50,7 @@ export default class ContentTypeSection {
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
+    this.contentTypeDetail.on('select', this.closeDetailView, this);
 
     this.initContentTypeList();
   }
