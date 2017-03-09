@@ -31,6 +31,7 @@
       padding: $gutter;
       box-sizing: border-box;
       cursor: pointer;
+      overflow: auto;
 
       &:hover {
         background-color: lighten($ac1, 55%);

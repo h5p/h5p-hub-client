@@ -2,6 +2,7 @@ import { curry } from "utils/functional";
 import { setAttribute, getAttribute } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
+import noIcon from '../../images/content-type-placeholder.svg';
 
 /**
  * @function
@@ -22,6 +23,8 @@ const show = setAttribute('aria-hidden', 'false');
 export default class ContentTypeListView {
   constructor(state) {
     this.state = state;
+
+    console.log('place', noIcon);
 
     // add event system
     Object.assign(this, Eventful());
@@ -86,12 +89,17 @@ export default class ContentTypeListView {
     const installButtonConfig = { text: 'install', cls: 'button-inverse-primary'};
     const button = contentType.installed ?  useButtonConfig: installButtonConfig;
 
+    const title = contentType.title || contentType.machineName;
+    const description = contentType.summary || '';
+
+    const image = contentType.icon || noIcon;
+
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${contentType.icon}">
+      <img class="img-responsive" src="${image}">
       <span class="button ${button.cls}" data-id="${contentType.machineName}">${button.text}</span>
-      <h4>${contentType.title}</h4>
-      <div class="description">${contentType.summary}</div>
+      <h4>${title}</h4>
+      <div class="description">${description}</div>
    `;
 
     // handle use button
