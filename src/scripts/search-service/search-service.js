@@ -75,18 +75,24 @@ const filterByQuery = curry(function(query, contentTypes) {
  */
 const getSearchScore = function(query, contentType) {
   let score = 0;
-  if (hasSubString(query, contentType.title)) {
-    score += 100;
-  }
-  if (hasSubString(query, contentType.summary)) {
-    score += 5;
-  }
-  if (hasSubString(query, contentType.description)) {
-    score += 5;
-  }
-  if (arrayHasSubString(query, contentType.keywords)) {
+  // Tokenize the query string and ignore spaces 
+  let queries = query.split(' ').filter(query => query !== '');
+
+  queries.forEach(function(query) {
+    if (hasSubString(query, contentType.title)) {
+      score += 100;
+    }
+    if (hasSubString(query, contentType.summary)) {
       score += 5;
-  }
+    }
+    if (hasSubString(query, contentType.description)) {
+      score += 5;
+    }
+    if (arrayHasSubString(query, contentType.keywords)) {
+        score += 5;
+    }
+  });
+
   return score;
 };
 
@@ -114,7 +120,7 @@ const hasSubString = function(needle, haystack) {
  * @return {boolean}
  */
 const arrayHasSubString = function(subString, arr) {
-  if (arr === undefined) {
+  if (arr === undefined || subString === '') {
     return false;
   }
 
