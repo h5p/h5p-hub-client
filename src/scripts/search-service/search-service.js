@@ -44,11 +44,7 @@ export default class SearchService {
 const filterByQuery = curry(function(query, contentTypes) {
   // Sort alphabetically upon initialization
   if (query == '') {
-    return contentTypes.sort(function(a,b){
-      if(a.title < b.title) return -1;
-      if(a.title > b.title) return 1;
-      return 0;
-    });
+    return contentTypes
   }
 
   return contentTypes
@@ -75,7 +71,7 @@ const filterByQuery = curry(function(query, contentTypes) {
  */
 const getSearchScore = function(query, contentType) {
   let score = 0;
-  // Tokenize the query string and ignore spaces 
+  // Tokenize the query string and ignore spaces
   let queries = query.split(' ').filter(query => query !== '');
 
   queries.forEach(function(query) {
