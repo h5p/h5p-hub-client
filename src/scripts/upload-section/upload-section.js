@@ -1,10 +1,52 @@
+import HubServices from '../hub-services';
+import { Eventful } from '../mixins/eventful';
+
 /**
  * @class
+ * @mixes Eventful
+ *
+ * @fires Hub#upload
  */
 export default class UploadSection {
-  getElement() {
+
+  constructor(state) {
+    const self = this;
+    Object.assign(this, Eventful());
+
+    // services
+    this.services = new HubServices({
+      apiRootUrl: state.apiRootUrl
+    });
+
+    // Input element for the H5P file
+    const h5pUpload = document.createElement('input');
+    h5pUpload.setAttribute('type', 'file');
+
+    // Sends the H5P file to the plugin
+    const useButton = document.createElement('button');
+    useButton.textContent = 'Use';
+    useButton.addEventListener('click', () => {
+
+      // Add the H5P file to a form, ready for transportation
+      const data = new FormData();
+      data.append('h5p', h5pUpload.files[0]);
+
+      // Upload content to the plugin
+      this.services.uploadContent(data)
+        .then(json => {
+          // Fire the received data to any listeners
+          self.fire('upload', json);
+        });
+    });
+
     const element = document.createElement('div');
-    element.innerHTML = "TODO Upload";
-    return element;
+    element.appendChild(h5pUpload);
+    element.appendChild(useButton);
+
+    this.rootElement = element;
+  }
+
+  getElement() {
+    return this.rootElement;
   }
 }

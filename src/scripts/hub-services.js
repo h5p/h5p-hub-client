@@ -98,4 +98,19 @@ export default class HubServices {
       body: ''
     }).then(result => result.json());
   }
+
+  /**
+   * Uploads a content type to the server for validation
+   *
+   * @param {FormData} formData Form containing the h5p that should be uploaded as 'h5p'
+   *
+   * @return {Promise} Returns the promise of a json containing the content json and the h5p json
+   */
+  uploadContent(formData) {
+    return fetch(`${this.apiRootUrl}library-upload`, {
+      method: 'POST',
+      credentials: 'include',
+      body: formData
+    }).then(result => result.json());
+  }
 }
