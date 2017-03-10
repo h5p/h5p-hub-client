@@ -1,7 +1,8 @@
-import { setAttribute, getAttribute } from "utils/elements";
+import { setAttribute, getAttribute, removeChild } from "utils/elements";
 import { curry } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
+import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 
@@ -122,8 +123,17 @@ export default class ContentTypeDetailView {
     panelGroupElement.appendChild(publisherPanel);
 
     // images
-    this.carousel = document.createElement('ul');
+    this.carousel = document.createElement('div');
+    this.carousel.setAttribute('role', 'region');
+    this.carousel.setAttribute('data-size', '5');
+    this.carousel.innerHTML = `<div class="carousel" role="region" data-size="5">
+    <span class="carousel-button previous" aria-hidden="true">&larr;</span>
+    <span class="carousel-button next" aria-hidden="true">&rarr;</span>
+    <nav class="scroller"><ul></ul></nav>`;
 
+    initImageScroller(this.carousel);
+
+    this.thumbnailList = this.carousel.querySelector('ul');
 
     // add root element
     this.rootElement = document.createElement('div');
@@ -173,15 +183,32 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Removes all images from the carousel
+   */
+  removeAllImagesInCarousel() {
+    this.thumbnailList.querySelectorAll('li').forEach(removeChild(this.thumbnailList));
+    this.carousel.querySelectorAll('.carousel-lightbox').forEach(removeChild(this.carousel));
+  }
+
+  /**
    * Add image to the carousel
    *
    * @param {object} image
    */
   addImageToCarousel(image) {
-    const item = document.createElement('li');
-    item.innerHTML = `<img src="${image.url}" alt="${image.alt}" style="width: 100px;"/>`;
+    // add lightbox
+    const lightbox = document.createElement('div');
+    lightbox.id = `lightbox-${this.thumbnailList.childElementCount}`;
+    lightbox.className = 'carousel-lightbox';
+    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
+    this.carousel.appendChild(lightbox);
 
-    this.carousel.appendChild(item);
+    // add thumbnail
+    const thumbnail = document.createElement('li');
+    thumbnail.className = 'slide';
+    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${lightbox.id}" />`;
+    this.thumbnailList.appendChild(thumbnail);
   }
 
   /**

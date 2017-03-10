@@ -77,6 +77,8 @@ export default class ContentTypeDetail {
     this.view.setExample(contentType.example);
     this.view.setIsInstalled(!!contentType.installed);
 
+    // update carousel
+    this.view.removeAllImagesInCarousel();
     contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
   }
 
