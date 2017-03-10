@@ -42,24 +42,56 @@ export default class SearchService {
  * @param {ContentType[]} contentTypes
  */
 const filterByQuery = curry(function(query, contentTypes) {
-  // Sort alphabetically upon initialization
   if (query == '') {
-    return contentTypes
+    return contentTypes;
+  }
+
+  // Append a search score to each content type
+  contentTypes = contentTypes.map(contentType =>
+    ({
+      contentType: contentType,
+      score: 0
+    })
+  );
+
+  // Tokenize query and sanitize
+  let queries = query.split(' ').filter(query => query !== '');
+
+  // Loop through queries and generate a relevance score
+  for (var i = 0; i < queries.length; i ++) {
+    if (i > 0) { // Search a smaller subset each time
+      contentTypes = contentTypes.filter(result => result.score > 0);
+    }
+    contentTypes.forEach(contentType => contentType.score = getSearchScore(queries[i], contentType.contentType));
   }
 
   return contentTypes
-    .map(function(contentType){
-      // Append a search score to each content type
-      let result = {
-        contentType: contentType,
-        score: getSearchScore(query, contentType)
-      };
-      return result;
-    })
-    .filter(result => result.score > 0) // Only show hits
-    .sort((a,b) => b.score - a.score) // Sort by relevance
-    .map(result => result.contentType); // Unwrap result object
+    .filter(result => result.score > 0)
+    .sort(sortSearchResults) // Sort by installed, relevance and popularity
+    .map(result => result.contentType); // Unwrap result object;
 });
+
+/**
+ * Callback for Array.sort()
+ * Compares two content types on different criteria
+ *
+ * @param {Object} a First content type
+ * @param {Object} b Second content type
+ * @return {int}
+ */
+const sortSearchResults = (a,b) => {
+  if (!a.contentType.installed && b.contentType.installed) {
+    return 1;
+  }
+
+  else if (b.score !== a.score) {
+    return b.score - a.score;
+  }
+
+  else {
+    return b.contentType.popularity - a.contentType.popularity;
+  }
+};
 
 /**
  * Calculates weighting for different search terms based
@@ -69,28 +101,24 @@ const filterByQuery = curry(function(query, contentTypes) {
  * @param  {Object} contentType
  * @return {int}
  */
-const getSearchScore = function(query, contentType) {
-  let score = 0;
-  // Tokenize the query string and ignore spaces
-  let queries = query.split(' ').filter(query => query !== '');
-
-  queries.forEach(function(query) {
-    if (hasSubString(query, contentType.title)) {
-      score += 100;
-    }
-    if (hasSubString(query, contentType.summary)) {
-      score += 5;
-    }
-    if (hasSubString(query, contentType.description)) {
-      score += 5;
-    }
-    if (arrayHasSubString(query, contentType.keywords)) {
-        score += 5;
-    }
-  });
-
-  return score;
-};
+ const getSearchScore = function(query, contentType) {
+   console.log(contentType);
+   query = query.trim();
+   let score = 0;
+   if (hasSubString(query, contentType.title)) {
+     score += 100;
+   }
+   if (hasSubString(query, contentType.summary)) {
+     score += 5;
+   }
+   if (hasSubString(query, contentType.description)) {
+     score += 5;
+   }
+   if (arrayHasSubString(query, contentType.keywords)) {
+       score += 5;
+   }
+   return score;
+ };
 
 /**
  * Checks if a needle is found in the haystack.
