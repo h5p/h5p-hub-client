@@ -45,7 +45,7 @@
   font-family: 'Open Sans', sans-serif;
   margin-bottom: $gutter;
 
-  .panel {
+  &>.panel {
     border: 1px solid $c1;
 
     &>.panel-header {
