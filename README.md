@@ -3,7 +3,7 @@ H5P Content Hub and H5P Content Type Hub
 
 ## Building
 
-Get the h5p-sdk
+Get the [h5p-sdk](https://github.com/h5p/h5p-sdk)
 
 ```bash
  cd ..
