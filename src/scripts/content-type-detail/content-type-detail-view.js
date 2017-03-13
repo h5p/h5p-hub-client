@@ -193,6 +193,11 @@ export default class ContentTypeDetailView {
     }
   }
 
+  /**
+   * Toggles Read less and Read more text
+   *
+   * @param {string} text
+   */
   toggleDescriptionExpanded(text) {
     // flip boolean
     this.descriptionExpanded = !this.descriptionExpanded;
@@ -207,18 +212,6 @@ export default class ContentTypeDetailView {
     this.description
       .querySelector('.read-more, .read-less')
       .addEventListener('click', () => this.toggleDescriptionExpanded(text));
-  }
-
-  /**
-   * Sets the long description
-   *
-   * @param {string} text
-   */
-  setDescriptionReadMore(text) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
-      this.description
-        .querySelector('.read-more')
-        .addEventListener('click', () => this.description.innerText = text);
   }
 
   /**
