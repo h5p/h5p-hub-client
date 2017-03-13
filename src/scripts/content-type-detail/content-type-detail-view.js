@@ -184,7 +184,7 @@ export default class ContentTypeDetailView {
     if(text.length > MAX_TEXT_SIZE_DESCRIPTION) {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
       this.description
-        .querySelector('.read-more')
+        .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
       this.descriptionExpanded = false;
     }
@@ -198,11 +198,15 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text} <span class="read-more link">Read less</span>`;
+      this.description.innerHTML = `${text} <span class="read-less link">Read less</span>`;
     }
     else {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
     }
+
+    this.description
+      .querySelector('.read-more, .read-less')
+      .addEventListener('click', () => this.toggleDescriptionExpanded(text));
   }
 
   /**
