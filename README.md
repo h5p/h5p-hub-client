@@ -3,6 +3,18 @@ H5P Content Hub and H5P Content Type Hub
 
 ## Building
 
+Get the h5p-sdk
+
+```bash
+ cd ..
+ git clone git@github.com:h5p/h5p-sdk.git
+ cd h5p-sdk
+ npm link
+ cd ../h5p-hub-client
+ npm link h5p-sdk
+```
+
+
 Run `build` to concatinate *JavaScript* files and compile scss files to css. Resulting files are found in the [dist folder](dist).
 
 ```bash
@@ -42,5 +54,4 @@ var hubClient = new H5P.HubClient({
 });
 
 document.getElementById('hub-client').appendChild(hubClient.getElement());
-
 ```
