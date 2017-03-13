@@ -47,25 +47,11 @@ const filterByQuery = curry(function(query, contentTypes) {
   }
 
   // Append a search score to each content type
-  contentTypes = contentTypes.map(contentType =>
+  return contentTypes.map(contentType =>
     ({
       contentType: contentType,
-      score: 0
-    })
-  );
-
-  // Tokenize query and sanitize
-  let queries = query.split(' ').filter(query => query !== '');
-
-  // Loop through queries and generate a relevance score
-  for (var i = 0; i < queries.length; i ++) {
-    if (i > 0) { // Search a smaller subset each time
-      contentTypes = contentTypes.filter(result => result.score > 0);
-    }
-    contentTypes.forEach(contentType => contentType.score = getSearchScore(queries[i], contentType.contentType));
-  }
-
-  return contentTypes
+      score: getSearchScore(query, contentType)
+    }))
     .filter(result => result.score > 0)
     .sort(sortSearchResults) // Sort by installed, relevance and popularity
     .map(result => result.contentType); // Unwrap result object;
@@ -82,6 +68,10 @@ const filterByQuery = curry(function(query, contentTypes) {
 const sortSearchResults = (a,b) => {
   if (!a.contentType.installed && b.contentType.installed) {
     return 1;
+  }
+
+  if (a.contentType.installed && !b.contentType.installed) {
+    return -1;
   }
 
   else if (b.score !== a.score) {
@@ -102,22 +92,40 @@ const sortSearchResults = (a,b) => {
  * @return {int}
  */
  const getSearchScore = function(query, contentType) {
-   query = query.trim();
-   let score = 0;
-   if (hasSubString(query, contentType.title)) {
-     score += 100;
+   let queries = query.split(' ').filter(query => query !== '');
+   let queryScores = queries.map(query => getScoreForEachQuery(query, contentType));
+   if (queryScores.indexOf(0) > -1) {
+     return 0;
    }
-   if (hasSubString(query, contentType.summary)) {
-     score += 5;
-   }
-   if (hasSubString(query, contentType.description)) {
-     score += 5;
-   }
-   if (arrayHasSubString(query, contentType.keywords)) {
-       score += 5;
-   }
-   return score;
+   return queryScores.reduce((a, b) => a + b, 0);
  };
+
+
+/**
+ * Generates a relevance score for a single string
+ *
+ * @param  {type} query       description
+ * @param  {type} contentType description
+ * @return {type}             description
+ */
+const getScoreForEachQuery = function (query, contentType) {
+   query = query.trim();
+   if (hasSubString(query, contentType.title)) {
+     return 100;
+   }
+   else if (hasSubString(query, contentType.summary)) {
+     return 5;
+   }
+   else if (hasSubString(query, contentType.description)) {
+     return 5;
+   }
+   else if (arrayHasSubString(query, contentType.keywords)) {
+     return 5;
+   }
+   else {
+     return 0;
+   }
+};
 
 /**
  * Checks if a needle is found in the haystack.
@@ -149,3 +157,8 @@ const arrayHasSubString = function(subString, arr) {
 
   return arr.some(string => hasSubString(subString, string));
 };
+
+const AddNumber=function(a,b)
+{
+  return a+b;
+}
