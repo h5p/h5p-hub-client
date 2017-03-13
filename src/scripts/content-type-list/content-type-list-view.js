@@ -1,5 +1,5 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute } from "utils/elements";
+import { setAttribute, getAttribute, removeChild } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
@@ -23,8 +23,6 @@ const show = setAttribute('aria-hidden', 'false');
 export default class ContentTypeListView {
   constructor(state) {
     this.state = state;
-
-    console.log('place', noIcon);
 
     // add event system
     Object.assign(this, Eventful());
@@ -52,10 +50,8 @@ export default class ContentTypeListView {
    * Removes all rows from root element
    */
   removeAllRows() {
-    if(this.rootElement){
-      while(this.rootElement.firstChild){
-        this.rootElement.removeChild(this.rootElement.firstChild);
-      }
+    while(this.rootElement.hasChildNodes() ){
+      this.rootElement.removeChild(this.rootElement.lastChild);
     }
   }
 

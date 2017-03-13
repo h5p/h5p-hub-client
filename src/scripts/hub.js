@@ -73,7 +73,7 @@ export default class Hub {
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
 
-    this.initTabPanel()
+    this.initTabPanel(state)
   }
 
   /**
@@ -96,19 +96,25 @@ export default class Hub {
 
   /**
    * Initiates the tab panel
+   *
+   * @param {string} sectionId
    */
-  initTabPanel() {
+  initTabPanel({ sectionId = 'content-types' }) {
     const tabConfigs = [{
       title: 'Create Content',
       id: 'content-types',
       content: this.contentTypeSection.getElement(),
-      selected: true
     },
     {
       title: 'Upload',
       id: 'upload',
       content: this.uploadSection.getElement()
     }];
+
+    // sets the correct one selected
+    tabConfigs
+      .filter(config => config.id === sectionId)
+      .forEach(config => config.selected = true);
 
     tabConfigs.forEach(tabConfig => this.view.addTab(tabConfig));
     this.view.addBottomBorder(); // Adds an animated bottom border to each tab

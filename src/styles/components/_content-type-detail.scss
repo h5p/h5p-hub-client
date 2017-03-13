@@ -1,3 +1,4 @@
+@import "../base/mixins";
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
 @import "~susy/sass/susy";
@@ -18,11 +19,15 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: auto;
     visibility: hidden;
     overflow: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
     transform: translateX(100%);
     transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
+
+    @include scroll-bar($c3, lighten($c1, 20%));
 
     &[aria-hidden="false"] {
       opacity: 1;
@@ -32,16 +37,30 @@
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
+    // layout
     .container {
       @include container;
+      margin-bottom: $gutter * 2;
     }
 
+    // mobile first
     .image-wrapper {
-      @include span(first 4 of 12);
+      @include span(12 of 12);
     }
 
     .text-details {
-      @include span(last 8 of 12);
+      @include span(12 of 12);
+    }
+
+    // larger then mobile
+    @media (min-width: $screen-small) {
+      .image-wrapper {
+        @include span(first 4 of 12);
+      }
+
+      .text-details {
+        @include span(last 8 of 12);
+      }
     }
 
     .button-bar {
@@ -56,6 +75,7 @@
     .back-button {
       font-size: 2em;
       color: $text-dark;
+      display: inline-block;
 
       &:hover {
         color: lighten($text-dark, 20%);
@@ -63,6 +83,19 @@
 
       &.icon-arrow-thick:before {
         cursor: pointer;
+      }
+    }
+
+    .carousel {
+      .icon-arrow-thick {
+        &.next {
+          transform: rotate(180deg);
+        }
+
+        &:before {
+          content: "\e90c";
+          font-size: 2em;
+        }
       }
     }
   }

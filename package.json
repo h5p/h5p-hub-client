@@ -18,10 +18,13 @@
     "url": "https://github.com/h5p/h5p-hub/issues"
   },
   "homepage": "https://github.com/h5p/h5p-hub#readme",
+<<<<<<< HEAD
   "dependencies": {
     "babel": "^6.23.0",
     "h5p-sdk": "../h5p-sdk"
   },
+=======
+>>>>>>> 59a372eba1bd07935df464436b1b0cbd131d68bf
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-core": "^6.23.1",

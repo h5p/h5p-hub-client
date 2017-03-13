@@ -75,8 +75,12 @@ export default class ContentTypeDetail {
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);
+    this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(!!contentType.installed);
+    this.view.setLicence(contentType.license);
 
+    // update carousel
+    this.view.removeAllImagesInCarousel();
     contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
   }
 
