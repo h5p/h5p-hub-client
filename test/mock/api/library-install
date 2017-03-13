@@ -1,0 +1,49 @@
+{
+  "id": 105,
+  "machineName": "H5P.PersonalityQuiz",
+  "majorVersion": 1,
+  "minorVersion": 0,
+  "patchVersion": 8,
+  "h5pMajorVersion": 1,
+  "h5pMinorVersion": 0,
+  "title": "Personality Quiz",
+  "summary": "Create personality quizzes",
+  "description": "In this content type, the author defines a series of questions with alternatives, where each alternative is matched against one or more personalities. At the end of the quiz, the end user will see which personality matches the best. There are several ways of making this quiz visually appealing, by eg. representing questions, alternatives, and personalities using images.",
+  "icon": "https:\/\/h5p.org\/sites\/default\/files\/personality%20quiz.svg",
+  "createdAt": 1488380090,
+  "updatedAt": 1488456765,
+  "isRecommended": false,
+  "popularity": 30,
+  "screenshots": [
+    {
+      "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-01.jpg?itok=xmH3vvbb",
+      "alt": "Authoring experience"
+    },
+    {
+      "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-02.jpg?itok=6O93-0q7",
+      "alt": "Authoring experience"
+    },
+    {
+      "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-03.jpg?itok=UcL6_M6i",
+      "alt": "Student's view"
+    },
+    {
+      "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-04.jpg?itok=w9MZwF5g",
+      "alt": "Student's view"
+    }
+  ],
+  "license": "MIT",
+  "owner": "Lumenia",
+  "installed": true,
+  "isUpToDate": false,
+  "restricted": false,
+  "categories": [
+    "Multimedia",
+    "Questions"
+  ],
+  "keywords": [
+    "personality",
+    "quiz"
+  ],
+  "example": "https:\/\/h5p.org\/personality-quiz"
+}

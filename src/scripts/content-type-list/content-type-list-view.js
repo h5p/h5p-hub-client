@@ -81,8 +81,8 @@ export default class ContentTypeListView {
     element.setAttribute('data-id', contentType.machineName);
 
     // create button config
-    const useButtonConfig = { text: 'Use', cls: 'button-primary' };
-    const installButtonConfig = { text: 'install', cls: 'button-inverse-primary'};
+    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
+    const installButtonConfig = { text: 'install', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
     const button = contentType.installed ?  useButtonConfig: installButtonConfig;
 
     const title = contentType.title || contentType.machineName;
@@ -93,7 +93,7 @@ export default class ContentTypeListView {
     // create html
     element.innerHTML = `
       <img class="img-responsive" src="${image}">
-      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0">${button.text}</span>
+      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0"><span class="${button.icon}"></span>${button.text}</span>
       <h4>${title}</h4>
       <div class="description">${description}</div>
    `;

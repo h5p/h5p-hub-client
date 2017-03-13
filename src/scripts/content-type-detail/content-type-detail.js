@@ -61,7 +61,7 @@ export default class ContentTypeDetail {
      return this.services.contentType(id)
        .then(contentType => contentType.machineName)
        .then(machineName => this.services.installContentType(machineName))
-       .then(contentType => console.debug('TODO, gui updates'))
+       .then(contentType => console.debug('TODO, gui updates', contentType))
    }
 
   /**
@@ -75,7 +75,9 @@ export default class ContentTypeDetail {
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);
+    this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(!!contentType.installed);
+    this.view.setLicence(contentType.license);
 
     // update carousel
     this.view.removeAllImagesInCarousel();
