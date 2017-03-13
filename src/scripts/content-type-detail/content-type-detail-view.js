@@ -52,7 +52,10 @@ export default class ContentTypeDetailView {
     // add event system
     Object.assign(this, Eventful());
 
+    // create view
     this.rootElement = this.createView();
+
+    // grab references
     this.useButton = this.rootElement.querySelector('.button-use');
     this.installButton = this.rootElement.querySelector('.button-install');
     this.image = this.rootElement.querySelector('.content-type-image');
@@ -64,8 +67,8 @@ export default class ContentTypeDetailView {
     this.carouselList = this.carousel.querySelector('ul');
     this.licencePanel = this.rootElement.querySelector('.licence-panel');
 
+    // init interactive elements
     initPanel(this.licencePanel);
-
     initImageScroller(this.carousel);
 
     // fire events on button click
@@ -95,8 +98,8 @@ export default class ContentTypeDetailView {
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <span class="carousel-button previous icon-arrow-thick" aria-hidden="true" disabled></span>
-        <span class="carousel-button next icon-arrow-thick" aria-hidden="true" disabled></span>
+        <span class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
+        <span class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
         <nav class="scroller">
           <ul></ul>
         </nav>
@@ -104,7 +107,7 @@ export default class ContentTypeDetailView {
       <hr />
       <div class="button-bar">
         <span class="button button-primary button-use" aria-hidden="false" data-id="H5P.Chart">Use</span>
-        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id="H5P.Chart">Install</span>
+        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id="H5P.Chart"><span class="icon-arrow-thick"></span>Install</span>
       </div>
       <div class="panel-group">
         <div class="panel licence-panel" aria-hidden="true">

@@ -102,7 +102,6 @@ const sortSearchResults = (a,b) => {
  * @return {int}
  */
  const getSearchScore = function(query, contentType) {
-   console.log(contentType);
    query = query.trim();
    let score = 0;
    if (hasSubString(query, contentType.title)) {
