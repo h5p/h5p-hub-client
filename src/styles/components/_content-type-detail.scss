@@ -37,17 +37,7 @@
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
-    .icon-quality-aprooved {
-      display: inline-block;
-      margin-bottom: -8px;
-      overflow: hidden;
-
-      &:before {
-        font-size: 1.5em;
-        color: $ac-success;
-      }
-    }
-
+    // layout
     .container {
       @include container;
       margin-bottom: $gutter * 2;
@@ -72,7 +62,6 @@
         @include span(last 8 of 12);
       }
     }
-
 
     .button-bar {
       overflow: auto;
