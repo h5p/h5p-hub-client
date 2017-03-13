@@ -6,9 +6,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="dist/h5p-hub-client.css" />
   <link rel="stylesheet" href="test/mock/styles/fonts.css" />
+  <style>
+    #hub-client {
+      max-width: 1000px;
+      margin-right: auto;
+    }
+
+    @media (min-width: 1150px) {
+      #hub-client {
+        margin-left: 100px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div  style="max-width: 1000px; margin-right: auto; margin-left: 100px;">
+  <div>
     <h1>H5P Hub Client</h1>
 
     <div id="hub-client"></div>
@@ -22,7 +34,7 @@
   <script type="text/javascript">
     const hubClient = new H5P.HubClient({
       apiRootUrl: '/test/mock/api/',
-      expanded: true
+      descriptionExpanded: true
     }).on('select', event => {
       console.debug('Content Type Selected', event);
     }).on('error', event => {

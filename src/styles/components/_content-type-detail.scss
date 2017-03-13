@@ -37,17 +37,42 @@
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
-    .container {
-      @include container;
+    .icon-quality-aprooved {
+      display: inline-block;
+      margin-bottom: -8px;
+      overflow: hidden;
+
+      &:before {
+        font-size: 1.5em;
+        color: $ac-success;
+      }
     }
 
+    .container {
+      @include container;
+      margin-bottom: $gutter * 2;
+    }
+
+    // mobile first
     .image-wrapper {
-      @include span(first 4 of 12);
+      @include span(12 of 12);
     }
 
     .text-details {
-      @include span(last 8 of 12);
+      @include span(12 of 12);
     }
+
+    // larger then mobile
+    @media (min-width: $screen-small) {
+      .image-wrapper {
+        @include span(first 4 of 12);
+      }
+
+      .text-details {
+        @include span(last 8 of 12);
+      }
+    }
+
 
     .button-bar {
       overflow: auto;
@@ -61,6 +86,7 @@
     .back-button {
       font-size: 2em;
       color: $text-dark;
+      display: inline-block;
 
       &:hover {
         color: lighten($text-dark, 20%);

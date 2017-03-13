@@ -101,6 +101,7 @@ export default class ContentTypeDetailView {
           <ul></ul>
         </nav>
       </div>
+      <hr />
       <div class="button-bar">
         <span class="button button-primary button-use" aria-hidden="false" data-id="H5P.Chart">Use</span>
         <span class="button button-inverse-primary button-install" aria-hidden="true" data-id="H5P.Chart">Install</span>
@@ -171,7 +172,7 @@ export default class ContentTypeDetailView {
    * @param {string} title
    */
   setTitle(title) {
-    this.title.innerHTML = title;
+    this.title.innerHTML = `${title}`;
   }
 
   /**
@@ -181,15 +182,49 @@ export default class ContentTypeDetailView {
    */
   setDescription(text) {
     if(text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.summary = text;
-      this.description.innerHTML = `${text.substr(0, MAX_TEXT_SIZE_DESCRIPTION)}... <span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
       this.description
         .querySelector('.read-more')
-        .addEventListener('click', () => this.description.innerText = text);
+        .addEventListener('click', () => this.toggleDescriptionExpanded(text));
+      this.descriptionExpanded = false;
     }
     else {
       this.description.innerText = text;
     }
+  }
+
+  toggleDescriptionExpanded(text) {
+    // flip boolean
+    this.descriptionExpanded = !this.descriptionExpanded;
+
+    if(this.descriptionExpanded) {
+      this.description.innerHTML = `${text} <span class="read-more link">Read less</span>`;
+    }
+    else {
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
+    }
+  }
+
+  /**
+   * Sets the long description
+   *
+   * @param {string} text
+   */
+  setDescriptionReadMore(text) {
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
+      this.description
+        .querySelector('.read-more')
+        .addEventListener('click', () => this.description.innerText = text);
+  }
+
+  /**
+   * Shortens a string, and puts an elipsis at the end
+   *
+   * @param {number} size
+   * @param {string} text
+   */
+  ellipsis(size, text) {
+    return `${text.substr(0, size)}...`;
   }
 
   /**
