@@ -1,7 +1,7 @@
 {
   "libraries": [
     {
-      "id": 85,
+      "id": 113,
       "machineName": "H5P.Accordion",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -13,7 +13,7 @@
       "description": "Reduce the amount of text presented to readers by using this responsive accordion. Readers decide which headlines to take a closer look at by expanding the title. Excellent for providing an overview with optional in-depth explanations.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/accordion.svg",
       "createdAt": 1488282378,
-      "updatedAt": 1489393542,
+      "updatedAt": 1489401470,
       "isRecommended": false,
       "popularity": 8,
       "screenshots": [
@@ -39,7 +39,7 @@
       "example": "https:\/\/h5p.org\/accordion"
     },
     {
-      "id": 86,
+      "id": 114,
       "machineName": "H5P.AppearIn",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -51,20 +51,20 @@
       "description": "A free HTML5 based video conference content type allowing authors to set up conference rooms.Add a room for Appear.in video conversations to your site. Great for connecting your learners or community members! You may even add a video chat room as a slide to a Course Presentation.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/appear-in.svg",
       "createdAt": 1488282690,
-      "updatedAt": 1489393260,
+      "updatedAt": 1489401587,
       "isRecommended": false,
       "popularity": 26,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-01_0.jpg?itok=0bsMykA1",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-01.jpg?itok=3EKG2TOM",
           "alt": "The view screenshot"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-02_1.jpg?itok=IgK4_cH7",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-02.jpg?itok=TXgKgTa4",
           "alt": "The view screenshot"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-03.jpg?itok=yHf_bD42",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/appear.in-03_0.jpg?itok=yxG6qWjf",
           "alt": "The view screenshot"
         }
       ],
@@ -85,7 +85,7 @@
       "example": "https:\/\/h5p.org\/appear.in"
     },
     {
-      "id": 87,
+      "id": 115,
       "machineName": "H5P.ArithmeticQuiz",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -97,20 +97,20 @@
       "description": "Auto generate arithmetic quizzes consisting of multiple choice questions. As an author, all you have to do is decide the type and length of the quiz. Users keep track of score and time spent when solving the quiz.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/arithmetic%20quiz.svg",
       "createdAt": 1488283418,
-      "updatedAt": 1489393618,
+      "updatedAt": 1489401666,
       "isRecommended": false,
-      "popularity": 22,
+      "popularity": 21,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-01_0.jpg?itok=uGcAzUXo",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-01.jpg?itok=15RTTcja",
           "alt": "Arithmetic quiz start screen"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-02_0.jpg?itok=tQ8DBPla",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-02.jpg?itok=tfhil5Xc",
           "alt": "Arithmetic quiz question"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-03_0.jpg?itok=JjRBn-Ai",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-03.jpg?itok=StV295AV",
           "alt": "Arithmetic quiz end screen"
         }
       ],
@@ -131,7 +131,7 @@
       "example": "https:\/\/h5p.org\/arithmetic-quiz"
     },
     {
-      "id": 88,
+      "id": 116,
       "machineName": "H5P.Chart",
       "majorVersion": 1,
       "minorVersion": 2,
@@ -143,16 +143,16 @@
       "description": "Need to present simple statistical data graphically without creating the artwork manually? Chart is your answer.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/chart.svg",
       "createdAt": 1488283592,
-      "updatedAt": 1489393668,
+      "updatedAt": 1489401727,
       "isRecommended": false,
       "popularity": 27,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/chart-01_0.jpg?itok=Vpe47ctG",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/chart-01.jpg?itok=fE-frqF_",
           "alt": "Pie chart view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/chart-02_0.jpg?itok=fO2J4rXG",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/chart-02.jpg?itok=yz6oDJzV",
           "alt": "Bar chart view"
         }
       ],
@@ -173,7 +173,7 @@
       "example": "https:\/\/h5p.org\/chart"
     },
     {
-      "id": 89,
+      "id": 117,
       "machineName": "H5P.Collage",
       "majorVersion": 0,
       "minorVersion": 3,
@@ -185,24 +185,24 @@
       "description": "The Collage tool allows you to put together beautiful images in a soothing composition. If you want to impress your followers by adding cool image collages to your blog, this is definitely the tool for you!",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/college.svg",
       "createdAt": 1488374773,
-      "updatedAt": 1489393765,
+      "updatedAt": 1489401808,
       "isRecommended": false,
-      "popularity": 23,
+      "popularity": 22,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-03_0.jpg?itok=S2CSobQy",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-03.jpg?itok=DYmG8QtP",
           "alt": "Editor screenshot"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-04.jpg?itok=Shu-vi41",
-          "alt": "Editor with images"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-04_0.jpg?itok=BtdjIiaX",
+          "alt": "Editor screenshot with images"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-01_0.jpg?itok=RxGMhWQe",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-01.jpg?itok=IpQaGt4b",
           "alt": "The result view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-02_0.jpg?itok=0cObWEWF",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-02.jpg?itok=ByzCndSJ",
           "alt": "The result view"
         }
       ],
@@ -221,7 +221,7 @@
       "example": "https:\/\/h5p.org\/collage"
     },
     {
-      "id": 90,
+      "id": 118,
       "machineName": "H5P.Column",
       "majorVersion": 1,
       "minorVersion": 4,
@@ -235,7 +235,7 @@
       "createdAt": 1488375032,
       "updatedAt": 1489393862,
       "isRecommended": false,
-      "popularity": 21,
+      "popularity": 23,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/column-01_0.jpg?itok=PLhy3pPW",
@@ -267,7 +267,7 @@
       "example": "https:\/\/h5p.org\/column"
     },
     {
-      "id": 91,
+      "id": 119,
       "machineName": "H5P.CoursePresentation",
       "majorVersion": 1,
       "minorVersion": 16,
@@ -279,9 +279,9 @@
       "description": "Course presentations consist of slides with multimedia, text, and many different types of interactions like interactive summaries, multiple choice questions and interactive videos. Learners can experience new interactive learning material and test their knowledge and memory in Course Presentations. As always with H5P, content is editable in web browsers, and the Course Presentation activity type includes a WYSIWYG drag and drop based authoring tool. A typical use of the Course Presentation activity is to use a few slides to introduce a subject and follow these with a few more slides in which the user\u2019s knowledge is tested. Course Presentations may however be used in many different ways, including as a presentation tool for use in the classroom, or as a game where the usual navigation is replaced with navigation buttons on top of the slides to let the user make choices and see the consequences of their choices.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/course%20presentation.svg",
       "createdAt": 1488375267,
-      "updatedAt": 1489393960,
+      "updatedAt": 1489402100,
       "isRecommended": true,
-      "popularity": 0,
+      "popularity": 2,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-01_0.jpg?itok=BL-zE21l",
@@ -326,7 +326,7 @@
       "example": "https:\/\/h5p.org\/presentation"
     },
     {
-      "id": 92,
+      "id": 120,
       "machineName": "H5P.Dialogcards",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -338,17 +338,17 @@
       "description": "Dialog cards can be used as a drill to help learners memorize words, expressions or senctences. On the front of the card there's a hint for a word or expression. By turning the card the learner reveals a corresponding word or expression. Dialog cards can be used in language learning, to present math problems or help learners remember facts such as historical events, formulas or names.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/dialog%20cards%20.svg",
       "createdAt": 1488375538,
-      "updatedAt": 1489394029,
+      "updatedAt": 1489402452,
       "isRecommended": true,
       "popularity": 13,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/dialog-cards-01_0.jpg?itok=JRtRxN4C",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/dialog-cards-01.jpg?itok=oMkJ_foX",
           "alt": "The student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/dialog-cards-02_0.jpg?itok=FVFZfRiE",
-          "alt": "The student's view"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/dialog-cards-02.jpg?itok=dNvwojsx",
+          "alt": "The student's view - card turned"
         }
       ],
       "license": "MIT",
@@ -367,7 +367,7 @@
       "example": "https:\/\/h5p.org\/dialog-cards"
     },
     {
-      "id": 93,
+      "id": 121,
       "machineName": "H5P.DocumentationTool",
       "majorVersion": 1,
       "minorVersion": 4,
@@ -379,21 +379,21 @@
       "description": "The documentation tool aims to make it easy to create assessment wizards for goal driven activities. It can also be used as a form wizard. While editing, the author can add multiple steps to the wizard. In each step, the author can define which content goes into that step. Content can be plain text, input fields, goal definition and goal assessment. Once published, the end user will be taken through the steps of the wizard. On the last step of the wizard, the user can generate a document with all the input that has been submitted. This document can be downloaded. The Documentation tool is fully responsive and works great on smaller screens as well as on your desktop.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/documentation%20tool%20.svg",
       "createdAt": 1488375711,
-      "updatedAt": 1489394090,
+      "updatedAt": 1489402233,
       "isRecommended": false,
-      "popularity": 19,
+      "popularity": 20,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-01_0.jpg?itok=NjT9scqu",
-          "alt": "The view screenshot"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-01.jpg?itok=ybh4H8I7",
+          "alt": "User's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-02_0.jpg?itok=abeyqrp3",
-          "alt": "The view screenshot"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-02.jpg?itok=YzMWUpQw",
+          "alt": "User's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-03_0.jpg?itok=wGvENyh9",
-          "alt": "The view screenshot"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/documentation-tool-03.jpg?itok=kwcoce5v",
+          "alt": "User's view"
         }
       ],
       "license": "MIT",
@@ -412,7 +412,7 @@
       "example": "https:\/\/h5p.org\/documentation-tool"
     },
     {
-      "id": 94,
+      "id": 122,
       "machineName": "H5P.DragQuestion",
       "majorVersion": 1,
       "minorVersion": 9,
@@ -461,7 +461,7 @@
       "example": "https:\/\/h5p.org\/drag-and-drop"
     },
     {
-      "id": 95,
+      "id": 123,
       "machineName": "H5P.DragText",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -503,7 +503,7 @@
       "example": "https:\/\/h5p.org\/drag-the-words"
     },
     {
-      "id": 96,
+      "id": 124,
       "machineName": "H5P.Blanks",
       "majorVersion": 1,
       "minorVersion": 7,
@@ -517,7 +517,7 @@
       "createdAt": 1488376747,
       "updatedAt": 1489394301,
       "isRecommended": false,
-      "popularity": 2,
+      "popularity": 1,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/fill-in-the-blanks-01_0.jpg?itok=XkdYm3Ff",
@@ -554,7 +554,7 @@
       "example": "https:\/\/h5p.org\/fill-in-the-blanks"
     },
     {
-      "id": 97,
+      "id": 125,
       "machineName": "H5P.ImageHotspotQuestion",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -596,7 +596,7 @@
       "example": "https:\/\/h5p.org\/image-hotspot-question"
     },
     {
-      "id": 98,
+      "id": 126,
       "machineName": "H5P.GuessTheAnswer",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -638,7 +638,7 @@
       "example": "https:\/\/h5p.org\/guess-the-answer"
     },
     {
-      "id": 99,
+      "id": 127,
       "machineName": "H5P.IFrameEmbed",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -679,7 +679,7 @@
       "example": "https:\/\/h5p.org\/iframe-embedder"
     },
     {
-      "id": 100,
+      "id": 128,
       "machineName": "H5P.ImpressPresentation",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -691,17 +691,17 @@
       "description": "Unfold your creativity on an infinite 3D canvas. Images, text and other H5Ps can be combined to create presentations with 3D transitions between steps. This content type is experimental, creating Impressive Presentations might be very difficult, and impossible for people not familiar with 3D creation tools. The authoring tool is only tested in Google Chrome, does not work in Firefox.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/impressive-presentation.svg",
       "createdAt": 1488378663,
-      "updatedAt": 1488439663,
+      "updatedAt": 1489395195,
       "isRecommended": false,
-      "popularity": 36,
+      "popularity": 34,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-01.jpg?itok=vEYN839X",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-01_0.jpg?itok=PLV1izYb",
           "alt": "Authoring experience"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-02.jpg?itok=IOULq-6R",
-          "alt": "The student's view"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-02_0.jpg?itok=kjQRi6Q7",
+          "alt": "Student's view"
         }
       ],
       "license": "MIT",
@@ -721,7 +721,7 @@
       "example": "https:\/\/h5p.org\/impressive-presentation"
     },
     {
-      "id": 101,
+      "id": 129,
       "machineName": "H5P.InteractiveVideo",
       "majorVersion": 1,
       "minorVersion": 15,
@@ -733,32 +733,24 @@
       "description": "Videos may be enriched with interactivities like explanations, extra pictures, tables, Fill in the Blank and multiple choice questions. Quiz questions support adaptivity, meaning that you can jump to another part of the video based on the user's input.  Interactive summaries can be added at the end of the video. Interactive videos are created and edited using the H5P authoring tool in a standard web browser.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/interactive%20video.svg",
       "createdAt": 1488379462,
-      "updatedAt": 1488439645,
+      "updatedAt": 1489395926,
       "isRecommended": false,
       "popularity": 3,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-01.jpg?itok=rdglpqZW",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-01_0.jpg?itok=2N0Nvi0t",
           "alt": "Authoring experience"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-02.jpg?itok=sOFXkB91",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-02_0.jpg?itok=hpQdqZCI",
           "alt": "Authoring experience"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-03.jpg?itok=YEH8z4n3",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-03_0.jpg?itok=bh3d-F7d",
           "alt": "Authoring experience"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-04.jpg?itok=hRbGdoKs",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-05.jpg?itok=5siowfgj",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-06.jpg?itok=UHKvVNJk",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/interactive-video-04_0.jpg?itok=zZCdG-kh",
           "alt": "Student's view"
         }
       ],
@@ -779,7 +771,7 @@
       "example": "https:\/\/h5p.org\/interactive-video"
     },
     {
-      "id": 102,
+      "id": 130,
       "machineName": "H5P.MarkTheWords",
       "majorVersion": 1,
       "minorVersion": 6,
@@ -791,16 +783,16 @@
       "description": "Mark the words allows content designers to create textual expressions with a defined set of correct words. The end user highlights words according to the task description and is given a score. For the editor it is super easy to create a click the words challenge. The editor types in the text and encloses the words that the user is supposed to click, the right answers, in asterix like *correctWord*.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/mark%20the%20words.svg",
       "createdAt": 1488379610,
-      "updatedAt": 1488439622,
+      "updatedAt": 1489396216,
       "isRecommended": false,
       "popularity": 9,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/mark-the-words-01.jpg?itok=yj__mM06",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/mark-the-words-01_0.jpg?itok=xaEkdXL4",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/mark-the-words-02.jpg?itok=ezhrlPbm",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/mark-the-words-02_0.jpg?itok=B16HPoih",
           "alt": "Student's view displaying results"
         }
       ],
@@ -821,7 +813,7 @@
       "example": "https:\/\/h5p.org\/mark-the-words"
     },
     {
-      "id": 103,
+      "id": 131,
       "machineName": "H5P.MemoryGame",
       "majorVersion": 1,
       "minorVersion": 2,
@@ -833,20 +825,16 @@
       "description": "Create your own memory games and test the memory of your site's users with this simple yet beautiful HTML5 game.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/memmory%20game.svg",
       "createdAt": 1488379742,
-      "updatedAt": 1488439588,
+      "updatedAt": 1489396404,
       "isRecommended": false,
       "popularity": 10,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/memmory-game-01.jpg?itok=vJuhckuK",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/memmory-game-02.jpg?itok=a4WWu6rK",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/memmory-game-01_0.jpg?itok=EMB3-CKc",
           "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/memmory-game-03.jpg?itok=EQq2u4RS",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/memmory-game-02_0.jpg?itok=yoIPbT3o",
           "alt": "Student's view"
         }
       ],
@@ -868,7 +856,7 @@
       "example": "https:\/\/h5p.org\/memory-game"
     },
     {
-      "id": 104,
+      "id": 132,
       "machineName": "H5P.MultiChoice",
       "majorVersion": 1,
       "minorVersion": 9,
@@ -880,16 +868,16 @@
       "description": "Multiple Choice questions can be an effective assesment tool. The learner is given immediate performance feedback. The H5P Multiple Choice questions can have a single or multiple correct options per question.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/multiple%20choice.svg",
       "createdAt": 1488379865,
-      "updatedAt": 1488439563,
+      "updatedAt": 1489396538,
       "isRecommended": false,
-      "popularity": 1,
+      "popularity": 0,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/multiple-choice-01.jpg?itok=Z69wWWoA",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/multiple-choice-01_0.jpg?itok=LbIxD9Ao",
+          "alt": "Student's view displaying results"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/multiple-choice-02.jpg?itok=CsfdoyNu",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/multiple-choice-02_0.jpg?itok=A1ZXS9jP",
           "alt": "Student's view displaying results"
         }
       ],
@@ -911,7 +899,7 @@
       "example": "https:\/\/h5p.org\/multichoice"
     },
     {
-      "id": 105,
+      "id": 133,
       "machineName": "H5P.PersonalityQuiz",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -923,24 +911,28 @@
       "description": "In this content type, the author defines a series of questions with alternatives, where each alternative is matched against one or more personalities. At the end of the quiz, the end user will see which personality matches the best. There are several ways of making this quiz visually appealing, by eg. representing questions, alternatives, and personalities using images.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/personality%20quiz.svg",
       "createdAt": 1488380090,
-      "updatedAt": 1488456765,
+      "updatedAt": 1489396988,
       "isRecommended": false,
-      "popularity": 30,
+      "popularity": 29,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-01.jpg?itok=xmH3vvbb",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-02.jpg?itok=6O93-0q7",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-03.jpg?itok=UcL6_M6i",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-01_0.jpg?itok=QfLI6jJA",
           "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-04.jpg?itok=w9MZwF5g",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-02_0.jpg?itok=LVP4CpZJ",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-03_0.jpg?itok=tsRNSYYx",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-04_0.jpg?itok=x1EDiFOa",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/personality-quiz-05.jpg?itok=NJXnRHMN",
           "alt": "Student's view"
         }
       ],
@@ -960,7 +952,7 @@
       "example": "https:\/\/h5p.org\/personality-quiz"
     },
     {
-      "id": 106,
+      "id": 134,
       "machineName": "H5P.Questionnaire",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -972,20 +964,24 @@
       "description": "Gain feedback and ask open ended questions in Interactive Videos and other content types with Questionnaire. Questionnaire makes the user's answers available via xAPI. This means that website owners may store the answers in many different ways. Answers may be stored in an LRS, the sites own custom storage or a script may for instance fetch the e-mail address and use it to send the user an e-mail. On H5P.org answers are stored in Google Analytics.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/questionaire.svg",
       "createdAt": 1488380236,
-      "updatedAt": 1488439530,
+      "updatedAt": 1489397667,
       "isRecommended": false,
-      "popularity": 34,
+      "popularity": 31,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-01.jpg?itok=97puofGw",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-01_0.jpg?itok=dQW3Wq49",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-02.jpg?itok=APYKeZIW",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-02_0.jpg?itok=wEeLHn4n",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-03.jpg?itok=xEYn2t-t",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-03_0.jpg?itok=I8r3MPAZ",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/questionnaire-04.jpg?itok=zFiJvINY",
           "alt": "Student's view"
         }
       ],
@@ -1004,7 +1000,7 @@
       "example": "https:\/\/h5p.org\/questionnaire"
     },
     {
-      "id": 107,
+      "id": 135,
       "machineName": "H5P.QuestionSet",
       "majorVersion": 1,
       "minorVersion": 12,
@@ -1016,20 +1012,24 @@
       "description": "Question Set is your typical quiz content type. It allows the learner to solve a sequence of various question types. You can combine many different question types like Multichoice, Drag and drop and Fill in the blanks in a Question set. As an author there are many settings you can use to make it behave just the way you want it to. You may for instance customize the Question set with background images and define a pass percentage for the learner. The Question Set also allows you to add videos that are played at the end. One video for success, another if the learner fails the test. This might motivate learners to try again if they fail so that they get to see the success video.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/question-set.svg",
       "createdAt": 1488380337,
-      "updatedAt": 1488439494,
+      "updatedAt": 1489398373,
       "isRecommended": false,
       "popularity": 5,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-01.jpg?itok=F5HMxzS2",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-02.jpg?itok=EUKcAMts",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-01_0.jpg?itok=7WfAPYRV",
           "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-03.jpg?itok=C8hr_3j4",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-02_0.jpg?itok=_kxXaW8A",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-03_0.jpg?itok=SlSgm6TP",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/question-set-04.jpg?itok=BkuvlS9c",
           "alt": "Student's view displaying results"
         }
       ],
@@ -1051,7 +1051,7 @@
       "example": "https:\/\/h5p.org\/question-set"
     },
     {
-      "id": 108,
+      "id": 136,
       "machineName": "H5P.SingleChoiceSet",
       "majorVersion": 1,
       "minorVersion": 8,
@@ -1063,24 +1063,16 @@
       "description": "Single choice set allows content designers to create question sets with one correct answering alternative per question, in just a few seconds. The end user gets immediate feedback after submitting each answer.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/single%20choice%20set.svg",
       "createdAt": 1488380512,
-      "updatedAt": 1488381636,
+      "updatedAt": 1489398478,
       "isRecommended": false,
-      "popularity": 12,
+      "popularity": 11,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-01.jpg?itok=ZlKGWUR1",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-02.jpg?itok=3uKcWhbM",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-03.jpg?itok=xTNEJJaF",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-03_0.jpg?itok=E6cQhPlW",
           "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-04.jpg?itok=noG3MGiX",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-04_0.jpg?itok=pzRCCB4U",
           "alt": "Student's view displaying results"
         }
       ],
@@ -1102,7 +1094,7 @@
       "example": "https:\/\/h5p.org\/single-choice-set"
     },
     {
-      "id": 109,
+      "id": 137,
       "machineName": "H5P.Summary",
       "majorVersion": 1,
       "minorVersion": 7,
@@ -1114,24 +1106,24 @@
       "description": "Summaries help the learner remember key information in a text, video or presentation, by actively buliding a summary about the topic at hand. When the learner has completed a summary, a complete list of key statements about the topic is the end result.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/summary.svg",
       "createdAt": 1488380637,
-      "updatedAt": 1488381611,
+      "updatedAt": 1489398904,
       "isRecommended": false,
-      "popularity": 24,
+      "popularity": 25,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-01.jpg?itok=dMT9bV9O",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-02.jpg?itok=QM2YvMrg",
-          "alt": "Authoring experience - textual input"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-03.jpg?itok=q6PmF20L",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-01_0.jpg?itok=L7dBCW8N",
           "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-04.jpg?itok=ItAivAfD",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-02_0.jpg?itok=edOgKUFA",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-03_0.jpg?itok=16uGnNpm",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/summary-04_0.jpg?itok=ygx0bS-r",
           "alt": "Student's view"
         }
       ],
@@ -1151,7 +1143,7 @@
       "example": "https:\/\/h5p.org\/summary"
     },
     {
-      "id": 110,
+      "id": 138,
       "machineName": "H5P.Timeline",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -1163,17 +1155,21 @@
       "description": "This is Timeline.js developed by Knight Lab, packaged as an H5P content type in order to make timelines easily editable, shareable and reuseable. The Timeline content type allows you to place a sequence of events in a chronological order. For each event you may add images and texts. You may also include assets from Twitter, YouTube, Flickr, Vimeo, Google Maps and SoundCloud.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/timeline.svg",
       "createdAt": 1488380771,
-      "updatedAt": 1488381586,
+      "updatedAt": 1489400668,
       "isRecommended": false,
       "popularity": 15,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/timeline-01.jpg?itok=SD26EPX_",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/timeline-01_0.jpg?itok=b-LZ9kMe",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/timeline-02.jpg?itok=H-iQmcow",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/timeline-02_0.jpg?itok=y5v-2fA0",
           "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/timeline-04.jpg?itok=8kmhJbKX",
+          "alt": "Student's view - full screen preview"
         }
       ],
       "license": "MIT",
@@ -1193,7 +1189,7 @@
       "example": "https:\/\/h5p.org\/timeline"
     },
     {
-      "id": 111,
+      "id": 139,
       "machineName": "H5P.TrueFalse",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -1205,16 +1201,24 @@
       "description": "True\/False Question is a simple and straightforward content type that can work by itself or combined into other content types such as Course Presentation. A more complex question can be created by adding an image or a video.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/true%20false.svg",
       "createdAt": 1488380892,
-      "updatedAt": 1488381655,
+      "updatedAt": 1489401075,
       "isRecommended": false,
-      "popularity": 25,
+      "popularity": 24,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-01.jpg?itok=mRbqRHuj",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-01_0.jpg?itok=CzFkj2C_",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-02.jpg?itok=KWJDc3KW",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-02_0.jpg?itok=irhwLqme",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-03.jpg?itok=6VSUJm-J",
+          "alt": "Student's view"
+        },
+        {
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/true-false-04.jpg?itok=zBtshagV",
           "alt": "Student's view"
         }
       ],
@@ -1234,7 +1238,7 @@
       "example": "https:\/\/h5p.org\/true-false"
     },
     {
-      "id": 112,
+      "id": 140,
       "machineName": "H5P.TwitterUserFeed",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -1246,16 +1250,16 @@
       "description": "Add a Twitter user feed to your page. A great way to give your page a feel of freshnes and make more of your users connect with you on Twitter.",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/tweeter%20feed.svg",
       "createdAt": 1488381430,
-      "updatedAt": 1488381550,
+      "updatedAt": 1489401249,
       "isRecommended": false,
       "popularity": 28,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/twitter-user-feed-01.jpg?itok=AStz1_BK",
-          "alt": "Authoring experience"
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/twitter-user-feed-01_0.jpg?itok=3SxzZQIr",
+          "alt": "Student's view"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/twitter-user-feed-02.jpg?itok=xpBNESq3",
+          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/twitter-user-feed-02_0.jpg?itok=TEXHY8j7",
           "alt": "Student's view"
         }
       ],
