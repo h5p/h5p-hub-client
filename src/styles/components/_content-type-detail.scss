@@ -4,12 +4,9 @@
 @import "~susy/sass/susy";
 
 .h5p-hub {
+
   [aria-hidden="true"] {
-    // Hack to replace display: none to allow for fade in transitions
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
+    display: none;
   }
 
   .content-type-detail {

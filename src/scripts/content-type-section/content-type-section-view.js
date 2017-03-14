@@ -16,21 +16,56 @@ export default class ContentBrowserView {
     Object.assign(this, Eventful());
 
     // create elements
-    let navbar = this.createNavbar();
-    this.menubar = navbar.querySelector('.navbar-nav');
-    const inputGroup = this.createInputGroupElement();
+    this.rootElement = this.createElement(state);
+    this.menubar = this.rootElement.querySelector('.navbar-nav');
+    this.inputField = this.rootElement.querySelector('[role="search"] input');
+    const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
 
-    // menu group
-    const menuGroup = document.createElement('div');
-    menuGroup.className = 'menu-group';
-    menuGroup.appendChild(navbar);
-    menuGroup.appendChild(inputGroup);
+    // input field
+    this.inputField.addEventListener('keyup', event => {
+      this.fire('search', {
+        element: event.target,
+        query: event.target.value
+      });
+    });
 
-    // root element
-    this.rootElement  = document.createElement('div');
-    this.rootElement.appendChild(menuGroup);
+    // input button
+    inputButton.onclick = function() {
+      this.parentElement.querySelector('#search-bar').focus()
+    };
   }
 
+  /**
+   * Creates the menu group element
+   *
+   * @param {object} state
+   *
+   * @return {HTMLElement}
+   */
+  createElement(state) {
+    let menutitle = 'Browse content types';
+    let menuId = 'content-type-filter';
+    let searchText = 'Search for Content Types';
+
+    // create element
+    const element = document.createElement('div');
+    element.innerHTML = `
+      <div class="menu-group">
+        <nav  role="menubar" class="navbar">
+          <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
+             <span>&#9776;</span>
+           </span>
+          <span class="navbar-brand">${menutitle}</span>
+          <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
+        </nav>
+        <div class="input-group" role="search">
+          <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
+          <div class="input-group-addon icon-search"></div>
+        </div>
+      </div>`;
+
+    return element;
+  }
 
   /**
    * Adds a menu item
@@ -57,77 +92,34 @@ export default class ContentBrowserView {
 
     // add to menu bar
     this.menubar.appendChild(element);
-
     return element;
   }
 
   /**
-   * Creates the menu bar element
-   *
-   * @return {Element}
+   * Clears the input field
    */
-  createNavbar() {
-    let menutitle = 'Browse content types';
-    let menuId = 'content-type-filter';
-    const navbar = document.createElement('nav');
-    navbar.setAttribute('role', 'menubar');
-    navbar.className = 'navbar';
-
-    navbar.innerHTML = `
-      <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
-         <span>&#9776;</span>
-       </span>
-      <span class="navbar-brand">${menutitle}</span>
-      <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>`;
-
-    return navbar;
+  clearInputField() {
+    this.inputField.value = '';
   }
 
-
   /**
-   * Creates the input group used for search
+   * Checks if a menu item is the first child in the menu
    *
-   * @return {HTMLElement}
+   * @param  {HTMLElement} menuItem
+   * @return {boolean}
    */
-  createInputGroupElement() {
-    // input field
-    const inputField = document.createElement('input');
-    inputField.id = "hub-search-bar";
-    inputField.className = 'form-control form-control-rounded';
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('placeholder', "Search for Content Types");
-    inputField.addEventListener('keyup', event => {
-      this.fire('search', {
-        element: event.target,
-        query: event.target.value
-      });
-    });
-
-    // input button
-    const inputButton = document.createElement('div');
-    inputButton.className = 'input-group-addon icon-search';
-    inputButton.onclick = function() {
-      this.parentElement.querySelector('#search-bar').focus()
-    };
-
-    // input group
-    const inputGroup = document.createElement('div');
-    inputGroup.className = 'input-group';
-    inputGroup.appendChild(inputField);
-    inputGroup.appendChild(inputButton);
-
-    return inputGroup;
+  isFirstMenuItem(menuItem) {
+    return menuItem === this.menubar.querySelectorAll('[role="menuitem"]')[0];
   }
 
-
   /**
-   * Ensures the first menu item is selected 
+   * Ensures the first menu item is selected
    */
-  resetMenuSelection(){
+  resetMenuSelection() {
     this.menubar.querySelectorAll('[role="menuitem"]')
-      .forEach((menuItem, index) => {
-        menuItem.setAttribute('aria-selected', (index == 0).toString());
-      });
+      .forEach(menuItem =>
+        menuItem.setAttribute('aria-selected', this.isFirstMenuItem(menuItem).toString())
+      );
   }
 
   initMenu() {

@@ -50,6 +50,7 @@ export default class ContentTypeSection {
     this.view.on('search', this.search, this);
     this.view.on('search', this.resetMenuSelection, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
+    this.view.on('menu-selected', this.clearInputField, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
@@ -89,6 +90,12 @@ export default class ContentTypeSection {
    */
   applySearchFilter() {
     console.debug('ContentTypeSection: menu was clicked!', event);
+  }
+
+  clearInputField({element}) {
+    if (!this.view.isFirstMenuItem(element)) {
+      this.view.clearInputField(element);
+    }
   }
 
   /**
