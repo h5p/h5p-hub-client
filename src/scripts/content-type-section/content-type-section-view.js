@@ -17,6 +17,8 @@ export default class ContentBrowserView {
 
     // create elements
     this.rootElement = this.createElement(state);
+
+    // pick elements
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
@@ -105,85 +107,6 @@ export default class ContentBrowserView {
   }
 
   /**
-<<<<<<< HEAD
-=======
-   * Adds an animated border to the bottom of the tab
-   */
-  addBottomBorder() {
-    this.menuBarElement.appendChild(document.createElement('span'));
-  }
-
-  /**
-   * Creates the menu bar element
-   *
-   * @return {Element}
-   */
-  createMenuElement() {
-    this.menuBarElement = document.createElement('ul');
-    this.menuBarElement.setAttribute('role', 'menubar');
-    this.menuBarElement.className = 'h5p-menu';
-
-    const navElement = document.createElement('nav');
-    navElement.appendChild(this.menuBarElement);
-
-    const title = document.createElement('div');
-    title.className = "menu-title";
-    title.innerHTML = "Browse content types";
-
-    const menu = document.createElement('div');
-    menu.className = "menu";
-    menu.appendChild(title);
-    menu.appendChild(navElement);
-
-    return menu;
-  }
-
-  /**
-   * Creates the input group used for search
-   *
-   * @return {HTMLElement}
-   */
-  createInputGroupElement() {
-    // input field
-    const inputField = document.createElement('input');
-    inputField.id = "hub-search-bar";
-    inputField.className = 'form-control form-control-rounded';
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('placeholder', "Search for Content Types");
-    inputField.addEventListener('keyup', event => {
-      this.fire('search', {
-        element: event.target,
-        query: event.target.value,
-        keyCode: event.which || event.keyCode
-      });
-    });
-
-    // input button
-    const inputButton = document.createElement('div');
-    inputButton.className = 'input-group-addon icon-search';
-    inputButton.addEventListener('click', event => {
-      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-
-      this.fire('search', {
-        element: searchbar,
-        query: searchbar.value,
-        keyCode: 13 // Act like an 'enter' key press
-      });
-
-      searchbar.focus();
-    })
-
-    // input group
-    const inputGroup = document.createElement('div');
-    inputGroup.className = 'input-group';
-    inputGroup.appendChild(inputField);
-    inputGroup.appendChild(inputButton);
-
-    return inputGroup;
-  }
-
-  /**
->>>>>>> c5e64d57cd040b4f2125905107ce69fda86e112b
    * Clears the input field
    */
   clearInputField() {
