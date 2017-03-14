@@ -17,13 +17,13 @@ export default class ContentBrowserView {
 
     // create elements
     this.menu = this.createMenuElement();
-    const inputGroup = this.createInputGroupElement();
+    this.inputGroup = this.createInputGroupElement();
 
     // menu group
     const menuGroup = document.createElement('div');
     menuGroup.className = 'menu-group';
     menuGroup.appendChild(this.menu);
-    menuGroup.appendChild(inputGroup);
+    menuGroup.appendChild(this.inputGroup);
 
     // root element
     this.rootElement  = document.createElement('div');
@@ -126,20 +126,31 @@ export default class ContentBrowserView {
     return inputGroup;
   }
 
+  /**
+   * Clears the input field
+   */
+  clearInputField() {
+    this.inputGroup.querySelector('#hub-search-bar').value='';
+  }
 
   /**
-   * Ensures the first menu item is selected 
+   * Checks if a menu item is the first child in the menu
+   *
+   * @param  {HTMLElement} menuItem
+   * @return {boolean}
    */
-  resetMenuSelection(){
+  isFirstMenuItem(menuItem) {
+    return menuItem === this.menu.querySelectorAll('[role="menuitem"]')[0];
+  }
+
+  /**
+   * Ensures the first menu item is selected
+   */
+  resetMenuSelection() {
     this.menu.querySelectorAll('[role="menuitem"]')
-      .forEach((menuitem, index) => {
-        if (index == 0){
-          menuitem.setAttribute('aria-selected', 'true');
-        }
-        else {
-          menuitem.setAttribute('aria-selected', 'false');
-        }
-      });
+      .forEach(menuItem =>
+        menuItem.setAttribute('aria-selected', this.isFirstMenuItem(menuItem).toString())
+      );
   }
 
   initMenu() {
