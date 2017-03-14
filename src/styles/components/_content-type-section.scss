@@ -15,32 +15,44 @@
   .menu-group {
     background-color: $c1;
     padding: 1.125em;
+    padding-top: 1.04em;
 
     .menu {
       overflow: auto;
+      height: 24px;
       border: 0;
       border-bottom: solid 1px #9CA5B4;
+      padding-bottom: 1.04em;
       margin-left: 2.25em;
       margin-right: 2.25em;
+      overflow: hidden;
+
+      .menu-title {
+        float: left;
+        text-align: center;
+        font-style: italic;
+        font-size: $text-title-large;
+        color: $c2;
+      }
 
       nav {
         float: right;
       }
 
-      ul {
-        background-color: transparent;
-        border: none;
+     [role="menubar"] {
+         background-color: transparent;
+         border: none;
       }
 
-      li {
-        color: $c3;
-      }
+     [role="menuitem"] {
+       padding-top: 0.3em;
+       font-size: $text-list-title;
+       font-weight: 400;
+       color: $c3;
 
-      .menu-title {
-        float: left;
-        text-align: center;
-        color: white;
-        font-style: italic;
+       &[aria-selected="true"] {
+         font-weight: 600;
+       }
       }
     }
 

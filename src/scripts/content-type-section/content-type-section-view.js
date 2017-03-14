@@ -1,3 +1,4 @@
+import initMenu from 'components/menu';
 import {Eventful} from '../mixins/eventful';
 
 /**
@@ -47,7 +48,7 @@ export default class ContentBrowserView {
     });
 
     // sets first to be selected
-    if(this.menuBarElement.childElementCount < 1) {
+    if(this.menuBarElement.childElementCount == 1) {
       element.setAttribute('aria-selected', 'true');
     }
 
@@ -55,6 +56,13 @@ export default class ContentBrowserView {
     this.menuBarElement.appendChild(element);
 
     return element;
+  }
+
+  /**
+   * Adds an animated border to the bottom of the tab
+   */
+  addBottomBorder() {
+    this.menuBarElement.appendChild(document.createElement('span'));
   }
 
   /**
@@ -115,6 +123,10 @@ export default class ContentBrowserView {
     inputGroup.appendChild(inputButton);
 
     return inputGroup;
+  }
+
+  initMenu() {
+    initMenu(this.rootElement);
   }
 
   /**

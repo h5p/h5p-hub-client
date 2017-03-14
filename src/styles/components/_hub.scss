@@ -22,11 +22,7 @@
     border: 1px solid $color;
   }
 
-  [role="menuitem"][aria-selected="true"] {
-    @include box-shadow(0, -5px, 0, 0, $color, true);
-  }
-
-  [role="tab"][aria-selected="true"] ~ span {
+  [role="tab"][aria-selected="true"] ~ span{
     background: $color;
   }
 

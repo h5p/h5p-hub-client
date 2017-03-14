@@ -28,8 +28,10 @@ export default class ContentTypeSection {
     this.contentTypeDetail = new ContentTypeDetail({ apiRootUrl: state.apiRootUrl });
 
     // add menu items
-    ['My Content Types', 'Newest', 'Most Popular', 'Recommended']
+    ['All', 'My Content Types', 'Most Popular']
       .forEach(menuText => this.view.addMenuItem(menuText));
+    this.view.addBottomBorder();
+    this.view.initMenu();
 
     // Element for holding list and details views
     const section = document.createElement('div');

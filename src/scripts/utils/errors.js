@@ -7,7 +7,6 @@
 
 //TODO handle strings, html, badly formed object
 export default function renderErrorMessage(message) {
-  // console.log(message);
   const closeButton = document.createElement('div');
   closeButton.className = 'close';
   closeButton.innerHTML = '&#x2715';
@@ -28,6 +27,5 @@ export default function renderErrorMessage(message) {
     messageWrapper.appendChild(messageButton);
   }
 
-  console.log(messageWrapper);
   return messageWrapper;
 };
