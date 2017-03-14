@@ -33,7 +33,6 @@
       opacity: 1;
       transform: translateX(0);
       visibility: visible;
-
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
@@ -45,11 +44,11 @@
 
     // mobile first
     .image-wrapper {
-      @include span(12 of 12);
+      @include span(1 of 1);
     }
 
     .text-details {
-      @include span(12 of 12);
+      @include span(1 of 1);
     }
 
     // larger then mobile
@@ -82,21 +81,6 @@
 
       &.icon-arrow-thick:before {
         cursor: pointer;
-      }
-    }
-
-    .carousel {
-      .icon-arrow-thick {
-        font-size: 1.3em;
-        display: block;
-        margin-top: 0.3em;
-        text-align: center;
-      }
-
-      .next {
-        .icon-arrow-thick {
-          transform: rotate(180deg);
-        }
       }
     }
   }

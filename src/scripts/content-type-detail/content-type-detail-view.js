@@ -111,7 +111,7 @@ export default class ContentTypeDetailView {
       </div>
       <div class="panel-group">
         <div class="panel licence-panel" aria-hidden="true">
-          <div class="panel-header" aria-expanded="false" aria-controls="licence-panel">The Licence Info</div>
+          <div class="panel-header" aria-expanded="false" aria-controls="licence-panel"><span class="icon-accordion-arrow"></span> The Licence Info</div>
           <div class="panel-body" id="licence-panel" aria-hidden="true">
             <div class="panel-body-inner"></div>
           </div>
