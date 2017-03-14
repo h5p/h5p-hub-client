@@ -2,6 +2,16 @@
 @import "~h5p-sdk/src/styles/base/colors";
 
 .h5p-hub {
+  .button-install {
+    padding-left: $gutter;
+
+    .icon-arrow-thick {
+      margin-right: $gutter / 2;
+      display: inline-block;
+      transform: rotate(-90deg);
+    }
+  }
+
   .menu-group {
     background-color: $c1;
     padding: 1.125em;
@@ -29,7 +39,7 @@
         float: right;
       }
 
-      [role="menubar"] {
+     [role="menubar"] {
          background-color: transparent;
          border: none;
       }
@@ -59,9 +69,9 @@
     }
 
     .icon-search {
-      font-size: 2.5em;
-      top: 0.2em;
-      right: 0.25em;
+      font-size: 1.4em;
+      top: 0.7em;
+      right: 1em;
       // pointer-events: none; // Doesn't work < IE11
       cursor: pointer;
     }

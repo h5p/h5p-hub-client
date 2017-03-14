@@ -1,0 +1,17 @@
+.h5p-hub {
+  .panel {
+    .icon-accordion-arrow {
+      font-size: 0.7em;
+      margin-right: $gutter;
+      margin-left: $gutter;
+      display: inline-block;
+      transition: transform 0.1s ease-out;
+    }
+
+    [aria-expanded="true"] {
+      .icon-accordion-arrow {
+        transform: rotate(90deg);
+      }
+    }
+  }
+}
