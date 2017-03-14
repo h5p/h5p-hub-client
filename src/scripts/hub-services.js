@@ -92,7 +92,7 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   installContentType(id) {
-    return fetch(`${this.apiRootUrl}library-install?id=${id}`, {
+    return fetch(ns.getAjaxUrl('library-install', {id: id}), {
       method: 'POST',
       credentials: 'include',
       body: ''
