@@ -49,6 +49,7 @@ export default class ContentTypeSection {
 
     // register listeners
     this.view.on('search', this.search, this);
+    this.view.on('search', this.resetMenuSelection, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
@@ -75,6 +76,13 @@ export default class ContentTypeSection {
   search({query}) {
     this.searchService.search(query)
       .then(contentTypes => this.contentTypeList.update(contentTypes));
+  }
+
+  /**
+   *  Ensures the first menu element is selected
+   */
+  resetMenuSelection() {
+    this.view.resetMenuSelection();
   }
 
   /**

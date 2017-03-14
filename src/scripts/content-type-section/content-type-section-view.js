@@ -1,3 +1,4 @@
+import { setAttribute, getAttribute, hasAttribute, querySelectorAll } from "utils/elements";
 import initMenu from 'components/menu';
 import {Eventful} from '../mixins/eventful';
 
@@ -15,13 +16,13 @@ export default class ContentBrowserView {
     Object.assign(this, Eventful());
 
     // create elements
-    const menu = this.createMenuElement();
+    this.menu = this.createMenuElement();
     const inputGroup = this.createInputGroupElement();
 
     // menu group
     const menuGroup = document.createElement('div');
     menuGroup.className = 'menu-group';
-    menuGroup.appendChild(menu);
+    menuGroup.appendChild(this.menu);
     menuGroup.appendChild(inputGroup);
 
     // root element
@@ -123,6 +124,22 @@ export default class ContentBrowserView {
     inputGroup.appendChild(inputButton);
 
     return inputGroup;
+  }
+
+
+  /**
+   * Ensures the first menu item is selected 
+   */
+  resetMenuSelection(){
+    this.menu.querySelectorAll('[role="menuitem"]')
+      .forEach((menuitem, index) => {
+        if (index == 0){
+          menuitem.setAttribute('aria-selected', 'true');
+        }
+        else {
+          menuitem.setAttribute('aria-selected', 'false');
+        }
+      });
   }
 
   initMenu() {
