@@ -30,7 +30,6 @@ export default class ContentTypeSection {
     // add menu items
     ['All', 'My Content Types', 'Most Popular']
       .forEach(menuText => this.view.addMenuItem(menuText));
-    this.view.addBottomBorder();
     this.view.initMenu();
 
     // Element for holding list and details views

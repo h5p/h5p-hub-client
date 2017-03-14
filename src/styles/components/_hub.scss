@@ -54,12 +54,13 @@
 
       &:before {
         font-style: normal;
+        font-weight: normal;
         margin-right: 1em;
       }
 
       &:after {
         @include h5p-hub-icon("\e924");
-        font-size: 1.3em;
+        font-size: 0.9em;
         float: right;
       }
     }

@@ -16,19 +16,21 @@ export default class ContentBrowserView {
     Object.assign(this, Eventful());
 
     // create elements
-    this.menu = this.createMenuElement();
+    let navbar = this.createNavbar();
+    this.menubar = navbar.querySelector('.navbar-nav');
     const inputGroup = this.createInputGroupElement();
 
     // menu group
     const menuGroup = document.createElement('div');
     menuGroup.className = 'menu-group';
-    menuGroup.appendChild(this.menu);
+    menuGroup.appendChild(navbar);
     menuGroup.appendChild(inputGroup);
 
     // root element
     this.rootElement  = document.createElement('div');
     this.rootElement.appendChild(menuGroup);
   }
+
 
   /**
    * Adds a menu item
@@ -49,21 +51,14 @@ export default class ContentBrowserView {
     });
 
     // sets first to be selected
-    if(this.menuBarElement.childElementCount == 1) {
+    if(this.menubar.childElementCount == 1) {
       element.setAttribute('aria-selected', 'true');
     }
 
     // add to menu bar
-    this.menuBarElement.appendChild(element);
+    this.menubar.appendChild(element);
 
     return element;
-  }
-
-  /**
-   * Adds an animated border to the bottom of the tab
-   */
-  addBottomBorder() {
-    this.menuBarElement.appendChild(document.createElement('span'));
   }
 
   /**
@@ -71,25 +66,23 @@ export default class ContentBrowserView {
    *
    * @return {Element}
    */
-  createMenuElement() {
-    this.menuBarElement = document.createElement('ul');
-    this.menuBarElement.setAttribute('role', 'menubar');
-    this.menuBarElement.className = 'h5p-menu';
+  createNavbar() {
+    let menutitle = 'Browse content types';
+    let menuId = 'content-type-filter';
+    const navbar = document.createElement('nav');
+    navbar.setAttribute('role', 'menubar');
+    navbar.className = 'navbar';
 
-    const navElement = document.createElement('nav');
-    navElement.appendChild(this.menuBarElement);
+    navbar.innerHTML = `
+      <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
+         <span>&#9776;</span>
+       </span>
+      <span class="navbar-brand">${menutitle}</span>
+      <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>`;
 
-    const title = document.createElement('div');
-    title.className = "menu-title";
-    title.innerHTML = "Browse content types";
-
-    const menu = document.createElement('div');
-    menu.className = "menu";
-    menu.appendChild(title);
-    menu.appendChild(navElement);
-
-    return menu;
+    return navbar;
   }
+
 
   /**
    * Creates the input group used for search
@@ -131,18 +124,14 @@ export default class ContentBrowserView {
    * Ensures the first menu item is selected 
    */
   resetMenuSelection(){
-    this.menu.querySelectorAll('[role="menuitem"]')
-      .forEach((menuitem, index) => {
-        if (index == 0){
-          menuitem.setAttribute('aria-selected', 'true');
-        }
-        else {
-          menuitem.setAttribute('aria-selected', 'false');
-        }
+    this.menubar.querySelectorAll('[role="menuitem"]')
+      .forEach((menuItem, index) => {
+        menuItem.setAttribute('aria-selected', (index == 0).toString());
       });
   }
 
   initMenu() {
+    this.menubar.appendChild(document.createElement('span'));
     initMenu(this.rootElement);
   }
 

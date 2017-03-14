@@ -14,32 +14,28 @@
 
   .menu-group {
     background-color: $c1;
-    padding: 1.125em;
-    padding-top: 1.04em;
+    padding: 1.04em 1.125em 1.125em;
 
-    .menu {
-      overflow: auto;
+    .navbar {
+      background-color: transparent;
+      color: $c2;
+      border: 0;
+
+      /*
       height: 24px;
       border: 0;
       border-bottom: solid 1px #9CA5B4;
       padding-bottom: 1.04em;
       margin-left: 2.25em;
       margin-right: 2.25em;
-      overflow: hidden;
 
-      .menu-title {
-        float: left;
-        text-align: center;
+      .navbar-brand {
         font-style: italic;
         font-size: $text-title-large;
         color: $c2;
       }
 
-      nav {
-        float: right;
-      }
-
-     [role="menubar"] {
+      .navbar-nav {
          background-color: transparent;
          border: none;
       }
@@ -53,7 +49,7 @@
        &[aria-selected="true"] {
          font-weight: 600;
        }
-      }
+      }*/
     }
 
     .input-group {
