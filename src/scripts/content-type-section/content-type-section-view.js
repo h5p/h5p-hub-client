@@ -54,12 +54,16 @@ export default class ContentBrowserView {
     element.innerHTML = `
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
-          <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
-             <span>&#9776;</span>
-           </span>
-          <span class="navbar-brand">${menutitle}</span>
+          <div class="navbar-header">
+              <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
+               <span class="icon-accordion-arrow"></span>
+             </span>
+            <span class="navbar-brand">${menutitle}</span>
+          </div>
+
           <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
         </nav>
+        
         <div class="input-group" role="search">
           <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
           <div class="input-group-addon icon-search"></div>
@@ -125,7 +129,9 @@ export default class ContentBrowserView {
   }
 
   initMenu() {
-    this.menubar.appendChild(document.createElement('span'));
+    const underline = document.createElement('span');
+    underline.className = 'menuitem-underline';
+    this.menubar.appendChild(underline);
     initMenu(this.rootElement);
   }
 
