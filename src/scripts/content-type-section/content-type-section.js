@@ -19,6 +19,8 @@ export default class ContentTypeSection {
     // add event system
     Object.assign(this, Eventful());
 
+    this.typeAheadEnabled = true;
+
     // add view
     this.view = new ContentTypeSectionView(state);
 
@@ -74,9 +76,11 @@ export default class ContentTypeSection {
    *
    * @param {string} query
    */
-  search({query}) {
-    this.searchService.search(query)
-      .then(contentTypes => this.contentTypeList.update(contentTypes));
+  search({query, keyCode}) {
+    if (this.typeAheadEnabled || keyCode === 13) { // Search automatically or on 'enter'
+      this.searchService.search(query)
+        .then(contentTypes => this.contentTypeList.update(contentTypes));
+    }
   }
 
   /**
@@ -114,6 +118,7 @@ export default class ContentTypeSection {
     this.contentTypeList.hide();
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
+    this.typeAheadEnabled = false;
   }
 
 
@@ -123,6 +128,7 @@ export default class ContentTypeSection {
   closeDetailView() {
     this.contentTypeDetail.hide();
     this.contentTypeList.show();
+    this.typeAheadEnabled = true;
   }
 
   /**
