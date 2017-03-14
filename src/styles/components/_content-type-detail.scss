@@ -9,14 +9,6 @@
     display: none;
   }
 
-  .tab-panel [aria-hidden="true"] {
-    // Can't use display:none with transitions
-    opacity: 0;
-    height: 0;
-    overflow: hidden;
-    visibility: hidden;
-  }
-
   .content-type-detail {
     padding: $gutter;
     display: inherit;
