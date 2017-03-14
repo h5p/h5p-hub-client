@@ -106,16 +106,25 @@ export default class ContentBrowserView {
     inputField.addEventListener('keyup', event => {
       this.fire('search', {
         element: event.target,
-        query: event.target.value
+        query: event.target.value,
+        keyCode: event.which || event.keyCode
       });
     });
 
     // input button
     const inputButton = document.createElement('div');
     inputButton.className = 'input-group-addon icon-search';
-    inputButton.onclick = function() {
-      this.parentElement.querySelector('#search-bar').focus()
-    };
+    inputButton.addEventListener('click', event => {
+      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+
+      this.fire('search', {
+        element: searchbar,
+        query: searchbar.value,
+        keyCode: 13 // Act like an 'enter' key press
+      });
+      
+      searchbar.focus();
+    })
 
     // input group
     const inputGroup = document.createElement('div');

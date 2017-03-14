@@ -50,6 +50,7 @@ export default class ContentTypeSection {
     // register listeners
     this.view.on('search', this.search, this);
     this.view.on('search', this.resetMenuSelection, this);
+    this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
@@ -84,6 +85,12 @@ export default class ContentTypeSection {
    */
   resetMenuSelection() {
     this.view.resetMenuSelection();
+  }
+
+  resetMenuOnEnter({keyCode}) {
+    if (keyCode === 13) {
+      this.closeDetailView();
+    }
   }
 
   /**
