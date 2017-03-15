@@ -82,7 +82,7 @@ export default class ContentTypeListView {
 
     // create button config
     const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-    const installButtonConfig = { text: 'install', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
+    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
     const button = contentType.installed ?  useButtonConfig: installButtonConfig;
 
     const title = contentType.title || contentType.machineName;

@@ -58,10 +58,32 @@ export default class ContentTypeDetail {
    * @return {Promise.<ContentType>}
    */
    install({id}) {
+     // set spinner
+     this.view.showButtonBySelector('.button-installing');
+
      return this.services.contentType(id)
-       .then(contentType => contentType.machineName)
-       .then(machineName => this.services.installContentType(machineName))
-       .then(contentType => console.debug('TODO, gui updates', contentType))
+       .then(contentType => this.services.installContentType(contentType.machineName))
+       .then(contentType => {
+         this.view.setIsInstalled(true);
+         this.view.showButtonBySelector('.button-get');
+         this.view.setInstallMessage({
+           message: `${contentType.title} successfully installed!`,
+         });
+       })
+       .catch(error => {
+         this.view.showButtonBySelector('.button-install');
+
+         // print error message
+         let errorMessage = (error.errorCode) ? error : {
+           success: false,
+           errorCode: 'RESPONSE_FAILED',
+           message: `${id} could not be installed! Contact your administrator.`,
+         };
+         this.view.setInstallMessage(errorMessage);
+
+         // log whole error message to console
+         console.error('Installation error', error);
+       });
    }
 
   /**
@@ -70,13 +92,14 @@ export default class ContentTypeDetail {
    * @param {ContentType} contentType
    */
   update(contentType) {
+    this.view.reset();
     this.view.setId(contentType.machineName);
     this.view.setTitle(contentType.title);
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
-    this.view.setIsInstalled(!!contentType.installed);
+    this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license);
 
     // update carousel

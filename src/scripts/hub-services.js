@@ -99,6 +99,23 @@ export default class HubServices {
     }).then(result => result.json());
   }
 
+
+  // for testing with error
+  /*installContentType(id) {
+    return fetch(`${this.apiRootUrl}library-install`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(result => result.json())
+      .then(result => {
+        return new Promise(function(resolve, reject) {
+          setTimeout(function() {
+            return resolve(result);
+          }, 1000);
+        });
+      });
+  }*/
+
   /**
    * Uploads a content type to the server for validation
    *

@@ -1,5 +1,5 @@
-import { setAttribute, getAttribute, removeChild } from "utils/elements";
-import { curry } from "utils/functional";
+import { setAttribute, getAttribute, removeChild, hide, show } from "utils/elements";
+import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initImageScroller from "components/image-scroller";
@@ -15,16 +15,6 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
  * @constant {number}
  */
 const MAX_TEXT_SIZE_DESCRIPTION = 300;
-
-/**
- * @function
- */
-const hide = setAttribute('aria-hidden', 'true');
-
-/**
- * @function
- */
-const show = setAttribute('aria-hidden', 'false');
 
 /**
  * Toggles the visibility if an element
@@ -43,6 +33,8 @@ const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
  */
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
 
+const hideAll = forEach(hide);
+
 /**
  * @class
  * @mixes Eventful
@@ -56,16 +48,24 @@ export default class ContentTypeDetailView {
     this.rootElement = this.createView();
 
     // grab references
-    this.useButton = this.rootElement.querySelector('.button-use');
-    this.installButton = this.rootElement.querySelector('.button-install');
+    this.buttonBar = this.rootElement.querySelector('.button-bar');
+    this.useButton = this.buttonBar.querySelector('.button-use');
+    this.installButton = this.buttonBar.querySelector('.button-install');
+    this.buttons = this.buttonBar.querySelectorAll('.button');
+
     this.image = this.rootElement.querySelector('.content-type-image');
-    this.title = this.rootElement.querySelector('.text-details h3');
+    this.title = this.rootElement.querySelector('.text-details .title');
     this.owner = this.rootElement.querySelector('.owner');
     this.description = this.rootElement.querySelector('.text-details .small');
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
     this.licencePanel = this.rootElement.querySelector('.licence-panel');
+    this.installMessage = this.rootElement.querySelector('.install-message');
+
+    // hide message on close button click
+    let installMessageClose = this.installMessage.querySelector('.message-close');
+    installMessageClose.addEventListener('click', () => hide(this.installMessage));
 
     // init interactive elements
     initPanel(this.licencePanel);
@@ -91,10 +91,10 @@ export default class ContentTypeDetailView {
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
-          <h3></h3>
+          <h2 class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="https://h5p.org/chart">Content Demo</a>
+          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
@@ -105,9 +105,14 @@ export default class ContentTypeDetailView {
         </nav>
       </div>
       <hr />
+      <div class="install-message message dismissible simple info" aria-hidden="true">
+        <div class="message-close icon-close"></div>
+        <h3></h3>
+      </div>
       <div class="button-bar">
-        <span class="button button-primary button-use" aria-hidden="false" data-id="H5P.Chart">Use</span>
-        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id="H5P.Chart"><span class="icon-arrow-thick"></span>Install</span>
+        <span class="button button-primary button-use" aria-hidden="false" data-id="">Use</span>
+        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>Install</span>
+        <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
       </div>
       <div class="panel-group">
         <div class="panel licence-panel" aria-hidden="true">
@@ -119,6 +124,18 @@ export default class ContentTypeDetailView {
       </div>`;
 
     return element;
+  }
+
+  /**
+   * Sets a message on install
+   *
+   * @param {boolean} success
+   * @param {string} message
+   */
+  setInstallMessage({ success = true, message }){
+    this.installMessage.querySelector('h3').innerText = message;
+    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
+    show(this.installMessage);
   }
 
   /**
@@ -148,6 +165,13 @@ export default class ContentTypeDetailView {
     thumbnail.className = 'slide';
     thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${lightbox.id}" />`;
     this.carouselList.appendChild(thumbnail);
+  }
+
+  /**
+   * Resets the detail view
+   */
+  reset() {
+    hide(this.installMessage);
   }
 
   /**
@@ -185,7 +209,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text) {
     if(text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -206,10 +230,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text} <span class="read-less link">Read less</span>`;
+      this.description.innerHTML = `${text}<span class="read-less link">Read less</span>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)} <span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
     }
 
     this.description
@@ -272,8 +296,21 @@ export default class ContentTypeDetailView {
    * @param {boolean} installed
    */
   setIsInstalled(installed) {
-    toggleVisibility(this.useButton, installed);
-    toggleVisibility(this.installButton, !installed);
+    this.showButtonBySelector(installed ? '.button-use' : '.button-install');
+  }
+
+  /**
+   * Hides all buttons and shows the button on the selector again
+   *
+   * @param {string}selector
+   */
+  showButtonBySelector(selector) {
+    const button = this.buttonBar.querySelector(selector);
+
+    if(button) {
+      hideAll(this.buttons);
+      show(button);
+    }
   }
 
   /**
