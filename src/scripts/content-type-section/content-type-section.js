@@ -36,7 +36,8 @@ const ContentTypeSectionTabs = {
  */
 export default class ContentTypeSection {
   /**
-   * @param {HubState} state
+   * @param {object} state
+   * @param {HubServices} services
    */
   constructor(state, services) {
     // add event system
@@ -50,7 +51,7 @@ export default class ContentTypeSection {
     // controller
     this.searchService = new SearchService(services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail(services);
+    this.contentTypeDetail = new ContentTypeDetail({}, services);
 
     // add menu items
     for (const tab in ContentTypeSectionTabs) {
