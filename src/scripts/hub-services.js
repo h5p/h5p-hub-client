@@ -99,9 +99,9 @@ export default class HubServices {
     }).then(result => result.json());
   }
 
-  /*
+
   // for testing with error
-  installContentType(id) {
+  /*installContentType(id) {
     return fetch(`${this.apiRootUrl}library-install`, {
       method: 'GET',
       credentials: 'include'
@@ -110,7 +110,7 @@ export default class HubServices {
       .then(result => {
         return new Promise(function(resolve, reject) {
           setTimeout(function() {
-            return reject(result);
+            return resolve(result);
           }, 1000);
         });
       });

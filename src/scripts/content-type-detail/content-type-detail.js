@@ -59,19 +59,19 @@ export default class ContentTypeDetail {
    */
    install({id}) {
      // set spinner
-     this.view.setInstallButtonIcon('icon-loading-search icon-spin');
+     this.view.showButtonBySelector('.button-installing');
 
      return this.services.contentType(id)
        .then(contentType => this.services.installContentType(contentType.machineName))
        .then(contentType => {
          this.view.setIsInstalled(true);
-         this.view.setInstallButtonIcon('icon-arrow-thick');
+         this.view.showButtonBySelector('.button-get');
          this.view.setInstallMessage({
            message: `${contentType.title} successfully installed!`,
          });
        })
        .catch(error => {
-         this.view.setInstallButtonIcon('icon-arrow-thick');
+         this.view.showButtonBySelector('.button-install');
 
          // print error message
          let errorMessage = (error.errorCode) ? error : {

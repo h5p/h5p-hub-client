@@ -1,5 +1,5 @@
 import { setAttribute, getAttribute, removeChild, hide, show } from "utils/elements";
-import { curry } from "utils/functional";
+import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initImageScroller from "components/image-scroller";
@@ -33,6 +33,8 @@ const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
  */
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
 
+const hideAll = forEach(hide);
+
 /**
  * @class
  * @mixes Eventful
@@ -46,8 +48,11 @@ export default class ContentTypeDetailView {
     this.rootElement = this.createView();
 
     // grab references
-    this.useButton = this.rootElement.querySelector('.button-use');
-    this.installButton = this.rootElement.querySelector('.button-install');
+    this.buttonBar = this.rootElement.querySelector('.button-bar');
+    this.useButton = this.buttonBar.querySelector('.button-use');
+    this.installButton = this.buttonBar.querySelector('.button-install');
+    this.buttons = this.buttonBar.querySelectorAll('.button');
+
     this.image = this.rootElement.querySelector('.content-type-image');
     this.title = this.rootElement.querySelector('.text-details h3');
     this.owner = this.rootElement.querySelector('.owner');
@@ -107,6 +112,7 @@ export default class ContentTypeDetailView {
       <div class="button-bar">
         <span class="button button-primary button-use" aria-hidden="false" data-id="">Use</span>
         <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>Install</span>
+        <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
       </div>
       <div class="panel-group">
         <div class="panel licence-panel" aria-hidden="true">
@@ -283,8 +289,21 @@ export default class ContentTypeDetailView {
    * @param {boolean} installed
    */
   setIsInstalled(installed) {
-    toggleVisibility(this.useButton, !!installed);
-    toggleVisibility(this.installButton, !installed);
+    this.showButtonBySelector(installed ? '.button-use' : '.button-install');
+  }
+
+  /**
+   * Hides all buttons and shows the button on the selector again
+   *
+   * @param {string}selector
+   */
+  showButtonBySelector(selector) {
+    const button = this.buttonBar.querySelector(selector);
+
+    if(button) {
+      hideAll(this.buttons);
+      show(button);
+    }
   }
 
   /**
