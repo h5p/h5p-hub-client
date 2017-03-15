@@ -58,10 +58,32 @@ export default class ContentTypeDetail {
    * @return {Promise.<ContentType>}
    */
    install({id}) {
+     // set spinner
+     this.view.setInstallButtonIcon('icon-loading-search icon-spin');
+
      return this.services.contentType(id)
-       .then(contentType => contentType.machineName)
-       .then(machineName => this.services.installContentType(machineName))
-       .then(contentType => console.debug('TODO, gui updates', contentType))
+       .then(contentType => this.services.installContentType(contentType.machineName))
+       .then(contentType => {
+         this.view.setIsInstalled(true);
+         this.view.setInstallButtonIcon('icon-arrow-thick');
+         this.view.setInstallMessage({
+           message: `${contentType.title} successfully installed!`,
+         });
+       })
+       .catch(error => {
+         this.view.setInstallButtonIcon('icon-arrow-thick');
+
+         // print error message
+         let errorMessage = (error.errorCode) ? error : {
+           success: false,
+           errorCode: 'RESPONSE_FAILED',
+           message: `${id} could not be installed! Contact your administrator.`,
+         };
+         this.view.setInstallMessage(errorMessage);
+
+         // log whole error message to console
+         console.error('Installation error', error);
+       });
    }
 
   /**
@@ -76,7 +98,7 @@ export default class ContentTypeDetail {
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
-    this.view.setIsInstalled(!!contentType.installed);
+    this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license);
 
     // update carousel

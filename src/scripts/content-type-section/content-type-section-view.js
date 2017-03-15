@@ -137,7 +137,7 @@ export default class ContentBrowserView {
   }
 
   /**
-   * Ensures the first menu item is selected
+   * Selects a menu item by id
    *
    * @param {string} id
    */

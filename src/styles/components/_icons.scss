@@ -1,0 +1,12 @@
+@import "../base/mixins";
+
+@include keyframes('spin') {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-spin {
+  display: inline-block;
+  @include animation(spin 2s linear infinite);
+}
