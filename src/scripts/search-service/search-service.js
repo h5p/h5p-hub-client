@@ -35,7 +35,7 @@ export default class SearchService {
    * @return {Promise.<ContentType[]>|*}
    */
   filter(property) {
-    return this.contentTypes
+    return this.services.contentTypes()
       .then(contentTypes => contentTypes.sort((ct1, ct2) => {
 
         // Property does not exist, move to bottom

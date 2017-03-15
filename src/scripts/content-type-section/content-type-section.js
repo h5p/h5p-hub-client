@@ -6,26 +6,24 @@ import {Eventful} from '../mixins/eventful';
 import {renderErrorMessage} from '../utils/errors';
 
 /**
- * @constant {string}
- */
-const ID_FILTER_ALL = 'filter-all';
-
-/**
  * Tab section constants
  */
 const ContentTypeSectionTabs = {
   ALL: {
-    eventName: 'all',
-    text: 'All'
+    id: 'filter-all',
+    title: 'All',
+    eventName: 'all'
   },
   MY_CONTENT_TYPES: {
+    id: 'filter-my-content-types',
+    title: 'My Content Types',
     eventName: 'my-content-types',
-    text: 'My Content Types',
     selected: true
   },
   MOST_POPULAR: {
+    id: 'filter-most-popular',
+    title: 'Most Popular',
     eventName: 'most-popular',
-    text: 'Most Popular',
     filterProperty: 'popularity'
   }
 };
@@ -54,21 +52,6 @@ export default class ContentTypeSection {
     this.contentTypeList = new ContentTypeList();
     this.contentTypeDetail = new ContentTypeDetail(services);
 
-    // configuration for filters
-    const filterConfigs = [{
-        title: 'All',
-        id: ID_FILTER_ALL,
-      },
-      {
-        title: 'My Content Types',
-        id: 'filter-my-content-types',
-        selected: true
-      },
-      {
-        title: 'Most Popular',
-        id: 'filter-most-popular',
-      }];
-
     // add menu items
     for (const tab in ContentTypeSectionTabs) {
       if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
@@ -94,7 +77,7 @@ export default class ContentTypeSection {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ID_FILTER_ALL));
+    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
     this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
@@ -179,7 +162,7 @@ export default class ContentTypeSection {
    * @param {string} id
    */
   clearInputField({id}) {
-    if (id !== ID_FILTER_ALL) {
+    if (id !== ContentTypeSectionTabs.ALL.id) {
       this.view.clearInputField();
     }
   }

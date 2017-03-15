@@ -118,8 +118,8 @@ export default class ContentBrowserView {
    *
    * @param {string} title
    * @param {string} id
-   * @param {boolean} id
-   * @param {string} eventName
+   * @param {boolean} selected Determines if tab is already selected
+   * @param {string} eventName Name of event that tab will fire off
    *
    * @return {HTMLElement}
    */
