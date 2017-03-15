@@ -1,8 +1,5 @@
 {
-  "messageCode": "NO_RESPONSE",
-  "type": "error",
-  "title": "No response",
-  "content": "Could not get the libraries from the hub",
-  "button": "Contact your administrator",
-  "dismissible": false
+  "success": false,
+  "errorCode": "RESPONSE_FAILED",
+  "message": "Response was something other than 200"
 }

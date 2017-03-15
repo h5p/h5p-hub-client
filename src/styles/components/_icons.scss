@@ -1,0 +1,21 @@
+@import "../base/mixins";
+@import "~h5p-sdk/src/styles/base/colors";
+@import "~h5p-sdk/src/styles/base/variables";
+
+@include keyframes('spin') {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-spin {
+  display: inline-block;
+  @include animation(spin 2s linear infinite);
+}
+
+.button {
+  [class^="icon-"] {
+    margin-right: $gutter / 2;
+    display: inline-block;
+  }
+}
