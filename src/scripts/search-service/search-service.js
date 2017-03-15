@@ -9,8 +9,7 @@ import {curry} from 'utils/functional'
  */
 export default class SearchService {
   /**
-   * @param {Object} state
-   * @param {string} state.apiRootUrl
+   * @param {HubServices} services
    */
   constructor(services) {
     this.services = services;
