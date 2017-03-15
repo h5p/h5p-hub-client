@@ -1,3 +1,4 @@
+import MessageView from "../message-view/message-view";
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
@@ -69,6 +70,7 @@ export default class ContentBrowserView {
 
     // create element
     const element = document.createElement('div');
+    element.className = 'content-type-section-view';
     element.innerHTML = `
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
@@ -82,7 +84,7 @@ export default class ContentBrowserView {
 
           <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
         </nav>
-        
+
         <div class="input-group" role="search">
           <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
           <div class="input-group-addon icon-search"></div>
@@ -90,6 +92,25 @@ export default class ContentBrowserView {
       </div>`;
 
     return element;
+  }
+
+  displayMessage(config) {
+    var self = this;
+    // Set the action
+    // TODO - should be translatable
+    config.action = "Reload";
+
+    var messageView = new MessageView(config);
+    var element = messageView.getElement();
+
+    messageView.on('action-clicked', function () {
+      self.rootElement.classList.remove('error');
+      element.parentNode.removeChild(element);
+      self.fire('reload');
+    });
+
+    this.rootElement.classList.add('error');
+    this.rootElement.appendChild(messageView.getElement());
   }
 
   /**

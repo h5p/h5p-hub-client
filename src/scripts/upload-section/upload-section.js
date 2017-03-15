@@ -1,4 +1,3 @@
-import HubServices from '../hub-services';
 import { Eventful } from '../mixins/eventful';
 
 /**
@@ -9,14 +8,12 @@ import { Eventful } from '../mixins/eventful';
  */
 export default class UploadSection {
 
-  constructor(state) {
+  constructor(state, services) {
     const self = this;
     Object.assign(this, Eventful());
 
     // services
-    this.services = new HubServices({
-      apiRootUrl: state.apiRootUrl
-    });
+    this.services = services;
 
     // Input element for the H5P file
     const h5pUpload = document.createElement('input');

@@ -1,5 +1,4 @@
 import ContetTypeDetailView from "./content-type-detail-view";
-import HubServices from "../hub-services";
 import { Eventful } from '../mixins/eventful';
 
 /**
@@ -7,14 +6,12 @@ import { Eventful } from '../mixins/eventful';
  * @mixes Eventful
  */
 export default class ContentTypeDetail {
-  constructor(state) {
+  constructor(state, services) {
     // add event system
     Object.assign(this, Eventful());
 
     // services
-    this.services = new HubServices({
-      apiRootUrl: state.apiRootUrl
-    });
+    this.services = services;
 
     // views
     this.view = new ContetTypeDetailView(state);

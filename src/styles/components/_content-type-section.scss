@@ -39,6 +39,13 @@
     }
   }
 
+  .content-type-section-view.error {
+    .menu-group,
+    .content-type-section {
+      display: none;
+    }
+  }
+
   .navbar {
     background-color: transparent;
     color: $c2;
