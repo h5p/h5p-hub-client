@@ -32,6 +32,38 @@ export default class SearchService {
   search(query) {
     return this.contentTypes.then(filterByQuery(query));
   }
+
+  /**
+   * Filter all content types by given property
+   *
+   * @param property
+   * @return {Promise.<ContentType[]>|*}
+   */
+  filter(property) {
+    return this.contentTypes
+      .then(contentTypes => contentTypes.sort((ct1, ct2) => {
+
+        // Property does not exist, move to bottom
+        if (!ct1.hasOwnProperty(property)) {
+          return 1;
+        }
+
+        if (!ct2.hasOwnProperty(property)) {
+          return -1;
+        }
+
+        // Sort on property
+        if (ct1[property] > ct2[property]) {
+          return 1;
+        }
+        else if (ct1[property] < ct2[property]) {
+          return -1;
+        }
+        else {
+          return 0;
+        }
+      }));
+  }
 }
 
 /**

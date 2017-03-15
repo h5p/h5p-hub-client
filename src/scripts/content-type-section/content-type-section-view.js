@@ -86,17 +86,19 @@ export default class ContentBrowserView {
    * Adds a menu item
    *
    * @param {string} text
+   * @param {string} eventName Event that will be fired when tab is clicked
    *
    * @return {HTMLElement}
    */
-  addMenuItem(text) {
+  addMenuItem(text, eventName) {
     const element = document.createElement('li');
     element.setAttribute('role', 'menuitem');
     element.innerHTML = text;
 
     element.addEventListener('click', event => {
       this.fire('menu-selected', {
-        element: event.target
+        element: event.target,
+        choice: eventName
       });
     });
 

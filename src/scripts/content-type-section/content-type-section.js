@@ -5,6 +5,22 @@ import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
 import {renderErrorMessage} from '../utils/errors';
 
+export const ContentTypeSectionTabs = {
+  ALL: {
+    eventName: 'all',
+    text: 'All'
+  },
+  MY_CONTENT_TYPES: {
+    eventName: 'my-content-types',
+    text: 'My Content Types'
+  },
+  MOST_POPULAR: {
+    eventName: 'most-popular',
+    text: 'Most Popular',
+    filterProperty: 'popularity'
+  }
+};
+
 /**
  * @class ContentTypeSection
  * @mixes Eventful
@@ -30,8 +46,12 @@ export default class ContentTypeSection {
     this.contentTypeDetail = new ContentTypeDetail({ apiRootUrl: state.apiRootUrl });
 
     // add menu items
-    ['All', 'My Content Types', 'Most Popular']
-      .forEach(menuText => this.view.addMenuItem(menuText));
+    for (const tab in ContentTypeSectionTabs) {
+      if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
+        const tabItem = ContentTypeSectionTabs[tab];
+        this.view.addMenuItem(tabItem.text, tabItem.eventName);
+      }
+    }
     this.view.initMenu();
 
     // Element for holding list and details views
@@ -97,10 +117,21 @@ export default class ContentTypeSection {
   }
 
   /**
-   * Should apply a search filter
+   * Applies search filter depending on what event it receives
+   *
+   * @param {Object} e Event
+   * @param {string} e.choice Event name of chosen tab
    */
-  applySearchFilter() {
-    console.debug('ContentTypeSection: menu was clicked!', event);
+  applySearchFilter(e) {
+    switch(e.choice) {
+      case ContentTypeSectionTabs.MOST_POPULAR.eventName:
+        // Filter on tab's filter property, then update content type list
+        this.searchService
+          .filter(ContentTypeSectionTabs.MOST_POPULAR.filterProperty)
+          .then(cts => {this.contentTypeList.update(cts)});
+        break;
+    }
+
   }
 
   clearInputField({element}) {
