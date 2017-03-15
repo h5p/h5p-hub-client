@@ -1,3 +1,4 @@
+import './utils/fetch';
 /**
  * @typedef {object} ContentType
  * @property {string} machineName
