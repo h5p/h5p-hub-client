@@ -53,9 +53,10 @@ export const Eventful = () => ({
    *
    * @param {string[]} types
    * @param {Eventful} eventful
+   * @param {String} [eventName] the name of the event when propogated
    */
-  propagate: function(types, eventful) {
+  propagate: function(types, eventful, newType) {
     let self = this;
-    types.forEach(type => eventful.on(type, event => self.fire(type, event)));
+    types.forEach(type => eventful.on(type, event => self.fire(newType || type, event)));
   }
 });
