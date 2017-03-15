@@ -54,7 +54,7 @@ export default class ContentTypeDetailView {
     this.buttons = this.buttonBar.querySelectorAll('.button');
 
     this.image = this.rootElement.querySelector('.content-type-image');
-    this.title = this.rootElement.querySelector('.text-details h3');
+    this.title = this.rootElement.querySelector('.text-details .title');
     this.owner = this.rootElement.querySelector('.owner');
     this.description = this.rootElement.querySelector('.text-details .small');
     this.demoButton = this.rootElement.querySelector('.demo-button');
@@ -91,10 +91,10 @@ export default class ContentTypeDetailView {
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
-          <h3></h3>
+          <h2 class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="https://h5p.org/chart">Content Demo</a>
+          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
@@ -165,6 +165,13 @@ export default class ContentTypeDetailView {
     thumbnail.className = 'slide';
     thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${lightbox.id}" />`;
     this.carouselList.appendChild(thumbnail);
+  }
+
+  /**
+   * Resets the detail view
+   */
+  reset() {
+    hide(this.installMessage);
   }
 
   /**
@@ -304,16 +311,6 @@ export default class ContentTypeDetailView {
       hideAll(this.buttons);
       show(button);
     }
-  }
-
-  /**
-   * Sets install button icon cls
-   *
-   * @param {string} className
-   */
-  setInstallButtonIcon(className) {
-    const icon = this.installButton.querySelector('[class^="icon-"]');
-    icon.className = className;
   }
 
   /**
