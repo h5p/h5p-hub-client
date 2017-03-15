@@ -1,5 +1,4 @@
 import {curry} from 'utils/functional'
-import HubServices from '../hub-services';
 
 /**
  * @class
@@ -13,13 +12,8 @@ export default class SearchService {
    * @param {Object} state
    * @param {string} state.apiRootUrl
    */
-  constructor(state) {
-    this.services = new HubServices({
-      apiRootUrl: state.apiRootUrl
-    });
-
-    // Add content types to the search index
-    this.contentTypes = this.services.contentTypes();
+  constructor(services) {
+    this.services = services;
   }
 
   /**
@@ -30,7 +24,8 @@ export default class SearchService {
    * @return {Promise<ContentType[]>} A promise of an array of content types
    */
   search(query) {
-    return this.contentTypes.then(filterByQuery(query));
+    // Add content types to the search index
+    return this.services.contentTypes().then(filterByQuery(query));
   }
 }
 

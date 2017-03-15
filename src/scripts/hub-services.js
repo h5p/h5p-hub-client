@@ -29,19 +29,20 @@ export default class HubServices {
    */
   constructor({ apiRootUrl }) {
     this.apiRootUrl = apiRootUrl;
+    this.setup();
+  }
 
-    if(!window.cachedContentTypes){
-      // TODO remove this when done testing for errors
-      // window.cachedContentTypes = fetch(`${this.apiRootUrl}errors/NO_RESPONSE.json`, {
-
-      window.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
-        method: 'GET',
-        credentials: 'include'
-      })
-      .then(result => result.json())
-      .then(this.isValid)
-      .then(json => json.libraries);
-    }
+  /**
+   * Fetch the content type metadata
+   */
+  setup() {
+    this.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+    .then(result => result.json())
+    .then(this.isValid)
+    .then(json => json.libraries);
   }
 
   /**
@@ -64,7 +65,7 @@ export default class HubServices {
    * @return {Promise.<ContentType[]>}
    */
   contentTypes() {
-    return window.cachedContentTypes;
+    return this.cachedContentTypes;
   }
 
   /**
@@ -75,7 +76,7 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   contentType(machineName) {
-    return window.cachedContentTypes.then(contentTypes => {
+    return this.cachedContentTypes.then(contentTypes => {
       return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
     });
 

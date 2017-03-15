@@ -15,7 +15,7 @@ export default class ContentTypeSection {
   /**
    * @param {HubState} state
    */
-  constructor(state) {
+  constructor(state, services) {
     // add event system
     Object.assign(this, Eventful());
 
@@ -25,9 +25,9 @@ export default class ContentTypeSection {
     this.view = new ContentTypeSectionView(state);
 
     // controller
-    this.searchService = new SearchService({ apiRootUrl: state.apiRootUrl });
+    this.searchService = new SearchService(services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail({ apiRootUrl: state.apiRootUrl });
+    this.contentTypeDetail = new ContentTypeDetail(services);
 
     // add menu items
     ['All', 'My Content Types', 'Most Popular']
@@ -47,6 +47,7 @@ export default class ContentTypeSection {
     // propagate events
     this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
     this.propagate(['select'], this.contentTypeDetail);
+    this.propagate(['reload'], this.view);
 
     // register listeners
     this.view.on('search', this.search, this);
@@ -54,6 +55,7 @@ export default class ContentTypeSection {
     this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
+
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
@@ -68,7 +70,19 @@ export default class ContentTypeSection {
     // initialize by search
     this.searchService.search("")
       .then(contentTypes => this.contentTypeList.update(contentTypes))
-      .catch(error => this.fire('error', error));
+      .catch(error => this.handleError(error));
+  }
+
+  /**
+   * Handle errors communicating with HUB
+   */
+  handleError(error) {
+    // TODO - use translation system:
+    this.view.displayMessage({
+      type: 'error',
+      title: 'Not able to communicate with hub.',
+      content: 'Error occured. Please try again.'
+    });
   }
 
   /**

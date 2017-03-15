@@ -50,21 +50,22 @@ export default class Hub {
   constructor(state) {
     // add event system
     Object.assign(this, Eventful());
-
-    // controllers
-    this.contentTypeSection = new ContentTypeSection(state);
-    this.uploadSection = new UploadSection(state);
-
-    // views
-    this.view = new HubView(state);
+    var self = this;
 
     // services
     this.services = new HubServices({
       apiRootUrl: state.apiRootUrl
     });
 
+    // controllers
+    this.contentTypeSection = new ContentTypeSection(state, this.services);
+    this.uploadSection = new UploadSection(state, this.services);
+
+    // views
+    this.view = new HubView(state);
+
     // propagate controller events
-    this.propagate(['select', 'error'], this.contentTypeSection);
+    this.propagate(['select'], this.contentTypeSection);
     this.propagate(['upload'], this.uploadSection);
 
     // handle events
@@ -72,6 +73,10 @@ export default class Hub {
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
+    this.contentTypeSection.on('reload', function() {
+      self.services.setup();
+      self.contentTypeSection.initContentTypeList();
+    });
 
     this.initTabPanel(state)
   }
