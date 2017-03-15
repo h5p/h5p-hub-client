@@ -57,7 +57,7 @@
   }
 
   .navbar-brand {
-    font-style: italic;
+    display: none;
   }
 
   @media (min-width: $screen-small) {
@@ -70,6 +70,7 @@
         font-style: italic;
         font-size: $text-title-large;
         padding: 0.3em 0 0;
+        display: inline-block;
       }
 
       .navbar-nav {

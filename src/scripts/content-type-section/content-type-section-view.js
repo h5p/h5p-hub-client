@@ -1,6 +1,14 @@
-import { setAttribute, getAttribute, hasAttribute, querySelectorAll } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
+import { forEach } from "utils/functional";
+import { relayClickEventAs } from '../utils/events';
 import initMenu from 'components/menu';
-import {Eventful} from '../mixins/eventful';
+import { Eventful } from '../mixins/eventful';
+
+/**
+ * @param {HTMLElement[]} elements
+ * @function
+ */
+const unselectAll = forEach(removeAttribute('aria-selected'));
 
 /**
  * @class ContentBrowserView
@@ -21,6 +29,7 @@ export default class ContentBrowserView {
     // pick elements
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
+    this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
 
     // input field
@@ -64,7 +73,8 @@ export default class ContentBrowserView {
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
           <div class="navbar-header">
-              <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
+             <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
+               <span class="navbar-toggler-selected"></span>
                <span class="icon-accordion-arrow"></span>
              </span>
             <span class="navbar-brand">${menutitle}</span>
@@ -85,25 +95,25 @@ export default class ContentBrowserView {
   /**
    * Adds a menu item
    *
-   * @param {string} text
+   * @param {string} title
+   * @param {string} id
+   * @param {boolean} id
    *
    * @return {HTMLElement}
    */
-  addMenuItem(text) {
+  addMenuItem({ title, id, selected }) {
     const element = document.createElement('li');
     element.setAttribute('role', 'menuitem');
-    element.innerHTML = text;
+    element.setAttribute('data-id', id);
+    element.innerText = title;
 
-    element.addEventListener('click', event => {
-      this.fire('menu-selected', {
-        element: event.target
-      });
-    });
-
-    // sets first to be selected
-    if(this.menubar.childElementCount == 1) {
+    // sets if this menuitem should be selected
+    if(selected) {
       element.setAttribute('aria-selected', 'true');
+      this.displaySelected.innerText = title;
     }
+
+    relayClickEventAs('menu-selected', this, element);
 
     // add to menu bar
     this.menubar.appendChild(element);
@@ -118,29 +128,41 @@ export default class ContentBrowserView {
   }
 
   /**
-   * Checks if a menu item is the first child in the menu
+   * Sets the name of the currently selected filter
    *
-   * @param  {HTMLElement} menuItem
-   * @return {boolean}
+   * @param {string} selectedName
    */
-  isFirstMenuItem(menuItem) {
-    return menuItem === this.menubar.querySelectorAll('[role="menuitem"]')[0];
+  setDisplaySelected(selectedName) {
+    this.displaySelected.innerText = selectedName;
   }
 
   /**
    * Ensures the first menu item is selected
+   *
+   * @param {string} id
    */
-  resetMenuSelection() {
-    this.menubar.querySelectorAll('[role="menuitem"]')
-      .forEach(menuItem =>
-        menuItem.setAttribute('aria-selected', this.isFirstMenuItem(menuItem).toString())
-      );
+  selectMenuItemById(id) {
+    const menuItems = this.menubar.querySelectorAll('[role="menuitem"]');
+    const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
+
+    if(selectedMenuItem) {
+      unselectAll(menuItems);
+      selectedMenuItem.setAttribute('aria-selected', 'true');
+
+      this.fire('menu-selected', {
+        element: selectedMenuItem,
+        id: selectedMenuItem.getAttribute('data-id')
+      });
+    }
   }
 
   initMenu() {
+    // create the underline
     const underline = document.createElement('span');
     underline.className = 'menuitem-underline';
     this.menubar.appendChild(underline);
+
+    // call init menu from sdk
     initMenu(this.rootElement);
   }
 

@@ -6,6 +6,11 @@ import {Eventful} from '../mixins/eventful';
 import {renderErrorMessage} from '../utils/errors';
 
 /**
+ * @constant {string}
+ */
+const ID_FILTER_ALL = 'filter-all';
+
+/**
  * @class ContentTypeSection
  * @mixes Eventful
  *
@@ -29,9 +34,23 @@ export default class ContentTypeSection {
     this.contentTypeList = new ContentTypeList();
     this.contentTypeDetail = new ContentTypeDetail({ apiRootUrl: state.apiRootUrl });
 
+    // configuration for filters
+    const filterConfigs = [{
+        title: 'All',
+        id: ID_FILTER_ALL,
+      },
+      {
+        title: 'My Content Types',
+        id: 'filter-my-content-types',
+        selected: true
+      },
+      {
+        title: 'Most Popular',
+        id: 'filter-most-popular',
+      }];
+
     // add menu items
-    ['All', 'My Content Types', 'Most Popular']
-      .forEach(menuText => this.view.addMenuItem(menuText));
+    filterConfigs.forEach(this.view.addMenuItem, this.view);
     this.view.initMenu();
 
     // Element for holding list and details views
@@ -50,10 +69,11 @@ export default class ContentTypeSection {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.resetMenuSelection, this);
+    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ID_FILTER_ALL));
     this.view.on('search', this.resetMenuOnEnter, this);
-    this.view.on('menu-selected', this.applySearchFilter, this);
+    this.view.on('menu-select ed', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
+    this.view.on('menu-selected', this.updateDisplaySelected, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
@@ -84,10 +104,12 @@ export default class ContentTypeSection {
   }
 
   /**
-   *  Ensures the first menu element is selected
+   * Updates the displayed name of the selected filter for mobile
+   *
+   * @param {SelectedElement} event
    */
-  resetMenuSelection() {
-    this.view.resetMenuSelection();
+  updateDisplaySelected(event) {
+    this.view.setDisplaySelected(event.element.innerText);
   }
 
   resetMenuOnEnter({keyCode}) {
@@ -98,14 +120,20 @@ export default class ContentTypeSection {
 
   /**
    * Should apply a search filter
+   * @param {SelectedElement} event
    */
-  applySearchFilter() {
+  applySearchFilter(event) {
     console.debug('ContentTypeSection: menu was clicked!', event);
   }
 
-  clearInputField({element}) {
-    if (!this.view.isFirstMenuItem(element)) {
-      this.view.clearInputField(element);
+  /**
+   * Clears the input field
+   *
+   * @param {string} id
+   */
+  clearInputField({id}) {
+    if (id !== ID_FILTER_ALL) {
+      this.view.clearInputField();
     }
   }
 
