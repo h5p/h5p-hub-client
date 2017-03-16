@@ -11,7 +11,7 @@ import { curry } from "utils/functional";
  */
 export const relayClickEventAs = curry(function(type, dispatcher, element) {
   element.addEventListener('click', event => {
-    dispatcher.fire(type, {
+    dispatcher.trigger(type, {
       element: element,
       id: element.getAttribute('data-id')
     }, false);
