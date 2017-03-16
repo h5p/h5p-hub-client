@@ -28,6 +28,7 @@ export default class ContentBrowserView {
     this.rootElement = this.createElement(state);
 
     // pick elements
+    this.menu = this.rootElement.querySelector('nav');
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
@@ -191,6 +192,19 @@ export default class ContentBrowserView {
 
     // call init menu from sdk
     initMenu(this.rootElement);
+  }
+
+  /**
+   * Hides text styles and the menu underline
+   */
+  addDeactivatedStyleToMenu() {
+    this.menu.classList.remove('deactivated');
+  }
+  /**
+   * Restores text styles and the menu underline
+   */
+  removeDeactivatedStyleFromMenu() {
+    this.menu.classList.add("deactivated");
   }
 
   /**
