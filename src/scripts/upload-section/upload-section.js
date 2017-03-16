@@ -1,4 +1,5 @@
 import { Eventful } from '../mixins/eventful';
+import Dictionary from '../utils/dictionary';
 
 /**
  * @class
@@ -21,7 +22,7 @@ export default class UploadSection {
 
     // Sends the H5P file to the plugin
     const useButton = document.createElement('button');
-    useButton.textContent = 'Use';
+    useButton.textContent = Dictionary.get('useButtonLabel');
     useButton.addEventListener('click', () => {
 
       // Add the H5P file to a form, ready for transportation
