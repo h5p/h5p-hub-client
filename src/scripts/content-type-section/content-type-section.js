@@ -177,8 +177,8 @@ export default class ContentTypeSection {
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
     this.typeAheadEnabled = false;
+    this.view.removeDeactivatedStyleFromMenu();
   }
-
 
   /**
    * Close detail view
@@ -187,6 +187,7 @@ export default class ContentTypeSection {
     this.contentTypeDetail.hide();
     this.contentTypeList.show();
     this.typeAheadEnabled = true;
+    this.view.addDeactivatedStyleToMenu();
   }
 
   /**
