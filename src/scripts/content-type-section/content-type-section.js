@@ -42,8 +42,6 @@ export default class ContentTypeSection {
     // add event system
     Object.assign(this, EventDispatcher());
 
-    this.typeAheadEnabled = true;
-
     // add view
     this.view = new ContentTypeSectionView(state);
 
@@ -79,6 +77,7 @@ export default class ContentTypeSection {
     this.view.on('search', this.search, this);
     this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
     this.view.on('search', this.resetMenuOnEnter, this);
+    this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
     this.view.on('menu-selected', this.updateDisplaySelected, this);
@@ -117,10 +116,8 @@ export default class ContentTypeSection {
    * @param {string} query
    */
   search({query, keyCode}) {
-    if (this.typeAheadEnabled || keyCode === 13) { // Search automatically or on 'enter'
-      this.searchService.search(query)
-        .then(contentTypes => this.contentTypeList.update(contentTypes));
-    }
+    this.searchService.search(query)
+      .then(contentTypes => this.contentTypeList.update(contentTypes));
   }
 
   /**
@@ -130,12 +127,6 @@ export default class ContentTypeSection {
    */
   updateDisplaySelected(event) {
     this.view.setDisplaySelected(event.element.innerText);
-  }
-
-  resetMenuOnEnter({keyCode}) {
-    if (keyCode === 13) {
-      this.closeDetailView();
-    }
   }
 
   /**
@@ -176,7 +167,7 @@ export default class ContentTypeSection {
     this.contentTypeList.hide();
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
-    this.typeAheadEnabled = false;
+    this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
   }
 
@@ -185,8 +176,8 @@ export default class ContentTypeSection {
    */
   closeDetailView() {
     this.contentTypeDetail.hide();
-    this.contentTypeList.show();
-    this.typeAheadEnabled = true;
+    this.contentTypeList.show()
+    this.view.typeAheadEnabled = true;
     this.view.addDeactivatedStyleToMenu();
   }
 
