@@ -3,7 +3,7 @@ import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
 import { Eventful } from './mixins/eventful';
-import {renderErrorMessage} from './utils/errors';
+
 /**
  * @typedef {object} HubState
  * @property {string} title
