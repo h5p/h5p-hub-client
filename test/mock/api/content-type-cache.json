@@ -706,9 +706,9 @@
       ],
       "license": "MIT",
       "owner": "Joubel",
-      "installed": true,
+      "installed": false,
       "isUpToDate": false,
-      "restricted": false,
+      "restricted": true,
       "categories": [
         "Multimedia",
         "Questions"
@@ -1296,7 +1296,7 @@
       "patchVersion": "1",
       "installed": true,
       "isUpToDate": true,
-      "restricted": false
+      "restricted": true
     },
     {
       "id": "177",
@@ -1375,8 +1375,7 @@
       "minorVersion": "0",
       "patchVersion": "0",
       "installed": true,
-      "isUpToDate": true,
-      "restricted": false
+      "isUpToDate": true
     }
   ],
   "recentlyUsed": [

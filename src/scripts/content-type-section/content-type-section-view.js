@@ -40,7 +40,7 @@ export default class ContentBrowserView {
     // input field
     this.inputField.addEventListener('keyup', event => {
       let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-      
+
       // Only searching if the enter key is pressed
       if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
         this.trigger('search', {
@@ -140,6 +140,10 @@ export default class ContentBrowserView {
     if(selected) {
       element.setAttribute('aria-selected', 'true');
       this.displaySelected.innerText = title;
+      this.trigger('menu-selected', {
+        element: element,
+        choice: eventName
+      });
     }
 
     element.addEventListener('click', event => {

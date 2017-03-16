@@ -62,6 +62,8 @@ const config = {
 };
 
 if (!isDevMode) {
+  config.devtool = 'eval';
+
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false

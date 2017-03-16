@@ -89,11 +89,15 @@ export default class ContentTypeListView {
     const description = contentType.summary || '';
 
     const image = contentType.icon || noIcon;
+    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
 
     // create html
     element.innerHTML = `
       <img class="img-responsive" src="${image}">
-      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0"><span class="${button.icon}"></span>${button.text}</span>
+      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
+        <span class="${button.icon}"></span>
+        ${button.text}
+      </span>
       <h4>${title}</h4>
       <div class="description">${description}</div>
    `;

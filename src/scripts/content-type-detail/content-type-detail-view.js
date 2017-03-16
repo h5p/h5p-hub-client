@@ -300,6 +300,16 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Marks content type as restricted, disabling installing and using the content type.
+   *
+   * @param {boolean} restricted True if content type is restricted
+   */
+  setIsRestricted(restricted) {
+    this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
+    this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
+  }
+
+  /**
    * Hides all buttons and shows the button on the selector again
    *
    * @param {string}selector

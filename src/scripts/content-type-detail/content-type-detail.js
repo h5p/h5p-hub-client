@@ -98,6 +98,7 @@ export default class ContentTypeDetail {
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license);
+    this.view.setIsRestricted(contentType.restricted);
 
     // update carousel
     this.view.removeAllImagesInCarousel();

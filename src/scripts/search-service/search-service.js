@@ -30,35 +30,126 @@ export default class SearchService {
   /**
    * Filter all content types by given property
    *
-   * @param property
+   * @param {string|Array} sortOrder One or more properties
+   *
    * @return {Promise.<ContentType[]>|*}
    */
-  filter(property) {
+  sortOn(sortOrder) {
     return this.services.contentTypes()
-      .then(contentTypes => contentTypes.sort((ct1, ct2) => {
+      .then(contentTypes => multiSort(contentTypes, sortOrder));
+  }
 
-        // Property does not exist, move to bottom
-        if (!ct1.hasOwnProperty(property)) {
-          return 1;
-        }
-
-        if (!ct2.hasOwnProperty(property)) {
-          return -1;
-        }
-
-        // Sort on property
-        if (ct1[property] > ct2[property]) {
-          return 1;
-        }
-        else if (ct1[property] < ct2[property]) {
-          return -1;
-        }
-        else {
-          return 0;
-        }
-      }));
+  /**
+   * Filter out restricted if it is defined and false
+   *
+   * @return {Promise.<ContentType[]>}
+   */
+  filterOutRestricted() {
+    return this.services.contentTypes()
+      .then(cts => cts.filter(ct => !ct.restricted));
   }
 }
+
+/**
+ * Sort on multiple properties
+ *
+ * @param {ContentType[]} contentTypes Content types that should be sorted
+ * @param {string|string[]} sortOrder Order that sort properties should be applied
+ *
+ * @return {Array.<ContentType>} Content types sorted
+ */
+const multiSort = (contentTypes, sortOrder) => {
+  sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
+  return contentTypes.sort((ct1, ct2) => {
+    return handleSortType(ct1, ct2, sortOrder);
+  });
+};
+
+/**
+ * Compares two content types and returns a sortable value for them
+ *
+ * @param {ContentType} ct1
+ * @param {ContentType} ct2
+ * @param {string[]} sortOrder Order that sort properties should be applied in
+ *
+ * @return {number} A number indicating how to sort the two content types
+ */
+const handleSortType = (ct1, ct2, sortOrder) => {
+  switch (sortOrder[0]) {
+    case 'restricted':
+      return sortOnRestricted(ct1, ct2, sortOrder.slice(1));
+    case 'popularity':
+      return sortOnProperty(ct1, ct2, sortOrder[0], sortOrder.slice(1));
+    default:
+      return sortSearchResults(ct1, ct2);
+  }
+};
+
+/**
+ * Sort restricted content types. Restricted content types will be moved to the bottom of the
+ * list. Content types with undefined restricted property are consider not restricted.
+ *
+ * @param {ContentType} ct1
+ * @param {ContentType} ct2
+ * @param {string[]} sortOrder Order to apply sort properties
+ *
+ * @return {number} A standard comparable value for the two content types
+ */
+const sortOnRestricted = (ct1, ct2, sortOrder) => {
+  if (!ct1.restricted === !ct2.restricted) {
+    if (sortOrder) {
+      return handleSortType(ct1, ct2, sortOrder);
+    }
+    else {
+      return 0;
+    }
+  }
+  else if (ct1.restricted) {
+    return 1;
+  }
+  else if (ct2.restricted) {
+    return -1;
+  }
+};
+
+/**
+ * Sort on a property. Any valid property can be applied. If the content type does not have the
+ * supplied property it will get moved to the bottom.
+ *
+ * @param {ContentType} ct1
+ * @param {ContentType} ct2
+ * @param {string} property Property that the content types will be sorted on, either
+ * numerically or lexically
+ * @param {string[]} sortOrder Remaining sort order to apply if two content types have the same
+ * value
+ *
+ * @return {number} A value indicating the comparison between the two content types
+ */
+const sortOnProperty = (ct1, ct2, property, sortOrder) => {
+  // Property does not exist, move to bottom
+  if (!ct1.hasOwnProperty(property)) {
+    return 1;
+  }
+  if (!ct2.hasOwnProperty(property)) {
+    return -1;
+  }
+
+  // Sort on property
+  if (ct1[property] > ct2[property]) {
+    return 1;
+  }
+  else if (ct1[property] < ct2[property]) {
+    return -1;
+  }
+  else {
+    if (sortOrder) {
+      return handleSortType(ct1, ct2, sortOrder);
+    }
+    else {
+      return 0;
+    }
+  }
+};
 
 /**
  * Filters a list of content types based on a query
@@ -73,14 +164,12 @@ const filterByQuery = curry(function(query, contentTypes) {
   }
 
   // Append a search score to each content type
-  return contentTypes.map(contentType =>
-    ({
-      contentType: contentType,
-      score: getSearchScore(query, contentType)
-    }))
-    .filter(result => result.score > 0)
-    .sort(sortSearchResults) // Sort by installed, relevance and popularity
-    .map(result => result.contentType); // Unwrap result object;
+  const filtered = contentTypes.map(contentType => {
+    contentType.score = getSearchScore(query, contentType);
+    return contentType;
+  }).filter(result => result.score > 0);
+
+  return multiSort(filtered, ['restricted', 'default']);
 });
 
 /**
@@ -92,11 +181,11 @@ const filterByQuery = curry(function(query, contentTypes) {
  * @return {int}
  */
 const sortSearchResults = (a,b) => {
-  if (!a.contentType.installed && b.contentType.installed) {
+  if (!a.installed && b.installed) {
     return 1;
   }
 
-  if (a.contentType.installed && !b.contentType.installed) {
+  if (a.installed && !b.installed) {
     return -1;
   }
 
@@ -105,7 +194,7 @@ const sortSearchResults = (a,b) => {
   }
 
   else {
-    return b.contentType.popularity - a.contentType.popularity;
+    return b.popularity - a.popularity;
   }
 };
 
@@ -148,6 +237,9 @@ const getScoreForEachQuery = function (query, contentType) {
    else if (arrayHasSubString(query, contentType.keywords)) {
      return 5;
    }
+   else if (hasSubString(query, contentType.machineName)) {
+     return 1;
+   }
    else {
      return 0;
    }
@@ -183,8 +275,3 @@ const arrayHasSubString = function(subString, arr) {
 
   return arr.some(string => hasSubString(subString, string));
 };
-
-const AddNumber=function(a,b)
-{
-  return a+b;
-}
