@@ -44,6 +44,11 @@
     .content-type-section {
       display: none;
     }
+
+    /* Adding some left and right margin for message view */
+    .message {
+      margin: $gutter;
+    }
   }
 
   .navbar {
