@@ -32,7 +32,7 @@ export const EventDispatcher = () => ({
   },
 
   /**
-   * Fire event. If any of the listeners returns false, return false
+   * Triggers event. If any of the listeners returns false, return false
    *
    * @param {string} type
    * @param {object} [event]
@@ -40,7 +40,7 @@ export const EventDispatcher = () => ({
    * @function
    * @return {boolean}
    */
-  fire: function(type, event) {
+  trigger: function(type, event) {
     const triggers = this.listeners[type] || [];
 
     return triggers.every(function(trigger) {
@@ -57,6 +57,6 @@ export const EventDispatcher = () => ({
    */
   propagate: function(types, dispatcher, newType) {
     let self = this;
-    types.forEach(type => dispatcher.on(type, event => self.fire(newType || type, event)));
+    types.forEach(type => dispatcher.on(type, event => self.trigger(newType || type, event)));
   }
 });

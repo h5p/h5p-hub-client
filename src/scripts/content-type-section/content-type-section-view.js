@@ -51,7 +51,7 @@ export default class ContentBrowserView {
     inputButton.addEventListener('click', event => {
        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
 
-       this.fire('search', {
+       this.trigger('search', {
          element: searchbar,
          query: searchbar.value
        });
@@ -110,7 +110,7 @@ export default class ContentBrowserView {
     messageView.on('action-clicked', function () {
       self.rootElement.classList.remove('error');
       element.parentNode.removeChild(element);
-      self.fire('reload');
+      self.trigger('reload');
     });
 
     this.rootElement.classList.add('error');
@@ -140,7 +140,7 @@ export default class ContentBrowserView {
     }
 
     element.addEventListener('click', event => {
-      this.fire('menu-selected', {
+      this.trigger('menu-selected', {
         element: event.target,
         choice: eventName
       });
@@ -180,7 +180,7 @@ export default class ContentBrowserView {
       unselectAll(menuItems);
       selectedMenuItem.setAttribute('aria-selected', 'true');
 
-      this.fire('menu-selected', {
+      this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: selectedMenuItem.getAttribute('data-id')
       });

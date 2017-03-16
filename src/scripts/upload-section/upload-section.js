@@ -32,7 +32,7 @@ export default class UploadSection {
       this.services.uploadContent(data)
         .then(json => {
           // Fire the received data to any listeners
-          self.fire('upload', json);
+          self.trigger('upload', json);
         });
     });
 
