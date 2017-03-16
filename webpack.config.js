@@ -9,7 +9,7 @@ const extractSass = new ExtractTextPlugin({
 
 const config = {
   entry: "./src/entries/dist.js",
-  devtool: 'inline-source-map',
+  devtool: 'cheap-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js",
@@ -33,13 +33,16 @@ const config = {
         use: extractSass.extract({
           use: [
             {
-              loader: "css-loader?sourceMap"
+              loader: "css-loader"
             },
             {
               loader: "resolve-url-loader"
             },
             {
-              loader: "sass-loader?outputStyle=expanded&sourceMap=true&sourceMapContents=true"
+              loader: "sass-loader",
+              options: {
+                sourceMap: true
+              }
             }
           ],
 

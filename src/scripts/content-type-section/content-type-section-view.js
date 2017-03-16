@@ -24,6 +24,9 @@ export default class ContentBrowserView {
     // add event system
     Object.assign(this, Eventful());
 
+    // general configuration
+    this.typeAheadEnabled = true;
+
     // create elements
     this.rootElement = this.createElement(state);
 
@@ -36,11 +39,15 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      this.trigger('search', {
-        element: event.target,
-        query: event.target.value,
-        keyCode: event.which || event.keyCode
-      });
+      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+      
+      // Only searching if the enter key is pressed
+      if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
+        this.trigger('search', {
+          element: searchbar,
+          query: searchbar.value
+        });
+      }
     });
 
     // input button
@@ -49,8 +56,7 @@ export default class ContentBrowserView {
 
        this.trigger('search', {
          element: searchbar,
-         query: searchbar.value,
-         keyCode: 13 // Act like an 'enter' key press
+         query: searchbar.value
        });
 
        searchbar.focus();
