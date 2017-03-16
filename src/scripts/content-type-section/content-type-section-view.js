@@ -3,7 +3,7 @@ import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelecto
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
 import initMenu from 'components/menu';
-import { Eventful } from '../mixins/eventful';
+import { EventDispatcher } from '../mixins/event-dispatcher';
 
 /**
  * @param {HTMLElement[]} elements
@@ -13,7 +13,7 @@ const unselectAll = forEach(removeAttribute('aria-selected'));
 
 /**
  * @class ContentBrowserView
- * @mixes Eventful
+ * @mixes EventDispatcher
  */
 export default class ContentBrowserView {
   /**
@@ -22,7 +22,7 @@ export default class ContentBrowserView {
    */
   constructor(state) {
     // add event system
-    Object.assign(this, Eventful());
+    Object.assign(this, EventDispatcher());
 
     // create elements
     this.rootElement = this.createElement(state);
