@@ -2,6 +2,7 @@ import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
+import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
 
 /**
@@ -47,10 +48,13 @@ export default class Hub {
   /**
    * @param {HubState} state
    */
-  constructor(state) {
+  constructor(state, dictionary) {
     // add event system
     Object.assign(this, Eventful());
     var self = this;
+
+    // Setting up Dictionary
+    Dictionary.init(dictionary);
 
     // services
     this.services = new HubServices({
