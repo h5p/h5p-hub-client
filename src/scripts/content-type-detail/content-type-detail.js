@@ -1,14 +1,14 @@
 import ContetTypeDetailView from "./content-type-detail-view";
-import { Eventful } from '../mixins/eventful';
+import { EventDispatcher } from '../mixins/event-dispatcher';
 
 /**
  * @class
- * @mixes Eventful
+ * @mixes EventDispatcher
  */
 export default class ContentTypeDetail {
   constructor(state, services) {
     // add event system
-    Object.assign(this, Eventful());
+    Object.assign(this, EventDispatcher());
 
     // services
     this.services = services;

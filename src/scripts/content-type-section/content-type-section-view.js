@@ -3,7 +3,7 @@ import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelecto
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
 import initMenu from 'components/menu';
-import { Eventful } from '../mixins/eventful';
+import { EventDispatcher } from '../mixins/event-dispatcher';
 
 /**
  * @param {HTMLElement[]} elements
@@ -13,7 +13,7 @@ const unselectAll = forEach(removeAttribute('aria-selected'));
 
 /**
  * @class ContentBrowserView
- * @mixes Eventful
+ * @mixes EventDispatcher
  */
 export default class ContentBrowserView {
   /**
@@ -22,12 +22,13 @@ export default class ContentBrowserView {
    */
   constructor(state) {
     // add event system
-    Object.assign(this, Eventful());
+    Object.assign(this, EventDispatcher());
 
     // create elements
     this.rootElement = this.createElement(state);
 
     // pick elements
+    this.menu = this.rootElement.querySelector('nav');
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
@@ -35,7 +36,7 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      this.fire('search', {
+      this.trigger('search', {
         element: event.target,
         query: event.target.value,
         keyCode: event.which || event.keyCode
@@ -46,7 +47,7 @@ export default class ContentBrowserView {
     inputButton.addEventListener('click', event => {
        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
 
-       this.fire('search', {
+       this.trigger('search', {
          element: searchbar,
          query: searchbar.value,
          keyCode: 13 // Act like an 'enter' key press
@@ -106,7 +107,7 @@ export default class ContentBrowserView {
     messageView.on('action-clicked', function () {
       self.rootElement.classList.remove('error');
       element.parentNode.removeChild(element);
-      self.fire('reload');
+      self.trigger('reload');
     });
 
     this.rootElement.classList.add('error');
@@ -136,7 +137,7 @@ export default class ContentBrowserView {
     }
 
     element.addEventListener('click', event => {
-      this.fire('menu-selected', {
+      this.trigger('menu-selected', {
         element: event.target,
         choice: eventName
       });
@@ -176,7 +177,7 @@ export default class ContentBrowserView {
       unselectAll(menuItems);
       selectedMenuItem.setAttribute('aria-selected', 'true');
 
-      this.fire('menu-selected', {
+      this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: selectedMenuItem.getAttribute('data-id')
       });
@@ -191,6 +192,19 @@ export default class ContentBrowserView {
 
     // call init menu from sdk
     initMenu(this.rootElement);
+  }
+
+  /**
+   * Hides text styles and the menu underline
+   */
+  addDeactivatedStyleToMenu() {
+    this.menu.classList.remove('deactivated');
+  }
+  /**
+   * Restores text styles and the menu underline
+   */
+  removeDeactivatedStyleFromMenu() {
+    this.menu.classList.add("deactivated");
   }
 
   /**

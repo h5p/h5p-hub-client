@@ -1,7 +1,7 @@
 /**
  * @mixin
  */
-export const Eventful = () => ({
+export const EventDispatcher = () => ({
   listeners: {},
 
   /**
@@ -12,7 +12,7 @@ export const Eventful = () => ({
    * @param {object} [scope]
    *
    * @function
-   * @return {Eventful}
+   * @return {EventDispatcher}
    */
   on: function(type, listener, scope) {
     /**
@@ -32,7 +32,7 @@ export const Eventful = () => ({
   },
 
   /**
-   * Fire event. If any of the listeners returns false, return false
+   * Triggers event. If any of the listeners returns false, return false
    *
    * @param {string} type
    * @param {object} [event]
@@ -40,7 +40,7 @@ export const Eventful = () => ({
    * @function
    * @return {boolean}
    */
-  fire: function(type, event) {
+  trigger: function(type, event) {
     const triggers = this.listeners[type] || [];
 
     return triggers.every(function(trigger) {
@@ -49,14 +49,14 @@ export const Eventful = () => ({
   },
 
   /**
-   * Listens for events on another Eventful, and propagate it trough this Eventful
+   * Listens for events on another EventDispatcher, and propagate it trough this EventDispatcher
    *
    * @param {string[]} types
-   * @param {Eventful} eventful
+   * @param {EventDispatcher} dispatcher
    * @param {String} [eventName] the name of the event when propogated
    */
-  propagate: function(types, eventful, newType) {
+  propagate: function(types, dispatcher, newType) {
     let self = this;
-    types.forEach(type => eventful.on(type, event => self.fire(newType || type, event)));
+    types.forEach(type => dispatcher.on(type, event => self.trigger(newType || type, event)));
   }
 });

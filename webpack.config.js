@@ -1,10 +1,11 @@
+var webpack = require('webpack');
 var path = require('path');
+var isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
   filename: "h5p-hub-client.css"
 });
-
 
 const config = {
   entry: "./src/entries/dist.js",
@@ -59,5 +60,13 @@ const config = {
     extractSass
   ]
 };
+
+if (!isDevMode) {
+  config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false
+    }
+  }));
+}
 
 module.exports = config;
