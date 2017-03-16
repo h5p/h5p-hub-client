@@ -1,6 +1,6 @@
 import { setAttribute, getAttribute, removeChild, hide, show } from "utils/elements";
 import { curry, forEach } from "utils/functional";
-import { EventDispatcher } from '../mixins/event-dispatcher';
+import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
@@ -37,12 +37,12 @@ const hideAll = forEach(hide);
 
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  */
 export default class ContentTypeDetailView {
   constructor(state) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     // create view
     this.rootElement = this.createView();

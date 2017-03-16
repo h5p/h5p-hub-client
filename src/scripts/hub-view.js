@@ -2,7 +2,7 @@ import initPanel from "components/panel"
 import initTabPanel from "components/tab-panel"
 import { curry } from "utils/functional";
 import { attributeEquals, getAttribute, hasAttribute } from "utils/elements";
-import { EventDispatcher } from './mixins/event-dispatcher';
+import { Eventful } from './mixins/eventful';
 import { relayClickEventAs } from './utils/events';
 /**
  * Tab change event
@@ -26,7 +26,7 @@ const isOpen = hasAttribute('open');
 
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  * @fires HubView#tab-change
  */
 export default class HubView {
@@ -35,7 +35,7 @@ export default class HubView {
    */
   constructor(state) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     this.renderTabPanel(state);
     this.renderPanel(state);

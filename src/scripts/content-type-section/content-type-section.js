@@ -2,7 +2,7 @@ import ContentTypeSectionView from "./content-type-section-view";
 import SearchService from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
-import {EventDispatcher} from '../mixins/event-dispatcher';
+import {Eventful} from '../mixins/eventful';
 
 /**
  * Tab section constants
@@ -29,7 +29,7 @@ const ContentTypeSectionTabs = {
 
 /**
  * @class ContentTypeSection
- * @mixes EventDispatcher
+ * @mixes Eventful
  *
  * @fires Hub#select
  */
@@ -40,7 +40,7 @@ export default class ContentTypeSection {
    */
   constructor(state, services) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     this.typeAheadEnabled = true;
 

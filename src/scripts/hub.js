@@ -2,7 +2,7 @@ import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
-import { EventDispatcher } from './mixins/event-dispatcher';
+import { Eventful } from './mixins/eventful';
 
 /**
  * @typedef {object} HubState
@@ -38,7 +38,7 @@ import { EventDispatcher } from './mixins/event-dispatcher';
  */
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  * @fires Hub#select
  * @fires Hub#error
  * @fires Hub#upload
@@ -49,7 +49,7 @@ export default class Hub {
    */
   constructor(state) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
     var self = this;
 
     // services

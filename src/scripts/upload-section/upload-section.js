@@ -1,8 +1,8 @@
-import { EventDispatcher } from '../mixins/event-dispatcher';
+import { Eventful } from '../mixins/eventful';
 
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  *
  * @fires Hub#upload
  */
@@ -10,7 +10,7 @@ export default class UploadSection {
 
   constructor(state, services) {
     const self = this;
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     // services
     this.services = services;

@@ -1,6 +1,6 @@
 import { curry } from "utils/functional";
 import { setAttribute, getAttribute, removeChild } from "utils/elements";
-import { EventDispatcher } from '../mixins/event-dispatcher';
+import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 
@@ -16,7 +16,7 @@ const show = setAttribute('aria-hidden', 'false');
 
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  * @fires Hub#select
  * @fires ContentTypeList#row-selected
  */
@@ -25,7 +25,7 @@ export default class ContentTypeListView {
     this.state = state;
 
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     // create root element
     this.rootElement = document.createElement('ul');
@@ -70,7 +70,7 @@ export default class ContentTypeListView {
    * Takes a Content Type configuration and creates a row dom
    *
    * @param {ContentType} contentType
-   * @param {EventDispatcher} scope
+   * @param {Eventful} scope
    *
    * @return {HTMLElement}
    */

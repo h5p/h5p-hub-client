@@ -1,7 +1,7 @@
 /**
  * @mixin
  */
-export const EventDispatcher = () => ({
+export const Eventful = () => ({
   listeners: {},
 
   /**
@@ -12,7 +12,7 @@ export const EventDispatcher = () => ({
    * @param {object} [scope]
    *
    * @function
-   * @return {EventDispatcher}
+   * @return {Eventful}
    */
   on: function(type, listener, scope) {
     /**
@@ -49,14 +49,14 @@ export const EventDispatcher = () => ({
   },
 
   /**
-   * Listens for events on another EventDispatcher, and propagate it trough this EventDispatcher
+   * Listens for events on another Eventful, and propagate it trough this Eventful
    *
    * @param {string[]} types
-   * @param {EventDispatcher} dispatcher
+   * @param {Eventful} eventful
    * @param {String} [eventName] the name of the event when propogated
    */
-  propagate: function(types, dispatcher, newType) {
+  propagate: function(types, eventful, newType) {
     let self = this;
-    types.forEach(type => dispatcher.on(type, event => self.trigger(newType || type, event)));
+    types.forEach(type => eventful.on(type, event => self.trigger(newType || type, event)));
   }
 });

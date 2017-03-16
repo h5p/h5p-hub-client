@@ -1,17 +1,17 @@
 import { curry } from "utils/functional";
 
 /**
- *  Transforms a DOM click event into an EventDispatcher's event
- *  @see EventDispatcher
+ *  Transforms a DOM click event into an Eventful's event
+ *  @see Eventful
  *
  * @param  {string | Object} type
- * @param  {EventDispatcher} dispatcher
+ * @param  {Eventful} eventful
  * @param  {HTMLElement} element
  * @return {HTMLElement}
  */
-export const relayClickEventAs = curry(function(type, dispatcher, element) {
+export const relayClickEventAs = curry(function(type, eventful, element) {
   element.addEventListener('click', event => {
-    dispatcher.trigger(type, {
+    eventful.trigger(type, {
       element: element,
       id: element.getAttribute('data-id')
     }, false);

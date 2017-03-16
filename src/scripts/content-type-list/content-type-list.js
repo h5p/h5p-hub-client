@@ -1,5 +1,5 @@
 import ContetTypeListView from "./content-type-list-view";
-import {EventDispatcher} from '../mixins/event-dispatcher';
+import {Eventful} from '../mixins/eventful';
 
 /**
  * Row selected event
@@ -13,7 +13,7 @@ import {EventDispatcher} from '../mixins/event-dispatcher';
  */
 /**
  * @class
- * @mixes EventDispatcher
+ * @mixes Eventful
  * @fires Hub#select
  * @fires ContentTypeList#row-selected
  * @fires ContentTypeList#update-content-type-list
@@ -21,7 +21,7 @@ import {EventDispatcher} from '../mixins/event-dispatcher';
 export default class ContentTypeList {
   constructor(state) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     // add the view
     this.view = new ContetTypeListView(state);

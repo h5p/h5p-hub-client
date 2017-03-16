@@ -1,9 +1,9 @@
-import {EventDispatcher} from '../mixins/event-dispatcher';
+import {Eventful} from '../mixins/eventful';
 import {relayClickEventAs} from '../utils/events';
 
 /**
  * @class ContentBrowserView
- * @mixes EventDispatcher
+ * @mixes Eventful
  */
 export default class MessageView {
   /**
@@ -17,7 +17,7 @@ export default class MessageView {
    */
   constructor(state) {
     // add event system
-    Object.assign(this, EventDispatcher());
+    Object.assign(this, Eventful());
 
     // create elements
     this.rootElement = this.createElement(state);
