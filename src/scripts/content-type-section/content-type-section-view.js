@@ -89,10 +89,10 @@ export default class ContentBrowserView {
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
           <div class="navbar-header">
-             <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
-               <span class="navbar-toggler-selected"></span>
+             <button class="navbar-toggler navbar-toggler-right" tabindex="0" aria-haspopup="true" aria-controls="${menuId}" aria-expanded="false">
                <span class="icon-accordion-arrow"></span>
-             </span>
+             </button>
+            <span class="navbar-toggler-selected"></span>
             <span class="navbar-brand">${menutitle}</span>
           </div>
 

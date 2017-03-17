@@ -62,6 +62,14 @@
       outline-color: lighten($ac1, 30%);
     }
 
+    .navbar-toggler {
+      color: inherit;
+    }
+
+    .navbar-toggler-selected {
+      float: right;
+    }
+
     .icon-accordion-arrow {
       transition: transform 0.1s ease-out;
 
