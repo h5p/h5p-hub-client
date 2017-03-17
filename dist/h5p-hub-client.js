@@ -3246,45 +3246,87 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @fires Hub#upload
  */
 var UploadSection = function () {
-  function UploadSection(state, services) {
-    var _this = this;
-
+  function UploadSection(services) {
     _classCallCheck(this, UploadSection);
 
     var self = this;
     _extends(this, (0, _eventful.Eventful)());
 
-    // services
-    this.services = services;
+    // Create the upload form
+    var uploadForm = this.renderUploadForm();
+    this.initUploadForm(uploadForm, services);
 
-    // Input element for the H5P file
-    var h5pUpload = document.createElement('input');
-    h5pUpload.setAttribute('type', 'file');
-
-    // Sends the H5P file to the plugin
-    var useButton = document.createElement('button');
-    useButton.textContent = _dictionary2.default.get('useButtonLabel');
-    useButton.addEventListener('click', function () {
-
-      // Add the H5P file to a form, ready for transportation
-      var data = new FormData();
-      data.append('h5p', h5pUpload.files[0]);
-
-      // Upload content to the plugin
-      _this.services.uploadContent(data).then(function (json) {
-        // Fire the received data to any listeners
-        self.trigger('upload', json);
-      });
-    });
-
+    // Create the container and attach children
     var element = document.createElement('div');
-    element.appendChild(h5pUpload);
-    element.appendChild(useButton);
-
+    element.appendChild(uploadForm);
     this.rootElement = element;
   }
 
+  /**
+   * Generates HTML for the upload form
+   *
+   * returns {HTMLElement}
+   */
+
+
   _createClass(UploadSection, [{
+    key: 'renderUploadForm',
+    value: function renderUploadForm() {
+      // Create the html
+      // TODO get use button text from dictionary
+      // useButton.textContent = Dictionary.get('useButtonLabel');
+      var uploadForm = document.createElement('div');
+      uploadForm.innerHTML = '\n      <div class="upload-form">\n        <input class="upload-path" disabled />\n        <span class="button use-button">Use</span>\n        <label class="upload">\n          <input type="file" />\n          <span class="button button-inverse-primary upload-button">Upload a file</span>\n        </label>\n      </div>\n      <div class="upload-instructions">\n        <h1>Select a file to upload and create H5P content from.</h1>\n        <h3>You may start with examples from H5P.org</h3>\n      </div>\n    ';
+
+      return uploadForm;
+    }
+
+    /**
+     * Adds logic to bind the button to the form
+     * and to bind the form to the plugin
+     *
+     * @param  {HTMLElement} uploadForm
+     * @param  {HubServices} services   
+     */
+
+  }, {
+    key: 'initUploadForm',
+    value: function initUploadForm(uploadForm, services) {
+      var _this = this;
+
+      var uploadInput = uploadForm.querySelector('.upload input[type="file"]');
+      var uploadButton = uploadForm.querySelector('.upload-button');
+      var uploadPath = uploadForm.querySelector('.upload-path');
+      var useButton = uploadForm.querySelector('.use-button');
+
+      uploadInput.onchange = function () {
+        if (this.value !== '') {
+
+          // Replace the placeholder text with the selected filepath
+          uploadPath.value = this.value.replace('C:\\fakepath\\', '');
+
+          // Update the upload button
+          uploadButton.innerHTML = 'Change file';
+
+          // Only show the 'use' button once a file has been selected
+          useButton.style.display = 'inline-block';
+        }
+      };
+
+      useButton.addEventListener('click', function () {
+
+        // Add the H5P file to a form, ready for transportation
+        var data = new FormData();
+        data.append('h5p', h5pUpload.files[0]);
+
+        // Upload content to the plugin
+        _this.services.uploadContent(data).then(function (json) {
+          // Fire the received data to any listeners
+          self.trigger('upload', json);
+        });
+      });
+    }
+  }, {
     key: 'getElement',
     value: function getElement() {
       return this.rootElement;

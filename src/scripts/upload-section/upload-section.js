@@ -9,20 +9,76 @@ import Dictionary from '../utils/dictionary';
  */
 export default class UploadSection {
 
-  constructor(state, services) {
+  constructor(services) {
     const self = this;
     Object.assign(this, Eventful());
 
-    // services
-    this.services = services;
+    // Create the upload form
+    const uploadForm = this.renderUploadForm();
+    this.initUploadForm(uploadForm, services);
 
-    // Input element for the H5P file
-    const h5pUpload = document.createElement('input');
-    h5pUpload.setAttribute('type', 'file');
+    // Create the container and attach children
+    const element = document.createElement('div');
+    element.appendChild(uploadForm);
+    this.rootElement = element;
+  }
 
-    // Sends the H5P file to the plugin
-    const useButton = document.createElement('button');
-    useButton.textContent = Dictionary.get('useButtonLabel');
+  /**
+   * Generates HTML for the upload form
+   *
+   * returns {HTMLElement}
+   */
+  renderUploadForm() {
+    // Create the html
+    // TODO get use button text from dictionary
+    // useButton.textContent = Dictionary.get('useButtonLabel');
+    const uploadForm = document.createElement('div');
+    uploadForm.innerHTML = `
+      <div class="upload-form">
+        <input class="upload-path" disabled />
+        <span class="button use-button">Use</span>
+        <label class="upload">
+          <input type="file" />
+          <span class="button button-inverse-primary upload-button">Upload a file</span>
+        </label>
+      </div>
+      <div class="upload-instructions">
+        <h1>Select a file to upload and create H5P content from.</h1>
+        <h3>You may start with examples from H5P.org</h3>
+      </div>
+    `;
+
+    return uploadForm;
+  }
+
+
+  /**
+   * Adds logic to bind the button to the form
+   * and to bind the form to the plugin
+   *
+   * @param  {HTMLElement} uploadForm
+   * @param  {HubServices} services   
+   */
+  initUploadForm(uploadForm, services) {
+    const uploadInput =  uploadForm.querySelector('.upload input[type="file"]');
+    const uploadButton = uploadForm.querySelector('.upload-button');
+    const uploadPath = uploadForm.querySelector('.upload-path');
+    const useButton =  uploadForm.querySelector('.use-button');
+
+    uploadInput.onchange = function () {
+      if (this.value !== '') {
+
+        // Replace the placeholder text with the selected filepath
+        uploadPath.value = this.value.replace('C:\\fakepath\\', '');
+
+        // Update the upload button
+        uploadButton.innerHTML = 'Change file';
+
+        // Only show the 'use' button once a file has been selected
+        useButton.style.display = 'inline-block';
+      }
+    };
+
     useButton.addEventListener('click', () => {
 
       // Add the H5P file to a form, ready for transportation
@@ -36,12 +92,6 @@ export default class UploadSection {
           self.trigger('upload', json);
         });
     });
-
-    const element = document.createElement('div');
-    element.appendChild(h5pUpload);
-    element.appendChild(useButton);
-
-    this.rootElement = element;
   }
 
   getElement() {
