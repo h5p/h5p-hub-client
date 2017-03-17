@@ -81,22 +81,21 @@
   .tab-panel {
     border: none;
 
-    > nav > ul {
+    > nav > [role="tablist"] {
       background-color: $c4;
       border-bottom: none;
 
       [role="tab"] {
         color: $c3;
+        outline-color: lighten($ac1, 10%);
+
+        &:before {
+          @include h5p-hub-icon("\e91d");
+        }
 
         &[aria-selected='true'] {
           &:before {
             @include h5p-hub-icon("\e91b");
-          }
-        }
-
-        &[aria-selected='false'] {
-          &:before {
-            @include h5p-hub-icon("\e91d");
           }
         }
 

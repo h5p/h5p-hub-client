@@ -84,11 +84,12 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
+    let labelBack = 'Back'; // todo translate me
     const element = document.createElement('div');
     element.className = 'content-type-detail';
     element.setAttribute('aria-hidden', 'true');
     element.innerHTML = `
-      <div class="back-button icon-arrow-thick"></div>
+      <button class="back-button icon-arrow-thick" aria-label="${labelBack}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">

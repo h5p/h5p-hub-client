@@ -2,7 +2,7 @@ import MessageView from "../message-view/message-view";
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
-import initMenu from 'components/menu';
+import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
 
 /**
@@ -10,6 +10,11 @@ import { Eventful } from '../mixins/eventful';
  * @function
  */
 const unselectAll = forEach(removeAttribute('aria-selected'));
+
+/**
+ * @constant {number}
+ */
+const KEY_CODE_TAB = 9;
 
 /**
  * @class ContentBrowserView
@@ -39,14 +44,16 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+      if(event.keyCode != KEY_CODE_TAB) {
+        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
 
-      // Only searching if the enter key is pressed
-      if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
-        this.trigger('search', {
-          element: searchbar,
-          query: searchbar.value
-        });
+        // Only searching if the enter key is pressed
+        if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
+          this.trigger('search', {
+            element: searchbar,
+            query: searchbar.value
+          });
+        }
       }
     });
 
@@ -89,7 +96,7 @@ export default class ContentBrowserView {
             <span class="navbar-brand">${menutitle}</span>
           </div>
 
-          <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
+          <ul id="${menuId}" class="navbar-nav"></ul>
         </nav>
 
         <div class="input-group" role="search">
@@ -201,7 +208,7 @@ export default class ContentBrowserView {
     this.menubar.appendChild(underline);
 
     // call init menu from sdk
-    initMenu(this.rootElement);
+    initNavbar(this.rootElement);
   }
 
   /**

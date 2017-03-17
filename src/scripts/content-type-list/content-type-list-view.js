@@ -2,6 +2,8 @@ import { curry } from "utils/functional";
 import { setAttribute, getAttribute, removeChild } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
+import Controls from 'h5p-sdk-ui/src/scripts/controls';
+import Keyboard from 'h5p-sdk-ui/src/scripts/ui/keyboard';
 import noIcon from '../../images/content-type-placeholder.svg';
 
 /**
@@ -13,6 +15,11 @@ const hide = setAttribute('aria-hidden', 'true');
  * @function
  */
 const show = setAttribute('aria-hidden', 'false');
+
+/**
+ * @function
+ */
+const getRowId = getAttribute('data-id');
 
 /**
  * @class
@@ -27,8 +34,18 @@ export default class ContentTypeListView {
     // add event system
     Object.assign(this, Eventful());
 
+    // install controls
+    this.controls = new Controls([new Keyboard()]);
+    this.controls.on('select', event => {
+      this.fire('row-selected', {
+        element: event.element,
+        id: getRowId(event.element)
+      })
+    });
+
     // create root element
     this.rootElement = document.createElement('ul');
+    this.rootElement.setAttribute('role', 'list');
     this.rootElement.className = 'content-type-list';
   }
 
@@ -50,8 +67,11 @@ export default class ContentTypeListView {
    * Removes all rows from root element
    */
   removeAllRows() {
-    while(this.rootElement.hasChildNodes() ){
-      this.rootElement.removeChild(this.rootElement.lastChild);
+    while(this.rootElement.hasChildNodes()){
+      let row = this.rootElement.lastChild;
+
+      this.controls.removeElement(row);
+      this.rootElement.removeChild(row);
     }
   }
 
@@ -63,7 +83,8 @@ export default class ContentTypeListView {
   addRow(contentType) {
     const row = this.createContentTypeRow(contentType, this);
     relayClickEventAs('row-selected', this, row);
-    this.rootElement.appendChild(row)
+    this.rootElement.appendChild(row);
+    this.controls.addElement(row);
   }
 
   /**
@@ -75,31 +96,36 @@ export default class ContentTypeListView {
    * @return {HTMLElement}
    */
   createContentTypeRow(contentType, scope) {
+    // create ids
+    const index = this.rootElement.querySelectorAll('li').length;
+    const contentTypeRowTitleId = `content-type-row-title-${index}`;
+    const contentTypeRowDescriptionId = `content-type-row-description-${index}`;
+
+    // field configuration
+    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
+    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
+    const button = contentType.installed ?  useButtonConfig: installButtonConfig;
+    const title = contentType.title || contentType.machineName;
+    const description = contentType.summary || '';
+    const image = contentType.icon || noIcon;
+    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+
     // row item
     const element = document.createElement('li');
     element.id = `content-type-${contentType.machineName}`;
     element.setAttribute('data-id', contentType.machineName);
-
-    // create button config
-    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
-    const button = contentType.installed ?  useButtonConfig: installButtonConfig;
-
-    const title = contentType.title || contentType.machineName;
-    const description = contentType.summary || '';
-
-    const image = contentType.icon || noIcon;
-    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+    element.setAttribute('aria-labelledby', contentTypeRowTitleId);
+    element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
     // create html
     element.innerHTML = `
       <img class="img-responsive" src="${image}">
-      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
+      <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
         <span class="${button.icon}"></span>
         ${button.text}
-      </span>
-      <h4>${title}</h4>
-      <div class="description">${description}</div>
+      </button>
+      <h4 id="${contentTypeRowTitleId}">${title}</h4>
+      <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
    `;
 
     // handle use button

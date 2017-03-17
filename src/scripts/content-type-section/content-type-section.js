@@ -79,11 +79,12 @@ export default class ContentTypeSection {
     this.initContentTypeList();
 
     // add menu items
-    for (const tab in ContentTypeSectionTabs) {
+    for (let tab in ContentTypeSectionTabs) {
       if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
         this.view.addMenuItem(ContentTypeSectionTabs[tab]);
       }
     }
+
     this.view.initMenu();
   }
 
