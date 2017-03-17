@@ -12,6 +12,11 @@ import { Eventful } from '../mixins/eventful';
 const unselectAll = forEach(removeAttribute('aria-selected'));
 
 /**
+ * @constant {number}
+ */
+const KEY_CODE_TAB = 9;
+
+/**
  * @class ContentBrowserView
  * @mixes Eventful
  */
@@ -39,14 +44,16 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+      if(event.keyCode != KEY_CODE_TAB) {
+        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
 
-      // Only searching if the enter key is pressed
-      if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
-        this.trigger('search', {
-          element: searchbar,
-          query: searchbar.value
-        });
+        // Only searching if the enter key is pressed
+        if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
+          this.trigger('search', {
+            element: searchbar,
+            query: searchbar.value
+          });
+        }
       }
     });
 
