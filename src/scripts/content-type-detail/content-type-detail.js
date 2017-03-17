@@ -91,7 +91,7 @@ export default class ContentTypeDetail {
   update(contentType) {
     this.view.reset();
     this.view.setId(contentType.machineName);
-    this.view.setTitle(contentType.title);
+    this.view.setTitle(contentType.title || contentType.machineName);
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);

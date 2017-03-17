@@ -72,6 +72,7 @@ export default class HubView {
     this.title.className += "panel-header icon-hub-icon";
     this.title.setAttribute('aria-expanded', (!!expanded).toString());
     this.title.setAttribute('aria-controls', `panel-body-${sectionId}`);
+    this.title.setAttribute('tabindex', '0');
     this.title.innerHTML = title;
     relayClickEventAs('panel-change', this, this.title);
 

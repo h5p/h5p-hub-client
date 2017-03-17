@@ -209,8 +209,8 @@ export default class ContentTypeDetailView {
    *
    * @param {string} text
    */
-  setDescription(text) {
-    if(text.length > MAX_TEXT_SIZE_DESCRIPTION) {
+  setDescription(text = '') {
+    if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
       this.description
         .querySelector('.read-more, .read-less')
@@ -307,6 +307,7 @@ export default class ContentTypeDetailView {
    * @param {boolean} restricted True if content type is restricted
    */
   setIsRestricted(restricted) {
+    console.log('setIsRestricted', restricted);
     this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
     this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
   }
