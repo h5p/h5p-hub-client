@@ -108,6 +108,7 @@ export default class ContentTypeListView {
     const title = contentType.title || contentType.machineName;
     const description = contentType.summary || '';
     const image = contentType.icon || noIcon;
+    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
 
     // row item
     const element = document.createElement('li');
@@ -119,7 +120,7 @@ export default class ContentTypeListView {
     // create html
     element.innerHTML = `
       <img class="img-responsive" src="${image}">
-      <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0">
+      <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
         <span class="${button.icon}"></span>
         ${button.text}
       </button>

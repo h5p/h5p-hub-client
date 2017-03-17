@@ -39,6 +39,18 @@
     }
   }
 
+  .content-type-section-view.error {
+    .menu-group,
+    .content-type-section {
+      display: none;
+    }
+
+    /* Adding some left and right margin for message view */
+    .message {
+      margin: $gutter;
+    }
+  }
+
   .navbar {
     background-color: transparent;
     color: $c2;
@@ -67,8 +79,8 @@
     .navbar {
       .navbar-brand {
         font-style: italic;
-        font-size: $text-title-large;
-        padding: 0.3em 0 0;
+        font-size: $text-title-small;
+        padding: 0.4em 0 0;
         display: inline-block;
       }
 

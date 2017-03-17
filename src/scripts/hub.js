@@ -2,8 +2,9 @@ import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
+import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
-import {renderErrorMessage} from './utils/errors';
+
 /**
  * @typedef {object} HubState
  * @property {string} title
@@ -47,24 +48,28 @@ export default class Hub {
   /**
    * @param {HubState} state
    */
-  constructor(state) {
+  constructor(state, dictionary) {
     // add event system
     Object.assign(this, Eventful());
+    var self = this;
 
-    // controllers
-    this.contentTypeSection = new ContentTypeSection(state);
-    this.uploadSection = new UploadSection(state);
-
-    // views
-    this.view = new HubView(state);
+    // Setting up Dictionary
+    Dictionary.init(dictionary);
 
     // services
     this.services = new HubServices({
       apiRootUrl: state.apiRootUrl
     });
 
+    // controllers
+    this.contentTypeSection = new ContentTypeSection(state, this.services);
+    this.uploadSection = new UploadSection(state, this.services);
+
+    // views
+    this.view = new HubView(state);
+
     // propagate controller events
-    this.propagate(['select', 'error'], this.contentTypeSection);
+    this.propagate(['select'], this.contentTypeSection);
     this.propagate(['upload'], this.uploadSection);
 
     // handle events
@@ -72,6 +77,10 @@ export default class Hub {
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
+    this.contentTypeSection.on('reload', function() {
+      self.services.setup();
+      self.contentTypeSection.initContentTypeList();
+    });
 
     this.initTabPanel(state)
   }

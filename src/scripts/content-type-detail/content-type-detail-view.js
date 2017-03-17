@@ -5,6 +5,7 @@ import initPanel from "components/panel";
 import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
+import Dictionary from '../utils/dictionary';
 
 /**
  * @constant {string}
@@ -112,7 +113,7 @@ export default class ContentTypeDetailView {
       </div>
       <div class="button-bar">
         <span class="button button-primary button-use" aria-hidden="false" data-id="">Use</span>
-        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>Install</span>
+        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</span>
         <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
       </div>
       <div class="panel-group">
@@ -298,6 +299,16 @@ export default class ContentTypeDetailView {
    */
   setIsInstalled(installed) {
     this.showButtonBySelector(installed ? '.button-use' : '.button-install');
+  }
+
+  /**
+   * Marks content type as restricted, disabling installing and using the content type.
+   *
+   * @param {boolean} restricted True if content type is restricted
+   */
+  setIsRestricted(restricted) {
+    this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
+    this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
   }
 
   /**

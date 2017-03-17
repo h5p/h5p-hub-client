@@ -1,5 +1,5 @@
-import HubServices from '../hub-services';
 import { Eventful } from '../mixins/eventful';
+import Dictionary from '../utils/dictionary';
 
 /**
  * @class
@@ -9,14 +9,12 @@ import { Eventful } from '../mixins/eventful';
  */
 export default class UploadSection {
 
-  constructor(state) {
+  constructor(state, services) {
     const self = this;
     Object.assign(this, Eventful());
 
     // services
-    this.services = new HubServices({
-      apiRootUrl: state.apiRootUrl
-    });
+    this.services = services;
 
     // Input element for the H5P file
     const h5pUpload = document.createElement('input');
@@ -24,7 +22,7 @@ export default class UploadSection {
 
     // Sends the H5P file to the plugin
     const useButton = document.createElement('button');
-    useButton.textContent = 'Use';
+    useButton.textContent = Dictionary.get('useButtonLabel');
     useButton.addEventListener('click', () => {
 
       // Add the H5P file to a form, ready for transportation
@@ -35,7 +33,7 @@ export default class UploadSection {
       this.services.uploadContent(data)
         .then(json => {
           // Fire the received data to any listeners
-          self.fire('upload', json);
+          self.trigger('upload', json);
         });
     });
 

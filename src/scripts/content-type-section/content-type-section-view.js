@@ -1,3 +1,4 @@
+import MessageView from "../message-view/message-view";
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
@@ -23,10 +24,14 @@ export default class ContentBrowserView {
     // add event system
     Object.assign(this, Eventful());
 
+    // general configuration
+    this.typeAheadEnabled = true;
+
     // create elements
     this.rootElement = this.createElement(state);
 
     // pick elements
+    this.menu = this.rootElement.querySelector('nav');
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
@@ -34,21 +39,24 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      this.fire('search', {
-        element: event.target,
-        query: event.target.value,
-        keyCode: event.which || event.keyCode
-      });
+      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+
+      // Only searching if the enter key is pressed
+      if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
+        this.trigger('search', {
+          element: searchbar,
+          query: searchbar.value
+        });
+      }
     });
 
     // input button
     inputButton.addEventListener('click', event => {
        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
 
-       this.fire('search', {
+       this.trigger('search', {
          element: searchbar,
-         query: searchbar.value,
-         keyCode: 13 // Act like an 'enter' key press
+         query: searchbar.value
        });
 
        searchbar.focus();
@@ -69,6 +77,7 @@ export default class ContentBrowserView {
 
     // create element
     const element = document.createElement('div');
+    element.className = 'content-type-section-view';
     element.innerHTML = `
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
@@ -82,7 +91,7 @@ export default class ContentBrowserView {
 
           <ul id="${menuId}" class="navbar-nav"></ul>
         </nav>
-        
+
         <div class="input-group" role="search">
           <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
           <div class="input-group-addon icon-search"></div>
@@ -92,16 +101,36 @@ export default class ContentBrowserView {
     return element;
   }
 
+  displayMessage(config) {
+    var self = this;
+    // Set the action
+    // TODO - should be translatable
+    config.action = "Reload";
+
+    var messageView = new MessageView(config);
+    var element = messageView.getElement();
+
+    messageView.on('action-clicked', function () {
+      self.rootElement.classList.remove('error');
+      element.parentNode.removeChild(element);
+      self.trigger('reload');
+    });
+
+    this.rootElement.classList.add('error');
+    this.rootElement.appendChild(messageView.getElement());
+  }
+
   /**
    * Adds a menu item
    *
    * @param {string} title
    * @param {string} id
-   * @param {boolean} id
+   * @param {boolean} selected Determines if tab is already selected
+   * @param {string} eventName Name of event that tab will fire off
    *
    * @return {HTMLElement}
    */
-  addMenuItem({ title, id, selected }) {
+  addMenuItem({ title, id, selected, eventName }) {
     const element = document.createElement('li');
     element.setAttribute('role', 'menuitem');
     element.setAttribute('data-id', id);
@@ -111,9 +140,18 @@ export default class ContentBrowserView {
     if(selected) {
       element.setAttribute('aria-selected', 'true');
       this.displaySelected.innerText = title;
+      this.trigger('menu-selected', {
+        element: element,
+        choice: eventName
+      });
     }
 
-    relayClickEventAs('menu-selected', this, element);
+    element.addEventListener('click', event => {
+      this.trigger('menu-selected', {
+        element: event.target,
+        choice: eventName
+      });
+    });
 
     // add to menu bar
     this.menubar.appendChild(element);
@@ -149,7 +187,7 @@ export default class ContentBrowserView {
       unselectAll(menuItems);
       selectedMenuItem.setAttribute('aria-selected', 'true');
 
-      this.fire('menu-selected', {
+      this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: selectedMenuItem.getAttribute('data-id')
       });
@@ -164,6 +202,19 @@ export default class ContentBrowserView {
 
     // call init menu from sdk
     initNavbar(this.rootElement);
+  }
+
+  /**
+   * Hides text styles and the menu underline
+   */
+  addDeactivatedStyleToMenu() {
+    this.menu.classList.remove('deactivated');
+  }
+  /**
+   * Restores text styles and the menu underline
+   */
+  removeDeactivatedStyleFromMenu() {
+    this.menu.classList.add("deactivated");
   }
 
   /**

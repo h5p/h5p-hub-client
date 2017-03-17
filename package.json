@@ -6,7 +6,7 @@
   "scripts": {
     "test": "karma start",
     "build": "webpack",
-    "watch": "webpack --watch",
+    "watch": "cross-env DEV_ENV=1 webpack --watch",
     "dev": "lite-server"
   },
   "repository": {

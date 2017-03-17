@@ -50,7 +50,7 @@ export default class ContentTypeList {
   update(contentTypes) {
     this.view.removeAllRows();
     contentTypes.forEach(this.view.addRow, this.view);
-    this.fire('update-content-type-list', {});
+    this.trigger('update-content-type-list', {});
   }
 
 

@@ -98,7 +98,7 @@ export default class HubView {
      * @type {HTMLElement}
      */
     this.rootElement = document.createElement('div');
-    this.rootElement.className += `h5p h5p-hub`;
+    this.rootElement.className += `h5p-hub h5p-sdk`;
     this.rootElement.appendChild(this.panel);
     initPanel(this.rootElement);
   }

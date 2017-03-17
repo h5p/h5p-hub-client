@@ -32,7 +32,7 @@ export const Eventful = () => ({
   },
 
   /**
-   * Fire event. If any of the listeners returns false, return false
+   * Triggers event. If any of the listeners returns false, return false
    *
    * @param {string} type
    * @param {object} [event]
@@ -40,7 +40,7 @@ export const Eventful = () => ({
    * @function
    * @return {boolean}
    */
-  fire: function(type, event) {
+  trigger: function(type, event) {
     const triggers = this.listeners[type] || [];
 
     return triggers.every(function(trigger) {
@@ -53,9 +53,10 @@ export const Eventful = () => ({
    *
    * @param {string[]} types
    * @param {Eventful} eventful
+   * @param {String} [eventName] the name of the event when propogated
    */
-  propagate: function(types, eventful) {
+  propagate: function(types, eventful, newType) {
     let self = this;
-    types.forEach(type => eventful.on(type, event => self.fire(type, event)));
+    types.forEach(type => eventful.on(type, event => self.trigger(newType || type, event)));
   }
 });

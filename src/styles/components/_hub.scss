@@ -39,7 +39,7 @@
   }
 }
 
-.h5p.h5p-hub {
+.h5p-hub {
   font-family: 'Open Sans', sans-serif;
   margin-bottom: $gutter;
 
@@ -81,7 +81,7 @@
   .tab-panel {
     border: none;
 
-    > nav > ul {
+    > nav > [role="tablist"] {
       background-color: $c4;
       border-bottom: none;
 
