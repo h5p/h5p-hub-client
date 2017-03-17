@@ -2,9 +2,8 @@ import { curry } from "utils/functional";
 import { setAttribute, getAttribute, removeChild } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
-import Controls from 'h5p-sdk-ui/src/scripts/controls';
-import Keyboard from 'h5p-sdk-ui/src/scripts/ui/keyboard';
 import noIcon from '../../images/content-type-placeholder.svg';
+import Keyboard from 'utils/keyboard';
 
 /**
  * @function
@@ -34,14 +33,14 @@ export default class ContentTypeListView {
     // add event system
     Object.assign(this, Eventful());
 
-    // install controls
-    this.controls = new Controls([new Keyboard()]);
-    this.controls.on('select', event => {
+    // setup keyboard
+    this.keyboard = new Keyboard();
+    this.keyboard.onSelect = element => {
       this.fire('row-selected', {
-        element: event.element,
-        id: getRowId(event.element)
+        element: element,
+        id: getRowId(element)
       })
-    });
+    };
 
     // create root element
     this.rootElement = document.createElement('ul');
@@ -70,7 +69,7 @@ export default class ContentTypeListView {
     while(this.rootElement.hasChildNodes()){
       let row = this.rootElement.lastChild;
 
-      this.controls.removeElement(row);
+      this.keyboard.removeElement(row);
       this.rootElement.removeChild(row);
     }
   }
@@ -84,7 +83,7 @@ export default class ContentTypeListView {
     const row = this.createContentTypeRow(contentType, this);
     relayClickEventAs('row-selected', this, row);
     this.rootElement.appendChild(row);
-    this.controls.addElement(row);
+    this.keyboard.addElement(row);
   }
 
   /**
