@@ -32,6 +32,7 @@
       box-sizing: border-box;
       cursor: pointer;
       overflow: auto;
+      outline-color: lighten($ac1, 10%);
 
       &:hover {
         background-color: lighten($ac1, 55%);

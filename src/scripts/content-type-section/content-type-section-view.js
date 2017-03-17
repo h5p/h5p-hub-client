@@ -1,7 +1,7 @@
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
-import initMenu from 'components/menu';
+import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
 
 /**
@@ -80,7 +80,7 @@ export default class ContentBrowserView {
             <span class="navbar-brand">${menutitle}</span>
           </div>
 
-          <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
+          <ul id="${menuId}" class="navbar-nav"></ul>
         </nav>
         
         <div class="input-group" role="search">
@@ -163,7 +163,7 @@ export default class ContentBrowserView {
     this.menubar.appendChild(underline);
 
     // call init menu from sdk
-    initMenu(this.rootElement);
+    initNavbar(this.rootElement);
   }
 
   /**

@@ -75,6 +75,8 @@
     .back-button {
       color: $text-dark;
       display: inline-block;
+      background: transparent;
+      border: none;
 
       &:hover {
         color: lighten($text-dark, 20%);
