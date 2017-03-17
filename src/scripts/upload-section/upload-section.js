@@ -31,20 +31,23 @@ export default class UploadSection {
   renderUploadForm() {
     // Create the html
     // TODO get use button text from dictionary
+    // TODO create variables for links to h5p.org so they can be changed easily
     // useButton.textContent = Dictionary.get('useButtonLabel');
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
-      <div class="upload-form">
-        <input class="upload-path" disabled />
-        <span class="button use-button">Use</span>
-        <label class="upload">
-          <input type="file" />
-          <span class="button button-inverse-primary upload-button">Upload a file</span>
-        </label>
-      </div>
-      <div class="upload-instructions">
-        <h1>Select a file to upload and create H5P content from.</h1>
-        <h3>You may start with examples from H5P.org</h3>
+      <div class="upload-wrapper">
+        <div class="upload-form">
+          <input class="upload-path" placeholder="No file chosen" disabled />
+          <span class="button use-button">Use</span>
+          <label class="upload">
+            <input type="file" />
+            <span class="button upload-button">Upload a file</span>
+          </label>
+        </div>
+        <div class="upload-instructions">
+          <h2>Select a file to upload and create H5P content from.</h2>
+          <h3>You may start with examples from <a href="https://h5p.org/content-types-and-applications">H5P.org</a>.</h3>
+        </div>
       </div>
     `;
 
@@ -57,7 +60,7 @@ export default class UploadSection {
    * and to bind the form to the plugin
    *
    * @param  {HTMLElement} uploadForm
-   * @param  {HubServices} services   
+   * @param  {HubServices} services
    */
   initUploadForm(uploadForm, services) {
     const uploadInput =  uploadForm.querySelector('.upload input[type="file"]');
@@ -78,6 +81,10 @@ export default class UploadSection {
         useButton.style.display = 'inline-block';
       }
     };
+
+    uploadForm.onclick = function () {
+      uploadInput.click();
+    }
 
     useButton.addEventListener('click', () => {
 
