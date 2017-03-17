@@ -11,16 +11,17 @@ export default class Dictionary {
    * @returns {string}
    */
   static get(key, replacements) {
-    var translation = Dictionary.dictionary[key];
 
-    // Replace placeholder with variables.
-    for (var placeholder in replacements) {
-      if (!replacements[placeholder]) {
-        continue;
-      }
-      translation = translation.replace(placeholder, replacements[placeholder]);
-    }
-
-    return translation;
+    // var translation = Dictionary.dictionary[key];
+    //
+    // // Replace placeholder with variables.
+    // for (var placeholder in replacements) {
+    //   if (!replacements[placeholder]) {
+    //     continue;
+    //   }
+    //   translation = translation.replace(placeholder, replacements[placeholder]);
+    // }
+    //
+    // return translation;
   }
 }
