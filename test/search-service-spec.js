@@ -40,7 +40,7 @@ describe('Search service', () => {
     it('should filter content types without popularity last', (done) => {
       search.sortOn('popularity')
         .then(cts => {
-          expect(cts[cts.length - 1].machineName).toEqual('H5P.Feedback');
+          expect(cts[cts.length - 1].machineName).toEqual('H5P.Boardgame');
           done();
         });
     })
