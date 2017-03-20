@@ -1023,7 +1023,6 @@ var Hub = function () {
     this.uploadSection = new _uploadSection2.default(state, this.services);
 
     // views
-    state = this.resolveTitle(state);
     this.view = new _hubView2.default(state);
 
     // propagate controller events
@@ -1044,40 +1043,13 @@ var Hub = function () {
   }
 
   /**
-   * Attempts to resolve the human readable title from a machine name.
-   * Falls back to the provided title if no matching entry was found in content type cache.
-   *
-   * @param {HubState} state
+   * Returns the promise of a content type
+   * @param {string} machineName
+   * @return {Promise.<ContentType>}
    */
 
 
   _createClass(Hub, [{
-    key: 'resolveTitle',
-    value: function resolveTitle(state) {
-      var _this = this;
-
-      if (!state.title) {
-        return state;
-      }
-
-      var rawTitle = state.title;
-      var machineName = rawTitle.split(' ')[0];
-      this.getContentType(machineName).then(function (_ref) {
-        var title = _ref.title;
-        return _this.view.setTitle(title ? title : rawTitle);
-      });
-
-      // Assign empty title, update title async when determined
-      return _extends(state, { title: '' });
-    }
-
-    /**
-     * Returns the promise of a content type
-     * @param {string} machineName
-     * @return {Promise.<ContentType>}
-     */
-
-  }, {
     key: 'getContentType',
     value: function getContentType(machineName) {
       return this.services.contentType(machineName);
@@ -1091,14 +1063,14 @@ var Hub = function () {
 
   }, {
     key: 'setPanelTitle',
-    value: function setPanelTitle(_ref2) {
-      var _this2 = this;
+    value: function setPanelTitle(_ref) {
+      var _this = this;
 
-      var id = _ref2.id;
+      var id = _ref.id;
 
-      this.getContentType(id).then(function (_ref3) {
-        var title = _ref3.title;
-        return _this2.view.setTitle(title);
+      this.getContentType(id).then(function (_ref2) {
+        var title = _ref2.title;
+        return _this.view.setTitle(title ? title : id);
       });
     }
 
@@ -1110,11 +1082,11 @@ var Hub = function () {
 
   }, {
     key: 'initTabPanel',
-    value: function initTabPanel(_ref4) {
-      var _this3 = this;
+    value: function initTabPanel(_ref3) {
+      var _this2 = this;
 
-      var _ref4$sectionId = _ref4.sectionId,
-          sectionId = _ref4$sectionId === undefined ? 'content-types' : _ref4$sectionId;
+      var _ref3$sectionId = _ref3.sectionId,
+          sectionId = _ref3$sectionId === undefined ? 'content-types' : _ref3$sectionId;
 
       var tabConfigs = [{
         title: 'Create Content',
@@ -1134,7 +1106,7 @@ var Hub = function () {
       });
 
       tabConfigs.forEach(function (tabConfig) {
-        return _this3.view.addTab(tabConfig);
+        return _this2.view.addTab(tabConfig);
       });
       this.view.addBottomBorder(); // Adds an animated bottom border to each tab
       this.view.initTabPanel();

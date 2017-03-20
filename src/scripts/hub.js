@@ -66,7 +66,6 @@ export default class Hub {
     this.uploadSection = new UploadSection(state, this.services);
 
     // views
-    state = this.resolveTitle(state);
     this.view = new HubView(state);
 
     // propagate controller events
@@ -86,25 +85,6 @@ export default class Hub {
     this.initTabPanel(state)
   }
 
-  /**
-   * Attempts to resolve the human readable title from a machine name.
-   * Falls back to the provided title if no matching entry was found in content type cache.
-   *
-   * @param {HubState} state
-   */
-  resolveTitle(state) {
-    if (!state.title) {
-      return state;
-    }
-
-    const rawTitle = state.title;
-    const machineName = rawTitle.split(' ')[0];
-    this.getContentType(machineName)
-      .then(({title}) => this.view.setTitle(title ? title : rawTitle));
-
-    // Assign empty title, update title async when determined
-    return Object.assign(state, {title: ''});
-  }
 
   /**
    * Returns the promise of a content type
@@ -121,7 +101,7 @@ export default class Hub {
    * @param {string} id
    */
   setPanelTitle({id}) {
-    this.getContentType(id).then(({title}) => this.view.setTitle(title));
+    this.getContentType(id).then(({title}) => this.view.setTitle(title ? title : id));
   }
 
   /**
