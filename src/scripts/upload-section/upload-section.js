@@ -20,7 +20,7 @@ export default class UploadSection {
 
     // Create a wrapper to hold user messages
     this.messageWrapper = document.createElement('div');
-    this.messageWrapper.classList = 'message-wrapper';
+    this.messageWrapper.className = 'message-wrapper';
 
     // Create the container and attach children
     const element = document.createElement('div');

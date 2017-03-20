@@ -7,6 +7,11 @@ const extractSass = new ExtractTextPlugin({
   filename: "h5p-hub-client.css"
 });
 
+const polyfillPromise = new webpack.ProvidePlugin({
+  'Promise': 'es6-promise',
+  //'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+});
+
 const config = {
   entry: "./src/entries/dist.js",
   devtool: 'cheap-source-map',
@@ -57,7 +62,8 @@ const config = {
     ]
   },
   plugins: [
-    extractSass
+    extractSass,
+    polyfillPromise
   ]
 };
 
