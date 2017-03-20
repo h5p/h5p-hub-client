@@ -79,12 +79,8 @@ export default class ContentTypeSection {
     this.initContentTypeList();
 
     // add menu items
-    for (let tab in ContentTypeSectionTabs) {
-      if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
-        this.view.addMenuItem(ContentTypeSectionTabs[tab]);
-      }
-    }
-
+    Object.keys(ContentTypeSectionTabs)
+      .forEach(tab => this.view.addMenuItem(ContentTypeSectionTabs[tab]));
     this.view.initMenu();
   }
 
@@ -139,19 +135,19 @@ export default class ContentTypeSection {
     switch(e.choice) {
       case ContentTypeSectionTabs.ALL.eventName:
         this.searchService.sortOn('restricted')
-          .then(cts => this.contentTypeList.update(cts));
+          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
 
       case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
         this.searchService.filterOutRestricted()
-          .then(cts => this.contentTypeList.update(cts));
+          .then(filteredContentTypes => this.contentTypeList.update(filteredContentTypes));
         break;
 
       case ContentTypeSectionTabs.MOST_POPULAR.eventName:
         const sortOrder = ['restricted', 'popularity'];
         this.searchService
           .sortOn(sortOrder)
-          .then(cts => this.contentTypeList.update(cts));
+          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
     }
 
@@ -186,7 +182,7 @@ export default class ContentTypeSection {
    */
   closeDetailView() {
     this.contentTypeDetail.hide();
-    this.contentTypeList.show()
+    this.contentTypeList.show();
     this.view.typeAheadEnabled = true;
     this.view.addDeactivatedStyleToMenu();
   }

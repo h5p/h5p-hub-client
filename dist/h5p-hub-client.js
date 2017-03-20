@@ -842,9 +842,108 @@ exports.default = Dictionary;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _eventful = __webpack_require__(1);
+
+var _events = __webpack_require__(3);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @class ContentBrowserView
+ * @mixes Eventful
+ */
+var MessageView = function () {
+  /**
+   * @constructor
+   * @param {Object} state
+   * @param {string} state.type
+   * @param {string} state.title
+   * @param {string} state.content
+   * @param {string} [state.action]
+   * @param {string} [state.dismissable]
+   */
+  function MessageView(state) {
+    _classCallCheck(this, MessageView);
+
+    // add event system
+    _extends(this, (0, _eventful.Eventful)());
+
+    // create elements
+    this.rootElement = this.createElement(state);
+  }
+
+  _createClass(MessageView, [{
+    key: 'createElement',
+    value: function createElement(message) {
+      // Create wrapper:
+      var messageWrapper = document.createElement('div');
+      messageWrapper.className = 'message ' + message.type + (message.dismissible ? ' dismissible' : '');
+
+      // Add close button if dismisable
+      if (message.dismissible) {
+        var closeButton = document.createElement('div');
+        closeButton.className = 'close';
+        //closeButton.innerHTML = '&#x2715';
+        // TODO
+        // - Add close label from translations
+        // - Add visuals in CSS (font icon)
+        messageWrapper.appendChild(closeButton);
+        (0, _events.relayClickEventAs)('close', this, closeButton);
+      }
+
+      var messageContent = document.createElement('div');
+      messageContent.className = 'message-content';
+      messageContent.innerHTML = '<h2>' + message.title + '</h2>' + '<p>' + message.content + '</p>';
+      messageWrapper.appendChild(messageContent);
+
+      if (message.action !== undefined) {
+        var messageButton = document.createElement('button');
+        messageButton.className = 'button';
+        messageButton.innerHTML = message.action;
+        messageWrapper.appendChild(messageButton);
+
+        (0, _events.relayClickEventAs)('action-clicked', this, messageButton);
+      }
+
+      return messageWrapper;
+    }
+
+    /**
+     * Returns the root element of the content browser
+     *
+     * @return {HTMLElement}
+     */
+
+  }, {
+    key: 'getElement',
+    value: function getElement() {
+      return this.rootElement;
+    }
+  }]);
+
+  return MessageView;
+}();
+
+exports.default = MessageView;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = init;
 
-var _collapsible = __webpack_require__(7);
+var _collapsible = __webpack_require__(8);
 
 var _keyboard = __webpack_require__(4);
 
@@ -876,7 +975,7 @@ function init(element) {
 }
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -936,13 +1035,13 @@ var initCollapsible = exports.initCollapsible = function initCollapsible(element
 };
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 module.exports = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgMjI1Ij4NCiAgPGRlZnM+DQogICAgPHN0eWxlPg0KICAgICAgLmNscy0xIHsNCiAgICAgIGZpbGw6IG5vbmU7DQogICAgICB9DQoNCiAgICAgIC5jbHMtMiB7DQogICAgICBmaWxsOiAjYzZjNmM3Ow0KICAgICAgfQ0KDQogICAgICAuY2xzLTMsIC5jbHMtNCB7DQogICAgICBmaWxsOiAjZmZmOw0KICAgICAgfQ0KDQogICAgICAuY2xzLTMgew0KICAgICAgb3BhY2l0eTogMC43Ow0KICAgICAgfQ0KICAgIDwvc3R5bGU+DQogIDwvZGVmcz4NCiAgPHRpdGxlPmNvbnRlbnQgdHlwZSBwbGFjZWhvbGRlcl8yPC90aXRsZT4NCiAgPGcgaWQ9IkxheWVyXzIiIGRhdGEtbmFtZT0iTGF5ZXIgMiI+DQogICAgPGcgaWQ9ImNvbnRlbnRfdHlwZV9wbGFjZWhvbGRlci0xX2NvcHkiIGRhdGEtbmFtZT0iY29udGVudCB0eXBlIHBsYWNlaG9sZGVyLTEgY29weSI+DQogICAgICA8cmVjdCBjbGFzcz0iY2xzLTEiIHdpZHRoPSI0MDAiIGhlaWdodD0iMjI1Ii8+DQogICAgICA8cmVjdCBjbGFzcz0iY2xzLTIiIHg9IjExMi41MSIgeT0iNDMuNDEiIHdpZHRoPSIxNzYuOTYiIGhlaWdodD0iMTM1LjQ1IiByeD0iMTAiIHJ5PSIxMCIvPg0KICAgICAgPGNpcmNsZSBjbGFzcz0iY2xzLTMiIGN4PSIxMzYuNjYiIGN5PSI2MS45OCIgcj0iNC44MSIvPg0KICAgICAgPGNpcmNsZSBjbGFzcz0iY2xzLTMiIGN4PSIxNTEuNDkiIGN5PSI2MS45OCIgcj0iNC44MSIvPg0KICAgICAgPGNpcmNsZSBjbGFzcz0iY2xzLTMiIGN4PSIxNjYuMSIgY3k9IjYxLjk4IiByPSI0LjgxIi8+DQogICAgICA8ZyBpZD0iX0dyb3VwXyIgZGF0YS1uYW1lPSImbHQ7R3JvdXAmZ3Q7Ij4NCiAgICAgICAgPGcgaWQ9Il9Hcm91cF8yIiBkYXRhLW5hbWU9IiZsdDtHcm91cCZndDsiPg0KICAgICAgICAgIDxwYXRoIGlkPSJfQ29tcG91bmRfUGF0aF8iIGRhdGEtbmFtZT0iJmx0O0NvbXBvdW5kIFBhdGgmZ3Q7IiBjbGFzcz0iY2xzLTQiIGQ9Ik0yNjMuMjgsOTUuMjFDMjYwLDkyLjA3LDI1NSw5MS41LDI0OC40Myw5MS41SDIyN3Y4SDE5OS41bC0yLjE3LDEwLjI0YTI1Ljg0LDI1Ljg0LDAsMCwxLDExLjQ4LTEuNjMsMTkuOTMsMTkuOTMsMCwwLDEsMTQuMzksNS41NywxOC4yNiwxOC4yNiwwLDAsMSw1LjUyLDEzLjYsMjMuMTEsMjMuMTEsMCwwLDEtMi44NCwxMS4wNSwxOC42NSwxOC42NSwwLDAsMS04LjA2LDcuNzksOSw5LDAsMCwxLTQuMTIsMS4zN0gyMzZ2LTIxaDEwLjQyYzcuMzYsMCwxMi44My0xLjYxLDE2LjQyLTVzNS4zOC03LjQ4LDUuMzgtMTMuNDRDMjY4LjIyLDEwMi4yOSwyNjYuNTcsOTguMzUsMjYzLjI4LDk1LjIxWm0tMTUsMTdjLTEuNDIsMS4yMi0zLjksMS4yNS03LjQxLDEuMjVIMjM2di0xNGg1LjYyYTkuNTcsOS41NywwLDAsMSw3LDIuOTMsNy4wNSw3LjA1LDAsMCwxLDEuODUsNC45MkE2LjMzLDYuMzMsMCwwLDEsMjQ4LjMxLDExMi4yNVoiLz4NCiAgICAgICAgICA8cGF0aCBpZD0iX1BhdGhfIiBkYXRhLW5hbWU9IiZsdDtQYXRoJmd0OyIgY2xhc3M9ImNscy00IiBkPSJNMjAyLjksMTE5LjExYTguMTIsOC4xMiwwLDAsMC03LjI4LDQuNTJsLTE2LTEuMjIsNy4yMi0zMC45MkgxNzR2MjJIMTUzdi0yMkgxMzZ2NTZoMTd2LTIxaDIxdjIxaDIwLjMxYy0yLjcyLDAtNS0xLjUzLTctM2ExOS4xOSwxOS4xOSwwLDAsMS00LjczLTQuODMsMjMuNTgsMjMuNTgsMCwwLDEtMy02LjZsMTYtMi4yNmE4LjExLDguMTEsMCwxLDAsNy4yNi0xMS43MloiLz4NCiAgICAgICAgPC9nPg0KICAgICAgPC9nPg0KICAgICAgPHJlY3QgY2xhc3M9ImNscy0zIiB4PSIxNzcuNjYiIHk9IjU3LjY2IiB3aWR0aD0iOTIuMjgiIGhlaWdodD0iOS4zOCIgcng9IjMuNSIgcnk9IjMuNSIvPg0KICAgIDwvZz4NCiAgPC9nPg0KPC9zdmc+DQo="
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -956,11 +1055,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _hubView = __webpack_require__(18);
+var _hubView = __webpack_require__(19);
 
 var _hubView2 = _interopRequireDefault(_hubView);
 
-var _contentTypeSection = __webpack_require__(16);
+var _contentTypeSection = __webpack_require__(17);
 
 var _contentTypeSection2 = _interopRequireDefault(_contentTypeSection);
 
@@ -968,7 +1067,7 @@ var _uploadSection = __webpack_require__(21);
 
 var _uploadSection2 = _interopRequireDefault(_uploadSection);
 
-var _hubServices = __webpack_require__(17);
+var _hubServices = __webpack_require__(18);
 
 var _hubServices2 = _interopRequireDefault(_hubServices);
 
@@ -1092,7 +1191,7 @@ var Hub = function () {
 
       this.getContentType(id).then(function (_ref2) {
         var title = _ref2.title;
-        return _this.view.setTitle(title);
+        return _this.view.setTitle(title ? title : id);
       });
     }
 
@@ -1153,13 +1252,13 @@ var Hub = function () {
 exports.default = Hub;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1179,7 +1278,7 @@ var _functional = __webpack_require__(0);
 
 var _eventful = __webpack_require__(1);
 
-var _panel = __webpack_require__(6);
+var _panel = __webpack_require__(7);
 
 var _panel2 = _interopRequireDefault(_panel);
 
@@ -1189,7 +1288,7 @@ var _imageScroller2 = _interopRequireDefault(_imageScroller);
 
 var _events = __webpack_require__(3);
 
-var _contentTypePlaceholder = __webpack_require__(8);
+var _contentTypePlaceholder = __webpack_require__(9);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
@@ -1593,7 +1692,7 @@ var ContentTypeDetailView = function () {
 exports.default = ContentTypeDetailView;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1607,7 +1706,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _contentTypeDetailView = __webpack_require__(11);
+var _contentTypeDetailView = __webpack_require__(12);
 
 var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
 
@@ -1760,7 +1859,7 @@ var ContentTypeDetail = function () {
 exports.default = ContentTypeDetail;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1782,7 +1881,7 @@ var _eventful = __webpack_require__(1);
 
 var _events = __webpack_require__(3);
 
-var _contentTypePlaceholder = __webpack_require__(8);
+var _contentTypePlaceholder = __webpack_require__(9);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
@@ -1957,7 +2056,7 @@ var ContentTypeListView = function () {
 exports.default = ContentTypeListView;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1971,7 +2070,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _contentTypeListView = __webpack_require__(13);
+var _contentTypeListView = __webpack_require__(14);
 
 var _contentTypeListView2 = _interopRequireDefault(_contentTypeListView);
 
@@ -2064,7 +2163,7 @@ var ContentTypeList = function () {
 exports.default = ContentTypeList;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2078,7 +2177,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _messageView = __webpack_require__(19);
+var _messageView = __webpack_require__(6);
 
 var _messageView2 = _interopRequireDefault(_messageView);
 
@@ -2354,7 +2453,7 @@ var ContentBrowserView = function () {
 exports.default = ContentBrowserView;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2368,7 +2467,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _contentTypeSectionView = __webpack_require__(15);
+var _contentTypeSectionView = __webpack_require__(16);
 
 var _contentTypeSectionView2 = _interopRequireDefault(_contentTypeSectionView);
 
@@ -2376,11 +2475,11 @@ var _searchService = __webpack_require__(20);
 
 var _searchService2 = _interopRequireDefault(_searchService);
 
-var _contentTypeList = __webpack_require__(14);
+var _contentTypeList = __webpack_require__(15);
 
 var _contentTypeList2 = _interopRequireDefault(_contentTypeList);
 
-var _contentTypeDetail = __webpack_require__(12);
+var _contentTypeDetail = __webpack_require__(13);
 
 var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
@@ -2425,6 +2524,8 @@ var ContentTypeSection = function () {
    * @param {HubServices} services
    */
   function ContentTypeSection(state, services) {
+    var _this = this;
+
     _classCallCheck(this, ContentTypeSection);
 
     // add event system
@@ -2468,12 +2569,9 @@ var ContentTypeSection = function () {
     this.initContentTypeList();
 
     // add menu items
-    for (var tab in ContentTypeSectionTabs) {
-      if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
-        this.view.addMenuItem(ContentTypeSectionTabs[tab]);
-      }
-    }
-
+    Object.keys(ContentTypeSectionTabs).forEach(function (tab) {
+      return _this.view.addMenuItem(ContentTypeSectionTabs[tab]);
+    });
     this.view.initMenu();
   }
 
@@ -2485,13 +2583,13 @@ var ContentTypeSection = function () {
   _createClass(ContentTypeSection, [{
     key: "initContentTypeList",
     value: function initContentTypeList() {
-      var _this = this;
+      var _this2 = this;
 
       // initialize by search
       this.searchService.search("").then(function (contentTypes) {
-        return _this.contentTypeList.update(contentTypes);
+        return _this2.contentTypeList.update(contentTypes);
       }).catch(function (error) {
-        return _this.handleError(error);
+        return _this2.handleError(error);
       });
     }
 
@@ -2519,13 +2617,13 @@ var ContentTypeSection = function () {
   }, {
     key: "search",
     value: function search(_ref) {
-      var _this2 = this;
+      var _this3 = this;
 
       var query = _ref.query,
           keyCode = _ref.keyCode;
 
       this.searchService.search(query).then(function (contentTypes) {
-        return _this2.contentTypeList.update(contentTypes);
+        return _this3.contentTypeList.update(contentTypes);
       });
     }
 
@@ -2551,25 +2649,25 @@ var ContentTypeSection = function () {
   }, {
     key: "applySearchFilter",
     value: function applySearchFilter(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       switch (e.choice) {
         case ContentTypeSectionTabs.ALL.eventName:
-          this.searchService.sortOn('restricted').then(function (cts) {
-            return _this3.contentTypeList.update(cts);
+          this.searchService.sortOn('restricted').then(function (sortedContentTypes) {
+            return _this4.contentTypeList.update(sortedContentTypes);
           });
           break;
 
         case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
-          this.searchService.filterOutRestricted().then(function (cts) {
-            return _this3.contentTypeList.update(cts);
+          this.searchService.filterOutRestricted().then(function (filteredContentTypes) {
+            return _this4.contentTypeList.update(filteredContentTypes);
           });
           break;
 
         case ContentTypeSectionTabs.MOST_POPULAR.eventName:
           var sortOrder = ['restricted', 'popularity'];
-          this.searchService.sortOn(sortOrder).then(function (cts) {
-            return _this3.contentTypeList.update(cts);
+          this.searchService.sortOn(sortOrder).then(function (sortedContentTypes) {
+            return _this4.contentTypeList.update(sortedContentTypes);
           });
           break;
       }
@@ -2641,7 +2739,7 @@ var ContentTypeSection = function () {
 exports.default = ContentTypeSection;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2826,7 +2924,7 @@ var HubServices = function () {
 exports.default = HubServices;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2840,7 +2938,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _panel = __webpack_require__(6);
+var _panel = __webpack_require__(7);
 
 var _panel2 = _interopRequireDefault(_panel);
 
@@ -3071,105 +3169,6 @@ var HubView = function () {
 exports.default = HubView;
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _eventful = __webpack_require__(1);
-
-var _events = __webpack_require__(3);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @class ContentBrowserView
- * @mixes Eventful
- */
-var MessageView = function () {
-  /**
-   * @constructor
-   * @param {Object} state
-   * @param {string} state.type
-   * @param {string} state.title
-   * @param {string} state.content
-   * @param {string} [state.action]
-   * @param {string} [state.dismissable]
-   */
-  function MessageView(state) {
-    _classCallCheck(this, MessageView);
-
-    // add event system
-    _extends(this, (0, _eventful.Eventful)());
-
-    // create elements
-    this.rootElement = this.createElement(state);
-  }
-
-  _createClass(MessageView, [{
-    key: 'createElement',
-    value: function createElement(message) {
-      // Create wrapper:
-      var messageWrapper = document.createElement('div');
-      messageWrapper.className = 'message ' + message.type + (message.dismissible ? ' dismissible' : '');
-
-      // Add close button if dismisable
-      if (message.dismissible) {
-        var closeButton = document.createElement('div');
-        closeButton.className = 'close';
-        //closeButton.innerHTML = '&#x2715';
-        // TODO
-        // - Add close label from translations
-        // - Add visuals in CSS (font icon)
-        messageWrapper.appendChild(closeButton);
-        (0, _events.relayClickEventAs)('close', this, closeButton);
-      }
-
-      var messageContent = document.createElement('div');
-      messageContent.className = 'message-content';
-      messageContent.innerHTML = '<h2>' + message.title + '</h2>' + '<p>' + message.content + '</p>';
-      messageWrapper.appendChild(messageContent);
-
-      if (message.action !== undefined) {
-        var messageButton = document.createElement('button');
-        messageButton.className = 'button';
-        messageButton.innerHTML = message.action;
-        messageWrapper.appendChild(messageButton);
-
-        (0, _events.relayClickEventAs)('action-clicked', this, messageButton);
-      }
-
-      return messageWrapper;
-    }
-
-    /**
-     * Returns the root element of the content browser
-     *
-     * @return {HTMLElement}
-     */
-
-  }, {
-    key: 'getElement',
-    value: function getElement() {
-      return this.rootElement;
-    }
-  }]);
-
-  return MessageView;
-}();
-
-exports.default = MessageView;
-
-/***/ }),
 /* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -3185,6 +3184,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _functional = __webpack_require__(0);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @typedef {Object} MixedContentType
+ *
+ * @property {ContentType} contentType Original content type properties
+ * @property {number} score Indicates how well the content type matches the current search context
+ */
 
 /**
  * @class
@@ -3244,9 +3250,9 @@ var SearchService = function () {
   }, {
     key: 'filterOutRestricted',
     value: function filterOutRestricted() {
-      return this.services.contentTypes().then(function (cts) {
-        return cts.filter(function (ct) {
-          return !ct.restricted;
+      return this.services.contentTypes().then(function (contentTypes) {
+        return contentTypes.filter(function (contentType) {
+          return !contentType.restricted;
         });
       });
     }
@@ -3258,7 +3264,7 @@ var SearchService = function () {
 /**
  * Sort on multiple properties
  *
- * @param {ContentType[]} contentTypes Content types that should be sorted
+ * @param {MixedContentType[]|ContentType[]} contentTypes Content types that should be sorted
  * @param {string|string[]} sortOrder Order that sort properties should be applied
  *
  * @return {Array.<ContentType>} Content types sorted
@@ -3267,29 +3273,44 @@ var SearchService = function () {
 
 exports.default = SearchService;
 var multiSort = function multiSort(contentTypes, sortOrder) {
+  // Make sure all sorted instances are mixed content type
+  var mixedContentTypes = contentTypes.map(function (contentType) {
+    if (contentType.hasOwnProperty('score') && contentType.hasOwnProperty('contentType')) {
+      return contentType;
+    }
+
+    // Return a mixed content type with score 1 to survive filtering
+    return {
+      contentType: contentType,
+      score: 1
+    };
+  });
+
   sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
-  return contentTypes.sort(function (ct1, ct2) {
-    return handleSortType(ct1, ct2, sortOrder);
+  return mixedContentTypes.sort(function (firstContentType, secondContentType) {
+    return handleSortType(firstContentType, secondContentType, sortOrder);
+  }).map(function (mixedContentType) {
+    return mixedContentType.contentType;
   });
 };
 
 /**
  * Compares two content types and returns a sortable value for them
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string[]} sortOrder Order that sort properties should be applied in
  *
  * @return {number} A number indicating how to sort the two content types
  */
-var handleSortType = function handleSortType(ct1, ct2, sortOrder) {
+var handleSortType = function handleSortType(firstContentType, secondContentType, sortOrder) {
   switch (sortOrder[0]) {
     case 'restricted':
-      return sortOnRestricted(ct1, ct2, sortOrder.slice(1));
+      return sortOnRestricted(firstContentType, secondContentType, sortOrder.slice(1));
     case 'popularity':
-      return sortOnProperty(ct1, ct2, sortOrder[0], sortOrder.slice(1));
+      return sortOnProperty(firstContentType, secondContentType, sortOrder[0], sortOrder.slice(1));
     default:
-      return sortSearchResults(ct1, ct2);
+      return sortSearchResults(firstContentType, secondContentType);
   }
 };
 
@@ -3297,22 +3318,22 @@ var handleSortType = function handleSortType(ct1, ct2, sortOrder) {
  * Sort restricted content types. Restricted content types will be moved to the bottom of the
  * list. Content types with undefined restricted property are consider not restricted.
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string[]} sortOrder Order to apply sort properties
  *
  * @return {number} A standard comparable value for the two content types
  */
-var sortOnRestricted = function sortOnRestricted(ct1, ct2, sortOrder) {
-  if (!ct1.restricted === !ct2.restricted) {
+var sortOnRestricted = function sortOnRestricted(firstContentType, secondContentType, sortOrder) {
+  if (!firstContentType.contentType.restricted === !secondContentType.contentType.restricted) {
     if (sortOrder) {
-      return handleSortType(ct1, ct2, sortOrder);
+      return handleSortType(firstContentType, secondContentType, sortOrder);
     } else {
       return 0;
     }
-  } else if (ct1.restricted) {
+  } else if (firstContentType.contentType.restricted) {
     return 1;
-  } else if (ct2.restricted) {
+  } else if (secondContentType.contentType.restricted) {
     return -1;
   }
 };
@@ -3321,8 +3342,8 @@ var sortOnRestricted = function sortOnRestricted(ct1, ct2, sortOrder) {
  * Sort on a property. Any valid property can be applied. If the content type does not have the
  * supplied property it will get moved to the bottom.
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string} property Property that the content types will be sorted on, either
  * numerically or lexically
  * @param {string[]} sortOrder Remaining sort order to apply if two content types have the same
@@ -3330,23 +3351,23 @@ var sortOnRestricted = function sortOnRestricted(ct1, ct2, sortOrder) {
  *
  * @return {number} A value indicating the comparison between the two content types
  */
-var sortOnProperty = function sortOnProperty(ct1, ct2, property, sortOrder) {
+var sortOnProperty = function sortOnProperty(firstContentType, secondContentType, property, sortOrder) {
   // Property does not exist, move to bottom
-  if (!ct1.hasOwnProperty(property)) {
+  if (!firstContentType.contentType.hasOwnProperty(property)) {
     return 1;
   }
-  if (!ct2.hasOwnProperty(property)) {
+  if (!secondContentType.contentType.hasOwnProperty(property)) {
     return -1;
   }
 
   // Sort on property
-  if (ct1[property] > ct2[property]) {
+  if (firstContentType.contentType[property] > secondContentType.contentType[property]) {
     return 1;
-  } else if (ct1[property] < ct2[property]) {
+  } else if (firstContentType.contentType[property] < secondContentType.contentType[property]) {
     return -1;
   } else {
     if (sortOrder) {
-      return handleSortType(ct1, ct2, sortOrder);
+      return handleSortType(firstContentType, secondContentType, sortOrder);
     } else {
       return 0;
     }
@@ -3367,8 +3388,10 @@ var filterByQuery = (0, _functional.curry)(function (query, contentTypes) {
 
   // Append a search score to each content type
   var filtered = contentTypes.map(function (contentType) {
-    contentType.score = getSearchScore(query, contentType);
-    return contentType;
+    return {
+      contentType: contentType,
+      score: getSearchScore(query, contentType)
+    };
   }).filter(function (result) {
     return result.score > 0;
   });
@@ -3380,21 +3403,21 @@ var filterByQuery = (0, _functional.curry)(function (query, contentTypes) {
  * Callback for Array.sort()
  * Compares two content types on different criteria
  *
- * @param {Object} a First content type
- * @param {Object} b Second content type
+ * @param {MixedContentType} a First content type
+ * @param {MixedContentType} b Second content type
  * @return {int}
  */
 var sortSearchResults = function sortSearchResults(a, b) {
-  if (!a.installed && b.installed) {
+  if (!a.contentType.installed && b.contentType.installed) {
     return 1;
   }
 
-  if (a.installed && !b.installed) {
+  if (a.contentType.installed && !b.contentType.installed) {
     return -1;
   } else if (b.score !== a.score) {
     return b.score - a.score;
   } else {
-    return b.popularity - a.popularity;
+    return b.contentType.popularity - a.contentType.popularity;
   }
 };
 
@@ -3493,11 +3516,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _eventful = __webpack_require__(1);
-
 var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
+
+var _eventful = __webpack_require__(1);
+
+var _messageView = __webpack_require__(6);
+
+var _messageView2 = _interopRequireDefault(_messageView);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3520,8 +3547,13 @@ var UploadSection = function () {
     var uploadForm = this.renderUploadForm();
     this.initUploadForm(uploadForm, services);
 
+    // Create a wrapper to hold user messages
+    this.messageWrapper = document.createElement('div');
+    this.messageWrapper.classList = 'message-wrapper';
+
     // Create the container and attach children
     var element = document.createElement('div');
+    element.appendChild(this.messageWrapper);
     element.appendChild(uploadForm);
     this.rootElement = element;
   }
@@ -3538,9 +3570,10 @@ var UploadSection = function () {
     value: function renderUploadForm() {
       // Create the html
       // TODO get use button text from dictionary
+      // TODO create variables for links to h5p.org so they can be changed easily
       // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-form">\n        <input class="upload-path" disabled />\n        <span class="button use-button">Use</span>\n        <label class="upload">\n          <input type="file" />\n          <span class="button button-inverse-primary upload-button">Upload a file</span>\n        </label>\n      </div>\n      <div class="upload-instructions">\n        <h1>Select a file to upload and create H5P content from.</h1>\n        <h3>You may start with examples from H5P.org</h3>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <div class="upload-path-wrapper">\n            <input class="upload-path" placeholder="No file chosen" disabled />\n          </div>\n          <span class="button use-button">Use</span>\n          <label class="upload">\n            <input type="file" />\n            <span class="button upload-button">Upload a file</span>\n          </label>\n        </div>\n        <div class="upload-instructions">\n          <h2>Select a file to upload and create H5P content from.</h2>\n          <h3>You may start with examples from <a href="https://h5p.org/content-types-and-applications">H5P.org</a>.</h3>\n        </div>\n      </div>\n    ';
 
       return uploadForm;
     }
@@ -3550,7 +3583,7 @@ var UploadSection = function () {
      * and to bind the form to the plugin
      *
      * @param  {HTMLElement} uploadForm
-     * @param  {HubServices} services   
+     * @param  {HubServices} services
      */
 
   }, {
@@ -3558,14 +3591,23 @@ var UploadSection = function () {
     value: function initUploadForm(uploadForm, services) {
       var _this = this;
 
+      var self = this;
       var uploadInput = uploadForm.querySelector('.upload input[type="file"]');
       var uploadButton = uploadForm.querySelector('.upload-button');
+      var uploadPathWrapper = uploadForm.querySelector('.upload-path-wrapper');
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
 
+      // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
-        if (this.value !== '') {
 
+        self.clearUserMessages();
+        self.renderMessage({
+          type: 'error',
+          title: '.h5p file not found',
+          content: 'You need to upload a file that ends in .h5p'
+        });
+        if (self.getFileExtension(this.value) !== 'h5p') {} else {
           // Replace the placeholder text with the selected filepath
           uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
@@ -3577,6 +3619,7 @@ var UploadSection = function () {
         }
       };
 
+      // Send the file to the plugin
       useButton.addEventListener('click', function () {
 
         // Add the H5P file to a form, ready for transportation
@@ -3589,6 +3632,69 @@ var UploadSection = function () {
           self.trigger('upload', json);
         });
       });
+
+      // Allow users to upload a file by clicking on path field
+      uploadPathWrapper.onclick = function () {
+        uploadInput.click();
+      };
+    }
+
+    /*
+     * Empties the message wrapper
+     */
+
+  }, {
+    key: 'clearUserMessages',
+    value: function clearUserMessages() {
+      this.removeAllChildren(this.rootElement.querySelector('.message-wrapper'));
+    }
+
+    /**
+     * Helper function to get a file extension from a filename
+     *
+     * @param  {string} fileName
+     * @return {string}
+     */
+
+  }, {
+    key: 'getFileExtension',
+    value: function getFileExtension(fileName) {
+      return fileName.replace(/^.*\./, '');
+    }
+
+    /**
+     * Creates a message based on a configuration and prepends it to the message wrapper
+     *
+     * @param  {Object} config
+     */
+
+  }, {
+    key: 'renderMessage',
+    value: function renderMessage(config) {
+      var messageView = new _messageView2.default(config);
+      this.prepend(this.messageWrapper, messageView.getElement());
+    }
+
+    /**
+     * Helper function. Prepends an element to another
+     */
+
+  }, {
+    key: 'prepend',
+    value: function prepend(parent, child) {
+      parent.insertBefore(child, parent.firstChild);
+    }
+
+    /**
+     * Helper function to remove all children from a node
+     */
+
+  }, {
+    key: 'removeAllChildren',
+    value: function removeAllChildren(node) {
+      while (node.lastChild) {
+        node.removeChild(node.lastChild);
+      }
     }
   }, {
     key: 'getElement',
@@ -4280,7 +4386,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _collapsible = __webpack_require__(7);
+var _collapsible = __webpack_require__(8);
 
 var _keyboard = __webpack_require__(4);
 
@@ -4467,11 +4573,11 @@ function init(element) {
 "use strict";
 
 
-__webpack_require__(10);
+__webpack_require__(11);
 
 // Load library
 H5P = H5P || {};
-H5P.HubClient = __webpack_require__(9).default;
+H5P.HubClient = __webpack_require__(10).default;
 
 /***/ })
 /******/ ]);

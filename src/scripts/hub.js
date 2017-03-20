@@ -85,6 +85,7 @@ export default class Hub {
     this.initTabPanel(state)
   }
 
+
   /**
    * Returns the promise of a content type
    * @param {string} machineName
@@ -100,7 +101,7 @@ export default class Hub {
    * @param {string} id
    */
   setPanelTitle({id}) {
-    this.getContentType(id).then(({title}) => this.view.setTitle(title));
+    this.getContentType(id).then(({title}) => this.view.setTitle(title ? title : id));
   }
 
   /**

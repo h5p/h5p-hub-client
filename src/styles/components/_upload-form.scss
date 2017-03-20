@@ -1,5 +1,14 @@
 .h5p-hub {
-  .upload-form {
-    text-align: center;
+
+  .upload-wrapper {
+    padding: 2em;
+  }
+
+  .upload-path-wrapper {
+    display: inline;
+  }
+
+  .upload-path {
+    width: 60%;
   }
 }

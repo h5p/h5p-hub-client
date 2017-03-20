@@ -1,6 +1,13 @@
 import {curry} from 'utils/functional'
 
 /**
+ * @typedef {Object} MixedContentType
+ *
+ * @property {ContentType} contentType Original content type properties
+ * @property {number} score Indicates how well the content type matches the current search context
+ */
+
+/**
  * @class
  * The Search Service gets a content type from hub-services.js
  * in the form of a promise. It then generates a score based
@@ -46,42 +53,64 @@ export default class SearchService {
    */
   filterOutRestricted() {
     return this.services.contentTypes()
-      .then(cts => cts.filter(ct => !ct.restricted));
+      .then(contentTypes => contentTypes.filter(contentType => !contentType.restricted));
   }
 }
 
 /**
  * Sort on multiple properties
  *
- * @param {ContentType[]} contentTypes Content types that should be sorted
+ * @param {MixedContentType[]|ContentType[]} contentTypes Content types that should be sorted
  * @param {string|string[]} sortOrder Order that sort properties should be applied
  *
  * @return {Array.<ContentType>} Content types sorted
  */
 const multiSort = (contentTypes, sortOrder) => {
-  sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
-  return contentTypes.sort((ct1, ct2) => {
-    return handleSortType(ct1, ct2, sortOrder);
+  // Make sure all sorted instances are mixed content type
+  const mixedContentTypes = contentTypes.map(contentType => {
+    if (contentType.hasOwnProperty('score') && contentType.hasOwnProperty('contentType')) {
+      return contentType;
+    }
+
+    // Return a mixed content type with score 1 to survive filtering
+    return {
+      contentType: contentType,
+      score: 1
+    }
   });
+
+  sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
+  return mixedContentTypes.sort((firstContentType, secondContentType) => {
+    return handleSortType(firstContentType, secondContentType, sortOrder);
+  }).map(mixedContentType => mixedContentType.contentType);
 };
 
 /**
  * Compares two content types and returns a sortable value for them
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string[]} sortOrder Order that sort properties should be applied in
  *
  * @return {number} A number indicating how to sort the two content types
  */
-const handleSortType = (ct1, ct2, sortOrder) => {
+const handleSortType = (firstContentType, secondContentType, sortOrder) => {
   switch (sortOrder[0]) {
     case 'restricted':
-      return sortOnRestricted(ct1, ct2, sortOrder.slice(1));
+      return sortOnRestricted(
+        firstContentType,
+        secondContentType,
+        sortOrder.slice(1)
+      );
     case 'popularity':
-      return sortOnProperty(ct1, ct2, sortOrder[0], sortOrder.slice(1));
+      return sortOnProperty(
+        firstContentType,
+        secondContentType,
+        sortOrder[0],
+        sortOrder.slice(1)
+      );
     default:
-      return sortSearchResults(ct1, ct2);
+      return sortSearchResults(firstContentType, secondContentType);
   }
 };
 
@@ -89,25 +118,25 @@ const handleSortType = (ct1, ct2, sortOrder) => {
  * Sort restricted content types. Restricted content types will be moved to the bottom of the
  * list. Content types with undefined restricted property are consider not restricted.
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string[]} sortOrder Order to apply sort properties
  *
  * @return {number} A standard comparable value for the two content types
  */
-const sortOnRestricted = (ct1, ct2, sortOrder) => {
-  if (!ct1.restricted === !ct2.restricted) {
+const sortOnRestricted = (firstContentType, secondContentType, sortOrder) => {
+  if (!firstContentType.contentType.restricted === !secondContentType.contentType.restricted) {
     if (sortOrder) {
-      return handleSortType(ct1, ct2, sortOrder);
+      return handleSortType(firstContentType, secondContentType, sortOrder);
     }
     else {
       return 0;
     }
   }
-  else if (ct1.restricted) {
+  else if (firstContentType.contentType.restricted) {
     return 1;
   }
-  else if (ct2.restricted) {
+  else if (secondContentType.contentType.restricted) {
     return -1;
   }
 };
@@ -116,8 +145,8 @@ const sortOnRestricted = (ct1, ct2, sortOrder) => {
  * Sort on a property. Any valid property can be applied. If the content type does not have the
  * supplied property it will get moved to the bottom.
  *
- * @param {ContentType} ct1
- * @param {ContentType} ct2
+ * @param {MixedContentType} firstContentType
+ * @param {MixedContentType} secondContentType
  * @param {string} property Property that the content types will be sorted on, either
  * numerically or lexically
  * @param {string[]} sortOrder Remaining sort order to apply if two content types have the same
@@ -125,25 +154,25 @@ const sortOnRestricted = (ct1, ct2, sortOrder) => {
  *
  * @return {number} A value indicating the comparison between the two content types
  */
-const sortOnProperty = (ct1, ct2, property, sortOrder) => {
+const sortOnProperty = (firstContentType, secondContentType, property, sortOrder) => {
   // Property does not exist, move to bottom
-  if (!ct1.hasOwnProperty(property)) {
+  if (!firstContentType.contentType.hasOwnProperty(property)) {
     return 1;
   }
-  if (!ct2.hasOwnProperty(property)) {
+  if (!secondContentType.contentType.hasOwnProperty(property)) {
     return -1;
   }
 
   // Sort on property
-  if (ct1[property] > ct2[property]) {
+  if (firstContentType.contentType[property] > secondContentType.contentType[property]) {
     return 1;
   }
-  else if (ct1[property] < ct2[property]) {
+  else if (firstContentType.contentType[property] < secondContentType.contentType[property]) {
     return -1;
   }
   else {
     if (sortOrder) {
-      return handleSortType(ct1, ct2, sortOrder);
+      return handleSortType(firstContentType, secondContentType, sortOrder);
     }
     else {
       return 0;
@@ -164,10 +193,10 @@ const filterByQuery = curry(function(query, contentTypes) {
   }
 
   // Append a search score to each content type
-  const filtered = contentTypes.map(contentType => {
-    contentType.score = getSearchScore(query, contentType);
-    return contentType;
-  }).filter(result => result.score > 0);
+  const filtered = contentTypes.map(contentType => ({
+    contentType: contentType,
+    score: getSearchScore(query, contentType)
+  })).filter(result => result.score > 0);
 
   return multiSort(filtered, ['restricted', 'default']);
 });
@@ -176,16 +205,16 @@ const filterByQuery = curry(function(query, contentTypes) {
  * Callback for Array.sort()
  * Compares two content types on different criteria
  *
- * @param {Object} a First content type
- * @param {Object} b Second content type
+ * @param {MixedContentType} a First content type
+ * @param {MixedContentType} b Second content type
  * @return {int}
  */
 const sortSearchResults = (a,b) => {
-  if (!a.installed && b.installed) {
+  if (!a.contentType.installed && b.contentType.installed) {
     return 1;
   }
 
-  if (a.installed && !b.installed) {
+  if (a.contentType.installed && !b.contentType.installed) {
     return -1;
   }
 
@@ -194,7 +223,7 @@ const sortSearchResults = (a,b) => {
   }
 
   else {
-    return b.popularity - a.popularity;
+    return b.contentType.popularity - a.contentType.popularity;
   }
 };
 
