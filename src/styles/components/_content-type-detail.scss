@@ -36,6 +36,10 @@
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
+    .panel[aria-hidden="false"] {
+      display: none;
+    }
+
     // layout
     .container {
       @include container;

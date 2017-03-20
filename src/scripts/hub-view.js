@@ -48,6 +48,9 @@ export default class HubView {
     this.tablist = this.rootElement.querySelector('[role="tablist"]');
     this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
 
+    // initiates panel
+    initPanel(this.panel);
+
     // relay events
     relayClickEventAs('panel-change', this, this.title);
   }
@@ -92,8 +95,6 @@ export default class HubView {
           </div>
         </div>
       </div>`;
-
-    initPanel(element);
 
     return element;
   }

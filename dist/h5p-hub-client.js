@@ -506,7 +506,7 @@ var toggleVisibility = exports.toggleVisibility = (0, _functional.curry)(functio
  * @param {HTMLElement} element
  */
 var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, add, element) {
-  return element.classList[add ? 'add' : 'remove'](cls);
+  element.classList[add ? 'add' : 'remove'](cls);
 });
 
 /***/ }),
@@ -2138,15 +2138,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 function init(element) {
   var keyboard = new _keyboard2.default();
+  var togglerSelector = '[role="heading"] [aria-controls][aria-expanded]';
   keyboard.onSelect = function (el) {
     return (0, _elements.toggleAttribute)('aria-expanded', el);
   };
 
   // collapse/expand on header press
-  (0, _collapsible.initCollapsible)(element);
+  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
+    return (0, _elements.toggleVisibility)(expanded, element);
+  }, togglerSelector);
 
   // Add keyboard support to expand collapse
-  (0, _elements.querySelectorAll)('[aria-controls][aria-expanded]', element).forEach(function (el) {
+  (0, _elements.querySelectorAll)(togglerSelector, element).forEach(function (el) {
     return keyboard.addElement(el);
   });
 }
@@ -2179,12 +2182,14 @@ var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
  *
  * @param {HTMLElement} element
  * @param {function} [targetHandler] falls back to toggleVisibility with aria-hidden
+ * @param {string} [togglerSelector]
  */
 var initCollapsible = exports.initCollapsible = function initCollapsible(element) {
   var targetHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _elements.toggleVisibility;
+  var togglerSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '[aria-controls][aria-expanded]';
 
   // elements
-  var togglers = (0, _elements.querySelectorAll)('[aria-controls][aria-expanded]', element);
+  var togglers = (0, _elements.querySelectorAll)(togglerSelector, element);
 
   togglers.forEach(function (toggler) {
     var collapsibleId = toggler.getAttribute('aria-controls');
@@ -2758,7 +2763,8 @@ var ContentTypeDetailView = function () {
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
     this.panel = this.rootElement.querySelector('.panel');
-    this.licencePanel = this.rootElement.querySelector('#licence-panel');
+    this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
+    this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
 
     // hide message on close button click
@@ -2791,7 +2797,7 @@ var ContentTypeDetailView = function () {
       var element = document.createElement('div');
       element.className = 'content-type-detail';
       element.setAttribute('aria-hidden', 'true');
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labelBack + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <span class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <span class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <div class=\"message-close icon-close\"></div>\n        <h3></h3>\n      </div>\n      <div class=\"button-bar\">\n        <span class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">Use</span>\n        <span class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</span>\n        <span class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>Installing</span>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labelBack + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <span class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <span class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <div class=\"message-close icon-close\"></div>\n        <h3></h3>\n      </div>\n      <div class=\"button-bar\">\n        <span class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">Use</span>\n        <span class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</span>\n        <span class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>Installing</span>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -2969,11 +2975,12 @@ var ContentTypeDetailView = function () {
     key: "setLicence",
     value: function setLicence(type) {
       if (type) {
-        this.licencePanel.querySelector('.panel-body').innerText = type;
-        (0, _elements.show)(this.licencePanel);
-      } else {
-        (0, _elements.hide)(this.licencePanel);
+        this.licencePanelBody.querySelector('.panel-body').innerText = type;
+        (0, _elements.show)(this.licencePanelHeading);
       }
+
+      // Close licence panel body by default
+      (0, _elements.hide)(this.licencePanelBody);
     }
 
     /**
@@ -3026,7 +3033,6 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setIsRestricted",
     value: function setIsRestricted(restricted) {
-      console.log('setIsRestricted', restricted);
       this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
       this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
     }
@@ -3806,7 +3812,7 @@ var ContentBrowserView = function () {
       this.menubar.appendChild(underline);
 
       // call init menu from sdk
-      (0, _navbar2.default)(this.rootElement);
+      (0, _navbar2.default)(this.menu);
     }
 
     /**
@@ -4400,6 +4406,9 @@ var HubView = function () {
     this.tablist = this.rootElement.querySelector('[role="tablist"]');
     this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
 
+    // initiates panel
+    (0, _panel2.default)(this.panel);
+
     // relay events
     (0, _events.relayClickEventAs)('panel-change', this, this.title);
   }
@@ -4449,8 +4458,6 @@ var HubView = function () {
       element.className += "h5p-hub h5p-sdk";
 
       element.innerHTML = "\n      <div class=\"panel\">\n        <div aria-level=\"1\" role=\"heading\">\n          <a href=\"#\" clasS=\"icon-hub-icon\" role=\"button\" aria-expanded=\"" + expanded + "\" aria-controls=\"panel-body-" + sectionId + "\">" + title + "</a>\n        </div>\n        <div id=\"panel-body-" + sectionId + "\" role=\"region\" aria-hidden=\"" + !expanded + "\">\n          <div class=\"tab-panel\">\n            <nav>\n              <ul role=\"tablist\"></ul>\n            </nav>\n          </div>\n        </div>\n      </div>";
-
-      (0, _panel2.default)(element);
 
       return element;
     }
@@ -5863,8 +5870,8 @@ function init(element) {
   });
 
   // init collapse and open
-  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
-    return (0, _elements.toggleClass)('collapsed', !expanded, element);
+  (0, _collapsible.initCollapsible)(element, function (expanded, el) {
+    return (0, _elements.toggleClass)('collapsed', !expanded, el);
   });
 }
 

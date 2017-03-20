@@ -208,7 +208,7 @@ export default class ContentBrowserView {
     this.menubar.appendChild(underline);
 
     // call init menu from sdk
-    initNavbar(this.rootElement);
+    initNavbar(this.menu);
   }
 
   /**

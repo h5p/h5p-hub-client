@@ -46,6 +46,10 @@
       }
     }
 
+    .button {
+      min-width: 5.8em;
+    }
+
     img {
       @include span(first 3 of 12);
       max-width: 100px;
@@ -63,7 +67,6 @@
         color: $c6;
       }
     }
-
 
     .content-type-row-button {
       white-space: nowrap;

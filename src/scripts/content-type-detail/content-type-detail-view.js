@@ -62,7 +62,8 @@ export default class ContentTypeDetailView {
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
     this.panel = this.rootElement.querySelector('.panel');
-    this.licencePanel = this.rootElement.querySelector('#licence-panel');
+    this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
+    this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
 
     // hide message on close button click
@@ -118,7 +119,7 @@ export default class ContentTypeDetailView {
         <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
       </div>
       <dl class="panel">
-        <dt aria-level="2" role="heading">
+        <dt aria-level="2" role="heading" class="licence-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
             <span class="icon-accordion-arrow"></span> The Licence Info
           </a>
@@ -263,12 +264,12 @@ export default class ContentTypeDetailView {
    */
   setLicence(type) {
     if(type){
-      this.licencePanel.querySelector('.panel-body').innerText = type;
-      show(this.licencePanel);
+      this.licencePanelBody.querySelector('.panel-body').innerText = type;
+      show(this.licencePanelHeading);
     }
-    else {
-      hide(this.licencePanel);
-    }
+
+    // Close licence panel body by default
+    hide(this.licencePanelBody);
   }
 
   /**
@@ -310,7 +311,6 @@ export default class ContentTypeDetailView {
    * @param {boolean} restricted True if content type is restricted
    */
   setIsRestricted(restricted) {
-    console.log('setIsRestricted', restricted);
     this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
     this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
   }
