@@ -559,62 +559,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Dictionary = function () {
-  function Dictionary() {
-    _classCallCheck(this, Dictionary);
-  }
-
-  _createClass(Dictionary, null, [{
-    key: "init",
-    value: function init(dictionary) {
-      Dictionary.dictionary = dictionary;
-    }
-
-    /**
-     * Get a string from the dictionary. Optionally replace variables
-     * @param {string} key
-     * @param {Object} replacements
-     * @returns {string}
-     */
-
-  }, {
-    key: "get",
-    value: function get(key, replacements) {
-
-      // var translation = Dictionary.dictionary[key];
-      //
-      // // Replace placeholder with variables.
-      // for (var placeholder in replacements) {
-      //   if (!replacements[placeholder]) {
-      //     continue;
-      //   }
-      //   translation = translation.replace(placeholder, replacements[placeholder]);
-      // }
-      //
-      // return translation;
-    }
-  }]);
-
-  return Dictionary;
-}();
-
-exports.default = Dictionary;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
@@ -833,6 +777,62 @@ var Keyboard = function () {
 exports.default = Keyboard;
 
 /***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Dictionary = function () {
+  function Dictionary() {
+    _classCallCheck(this, Dictionary);
+  }
+
+  _createClass(Dictionary, null, [{
+    key: "init",
+    value: function init(dictionary) {
+      Dictionary.dictionary = dictionary;
+    }
+
+    /**
+     * Get a string from the dictionary. Optionally replace variables
+     * @param {string} key
+     * @param {Object} replacements
+     * @returns {string}
+     */
+
+  }, {
+    key: "get",
+    value: function get(key, replacements) {
+
+      // var translation = Dictionary.dictionary[key];
+      //
+      // // Replace placeholder with variables.
+      // for (var placeholder in replacements) {
+      //   if (!replacements[placeholder]) {
+      //     continue;
+      //   }
+      //   translation = translation.replace(placeholder, replacements[placeholder]);
+      // }
+      //
+      // return translation;
+    }
+  }]);
+
+  return Dictionary;
+}();
+
+exports.default = Dictionary;
+
+/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -846,6 +846,14 @@ exports.default = init;
 
 var _collapsible = __webpack_require__(7);
 
+var _keyboard = __webpack_require__(4);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _elements = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Initializes a panel
  *
@@ -853,7 +861,18 @@ var _collapsible = __webpack_require__(7);
  * @return {HTMLElement}
  */
 function init(element) {
+  var keyboard = new _keyboard2.default();
+  keyboard.onSelect = function (el) {
+    return (0, _elements.toggleAttribute)('aria-expanded', el);
+  };
+
+  // collapse/expand on header press
   (0, _collapsible.initCollapsible)(element);
+
+  // Add keyboard support to expand collapse
+  element.querySelectorAll('[aria-controls][aria-expanded]').forEach(function (el) {
+    return keyboard.addElement(el);
+  });
 }
 
 /***/ }),
@@ -889,28 +908,31 @@ var initCollapsible = exports.initCollapsible = function initCollapsible(element
   var targetHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _elements.toggleVisibility;
 
   // elements
-  var toggler = element.querySelector('[aria-controls][aria-expanded]');
-  var collapsibleId = toggler.getAttribute('aria-controls');
-  var collapsible = element.querySelector('#' + collapsibleId);
+  var togglers = element.querySelectorAll('[aria-controls][aria-expanded]');
 
-  // set observer on title for aria-expanded
-  var observer = new MutationObserver(function () {
-    return targetHandler(isExpanded(toggler), collapsible);
+  togglers.forEach(function (toggler) {
+    var collapsibleId = toggler.getAttribute('aria-controls');
+    var collapsible = element.querySelector('#' + collapsibleId);
+
+    // set observer on title for aria-expanded
+    var observer = new MutationObserver(function () {
+      return targetHandler(isExpanded(toggler), collapsible);
+    });
+
+    observer.observe(toggler, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ["aria-expanded"]
+    });
+
+    // Set click listener that toggles aria-expanded
+    toggler.addEventListener('click', function () {
+      return (0, _elements.toggleAttribute)("aria-expanded", toggler);
+    });
+
+    // initialize
+    targetHandler(isExpanded(toggler), collapsible);
   });
-
-  observer.observe(toggler, {
-    attributes: true,
-    attributeOldValue: true,
-    attributeFilter: ["aria-expanded"]
-  });
-
-  // Set click listener that toggles aria-expanded
-  toggler.addEventListener('click', function () {
-    return (0, _elements.toggleAttribute)("aria-expanded", toggler);
-  });
-
-  // initialize
-  targetHandler(isExpanded(toggler), collapsible);
 };
 
 /***/ }),
@@ -950,7 +972,7 @@ var _hubServices = __webpack_require__(17);
 
 var _hubServices2 = _interopRequireDefault(_hubServices);
 
-var _dictionary = __webpack_require__(4);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -1171,7 +1193,7 @@ var _contentTypePlaceholder = __webpack_require__(8);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _dictionary = __webpack_require__(4);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -1242,7 +1264,8 @@ var ContentTypeDetailView = function () {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
-    this.licencePanel = this.rootElement.querySelector('.licence-panel');
+    this.panel = this.rootElement.querySelector('.panel');
+    this.licencePanel = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
 
     // hide message on close button click
@@ -1252,7 +1275,7 @@ var ContentTypeDetailView = function () {
     });
 
     // init interactive elements
-    (0, _panel2.default)(this.licencePanel);
+    (0, _panel2.default)(this.panel);
     (0, _imageScroller2.default)(this.carousel);
 
     // fire events on button click
@@ -1275,7 +1298,7 @@ var ContentTypeDetailView = function () {
       var element = document.createElement('div');
       element.className = 'content-type-detail';
       element.setAttribute('aria-hidden', 'true');
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labelBack + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <span class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <span class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <div class=\"message-close icon-close\"></div>\n        <h3></h3>\n      </div>\n      <div class=\"button-bar\">\n        <span class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">Use</span>\n        <span class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</span>\n        <span class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>Installing</span>\n      </div>\n      <div class=\"panel-group\">\n        <div class=\"panel licence-panel\" aria-hidden=\"true\">\n          <div class=\"panel-header\" aria-expanded=\"false\" aria-controls=\"licence-panel\"><span class=\"icon-accordion-arrow\"></span> The Licence Info</div>\n          <div class=\"panel-body\" id=\"licence-panel\" aria-hidden=\"true\">\n            <div class=\"panel-body-inner\"></div>\n          </div>\n        </div>\n      </div>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labelBack + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <span class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <span class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <div class=\"message-close icon-close\"></div>\n        <h3></h3>\n      </div>\n      <div class=\"button-bar\">\n        <span class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">Use</span>\n        <span class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</span>\n        <span class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>Installing</span>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -1453,7 +1476,7 @@ var ContentTypeDetailView = function () {
     key: "setLicence",
     value: function setLicence(type) {
       if (type) {
-        this.licencePanel.querySelector('.panel-body-inner').innerText = type;
+        this.licencePanel.querySelector('.panel-body').innerText = type;
         (0, _elements.show)(this.licencePanel);
       } else {
         (0, _elements.hide)(this.licencePanel);
@@ -1763,7 +1786,7 @@ var _contentTypePlaceholder = __webpack_require__(8);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _keyboard = __webpack_require__(5);
+var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -1807,7 +1830,7 @@ var ContentTypeListView = function () {
     // setup keyboard
     this.keyboard = new _keyboard2.default();
     this.keyboard.onSelect = function (element) {
-      _this.fire('row-selected', {
+      _this.trigger('row-selected', {
         element: element,
         id: getRowId(element)
       });
@@ -1904,7 +1927,7 @@ var ContentTypeListView = function () {
       element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
       // create html
-      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\">\n      <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n        <span class=\"" + button.icon + "\"></span>\n        " + button.text + "\n      </button>\n      <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n      <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n   ";
+      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" />\n      \n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n      \n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
 
       // handle use button
       var useButton = element.querySelector('.button-primary');
@@ -2873,8 +2896,19 @@ var HubView = function () {
     // add event system
     _extends(this, (0, _eventful.Eventful)());
 
-    this.renderTabPanel(state);
-    this.renderPanel(state);
+    /**
+     * @type {HTMLElement}
+     */
+    this.rootElement = this.createPanel(state);
+
+    // select dynamic elements
+    this.panel = this.rootElement.querySelector('.panel');
+    this.title = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.tablist = this.rootElement.querySelector('[role="tablist"]');
+    this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
+
+    // relay events
+    (0, _events.relayClickEventAs)('panel-change', this, this.title);
   }
 
   /**
@@ -2909,8 +2943,8 @@ var HubView = function () {
      */
 
   }, {
-    key: "renderPanel",
-    value: function renderPanel(_ref) {
+    key: "createPanel",
+    value: function createPanel(_ref) {
       var _ref$title = _ref.title,
           title = _ref$title === undefined ? '' : _ref$title,
           _ref$sectionId = _ref.sectionId,
@@ -2918,43 +2952,14 @@ var HubView = function () {
           _ref$expanded = _ref.expanded,
           expanded = _ref$expanded === undefined ? false : _ref$expanded;
 
-      /**
-       * @type {HTMLElement}
-       */
-      this.title = document.createElement('div');
-      this.title.className += "panel-header icon-hub-icon";
-      this.title.setAttribute('aria-expanded', (!!expanded).toString());
-      this.title.setAttribute('aria-controls', "panel-body-" + sectionId);
-      this.title.setAttribute('tabindex', '0');
-      this.title.innerHTML = title;
-      (0, _events.relayClickEventAs)('panel-change', this, this.title);
+      var element = document.createElement('div');
+      element.className += "h5p-hub h5p-sdk";
 
-      /**
-       * @type {HTMLElement}
-       */
-      this.body = document.createElement('div');
-      this.body.className += "panel-body";
-      this.body.setAttribute('aria-hidden', (!expanded).toString());
-      this.body.id = "panel-body-" + sectionId;
-      this.body.appendChild(this.tabContainerElement);
+      element.innerHTML = "\n      <div class=\"panel\">\n        <div aria-level=\"1\" role=\"heading\">\n          <a href=\"#\" clasS=\"icon-hub-icon\" role=\"button\" aria-expanded=\"" + expanded + "\" aria-controls=\"panel-body-" + sectionId + "\">" + title + "</a>\n        </div>\n        <div id=\"panel-body-" + sectionId + "\" role=\"region\" aria-hidden=\"" + !expanded + "\">\n          <div class=\"tab-panel\">\n            <nav>\n              <ul role=\"tablist\"></ul>\n            </nav>\n          </div>\n        </div>\n      </div>";
 
-      /**
-       * @type {HTMLElement}
-       */
-      this.panel = document.createElement('div');
-      this.panel.className += "panel h5p-section-" + sectionId;
-      if (expanded) {
-        this.panel.setAttribute('open', '');
-      }
-      this.panel.appendChild(this.title);
-      this.panel.appendChild(this.body);
-      /**
-       * @type {HTMLElement}
-       */
-      this.rootElement = document.createElement('div');
-      this.rootElement.className += "h5p-hub h5p-sdk";
-      this.rootElement.appendChild(this.panel);
-      (0, _panel2.default)(this.rootElement);
+      (0, _panel2.default)(element);
+
+      return element;
     }
 
     /**
@@ -2973,34 +2978,6 @@ var HubView = function () {
           panel.querySelector('#hub-search-bar').focus();
         }, 20);
       }
-    }
-
-    /**
-     * Creates the dom for the tab panel
-     */
-
-  }, {
-    key: "renderTabPanel",
-    value: function renderTabPanel(state) {
-      /**
-       * @type {HTMLElement}
-       */
-      this.tablist = document.createElement('ul');
-      this.tablist.className += "tablist";
-      this.tablist.setAttribute('role', 'tablist');
-
-      /**
-       * @type {HTMLElement}
-       */
-      this.tabListWrapper = document.createElement('nav');
-      this.tabListWrapper.appendChild(this.tablist);
-
-      /**
-       * @type {HTMLElement}
-       */
-      this.tabContainerElement = document.createElement('div');
-      this.tabContainerElement.className += 'tab-panel';
-      this.tabContainerElement.appendChild(this.tabListWrapper);
     }
 
     /**
@@ -3031,7 +3008,7 @@ var HubView = function () {
       tab.setAttribute('aria-selected', selected.toString());
       tab.setAttribute(ATTRIBUTE_DATA_ID, id);
       tab.setAttribute('role', 'tab');
-      tab.innerHTML = title;
+      tab.innerText = title;
       (0, _events.relayClickEventAs)('tab-change', this, tab);
 
       var tabPanel = document.createElement('div');
@@ -3518,7 +3495,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _eventful = __webpack_require__(1);
 
-var _dictionary = __webpack_require__(4);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -4305,7 +4282,7 @@ var _functional = __webpack_require__(0);
 
 var _collapsible = __webpack_require__(7);
 
-var _keyboard = __webpack_require__(5);
+var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -4392,7 +4369,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _keyboard = __webpack_require__(5);
+var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 

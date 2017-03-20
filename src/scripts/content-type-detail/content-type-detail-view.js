@@ -61,7 +61,8 @@ export default class ContentTypeDetailView {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
-    this.licencePanel = this.rootElement.querySelector('.licence-panel');
+    this.panel = this.rootElement.querySelector('.panel');
+    this.licencePanel = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
 
     // hide message on close button click
@@ -69,7 +70,7 @@ export default class ContentTypeDetailView {
     installMessageClose.addEventListener('click', () => hide(this.installMessage));
 
     // init interactive elements
-    initPanel(this.licencePanel);
+    initPanel(this.panel);
     initImageScroller(this.carousel);
 
     // fire events on button click
@@ -116,14 +117,16 @@ export default class ContentTypeDetailView {
         <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</span>
         <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
       </div>
-      <div class="panel-group">
-        <div class="panel licence-panel" aria-hidden="true">
-          <div class="panel-header" aria-expanded="false" aria-controls="licence-panel"><span class="icon-accordion-arrow"></span> The Licence Info</div>
-          <div class="panel-body" id="licence-panel" aria-hidden="true">
-            <div class="panel-body-inner"></div>
-          </div>
-        </div>
-      </div>`;
+      <dl class="panel">
+        <dt aria-level="2" role="heading">
+          <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
+            <span class="icon-accordion-arrow"></span> The Licence Info
+          </a>
+        </dt>
+        <dl id="licence-panel" role="region" aria-hidden="true">
+          <div class="panel-body"></div>
+        </dl>
+      </dl>`;
 
     return element;
   }
@@ -260,7 +263,7 @@ export default class ContentTypeDetailView {
    */
   setLicence(type) {
     if(type){
-      this.licencePanel.querySelector('.panel-body-inner').innerText = type;
+      this.licencePanel.querySelector('.panel-body').innerText = type;
       show(this.licencePanel);
     }
     else {

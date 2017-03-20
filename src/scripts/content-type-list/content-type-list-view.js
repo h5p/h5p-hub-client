@@ -36,7 +36,7 @@ export default class ContentTypeListView {
     // setup keyboard
     this.keyboard = new Keyboard();
     this.keyboard.onSelect = element => {
-      this.fire('row-selected', {
+      this.trigger('row-selected', {
         element: element,
         id: getRowId(element)
       })
@@ -118,13 +118,19 @@ export default class ContentTypeListView {
 
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${image}">
-      <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
-        <span class="${button.icon}"></span>
-        ${button.text}
-      </button>
-      <h4 id="${contentTypeRowTitleId}">${title}</h4>
-      <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
+      <img class="img-responsive" src="${image}" />
+      
+      <div class="content-type-row-info">
+        <h4 id="${contentTypeRowTitleId}">${title}</h4>
+        <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
+      </div>
+      
+      <div class="content-type-row-button">
+        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
+          <span class="${button.icon}"></span>
+          ${button.text}
+        </button>
+      </div>
    `;
 
     // handle use button

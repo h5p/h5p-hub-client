@@ -85,6 +85,10 @@
 
   @media (min-width: $screen-small) {
     .navbar {
+      .navbar-toggler-selected {
+        display: none;
+      }
+
       .navbar-brand {
         font-style: italic;
         font-size: $text-title-small;

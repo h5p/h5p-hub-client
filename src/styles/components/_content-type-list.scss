@@ -3,6 +3,7 @@
 @import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
 @import "~h5p-sdk/src/styles/base/mixins";
+@import "~susy/sass/susy";
 
 .h5p-hub {
   ul.content-type-list {
@@ -34,6 +35,8 @@
       overflow: auto;
       outline-color: lighten($ac1, 10%);
 
+      @include container;
+
       &:hover {
         background-color: lighten($ac1, 55%);
       }
@@ -44,23 +47,35 @@
     }
 
     img {
+      @include span(first 3 of 12);
       max-width: 100px;
-      float: left;
-      margin-right: $gutter;
     }
 
-    h4 {
-      line-height: 2em;
-      margin: 0;
+    .content-type-row-info {
+      @include  span(6 of 12);
+
+      h4 {
+        line-height: 2em;
+        margin: 0;
+      }
+
+      .description {
+        color: $c6;
+      }
     }
 
-    .description {
-      color: $c6;
+
+    .content-type-row-button {
+      white-space: nowrap;
+      text-align: right;
+      padding: 0;
+      @include span(last 3 of 12);
     }
 
-    .button {
-      float: right;
-      margin: $gutter ($gutter * 2);
+    @media (min-width: $screen-small) {
+      .content-type-row-button {
+        padding: $gutter;
+      }
     }
   }
 }
