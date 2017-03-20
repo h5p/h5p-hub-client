@@ -1,5 +1,6 @@
-import { Eventful } from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
+import { Eventful } from '../mixins/eventful';
+import MessageView from "../message-view/message-view";
 
 /**
  * @class
@@ -17,8 +18,13 @@ export default class UploadSection {
     const uploadForm = this.renderUploadForm();
     this.initUploadForm(uploadForm, services);
 
+    // Create a wrapper to hold user messages
+    this.messageWrapper = document.createElement('div');
+    this.messageWrapper.classList = 'message-wrapper';
+
     // Create the container and attach children
     const element = document.createElement('div');
+    element.appendChild(this.messageWrapper);
     element.appendChild(uploadForm);
     this.rootElement = element;
   }
@@ -37,7 +43,9 @@ export default class UploadSection {
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
         <div class="upload-form">
-          <input class="upload-path" placeholder="No file chosen" disabled />
+          <div class="upload-path-wrapper">
+            <input class="upload-path" placeholder="No file chosen" disabled />
+          </div>
           <span class="button use-button">Use</span>
           <label class="upload">
             <input type="file" />
@@ -54,7 +62,6 @@ export default class UploadSection {
     return uploadForm;
   }
 
-
   /**
    * Adds logic to bind the button to the form
    * and to bind the form to the plugin
@@ -63,14 +70,27 @@ export default class UploadSection {
    * @param  {HubServices} services
    */
   initUploadForm(uploadForm, services) {
+    const self = this;
     const uploadInput =  uploadForm.querySelector('.upload input[type="file"]');
     const uploadButton = uploadForm.querySelector('.upload-button');
+    const uploadPathWrapper = uploadForm.querySelector('.upload-path-wrapper');
     const uploadPath = uploadForm.querySelector('.upload-path');
     const useButton =  uploadForm.querySelector('.use-button');
 
+    // Handle errors and update styles when a file is selected
     uploadInput.onchange = function () {
-      if (this.value !== '') {
 
+      self.clearUserMessages();
+      self.renderMessage({
+        type: 'error',
+        title: '.h5p file not found',
+        content: 'You need to upload a file that ends in .h5p'
+      });
+      if (self.getFileExtension(this.value) !== 'h5p') {
+
+      }
+
+      else {
         // Replace the placeholder text with the selected filepath
         uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
@@ -82,10 +102,7 @@ export default class UploadSection {
       }
     };
 
-    uploadForm.onclick = function () {
-      uploadInput.click();
-    }
-
+    // Send the file to the plugin
     useButton.addEventListener('click', () => {
 
       // Add the H5P file to a form, ready for transportation
@@ -99,6 +116,55 @@ export default class UploadSection {
           self.trigger('upload', json);
         });
     });
+
+    // Allow users to upload a file by clicking on path field
+    uploadPathWrapper.onclick = function () {
+      uploadInput.click();
+    }
+  }
+
+  /*
+   * Empties the message wrapper
+   */
+  clearUserMessages() {
+    this.removeAllChildren(this.rootElement.querySelector('.message-wrapper'));
+  }
+
+  /**
+   * Helper function to get a file extension from a filename
+   *
+   * @param  {string} fileName
+   * @return {string}
+   */
+  getFileExtension(fileName) {
+    return fileName.replace(/^.*\./, '');
+  }
+
+  /**
+   * Creates a message based on a configuration and prepends it to the message wrapper
+   *
+   * @param  {Object} config
+   */
+  renderMessage(config) {
+    var messageView = new MessageView(config);
+    this.prepend(this.messageWrapper, messageView.getElement());
+  }
+
+
+  /**
+   * Helper function. Prepends an element to another
+   */
+  prepend(parent, child) {
+    parent.insertBefore(child, parent.firstChild);
+  }
+
+  /**
+   * Helper function to remove all children from a node
+   */
+  removeAllChildren(node) {
+    while (node.lastChild) {
+      node.removeChild(node.lastChild);
+    }
   }
 
   getElement() {
