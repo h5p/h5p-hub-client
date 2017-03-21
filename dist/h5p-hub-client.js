@@ -2834,7 +2834,7 @@ var ContentTypeDetailView = function () {
       element.setAttribute('aria-labelledby', titleId);
       element.setAttribute('aria-hidden', 'true');
 
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 title=\"" + titleId + "\" class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -3029,7 +3029,7 @@ var ContentTypeDetailView = function () {
     value: function setLicence(type, owner) {
       if (type) {
         if (type === 'MIT') {
-          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n        <p>Copyright " + new Date().getFullYear() + " " + owner + "</p>\n\n        <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n        of this software and associated documentation files (the \"Software\"), to deal\n        in the Software without restriction, including without limitation the rights\n        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n        copies of the Software, and to permit persons to whom the Software is\n        furnished to do so, subject to the following conditions:</p>\n        \n        <p>The above copyright notice and this permission notice shall be included in\n        all copies or substantial portions of the Software.</p>\n        \n        <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n        THE SOFTWARE.</p>\n        ";
+          this.licencePanelBody.querySelector('.panel-body').innerText = "\n        <p>Copyright " + new Date().getFullYear() + " &lt;COPYRIGHT HOLDER&gt;</p>\n\n        <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n        of this software and associated documentation files (the \"Software\"), to deal\n        in the Software without restriction, including without limitation the rights\n        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n        copies of the Software, and to permit persons to whom the Software is\n        furnished to do so, subject to the following conditions:</p>\n        \n        <p>The above copyright notice and this permission notice shall be included in\n        all copies or substantial portions of the Software.</p>\n        \n        <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n        THE SOFTWARE.</p>\n        ";
         } else {
           this.licencePanelBody.querySelector('.panel-body').innerText = type;
         }
@@ -3448,6 +3448,20 @@ var ContentTypeListView = function () {
     }
 
     /**
+     * Focuses on the previously selected element
+     */
+
+  }, {
+    key: "focus",
+    value: function focus() {
+      var selectedElement = (0, _elements.querySelector)('li[tabindex="0"]', this.rootElement);
+
+      if (selectedElement) {
+        selectedElement.focus();
+      }
+    }
+
+    /**
      * Removes all rows from root element
      */
 
@@ -3617,6 +3631,11 @@ var ContentTypeList = function () {
     key: 'show',
     value: function show() {
       this.view.show();
+    }
+  }, {
+    key: 'focus',
+    value: function focus() {
+      this.view.focus();
     }
 
     /**
@@ -4189,6 +4208,7 @@ var ContentTypeSection = function () {
       this.contentTypeList.show();
       this.view.typeAheadEnabled = true;
       this.view.addDeactivatedStyleToMenu();
+      this.contentTypeList.focus();
     }
 
     /**
@@ -4503,7 +4523,8 @@ var HubView = function () {
 
     // select dynamic elements
     this.panel = this.rootElement.querySelector('.panel');
-    this.title = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.toggler = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.selectedName = this.rootElement.querySelector('.h5p-hub-selected');
     this.tablist = this.rootElement.querySelector('[role="tablist"]');
     this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
 
@@ -4511,7 +4532,7 @@ var HubView = function () {
     (0, _panel2.default)(this.panel);
 
     // relay events
-    (0, _events.relayClickEventAs)('panel-change', this, this.title);
+    (0, _events.relayClickEventAs)('panel-change', this, this.toggler);
   }
 
   /**
@@ -4522,7 +4543,7 @@ var HubView = function () {
   _createClass(HubView, [{
     key: "closePanel",
     value: function closePanel() {
-      this.title.setAttribute('aria-expanded', 'false');
+      this.toggler.setAttribute('aria-expanded', 'false');
     }
 
     /**
@@ -4534,7 +4555,7 @@ var HubView = function () {
   }, {
     key: "setTitle",
     value: function setTitle(title) {
-      this.title.innerHTML = title;
+      this.selectedName.innerText = title;
     }
 
     /**
@@ -4556,12 +4577,12 @@ var HubView = function () {
           expanded = _ref$expanded === undefined ? false : _ref$expanded;
 
       var labels = {
-        h5pHub: 'H5P Hub'
+        h5pHub: 'H5P Hub.'
       };
       var element = document.createElement('div');
       element.className += "h5p-hub h5p-sdk";
 
-      element.innerHTML = "\n      <div class=\"panel\">\n        <div aria-level=\"1\" role=\"heading\">\n          <a role=\"button\" aria-label=\"" + labels.h5pHub + "\" class=\"icon-hub-icon\" aria-expanded=\"" + expanded + "\" aria-controls=\"panel-body-" + sectionId + "\">" + title + "</a>\n        </div>\n        <div id=\"panel-body-" + sectionId + "\" role=\"region\" aria-hidden=\"" + !expanded + "\">\n          <div class=\"tab-panel\">\n            <nav>\n              <ul role=\"tablist\"></ul>\n            </nav>\n          </div>\n        </div>\n      </div>";
+      element.innerHTML = "\n      <div class=\"panel\">\n        <div aria-level=\"1\" role=\"heading\">\n          <span role=\"button\" class=\"icon-hub-icon\" aria-expanded=\"" + expanded + "\" aria-controls=\"panel-body-" + sectionId + "\">\n          <span class=\"h5p-hub-description\">" + labels.h5pHub + "</span>\n          <span class=\"h5p-hub-selected\"></span>\n        </span>\n        </div>\n        <div id=\"panel-body-" + sectionId + "\" role=\"region\" aria-hidden=\"" + !expanded + "\">\n          <div class=\"tab-panel\">\n            <nav>\n              <ul role=\"tablist\"></ul>\n            </nav>\n          </div>\n        </div>\n      </div>";
 
       return element;
     }

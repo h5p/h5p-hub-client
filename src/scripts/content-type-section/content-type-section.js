@@ -174,6 +174,7 @@ export default class ContentTypeSection {
     this.contentTypeList.show();
     this.view.typeAheadEnabled = true;
     this.view.addDeactivatedStyleToMenu();
+    this.contentTypeList.focus();
   }
 
   /**

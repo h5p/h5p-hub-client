@@ -50,13 +50,21 @@
       font-style: italic;
       font-weight: 600;
 
-      &:before {
-        font-style: normal;
-        font-weight: normal;
-        margin-right: 1em;
+      .h5p-hub-description {
+        color: transparent;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        display: inline-block;
       }
 
       [role="button"] {
+        &:before {
+          font-style: normal;
+          font-weight: normal;
+          margin-right: 1em;
+        }
+
         &:after {
           @include h5p-hub-icon("\e924");
           font-size: 0.9em;
