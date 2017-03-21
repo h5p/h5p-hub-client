@@ -316,7 +316,7 @@ var Eventful = exports.Eventful = function Eventful() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.nodeListToArray = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
+exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.nodeListToArray = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
 
 var _functional = __webpack_require__(0);
 
@@ -426,6 +426,17 @@ var querySelector = exports.querySelector = (0, _functional.curry)(function (sel
 });
 
 /**
+ * Transforms a NodeList to an Array
+ *
+ * @param {NodeList} nodeList
+ *
+ * @return {Node[]}
+ */
+var nodeListToArray = exports.nodeListToArray = function nodeListToArray(nodeList) {
+  return Array.prototype.slice.call(nodeList);
+};
+
+/**
  * Returns a non-live NodeList of all elements descended from the element on which it
  * is invoked that matches the specified group of CSS selectors.
  *
@@ -433,10 +444,10 @@ var querySelector = exports.querySelector = (0, _functional.curry)(function (sel
  * @param {HTMLElement} el
  *
  * @function
- * @return {NodeList}
+ * @return {Node[]}
  */
 var querySelectorAll = exports.querySelectorAll = (0, _functional.curry)(function (selector, el) {
-  return el.querySelectorAll(selector);
+  return nodeListToArray(el.querySelectorAll(selector));
 });
 
 /**
@@ -462,17 +473,6 @@ var removeChild = exports.removeChild = (0, _functional.curry)(function (parent,
 var classListContains = exports.classListContains = (0, _functional.curry)(function (cls, el) {
   return el.classList.contains(cls);
 });
-
-/**
- * Transforms a NodeList to an Array
- *
- * @param {NodeList} nodeList
- *
- * @return {Node[]}
- */
-var nodeListToArray = exports.nodeListToArray = function nodeListToArray(nodeList) {
-  return Array.prototype.slice.call(nodeList);
-};
 
 /**
  * Adds aria-hidden=true to an element
@@ -506,7 +506,7 @@ var toggleVisibility = exports.toggleVisibility = (0, _functional.curry)(functio
  * @param {HTMLElement} element
  */
 var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, add, element) {
-  return element.classList[add ? 'add' : 'remove'](cls);
+  element.classList[add ? 'add' : 'remove'](cls);
 });
 
 /***/ }),
@@ -1881,6 +1881,7 @@ var Keyboard = function () {
    * @param {HTMLElement} element
    *
    * @public
+   * @return {HTMLElement}
    */
 
 
@@ -1894,6 +1895,8 @@ var Keyboard = function () {
         // if first
         addTabIndex(element);
       }
+
+      return element;
     }
   }, {
     key: 'removeElement',
@@ -1905,6 +1908,7 @@ var Keyboard = function () {
      * @param {HTMLElement} element
      *
      * @public
+     * @return {HTMLElement}
      */
     value: function removeElement(element) {
       this.elements = (0, _functional.without)([element], this.elements);
@@ -1918,6 +1922,8 @@ var Keyboard = function () {
         this.selectedIndex = 0;
         updateTabbable(this.elements, this.selectedIndex);
       }
+
+      return element;
     }
   }, {
     key: 'handleKeyDown',
@@ -2112,6 +2118,14 @@ exports.default = init;
 
 var _collapsible = __webpack_require__(9);
 
+var _keyboard = __webpack_require__(6);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _elements = __webpack_require__(2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Initializes a panel
  *
@@ -2119,7 +2133,21 @@ var _collapsible = __webpack_require__(9);
  * @return {HTMLElement}
  */
 function init(element) {
-  (0, _collapsible.initCollapsible)(element);
+  var keyboard = new _keyboard2.default();
+  var togglerSelector = '[role="heading"] [aria-controls][aria-expanded]';
+  keyboard.onSelect = function (el) {
+    return (0, _elements.toggleAttribute)('aria-expanded', el);
+  };
+
+  // collapse/expand on header press
+  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
+    return (0, _elements.toggleVisibility)(expanded, element);
+  }, togglerSelector);
+
+  // Add keyboard support to expand collapse
+  (0, _elements.querySelectorAll)(togglerSelector, element).forEach(function (el) {
+    return keyboard.addElement(el);
+  });
 }
 
 /***/ }),
@@ -2150,33 +2178,38 @@ var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
  *
  * @param {HTMLElement} element
  * @param {function} [targetHandler] falls back to toggleVisibility with aria-hidden
+ * @param {string} [togglerSelector]
  */
 var initCollapsible = exports.initCollapsible = function initCollapsible(element) {
   var targetHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _elements.toggleVisibility;
+  var togglerSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '[aria-controls][aria-expanded]';
 
   // elements
-  var toggler = element.querySelector('[aria-controls][aria-expanded]');
-  var collapsibleId = toggler.getAttribute('aria-controls');
-  var collapsible = element.querySelector('#' + collapsibleId);
+  var togglers = (0, _elements.querySelectorAll)(togglerSelector, element);
 
-  // set observer on title for aria-expanded
-  var observer = new MutationObserver(function () {
-    return targetHandler(isExpanded(toggler), collapsible);
+  togglers.forEach(function (toggler) {
+    var collapsibleId = toggler.getAttribute('aria-controls');
+    var collapsible = element.querySelector('#' + collapsibleId);
+
+    // set observer on title for aria-expanded
+    var observer = new MutationObserver(function () {
+      return targetHandler(isExpanded(toggler), collapsible);
+    });
+
+    observer.observe(toggler, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ["aria-expanded"]
+    });
+
+    // Set click listener that toggles aria-expanded
+    toggler.addEventListener('click', function () {
+      return (0, _elements.toggleAttribute)("aria-expanded", toggler);
+    });
+
+    // initialize
+    targetHandler(isExpanded(toggler), collapsible);
   });
-
-  observer.observe(toggler, {
-    attributes: true,
-    attributeOldValue: true,
-    attributeFilter: ["aria-expanded"]
-  });
-
-  // Set click listener that toggles aria-expanded
-  toggler.addEventListener('click', function () {
-    return (0, _elements.toggleAttribute)("aria-expanded", toggler);
-  });
-
-  // initialize
-  targetHandler(isExpanded(toggler), collapsible);
 };
 
 /***/ }),
@@ -4938,7 +4971,7 @@ var UploadSection = function () {
       // TODO create variables for links to h5p.org so they can be changed easily
       // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <div class="upload-path-wrapper">\n            <input class="upload-path" placeholder="No file chosen" disabled />\n          </div>\n          <span class="button use-button">Use</span>\n          <label class="upload">\n            <input type="file" />\n            <span class="button upload-button">Upload a file</span>\n          </label>\n        </div>\n        <div class="upload-instructions">\n          <h2>Select a file to upload and create H5P content from.</h2>\n          <h3>You may start with examples from <a href="https://h5p.org/content-types-and-applications">H5P.org</a>.</h3>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <div class="upload-path-wrapper">\n            <input class="upload-path" placeholder="No file chosen" disabled />\n          </div>\n          <span class="button use-button">Use</span>\n          <label class="upload">\n            <input type="file" />\n            <span class="button upload-button">Upload a file</span>\n          </label>\n        </div>\n        <div class="upload-instructions">\n          <h3>Select a file to upload and create H5P content from.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
 
       return uploadForm;
     }
@@ -4967,12 +5000,17 @@ var UploadSection = function () {
       uploadInput.onchange = function () {
 
         self.clearUserMessages();
-        self.renderMessage({
-          type: 'error',
-          title: '.h5p file not found',
-          content: 'You need to upload a file that ends in .h5p'
-        });
-        if (self.getFileExtension(this.value) !== 'h5p') {} else {
+        uploadPath.value = '';
+
+        var fileExtension = self.getFileExtension(this.value);
+
+        if (fileExtension !== '' || fileExtension !== 'h5p') {
+          self.renderMessage({
+            type: 'error',
+            title: '.h5p file not found',
+            content: 'You need to upload a file that ends in .h5p'
+          });
+        } else {
           // Replace the placeholder text with the selected filepath
           uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
@@ -5561,6 +5599,12 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
+var _keyboard = __webpack_require__(6);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * @constant
  */
@@ -5614,7 +5658,7 @@ var updateView = function updateView(element, state) {
   list.style.marginLeft = state.position * (100 / state.displayCount) + '%';
 
   // update image sizes
-  element.querySelectorAll('li').forEach(function (element) {
+  (0, _elements.querySelectorAll)('li', element).forEach(function (element) {
     return element.style.width = 100 / totalCount + '%';
   });
 
@@ -5648,18 +5692,24 @@ var onNavigationButtonClick = function onNavigationButtonClick(element, state, b
  *
  * @param {HTMLElement} element
  * @param {HTMLElement} image
+ *
  * @function
+ * @return {HTMLElement}
  */
-var initImage = (0, _functional.curry)(function (element, image) {
+var initImage = (0, _functional.curry)(function (element, keyboard, image) {
   var targetId = image.getAttribute('aria-controls');
-  var target = element.querySelector('#' + targetId);
+  var lightBox = element.querySelector('#' + targetId);
 
-  target.addEventListener('click', function (event) {
-    return target.setAttribute('aria-hidden', 'true');
+  lightBox.addEventListener('click', function (event) {
+    return lightBox.setAttribute('aria-hidden', 'true');
   });
   image.addEventListener('click', function (event) {
-    return target.setAttribute('aria-hidden', 'false');
+    return lightBox.setAttribute('aria-hidden', 'false');
   });
+
+  keyboard.addElement(image);
+
+  return image;
 });
 
 /**
@@ -5670,10 +5720,10 @@ var initImage = (0, _functional.curry)(function (element, image) {
  * @param {MutationRecord} record
  * @function
  */
-var handleDomUpdate = (0, _functional.curry)(function (element, state, record) {
+var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
   // on add image run initialization
   if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element));
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element, keyboard));
   }
 
   // update the view
@@ -5693,6 +5743,7 @@ function init(element) {
   // get button html elements
   var nextButton = element.querySelector('.next');
   var prevButton = element.querySelector('.previous');
+  var keyboard = new _keyboard2.default();
 
   /**
    * @typedef {object} ImageScrollerState
@@ -5717,10 +5768,10 @@ function init(element) {
   });
 
   // initialize images
-  element.querySelectorAll('[aria-controls]').forEach(initImage(element));
+  (0, _elements.querySelectorAll)('[aria-controls]', element).forEach(initImage(element, keyboard));
 
   // listen for updates to data-size
-  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state)));
+  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state, keyboard)));
 
   observer.observe(element, {
     subtree: true,
@@ -5794,7 +5845,7 @@ var onSelectMenuItem = function onSelectMenuItem(menuItems, element) {
  */
 function init(element) {
   // elements
-  var menuItems = (0, _elements.nodeListToArray)(element.querySelectorAll('[role="menuitem"]'));
+  var menuItems = (0, _elements.querySelectorAll)('[role="menuitem"]', element);
   var toggler = element.querySelector('[aria-controls][aria-expanded]');
   var keyboard = new _keyboard2.default();
 
@@ -5820,8 +5871,8 @@ function init(element) {
   });
 
   // init collapse and open
-  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
-    return (0, _elements.toggleClass)('collapsed', !expanded, element);
+  (0, _collapsible.initCollapsible)(element, function (expanded, el) {
+    return (0, _elements.toggleClass)('collapsed', !expanded, el);
   });
 }
 
@@ -5878,7 +5929,7 @@ var addAriaSelectedObserver = function addAriaSelectedObserver(element, tab) {
   var observer = new MutationObserver(function () {
     var panelId = tab.getAttribute('aria-controls');
     var panel = element.querySelector('#' + panelId);
-    var allPanels = element.querySelectorAll('[role="tabpanel"]');
+    var allPanels = (0, _elements.querySelectorAll)('[role="tabpanel"]', element);
 
     if (isSelected(tab)) {
       hideAll(allPanels);
@@ -5911,7 +5962,7 @@ var selectTab = (0, _functional.curry)(function (allTabs, element) {
  * @param {HTMLElement} element
  */
 function init(element) {
-  var tabs = (0, _elements.nodeListToArray)(element.querySelectorAll('[role="tab"]'));
+  var tabs = (0, _elements.querySelectorAll)('[role="tab"]', element);
   var keyboard = new _keyboard2.default();
 
   // handle enter + space click
