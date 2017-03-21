@@ -40,9 +40,8 @@ describe('Search service', () => {
     it('should discard results as the search is refined', (done) => {
       search.search('question set')
         .then(cts => {
-          cts.forEach(contentType => {
-            expect(contentType.machineName).not.toEqual('H5P.TrueFalse');
-          });
+          const result = cts.find(ct => ct.machineName === 'H5P.TrueFalse');
+          expect(result).toBeUndefined();
           done();
         })
     });
