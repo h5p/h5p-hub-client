@@ -316,7 +316,7 @@ var Eventful = exports.Eventful = function Eventful() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.nodeListToArray = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
+exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.nodeListToArray = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
 
 var _functional = __webpack_require__(0);
 
@@ -426,17 +426,6 @@ var querySelector = exports.querySelector = (0, _functional.curry)(function (sel
 });
 
 /**
- * Transforms a NodeList to an Array
- *
- * @param {NodeList} nodeList
- *
- * @return {Node[]}
- */
-var nodeListToArray = exports.nodeListToArray = function nodeListToArray(nodeList) {
-  return Array.prototype.slice.call(nodeList);
-};
-
-/**
  * Returns a non-live NodeList of all elements descended from the element on which it
  * is invoked that matches the specified group of CSS selectors.
  *
@@ -444,10 +433,10 @@ var nodeListToArray = exports.nodeListToArray = function nodeListToArray(nodeLis
  * @param {HTMLElement} el
  *
  * @function
- * @return {Node[]}
+ * @return {NodeList}
  */
 var querySelectorAll = exports.querySelectorAll = (0, _functional.curry)(function (selector, el) {
-  return nodeListToArray(el.querySelectorAll(selector));
+  return el.querySelectorAll(selector);
 });
 
 /**
@@ -473,6 +462,17 @@ var removeChild = exports.removeChild = (0, _functional.curry)(function (parent,
 var classListContains = exports.classListContains = (0, _functional.curry)(function (cls, el) {
   return el.classList.contains(cls);
 });
+
+/**
+ * Transforms a NodeList to an Array
+ *
+ * @param {NodeList} nodeList
+ *
+ * @return {Node[]}
+ */
+var nodeListToArray = exports.nodeListToArray = function nodeListToArray(nodeList) {
+  return Array.prototype.slice.call(nodeList);
+};
 
 /**
  * Adds aria-hidden=true to an element
@@ -506,7 +506,7 @@ var toggleVisibility = exports.toggleVisibility = (0, _functional.curry)(functio
  * @param {HTMLElement} element
  */
 var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, add, element) {
-  element.classList[add ? 'add' : 'remove'](cls);
+  return element.classList[add ? 'add' : 'remove'](cls);
 });
 
 /***/ }),
@@ -551,242 +551,6 @@ var relayClickEventAs = exports.relayClickEventAs = (0, _functional.curry)(funct
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _elements = __webpack_require__(2);
-
-var _functional = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @param {HTMLElement} element
- * @function
- */
-var addTabIndex = (0, _elements.setAttribute)('tabindex', '0');
-
-/**
- * @param {HTMLElement} element
- * @function
- */
-var removeTabIndex = (0, _elements.removeAttribute)('tabindex');
-
-/**
- * @param {HTMLElement[]} elements
- * @function
- */
-
-var removeTabIndexForAll = (0, _functional.forEach)(removeTabIndex);
-
-/**
- * @param {HTMLElement} element
- * @function
- */
-var hasTabIndex = (0, _elements.hasAttribute)('tabindex');
-
-/**
- * Sets tabindex and focus on an element, remove it from all others
- *
- * @param {HTMLElement[]} elements
- * @param {number} index
- */
-var updateTabbable = function updateTabbable(elements, index) {
-  var selectedElement = elements[index];
-
-  if (selectedElement) {
-    removeTabIndexForAll(elements);
-    addTabIndex(selectedElement);
-  }
-};
-
-/**
- * Sets tabindex on an element, remove it from all others
- *
- * @param {number} currentIndex
- * @param {number} lastIndex
- *
- * @return {number}
- */
-var nextIndex = function nextIndex(currentIndex, lastIndex) {
-  return currentIndex === lastIndex ? 0 : currentIndex + 1;
-};
-
-/**
- * Sets tabindex on an element, remove it from all others
- *
- * @param {number} currentIndex
- * @param {number} lastIndex
- *
- * @return {number}
- */
-var previousIndex = function previousIndex(currentIndex, lastIndex) {
-  return currentIndex === 0 ? lastIndex : currentIndex - 1;
-};
-
-/**
- * @class
- */
-
-var Keyboard = function () {
-  function Keyboard() {
-    _classCallCheck(this, Keyboard);
-
-    /**
-     * @property {HTMLElement[]} elements
-     */
-    this.elements = [];
-    /**
-     * Creates a bound key handler, that can be removed
-     * @property {function} boundHandleKeyDown
-     */
-    this.boundHandleKeyDown = this.handleKeyDown.bind(this);
-    /**
-     * @property {number} selectedIndex
-     */
-    this.selectedIndex = 0;
-  }
-
-  /**
-   * Add keyboard support to an element
-   *
-   * @param {HTMLElement} element
-   *
-   * @public
-   * @return {HTMLElement}
-   */
-
-
-  _createClass(Keyboard, [{
-    key: 'addElement',
-    value: function addElement(element) {
-      this.elements.push(element);
-      element.addEventListener('keydown', this.boundHandleKeyDown);
-
-      if (this.elements.length === 1) {
-        // if first
-        addTabIndex(element);
-      }
-
-      return element;
-    }
-  }, {
-    key: 'removeElement',
-
-
-    /**
-     * Add controls to an element
-     *
-     * @param {HTMLElement} element
-     *
-     * @public
-     * @return {HTMLElement}
-     */
-    value: function removeElement(element) {
-      this.elements = (0, _functional.without)([element], this.elements);
-
-      element.removeEventListener('keydown', this.boundHandleKeyDown);
-
-      // if removed element was selected
-      if (hasTabIndex(element)) {
-        removeTabIndex(element);
-
-        this.selectedIndex = 0;
-        updateTabbable(this.elements, this.selectedIndex);
-      }
-
-      return element;
-    }
-  }, {
-    key: 'handleKeyDown',
-
-
-    /**
-     * Handles key down, and updates the tab index
-     *
-     * @param {KeyboardEvent} event Keyboard event
-     *
-     * @private
-     */
-    value: function handleKeyDown(event) {
-      var lastIndex = this.elements.length - 1;
-
-      switch (event.which) {
-        case 13: // Enter
-        case 32:
-          // Space
-          this.select();
-          event.preventDefault();
-          break;
-        case 35:
-          // End
-          this.selectedIndex = lastIndex;
-          event.preventDefault();
-          break;
-        case 36:
-          // Home
-          this.selectedIndex = 0;
-          event.preventDefault();
-          break;
-        case 37: // Left Arrow
-        case 38:
-          // Up Arrow
-          this.selectedIndex = previousIndex(this.selectedIndex, lastIndex);
-          event.preventDefault();
-          break;
-        case 39: // Right Arrow
-        case 40:
-          // Down Arrow
-          this.selectedIndex = nextIndex(this.selectedIndex, lastIndex);
-          event.preventDefault();
-          break;
-      }
-
-      updateTabbable(this.elements, this.selectedIndex);
-      this.elements[this.selectedIndex].focus();
-    }
-  }, {
-    key: 'forceSelectedIndex',
-
-
-    /**
-     * Sets the selected index, and updates the tab index
-     *
-     * @param {number} index
-     */
-    value: function forceSelectedIndex(index) {
-      this.selectedIndex = index;
-      updateTabbable(this.elements, this.selectedIndex);
-    }
-
-    /**
-     * Triggers 'onSelect' function if it exists
-     */
-
-  }, {
-    key: 'select',
-    value: function select() {
-      if (this.onSelect != undefined) {
-        this.onSelect(this.elements[this.selectedIndex]);
-      }
-    }
-  }]);
-
-  return Keyboard;
-}();
-
-exports.default = Keyboard;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process, Promise, global) {var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;var require;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -796,7 +560,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   4.1.0
+ * @version   3.3.1
  */
 
 (function (global, factory) {
@@ -874,13 +638,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
   // vertx
   function useVertxTimer() {
-    if (typeof vertxNext !== 'undefined') {
-      return function () {
-        vertxNext(flush);
-      };
-    }
-
-    return useSetTimeout();
+    return function () {
+      vertxNext(flush);
+    };
   }
 
   function useMutationObserver() {
@@ -1107,7 +867,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     } else {
       if (then$$ === GET_THEN_ERROR) {
         _reject(promise, GET_THEN_ERROR.error);
-        GET_THEN_ERROR.error = null;
       } else if (then$$ === undefined) {
         fulfill(promise, maybeThenable);
       } else if (isFunction(then$$)) {
@@ -1228,7 +987,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (value === TRY_CATCH_ERROR) {
         failed = true;
         error = value.error;
-        value.error = null;
+        value = null;
       } else {
         succeeded = true;
       }
@@ -1944,6 +1703,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     local.Promise = Promise;
   }
 
+  polyfill();
   // Strange compat..
   Promise.polyfill = polyfill;
   Promise.Promise = Promise;
@@ -1951,10 +1711,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   return Promise;
 });
 //# sourceMappingURL=es6-promise.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(5), __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(13), __webpack_require__(4), __webpack_require__(14)))
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2008,6 +1768,236 @@ var Dictionary = function () {
 }();
 
 exports.default = Dictionary;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _elements = __webpack_require__(2);
+
+var _functional = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @param {HTMLElement} element
+ * @function
+ */
+var addTabIndex = (0, _elements.setAttribute)('tabindex', '0');
+
+/**
+ * @param {HTMLElement} element
+ * @function
+ */
+var removeTabIndex = (0, _elements.removeAttribute)('tabindex');
+
+/**
+ * @param {HTMLElement[]} elements
+ * @function
+ */
+
+var removeTabIndexForAll = (0, _functional.forEach)(removeTabIndex);
+
+/**
+ * @param {HTMLElement} element
+ * @function
+ */
+var hasTabIndex = (0, _elements.hasAttribute)('tabindex');
+
+/**
+ * Sets tabindex and focus on an element, remove it from all others
+ *
+ * @param {HTMLElement[]} elements
+ * @param {number} index
+ */
+var updateTabbable = function updateTabbable(elements, index) {
+  var selectedElement = elements[index];
+
+  if (selectedElement) {
+    removeTabIndexForAll(elements);
+    addTabIndex(selectedElement);
+  }
+};
+
+/**
+ * Sets tabindex on an element, remove it from all others
+ *
+ * @param {number} currentIndex
+ * @param {number} lastIndex
+ *
+ * @return {number}
+ */
+var nextIndex = function nextIndex(currentIndex, lastIndex) {
+  return currentIndex === lastIndex ? 0 : currentIndex + 1;
+};
+
+/**
+ * Sets tabindex on an element, remove it from all others
+ *
+ * @param {number} currentIndex
+ * @param {number} lastIndex
+ *
+ * @return {number}
+ */
+var previousIndex = function previousIndex(currentIndex, lastIndex) {
+  return currentIndex === 0 ? lastIndex : currentIndex - 1;
+};
+
+/**
+ * @class
+ */
+
+var Keyboard = function () {
+  function Keyboard() {
+    _classCallCheck(this, Keyboard);
+
+    /**
+     * @property {HTMLElement[]} elements
+     */
+    this.elements = [];
+    /**
+     * Creates a bound key handler, that can be removed
+     * @property {function} boundHandleKeyDown
+     */
+    this.boundHandleKeyDown = this.handleKeyDown.bind(this);
+    /**
+     * @property {number} selectedIndex
+     */
+    this.selectedIndex = 0;
+  }
+
+  /**
+   * Add keyboard support to an element
+   *
+   * @param {HTMLElement} element
+   *
+   * @public
+   */
+
+
+  _createClass(Keyboard, [{
+    key: 'addElement',
+    value: function addElement(element) {
+      this.elements.push(element);
+      element.addEventListener('keydown', this.boundHandleKeyDown);
+
+      if (this.elements.length === 1) {
+        // if first
+        addTabIndex(element);
+      }
+    }
+  }, {
+    key: 'removeElement',
+
+
+    /**
+     * Add controls to an element
+     *
+     * @param {HTMLElement} element
+     *
+     * @public
+     */
+    value: function removeElement(element) {
+      this.elements = (0, _functional.without)([element], this.elements);
+
+      element.removeEventListener('keydown', this.boundHandleKeyDown);
+
+      // if removed element was selected
+      if (hasTabIndex(element)) {
+        removeTabIndex(element);
+
+        this.selectedIndex = 0;
+        updateTabbable(this.elements, this.selectedIndex);
+      }
+    }
+  }, {
+    key: 'handleKeyDown',
+
+
+    /**
+     * Handles key down, and updates the tab index
+     *
+     * @param {KeyboardEvent} event Keyboard event
+     *
+     * @private
+     */
+    value: function handleKeyDown(event) {
+      var lastIndex = this.elements.length - 1;
+
+      switch (event.which) {
+        case 13: // Enter
+        case 32:
+          // Space
+          this.select();
+          event.preventDefault();
+          break;
+        case 35:
+          // End
+          this.selectedIndex = lastIndex;
+          event.preventDefault();
+          break;
+        case 36:
+          // Home
+          this.selectedIndex = 0;
+          event.preventDefault();
+          break;
+        case 37: // Left Arrow
+        case 38:
+          // Up Arrow
+          this.selectedIndex = previousIndex(this.selectedIndex, lastIndex);
+          event.preventDefault();
+          break;
+        case 39: // Right Arrow
+        case 40:
+          // Down Arrow
+          this.selectedIndex = nextIndex(this.selectedIndex, lastIndex);
+          event.preventDefault();
+          break;
+      }
+
+      updateTabbable(this.elements, this.selectedIndex);
+      this.elements[this.selectedIndex].focus();
+    }
+  }, {
+    key: 'forceSelectedIndex',
+
+
+    /**
+     * Sets the selected index, and updates the tab index
+     *
+     * @param {number} index
+     */
+    value: function forceSelectedIndex(index) {
+      this.selectedIndex = index;
+      updateTabbable(this.elements, this.selectedIndex);
+    }
+
+    /**
+     * Triggers 'onSelect' function if it exists
+     */
+
+  }, {
+    key: 'select',
+    value: function select() {
+      if (this.onSelect != undefined) {
+        this.onSelect(this.elements[this.selectedIndex]);
+      }
+    }
+  }]);
+
+  return Keyboard;
+}();
+
+exports.default = Keyboard;
 
 /***/ }),
 /* 7 */
@@ -2122,14 +2112,6 @@ exports.default = init;
 
 var _collapsible = __webpack_require__(9);
 
-var _keyboard = __webpack_require__(4);
-
-var _keyboard2 = _interopRequireDefault(_keyboard);
-
-var _elements = __webpack_require__(2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /**
  * Initializes a panel
  *
@@ -2137,21 +2119,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * @return {HTMLElement}
  */
 function init(element) {
-  var keyboard = new _keyboard2.default();
-  var togglerSelector = '[role="heading"] [aria-controls][aria-expanded]';
-  keyboard.onSelect = function (el) {
-    return (0, _elements.toggleAttribute)('aria-expanded', el);
-  };
-
-  // collapse/expand on header press
-  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
-    return (0, _elements.toggleVisibility)(expanded, element);
-  }, togglerSelector);
-
-  // Add keyboard support to expand collapse
-  (0, _elements.querySelectorAll)(togglerSelector, element).forEach(function (el) {
-    return keyboard.addElement(el);
-  });
+  (0, _collapsible.initCollapsible)(element);
 }
 
 /***/ }),
@@ -2182,38 +2150,33 @@ var isExpanded = (0, _elements.attributeEquals)("aria-expanded", 'true');
  *
  * @param {HTMLElement} element
  * @param {function} [targetHandler] falls back to toggleVisibility with aria-hidden
- * @param {string} [togglerSelector]
  */
 var initCollapsible = exports.initCollapsible = function initCollapsible(element) {
   var targetHandler = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _elements.toggleVisibility;
-  var togglerSelector = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '[aria-controls][aria-expanded]';
 
   // elements
-  var togglers = (0, _elements.querySelectorAll)(togglerSelector, element);
+  var toggler = element.querySelector('[aria-controls][aria-expanded]');
+  var collapsibleId = toggler.getAttribute('aria-controls');
+  var collapsible = element.querySelector('#' + collapsibleId);
 
-  togglers.forEach(function (toggler) {
-    var collapsibleId = toggler.getAttribute('aria-controls');
-    var collapsible = element.querySelector('#' + collapsibleId);
-
-    // set observer on title for aria-expanded
-    var observer = new MutationObserver(function () {
-      return targetHandler(isExpanded(toggler), collapsible);
-    });
-
-    observer.observe(toggler, {
-      attributes: true,
-      attributeOldValue: true,
-      attributeFilter: ["aria-expanded"]
-    });
-
-    // Set click listener that toggles aria-expanded
-    toggler.addEventListener('click', function () {
-      return (0, _elements.toggleAttribute)("aria-expanded", toggler);
-    });
-
-    // initialize
-    targetHandler(isExpanded(toggler), collapsible);
+  // set observer on title for aria-expanded
+  var observer = new MutationObserver(function () {
+    return targetHandler(isExpanded(toggler), collapsible);
   });
+
+  observer.observe(toggler, {
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ["aria-expanded"]
+  });
+
+  // Set click listener that toggles aria-expanded
+  toggler.addEventListener('click', function () {
+    return (0, _elements.toggleAttribute)("aria-expanded", toggler);
+  });
+
+  // initialize
+  targetHandler(isExpanded(toggler), collapsible);
 };
 
 /***/ }),
@@ -2253,7 +2216,7 @@ var _hubServices = __webpack_require__(21);
 
 var _hubServices2 = _interopRequireDefault(_hubServices);
 
-var _dictionary = __webpack_require__(6);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -2691,7 +2654,7 @@ var _contentTypePlaceholder = __webpack_require__(10);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _dictionary = __webpack_require__(6);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -3285,7 +3248,7 @@ var _contentTypePlaceholder = __webpack_require__(10);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(6);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -4322,7 +4285,7 @@ var HubServices = function () {
 }();
 
 exports.default = HubServices;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 22 */
@@ -4918,7 +4881,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dictionary = __webpack_require__(6);
+var _dictionary = __webpack_require__(5);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -5577,7 +5540,7 @@ exports.default = UploadSection;
   };
   self.fetch.polyfill = true;
 })(typeof self !== 'undefined' ? self : undefined);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
 /* 26 */
@@ -5597,12 +5560,6 @@ exports.default = init;
 var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
-
-var _keyboard = __webpack_require__(4);
-
-var _keyboard2 = _interopRequireDefault(_keyboard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /**
  * @constant
@@ -5657,7 +5614,7 @@ var updateView = function updateView(element, state) {
   list.style.marginLeft = state.position * (100 / state.displayCount) + '%';
 
   // update image sizes
-  (0, _elements.querySelectorAll)('li', element).forEach(function (element) {
+  element.querySelectorAll('li').forEach(function (element) {
     return element.style.width = 100 / totalCount + '%';
   });
 
@@ -5691,24 +5648,18 @@ var onNavigationButtonClick = function onNavigationButtonClick(element, state, b
  *
  * @param {HTMLElement} element
  * @param {HTMLElement} image
- *
  * @function
- * @return {HTMLElement}
  */
-var initImage = (0, _functional.curry)(function (element, keyboard, image) {
+var initImage = (0, _functional.curry)(function (element, image) {
   var targetId = image.getAttribute('aria-controls');
-  var lightBox = element.querySelector('#' + targetId);
+  var target = element.querySelector('#' + targetId);
 
-  lightBox.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'true');
+  target.addEventListener('click', function (event) {
+    return target.setAttribute('aria-hidden', 'true');
   });
   image.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'false');
+    return target.setAttribute('aria-hidden', 'false');
   });
-
-  keyboard.addElement(image);
-
-  return image;
 });
 
 /**
@@ -5719,10 +5670,10 @@ var initImage = (0, _functional.curry)(function (element, keyboard, image) {
  * @param {MutationRecord} record
  * @function
  */
-var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
+var handleDomUpdate = (0, _functional.curry)(function (element, state, record) {
   // on add image run initialization
   if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element, keyboard));
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element));
   }
 
   // update the view
@@ -5742,7 +5693,6 @@ function init(element) {
   // get button html elements
   var nextButton = element.querySelector('.next');
   var prevButton = element.querySelector('.previous');
-  var keyboard = new _keyboard2.default();
 
   /**
    * @typedef {object} ImageScrollerState
@@ -5767,10 +5717,10 @@ function init(element) {
   });
 
   // initialize images
-  (0, _elements.querySelectorAll)('[aria-controls]', element).forEach(initImage(element, keyboard));
+  element.querySelectorAll('[aria-controls]').forEach(initImage(element));
 
   // listen for updates to data-size
-  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state, keyboard)));
+  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state)));
 
   observer.observe(element, {
     subtree: true,
@@ -5804,7 +5754,7 @@ var _functional = __webpack_require__(0);
 
 var _collapsible = __webpack_require__(9);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(6);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -5844,7 +5794,7 @@ var onSelectMenuItem = function onSelectMenuItem(menuItems, element) {
  */
 function init(element) {
   // elements
-  var menuItems = (0, _elements.querySelectorAll)('[role="menuitem"]', element);
+  var menuItems = (0, _elements.nodeListToArray)(element.querySelectorAll('[role="menuitem"]'));
   var toggler = element.querySelector('[aria-controls][aria-expanded]');
   var keyboard = new _keyboard2.default();
 
@@ -5870,8 +5820,8 @@ function init(element) {
   });
 
   // init collapse and open
-  (0, _collapsible.initCollapsible)(element, function (expanded, el) {
-    return (0, _elements.toggleClass)('collapsed', !expanded, el);
+  (0, _collapsible.initCollapsible)(element, function (expanded, element) {
+    return (0, _elements.toggleClass)('collapsed', !expanded, element);
   });
 }
 
@@ -5891,7 +5841,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(6);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -5928,7 +5878,7 @@ var addAriaSelectedObserver = function addAriaSelectedObserver(element, tab) {
   var observer = new MutationObserver(function () {
     var panelId = tab.getAttribute('aria-controls');
     var panel = element.querySelector('#' + panelId);
-    var allPanels = (0, _elements.querySelectorAll)('[role="tabpanel"]', element);
+    var allPanels = element.querySelectorAll('[role="tabpanel"]');
 
     if (isSelected(tab)) {
       hideAll(allPanels);
@@ -5961,7 +5911,7 @@ var selectTab = (0, _functional.curry)(function (allTabs, element) {
  * @param {HTMLElement} element
  */
 function init(element) {
-  var tabs = (0, _elements.querySelectorAll)('[role="tab"]', element);
+  var tabs = (0, _elements.nodeListToArray)(element.querySelectorAll('[role="tab"]'));
   var keyboard = new _keyboard2.default();
 
   // handle enter + space click

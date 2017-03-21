@@ -27,6 +27,27 @@ describe('Search service', () => {
   };
   const search = new SearchService(mockedService);
 
+  describe('searching', () => {
+
+    it('should give the highest weighting to title', (done) => {
+      search.search('multiple choice')
+        .then(cts => {
+          expect(cts[0].machineName).toEqual('H5P.MultiChoice');
+          done();
+        })
+    });
+
+    it('should discard results as the search is refined', (done) => {
+      search.search('question set')
+        .then(cts => {
+          cts.forEach(contentType => {
+            expect(contentType.machineName).not.toEqual('H5P.TrueFalse');
+          });
+          done();
+        })
+    });
+  });
+
   describe('sorting', () => {
 
     it('should filter the most popular content type first (H5P.MultiChoice)', (done) => {
@@ -43,7 +64,7 @@ describe('Search service', () => {
           expect(cts[cts.length - 1].machineName).toEqual('H5P.Boardgame');
           done();
         });
-    })
+    });
 
   });
 
