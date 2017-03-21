@@ -126,7 +126,7 @@ const handleSortType = (firstContentType, secondContentType, sortOrder) => {
  */
 const sortOnRestricted = (firstContentType, secondContentType, sortOrder) => {
   if (!firstContentType.contentType.restricted === !secondContentType.contentType.restricted) {
-    if (sortOrder) {
+    if (sortOrder.length) {
       return handleSortType(firstContentType, secondContentType, sortOrder);
     }
     else {
@@ -171,7 +171,7 @@ const sortOnProperty = (firstContentType, secondContentType, property, sortOrder
     return -1;
   }
   else {
-    if (sortOrder) {
+    if (sortOrder.length) {
       return handleSortType(firstContentType, secondContentType, sortOrder);
     }
     else {

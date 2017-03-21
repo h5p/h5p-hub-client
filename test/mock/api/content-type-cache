@@ -708,7 +708,7 @@
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": false,
-      "restricted": false,
+      "restricted": true,
       "categories": [
         "Multimedia",
         "Questions"
@@ -1296,7 +1296,7 @@
       "patchVersion": "1",
       "installed": true,
       "isUpToDate": true,
-      "restricted": false
+      "restricted": true
     },
     {
       "id": "177",
