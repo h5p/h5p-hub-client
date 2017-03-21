@@ -53,8 +53,8 @@ export default class UploadSection {
           </label>
         </div>
         <div class="upload-instructions">
-          <h2>Select a file to upload and create H5P content from.</h2>
-          <h3>You may start with examples from <a href="https://h5p.org/content-types-and-applications">H5P.org</a>.</h3>
+          <h3>Select a file to upload and create H5P content from.</h3>
+          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>
         </div>
       </div>
     `;
@@ -81,13 +81,16 @@ export default class UploadSection {
     uploadInput.onchange = function () {
 
       self.clearUserMessages();
-      self.renderMessage({
-        type: 'error',
-        title: '.h5p file not found',
-        content: 'You need to upload a file that ends in .h5p'
-      });
-      if (self.getFileExtension(this.value) !== 'h5p') {
+      uploadPath.value = '';
 
+      const fileExtension = self.getFileExtension(this.value);
+
+      if (fileExtension !== '' || fileExtension !== 'h5p') {
+        self.renderMessage({
+          type: 'error',
+          title: '.h5p file not found',
+          content: 'You need to upload a file that ends in .h5p'
+        });
       }
 
       else {
