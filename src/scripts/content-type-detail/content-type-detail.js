@@ -36,6 +36,13 @@ export default class ContentTypeDetail {
   }
 
   /**
+   * Focuses on the title
+   */
+  focus() {
+    this.view.focus();
+  }
+
+  /**
    * Loads a Content Type description
    *
    * @param {string} id

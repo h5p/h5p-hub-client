@@ -2826,12 +2826,19 @@ var ContentTypeDetailView = function () {
         installing: 'Installing'
       };
 
-      var labelBack = 'Back'; // todo translate me
-      var labelClose = 'Close'; // todo translate me
+      // ids
+      var titleId = 'content-type-detail-view-title';
+
+      // create element
       var element = document.createElement('div');
       element.className = 'content-type-detail';
+      element.id = 'content-type-detail';
+      element.setAttribute('role', 'region');
+      element.setAttribute('tabindex', '-1');
+      element.setAttribute('aria-labelledby', titleId);
       element.setAttribute('aria-hidden', 'true');
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 title=\"" + titleId + "\" class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -2851,6 +2858,7 @@ var ContentTypeDetailView = function () {
           message = _ref.message;
 
       (0, _elements.show)(this.installMessage);
+      this.installMessage.querySelector('.title').innerText = message;
       this.installMessage.querySelector('.title').innerText = message;
       this.installMessage.className = "install-message dismissible message simple " + (success ? 'info' : 'error');
     }
@@ -3128,6 +3136,20 @@ var ContentTypeDetailView = function () {
     }
 
     /**
+     * Focuses on the title
+     */
+
+  }, {
+    key: "focus",
+    value: function focus() {
+      var _this4 = this;
+
+      setTimeout(function () {
+        return _this4.rootElement.focus();
+      }, 10);
+    }
+
+    /**
      * Returns the root html element
      * @return {HTMLElement}
      */
@@ -3210,6 +3232,16 @@ var ContentTypeDetail = function () {
     key: 'show',
     value: function show() {
       this.view.show();
+    }
+
+    /**
+     * Focuses on the title
+     */
+
+  }, {
+    key: 'focus',
+    value: function focus() {
+      this.view.focus();
     }
 
     /**
@@ -4160,6 +4192,7 @@ var ContentTypeSection = function () {
       this.contentTypeDetail.show();
       this.view.typeAheadEnabled = false;
       this.view.removeDeactivatedStyleFromMenu();
+      this.contentTypeDetail.focus();
     }
 
     /**
@@ -5809,7 +5842,9 @@ var initImage = (0, _functional.curry)(function (element, keyboard, image) {
 var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
   // on add image run initialization
   if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element, keyboard));
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).filter(function (image) {
+      return image !== null;
+    }).forEach(initImage(element, keyboard));
   }
 
   // update the view

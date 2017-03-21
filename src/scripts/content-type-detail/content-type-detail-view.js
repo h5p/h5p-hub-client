@@ -119,11 +119,18 @@ export default class ContentTypeDetailView {
       installing: 'Installing'
     };
 
-    let labelBack = 'Back'; // todo translate me
-    let labelClose = 'Close'; // todo translate me
+    // ids
+    const titleId = 'content-type-detail-view-title';
+
+    // create element
     const element = document.createElement('div');
     element.className = 'content-type-detail';
+    element.id = 'content-type-detail';
+    element.setAttribute('role', 'region');
+    element.setAttribute('tabindex', '-1');
+    element.setAttribute('aria-labelledby', titleId);
     element.setAttribute('aria-hidden', 'true');
+
     element.innerHTML = `
       <button class="back-button icon-arrow-thick" aria-label="${labels.back}" tabindex="0"></button>
       <div class="container">
@@ -145,7 +152,7 @@ export default class ContentTypeDetailView {
       <hr />
       <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
         <button aria-label="${labels.close}" class="message-close icon-close"></button>
-        <h3 class="title"></h3>
+        <h3 title="${titleId}" class="title"></h3>
       </div>
       <div class="button-bar">
         <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
@@ -174,6 +181,7 @@ export default class ContentTypeDetailView {
    */
   setInstallMessage({ success = true, message }){
     show(this.installMessage);
+    this.installMessage.querySelector('.title').innerText = message;
     this.installMessage.querySelector('.title').innerText = message;
     this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
   }
@@ -392,6 +400,13 @@ export default class ContentTypeDetailView {
    */
   show() {
     show(this.rootElement);
+  }
+
+  /**
+   * Focuses on the title
+   */
+  focus() {
+    setTimeout(() => this.rootElement.focus(), 10);
   }
 
   /**
