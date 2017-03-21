@@ -4934,13 +4934,12 @@ var filterByQuery = (0, _functional.curry)(function (query, contentTypes) {
  *
  * @param {MixedContentType} a First content type
  * @param {MixedContentType} b Second content type
- * @return {int}
+ * @return {number}
  */
 var sortSearchResults = function sortSearchResults(a, b) {
   if (!a.contentType.installed && b.contentType.installed) {
     return 1;
   }
-
   if (a.contentType.installed && !b.contentType.installed) {
     return -1;
   } else if (b.score !== a.score) {
@@ -4954,9 +4953,9 @@ var sortSearchResults = function sortSearchResults(a, b) {
  * Calculates weighting for different search terms based
  * on existence of substrings
  *
- * @param  {string} query
- * @param  {Object} contentType
- * @return {int}
+ * @param  {string}       query
+ * @param  {ContentType}  contentType
+ * @return {number}
  */
 var getSearchScore = function getSearchScore(query, contentType) {
   var queries = query.split(' ').filter(function (query) {
@@ -4974,11 +4973,11 @@ var getSearchScore = function getSearchScore(query, contentType) {
 };
 
 /**
- * Generates a relevance score for a single string
+ * Generates a score for a query based on a content type's properties
  *
- * @param  {type} query       description
- * @param  {type} contentType description
- * @return {type}             description
+ * @param  {string}       query
+ * @param  {ContentType}  contentType
+ * @return {number}
  */
 var getScoreForEachQuery = function getScoreForEachQuery(query, contentType) {
   query = query.trim();
@@ -5034,9 +5033,9 @@ var arrayHasSubString = function arrayHasSubString(subString, arr) {
  * Filters an array of content type objects based
  * on an order specified by a array of machine names
  *
- * @param  {Object[]} contentTypes
- * @param  {string[]} machineNames
- * @return {Object[]}              filtered content types
+ * @param  {ContentType[]} contentTypes
+ * @param  {string[]}     machineNames
+ * @return {ContentType[]}              filtered content types
  */
 var sortContentTypesByMachineName = function sortContentTypesByMachineName(contentTypes, machineNames) {
   var result = [];

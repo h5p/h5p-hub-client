@@ -220,21 +220,18 @@ const filterByQuery = curry(function(query, contentTypes) {
  *
  * @param {MixedContentType} a First content type
  * @param {MixedContentType} b Second content type
- * @return {int}
+ * @return {number}
  */
 const sortSearchResults = (a,b) => {
   if (!a.contentType.installed && b.contentType.installed) {
     return 1;
   }
-
   if (a.contentType.installed && !b.contentType.installed) {
     return -1;
   }
-
   else if (b.score !== a.score) {
     return b.score - a.score;
   }
-
   else {
     return b.contentType.popularity - a.contentType.popularity;
   }
@@ -244,9 +241,9 @@ const sortSearchResults = (a,b) => {
  * Calculates weighting for different search terms based
  * on existence of substrings
  *
- * @param  {string} query
- * @param  {Object} contentType
- * @return {int}
+ * @param  {string}       query
+ * @param  {ContentType}  contentType
+ * @return {number}
  */
  const getSearchScore = function(query, contentType) {
    let queries = query.split(' ').filter(query => query !== '');
@@ -259,11 +256,11 @@ const sortSearchResults = (a,b) => {
 
 
 /**
- * Generates a relevance score for a single string
+ * Generates a score for a query based on a content type's properties
  *
- * @param  {type} query       description
- * @param  {type} contentType description
- * @return {type}             description
+ * @param  {string}       query
+ * @param  {ContentType}  contentType
+ * @return {number}
  */
 const getScoreForEachQuery = function (query, contentType) {
    query = query.trim();
@@ -322,9 +319,9 @@ const arrayHasSubString = function(subString, arr) {
  * Filters an array of content type objects based
  * on an order specified by a array of machine names
  *
- * @param  {Object[]} contentTypes
- * @param  {string[]} machineNames
- * @return {Object[]}              filtered content types
+ * @param  {ContentType[]} contentTypes
+ * @param  {string[]}     machineNames
+ * @return {ContentType[]}              filtered content types
  */
 const sortContentTypesByMachineName = function(contentTypes, machineNames) {
   let result = [];
