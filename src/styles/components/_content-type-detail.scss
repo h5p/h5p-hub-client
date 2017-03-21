@@ -67,13 +67,8 @@
     }
 
     .button-bar {
-      overflow: auto;
       margin: ($gutter * 2) 0;
-
-      .button {
-        float: right;
-        position: relative;
-      }
+      text-align: right;
     }
 
     .back-button {
