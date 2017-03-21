@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeChild, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, removeChild, hide, show } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -34,7 +34,32 @@ const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
  */
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
 
+/**
+ * Hides all elements in an array
+ *
+ * @param {HTMLElement[]} elements
+ *
+ * @function
+ */
 const hideAll = forEach(hide);
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const disable = setAttribute('disabled', '');
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const enable = removeAttribute('disabled');
 
 /**
  * @class
@@ -68,7 +93,7 @@ export default class ContentTypeDetailView {
 
     // hide message on close button click
     let installMessageClose = this.installMessage.querySelector('.message-close');
-    installMessageClose.addEventListener('click', () => hide(this.installMessage));
+    installMessageClose.addEventListener('click', () => this.resetInstallMessage());
 
     // init interactive elements
     initPanel(this.panel);
@@ -86,12 +111,21 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
+    const labels = { // todo translate me
+      back: 'Back',
+      close: 'Close',
+      use: 'Use',
+      install: 'Install',
+      installing: 'Installing'
+    };
+
     let labelBack = 'Back'; // todo translate me
+    let labelClose = 'Close'; // todo translate me
     const element = document.createElement('div');
     element.className = 'content-type-detail';
     element.setAttribute('aria-hidden', 'true');
     element.innerHTML = `
-      <button class="back-button icon-arrow-thick" aria-label="${labelBack}" tabindex="0"></button>
+      <button class="back-button icon-arrow-thick" aria-label="${labels.back}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
@@ -102,21 +136,21 @@ export default class ContentTypeDetailView {
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <span class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
-        <span class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
+        <button class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
-      <div class="install-message message dismissible simple info" aria-hidden="true">
-        <div class="message-close icon-close"></div>
-        <h3></h3>
+      <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
+        <button aria-label="${labels.close}" class="message-close icon-close"></button>
+        <h3 class="title"></h3>
       </div>
       <div class="button-bar">
-        <span class="button button-primary button-use" aria-hidden="false" data-id="">Use</span>
-        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</span>
-        <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
+        <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
+        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${labels.installing}</button>
       </div>
       <dl class="panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
@@ -139,9 +173,20 @@ export default class ContentTypeDetailView {
    * @param {string} message
    */
   setInstallMessage({ success = true, message }){
-    this.installMessage.querySelector('h3').innerText = message;
-    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
     show(this.installMessage);
+    this.installMessage.querySelector('.title').innerText = message;
+    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
+  }
+
+  /**
+   * Sets a message on install
+   *
+   * @param {boolean} success
+   * @param {string} message
+   */
+  resetInstallMessage(){
+    hide(this.installMessage);
+    this.installMessage.querySelector('.title').innerText = '';
   }
 
   /**
@@ -311,8 +356,14 @@ export default class ContentTypeDetailView {
    * @param {boolean} restricted True if content type is restricted
    */
   setIsRestricted(restricted) {
-    this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
-    this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
+    if(restricted) {
+      disable(this.useButton);
+      disable(this.installButton);
+    }
+    else {
+      enable(this.useButton);
+      enable(this.installButton);
+    }
   }
 
   /**

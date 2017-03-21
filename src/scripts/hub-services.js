@@ -46,20 +46,6 @@ export default class HubServices {
   }
 
   /**
-   *
-   * @param  {ContentType[]|ErrorMessage} response
-   * @return {Promise<ContentType[]|ErrorMessage>}
-   */
-  isValid(response) {
-    if (response.messageCode) {
-      return Promise.reject(response);
-    }
-    else {
-      return Promise.resolve(response);
-    }
-  }
-
-  /**
    * Returns a list of content types
    *
    * @return {Promise.<ContentType[]>}
@@ -98,7 +84,9 @@ export default class HubServices {
       method: 'POST',
       credentials: 'include',
       body: ''
-    }).then(result => result.json());
+    })
+     .then(result => result.json())
+     .then(this.rejectIfNotSuccess);
   }
 
 
@@ -109,6 +97,7 @@ export default class HubServices {
       credentials: 'include'
     })
       .then(result => result.json())
+      .then(this.rejectIfNotSuccess)
       .then(result => {
         return new Promise(function(resolve, reject) {
           setTimeout(function() {
@@ -131,5 +120,31 @@ export default class HubServices {
       credentials: 'include',
       body: formData
     }).then(result => result.json());
+  }
+
+  /**
+   *
+   * @param  {ContentType[]|ErrorMessage} response
+   *
+   * @return {Promise<ContentType[]|ErrorMessage>}
+   */
+  isValid(response) {
+    if (response.messageCode) {
+      return Promise.reject(response);
+    }
+    else {
+      return Promise.resolve(response);
+    }
+  }
+
+  /**
+   * Rejects the Promise if response.success != true
+   *
+   * @param {object} response
+   *
+   * @return {Promise<ContentType[]|ErrorMessage>}
+   */
+  rejectIfNotSuccess(response) {
+    return Promise[response.success ? 'resolve' : 'reject'](response);
   }
 }

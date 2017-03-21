@@ -58,29 +58,27 @@ export default class ContentTypeDetail {
      // set spinner
      this.view.showButtonBySelector('.button-installing');
 
-     return this.services.contentType(id)
-       .then(contentType => this.services.installContentType(contentType.machineName))
-       .then(contentType => {
-         this.view.setIsInstalled(true);
-         this.view.showButtonBySelector('.button-get');
-         this.view.setInstallMessage({
-           message: `${contentType.title} successfully installed!`,
-         });
-       })
-       .catch(error => {
-         this.view.showButtonBySelector('.button-install');
+     return this.services.installContentType(id).then(response => {
+        this.view.setIsInstalled(true);
+        this.view.showButtonBySelector('.button-get');
+        this.view.setInstallMessage({
+          message: `${id} successfully installed!`,
+        });
+      })
+      .catch(error => {
+        this.view.showButtonBySelector('.button-install');
 
-         // print error message
-         let errorMessage = (error.errorCode) ? error : {
-           success: false,
-           errorCode: 'RESPONSE_FAILED',
-           message: `${id} could not be installed! Contact your administrator.`,
-         };
-         this.view.setInstallMessage(errorMessage);
+        // print error message
+        let errorMessage = (error.errorCode) ? error : {
+          success: false,
+          errorCode: 'RESPONSE_FAILED',
+          message: `${id} could not be installed! Contact your administrator.`,
+        };
+        this.view.setInstallMessage(errorMessage);
 
-         // log whole error message to console
-         console.error('Installation error', error);
-       });
+        // log whole error message to console
+        console.error('Installation error', error);
+      });
    }
 
   /**

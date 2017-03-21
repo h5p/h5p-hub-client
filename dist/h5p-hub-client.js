@@ -2730,7 +2730,32 @@ var isEmpty = function isEmpty(text) {
   return typeof text === 'string' && text.length === 0;
 };
 
+/**
+ * Hides all elements in an array
+ *
+ * @param {HTMLElement[]} elements
+ *
+ * @function
+ */
 var hideAll = (0, _functional.forEach)(_elements.hide);
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+var disable = (0, _elements.setAttribute)('disabled', '');
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+var enable = (0, _elements.removeAttribute)('disabled');
 
 /**
  * @class
@@ -2770,7 +2795,7 @@ var ContentTypeDetailView = function () {
     // hide message on close button click
     var installMessageClose = this.installMessage.querySelector('.message-close');
     installMessageClose.addEventListener('click', function () {
-      return (0, _elements.hide)(_this.installMessage);
+      return _this.resetInstallMessage();
     });
 
     // init interactive elements
@@ -2793,11 +2818,20 @@ var ContentTypeDetailView = function () {
   _createClass(ContentTypeDetailView, [{
     key: "createView",
     value: function createView() {
+      var labels = { // todo translate me
+        back: 'Back',
+        close: 'Close',
+        use: 'Use',
+        install: 'Install',
+        installing: 'Installing'
+      };
+
       var labelBack = 'Back'; // todo translate me
+      var labelClose = 'Close'; // todo translate me
       var element = document.createElement('div');
       element.className = 'content-type-detail';
       element.setAttribute('aria-hidden', 'true');
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labelBack + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <span class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <span class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></span>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <div class=\"message-close icon-close\"></div>\n        <h3></h3>\n      </div>\n      <div class=\"button-bar\">\n        <span class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">Use</span>\n        <span class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</span>\n        <span class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>Installing</span>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -2816,9 +2850,23 @@ var ContentTypeDetailView = function () {
           success = _ref$success === undefined ? true : _ref$success,
           message = _ref.message;
 
-      this.installMessage.querySelector('h3').innerText = message;
-      this.installMessage.className = "install-message dismissible message simple " + (success ? 'info' : 'error');
       (0, _elements.show)(this.installMessage);
+      this.installMessage.querySelector('.title').innerText = message;
+      this.installMessage.className = "install-message dismissible message simple " + (success ? 'info' : 'error');
+    }
+
+    /**
+     * Sets a message on install
+     *
+     * @param {boolean} success
+     * @param {string} message
+     */
+
+  }, {
+    key: "resetInstallMessage",
+    value: function resetInstallMessage() {
+      (0, _elements.hide)(this.installMessage);
+      this.installMessage.querySelector('.title').innerText = '';
     }
 
     /**
@@ -3033,8 +3081,13 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setIsRestricted",
     value: function setIsRestricted(restricted) {
-      this.useButton.setAttribute('disabled', restricted ? 'disabled' : '');
-      this.installButton.setAttribute('disabled', restricted ? 'disabled' : '');
+      if (restricted) {
+        disable(this.useButton);
+        disable(this.installButton);
+      } else {
+        enable(this.useButton);
+        enable(this.installButton);
+      }
     }
 
     /**
@@ -3191,13 +3244,11 @@ var ContentTypeDetail = function () {
       // set spinner
       this.view.showButtonBySelector('.button-installing');
 
-      return this.services.contentType(id).then(function (contentType) {
-        return _this.services.installContentType(contentType.machineName);
-      }).then(function (contentType) {
+      return this.services.installContentType(id).then(function (response) {
         _this.view.setIsInstalled(true);
         _this.view.showButtonBySelector('.button-get');
         _this.view.setInstallMessage({
-          message: contentType.title + ' successfully installed!'
+          message: id + ' successfully installed!'
         });
       }).catch(function (error) {
         _this.view.showButtonBySelector('.button-install');
@@ -4211,22 +4262,6 @@ var HubServices = function () {
     }
 
     /**
-     *
-     * @param  {ContentType[]|ErrorMessage} response
-     * @return {Promise<ContentType[]|ErrorMessage>}
-     */
-
-  }, {
-    key: 'isValid',
-    value: function isValid(response) {
-      if (response.messageCode) {
-        return Promise.reject(response);
-      } else {
-        return Promise.resolve(response);
-      }
-    }
-
-    /**
      * Returns a list of content types
      *
      * @return {Promise.<ContentType[]>}
@@ -4278,7 +4313,7 @@ var HubServices = function () {
         body: ''
       }).then(function (result) {
         return result.json();
-      });
+      }).then(this.rejectIfNotSuccess);
     }
 
     // for testing with error
@@ -4288,6 +4323,7 @@ var HubServices = function () {
         credentials: 'include'
       })
         .then(result => result.json())
+        .then(this.rejectIfNotSuccess)
         .then(result => {
           return new Promise(function(resolve, reject) {
             setTimeout(function() {
@@ -4315,6 +4351,37 @@ var HubServices = function () {
       }).then(function (result) {
         return result.json();
       });
+    }
+
+    /**
+     *
+     * @param  {ContentType[]|ErrorMessage} response
+     *
+     * @return {Promise<ContentType[]|ErrorMessage>}
+     */
+
+  }, {
+    key: 'isValid',
+    value: function isValid(response) {
+      if (response.messageCode) {
+        return Promise.reject(response);
+      } else {
+        return Promise.resolve(response);
+      }
+    }
+
+    /**
+     * Rejects the Promise if response.success != true
+     *
+     * @param {object} response
+     *
+     * @return {Promise<ContentType[]|ErrorMessage>}
+     */
+
+  }, {
+    key: 'rejectIfNotSuccess',
+    value: function rejectIfNotSuccess(response) {
+      return Promise[response.success ? 'resolve' : 'reject'](response);
     }
   }]);
 
