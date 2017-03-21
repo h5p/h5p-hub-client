@@ -76,22 +76,10 @@ export default class ContentTypeSection {
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
-    this.initContentTypeList();
-
     // add menu items
     Object.keys(ContentTypeSectionTabs)
       .forEach(tab => this.view.addMenuItem(ContentTypeSectionTabs[tab]));
     this.view.initMenu();
-  }
-
-  /**
-   * Initiates the content type list with a search
-   */
-  initContentTypeList() {
-    // initialize by search
-    this.searchService.search("")
-      .then(contentTypes => this.contentTypeList.update(contentTypes))
-      .catch(error => this.handleError(error));
   }
 
   /**
@@ -139,7 +127,7 @@ export default class ContentTypeSection {
         break;
 
       case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
-        this.searchService.filterOutRestricted()
+        this.searchService.sortOnRecent()
           .then(filteredContentTypes => this.contentTypeList.update(filteredContentTypes));
         break;
 

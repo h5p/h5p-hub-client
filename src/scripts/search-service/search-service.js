@@ -47,6 +47,19 @@ export default class SearchService {
   }
 
   /**
+   * Returns a list of content type objects sorted
+   * on most recently used
+   *
+   * @return {ContentType[]}  Content Types
+   */
+  sortOnRecent() {
+    return Promise.all([this.services.contentTypes(), this.services.recentlyUsed()])
+      .then(cacheData => {
+        return sortContentTypesByMachineName(cacheData[0], cacheData[1]);
+      })
+  }
+
+  /**
    * Filter out restricted if it is defined and false
    *
    * @return {Promise.<ContentType[]>}
@@ -304,3 +317,27 @@ const arrayHasSubString = function(subString, arr) {
 
   return arr.some(string => hasSubString(subString, string));
 };
+
+/**
+ * Filters an array of content type objects based
+ * on an order specified by a array of machine names
+ *
+ * @param  {Object[]} contentTypes
+ * @param  {string[]} machineNames
+ * @return {Object[]}              filtered content types
+ */
+const sortContentTypesByMachineName = function(contentTypes, machineNames) {
+  let result = [];
+
+  machineNames.forEach(machineName => {
+    let found = false;
+    contentTypes.forEach(contentType => {
+      if(!found && contentType.machineName == machineName) {
+        result.push(contentType);
+        found = true;
+      }
+    })
+  })
+
+  return result;
+}
