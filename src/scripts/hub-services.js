@@ -41,8 +41,7 @@ export default class HubServices {
       credentials: 'include'
     })
     .then(result => result.json())
-    .then(this.isValid)
-    .then(json => json.libraries);
+    .then(this.isValid);
   }
 
   /**
@@ -51,7 +50,16 @@ export default class HubServices {
    * @return {Promise.<ContentType[]>}
    */
   contentTypes() {
-    return this.cachedContentTypes;
+    return this.cachedContentTypes.then(json => json.libraries);
+  }
+
+  /**
+   * Returns a list of H5P Machine names ordered by most recently used
+   *
+   * @return {string[]}  Machine names
+   */
+  recentlyUsed() {
+    return this.cachedContentTypes.then(json => json.recentlyUsed);
   }
 
   /**

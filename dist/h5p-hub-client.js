@@ -4093,8 +4093,6 @@ var ContentTypeSection = function () {
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
-    this.initContentTypeList();
-
     // add menu items
     Object.keys(ContentTypeSectionTabs).forEach(function (tab) {
       return _this.view.addMenuItem(ContentTypeSectionTabs[tab]);
@@ -4103,28 +4101,11 @@ var ContentTypeSection = function () {
   }
 
   /**
-   * Initiates the content type list with a search
+   * Handle errors communicating with HUB
    */
 
 
   _createClass(ContentTypeSection, [{
-    key: "initContentTypeList",
-    value: function initContentTypeList() {
-      var _this2 = this;
-
-      // initialize by search
-      this.searchService.search("").then(function (contentTypes) {
-        return _this2.contentTypeList.update(contentTypes);
-      }).catch(function (error) {
-        return _this2.handleError(error);
-      });
-    }
-
-    /**
-     * Handle errors communicating with HUB
-     */
-
-  }, {
     key: "handleError",
     value: function handleError(error) {
       // TODO - use translation system:
@@ -4144,13 +4125,13 @@ var ContentTypeSection = function () {
   }, {
     key: "search",
     value: function search(_ref) {
-      var _this3 = this;
+      var _this2 = this;
 
       var query = _ref.query,
           keyCode = _ref.keyCode;
 
       this.searchService.search(query).then(function (contentTypes) {
-        return _this3.contentTypeList.update(contentTypes);
+        return _this2.contentTypeList.update(contentTypes);
       });
     }
 
@@ -4176,25 +4157,25 @@ var ContentTypeSection = function () {
   }, {
     key: "applySearchFilter",
     value: function applySearchFilter(e) {
-      var _this4 = this;
+      var _this3 = this;
 
       switch (e.choice) {
         case ContentTypeSectionTabs.ALL.eventName:
           this.searchService.sortOn('restricted').then(function (sortedContentTypes) {
-            return _this4.contentTypeList.update(sortedContentTypes);
+            return _this3.contentTypeList.update(sortedContentTypes);
           });
           break;
 
         case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
-          this.searchService.filterOutRestricted().then(function (filteredContentTypes) {
-            return _this4.contentTypeList.update(filteredContentTypes);
+          this.searchService.sortOnRecent().then(function (filteredContentTypes) {
+            return _this3.contentTypeList.update(filteredContentTypes);
           });
           break;
 
         case ContentTypeSectionTabs.MOST_POPULAR.eventName:
           var sortOrder = ['restricted', 'popularity'];
           this.searchService.sortOn(sortOrder).then(function (sortedContentTypes) {
-            return _this4.contentTypeList.update(sortedContentTypes);
+            return _this3.contentTypeList.update(sortedContentTypes);
           });
           break;
       }
@@ -4334,9 +4315,7 @@ var HubServices = function () {
         credentials: 'include'
       }).then(function (result) {
         return result.json();
-      }).then(this.isValid).then(function (json) {
-        return json.libraries;
-      });
+      }).then(this.isValid);
     }
 
     /**
@@ -4348,7 +4327,23 @@ var HubServices = function () {
   }, {
     key: 'contentTypes',
     value: function contentTypes() {
-      return this.cachedContentTypes;
+      return this.cachedContentTypes.then(function (json) {
+        return json.libraries;
+      });
+    }
+
+    /**
+     * Returns a list of H5P Machine names ordered by most recently used
+     *
+     * @return {string[]}  Machine names
+     */
+
+  }, {
+    key: 'recentlyUsed',
+    value: function recentlyUsed() {
+      return this.cachedContentTypes.then(function (json) {
+        return json.recentlyUsed;
+      });
     }
 
     /**
@@ -4732,7 +4727,7 @@ exports.default = HubView;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Promise) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -4797,6 +4792,21 @@ var SearchService = function () {
     value: function sortOn(sortOrder) {
       return this.services.contentTypes().then(function (contentTypes) {
         return multiSort(contentTypes, sortOrder);
+      });
+    }
+
+    /**
+     * Returns a list of content type objects sorted
+     * on most recently used
+     *
+     * @return {ContentType[]}  Content Types
+     */
+
+  }, {
+    key: 'sortOnRecent',
+    value: function sortOnRecent() {
+      return Promise.all([this.services.contentTypes(), this.services.recentlyUsed()]).then(function (cacheData) {
+        return sortContentTypesByMachineName(cacheData[0], cacheData[1]);
       });
     }
 
@@ -4885,7 +4895,7 @@ var handleSortType = function handleSortType(firstContentType, secondContentType
  */
 var sortOnRestricted = function sortOnRestricted(firstContentType, secondContentType, sortOrder) {
   if (!firstContentType.contentType.restricted === !secondContentType.contentType.restricted) {
-    if (sortOrder) {
+    if (sortOrder.length) {
       return handleSortType(firstContentType, secondContentType, sortOrder);
     } else {
       return 0;
@@ -4925,7 +4935,7 @@ var sortOnProperty = function sortOnProperty(firstContentType, secondContentType
   } else if (firstContentType.contentType[property] < secondContentType.contentType[property]) {
     return -1;
   } else {
-    if (sortOrder) {
+    if (sortOrder.length) {
       return handleSortType(firstContentType, secondContentType, sortOrder);
     } else {
       return 0;
@@ -5059,6 +5069,31 @@ var arrayHasSubString = function arrayHasSubString(subString, arr) {
     return hasSubString(subString, string);
   });
 };
+
+/**
+ * Filters an array of content type objects based
+ * on an order specified by a array of machine names
+ *
+ * @param  {Object[]} contentTypes
+ * @param  {string[]} machineNames
+ * @return {Object[]}              filtered content types
+ */
+var sortContentTypesByMachineName = function sortContentTypesByMachineName(contentTypes, machineNames) {
+  var result = [];
+
+  machineNames.forEach(function (machineName) {
+    var found = false;
+    contentTypes.forEach(function (contentType) {
+      if (!found && contentType.machineName == machineName) {
+        result.push(contentType);
+        found = true;
+      }
+    });
+  });
+
+  return result;
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 24 */
