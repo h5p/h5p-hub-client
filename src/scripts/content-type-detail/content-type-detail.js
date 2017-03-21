@@ -102,7 +102,7 @@ export default class ContentTypeDetail {
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicence(contentType.license);
+    this.view.setLicence(contentType.license, contentType.owner);
     this.view.setIsRestricted(contentType.restricted);
 
     // update carousel
