@@ -136,7 +136,7 @@ export default class ContentTypeDetailView {
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
-          <h2 class="title"></h2>
+          <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
           <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
@@ -152,7 +152,7 @@ export default class ContentTypeDetailView {
       <hr />
       <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
         <button aria-label="${labels.close}" class="message-close icon-close"></button>
-        <h3 title="${titleId}" class="title"></h3>
+        <h3 class="title"></h3>
       </div>
       <div class="button-bar">
         <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
@@ -319,8 +319,8 @@ export default class ContentTypeDetailView {
   setLicence(type, owner) {
     if(type){
       if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-        <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
+        this.licencePanelBody.querySelector('.panel-body').innerText = `
+        <p>Copyright ${(new Date()).getFullYear()} &lt;COPYRIGHT HOLDER&gt;</p>
 
         <p>Permission is hereby granted, free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal

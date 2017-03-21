@@ -1,5 +1,5 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, removeChild } from "utils/elements";
+import { setAttribute, getAttribute, removeChild, querySelector } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
@@ -60,6 +60,17 @@ export default class ContentTypeListView {
    */
   show() {
     show(this.rootElement);
+  }
+
+  /**
+   * Focuses on the previously selected element
+   */
+  focus() {
+    const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
+
+    if(selectedElement) {
+      selectedElement.focus();
+    }
   }
 
   /**

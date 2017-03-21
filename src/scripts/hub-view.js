@@ -44,7 +44,8 @@ export default class HubView {
 
     // select dynamic elements
     this.panel = this.rootElement.querySelector('.panel');
-    this.title = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.toggler = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.selectedName = this.rootElement.querySelector('.h5p-hub-selected');
     this.tablist = this.rootElement.querySelector('[role="tablist"]');
     this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
 
@@ -52,14 +53,14 @@ export default class HubView {
     initPanel(this.panel);
 
     // relay events
-    relayClickEventAs('panel-change', this, this.title);
+    relayClickEventAs('panel-change', this, this.toggler);
   }
 
   /**
    * Closes the panel
    */
   closePanel() {
-    this.title.setAttribute('aria-expanded', 'false')
+    this.toggler.setAttribute('aria-expanded', 'false')
   }
 
   /**
@@ -68,7 +69,7 @@ export default class HubView {
    * @param {string} title
    */
   setTitle(title) {
-    this.title.innerHTML = title;
+    this.selectedName.innerText = title;
   }
 
   /**
@@ -80,7 +81,7 @@ export default class HubView {
    */
   createPanel({title = '', sectionId = 'content-types', expanded = false}) {
     const labels = {
-      h5pHub: 'H5P Hub'
+      h5pHub: 'H5P Hub.'
     };
     const element = document.createElement('div');
     element.className += `h5p-hub h5p-sdk`;
@@ -88,7 +89,10 @@ export default class HubView {
     element.innerHTML = `
       <div class="panel">
         <div aria-level="1" role="heading">
-          <a role="button" aria-label="${labels.h5pHub}" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">${title}</a>
+          <span role="button" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">
+          <span class="h5p-hub-description">${labels.h5pHub}</span>
+          <span class="h5p-hub-selected"></span>
+        </span>
         </div>
         <div id="panel-body-${sectionId}" role="region" aria-hidden="${!expanded}">
           <div class="tab-panel">
