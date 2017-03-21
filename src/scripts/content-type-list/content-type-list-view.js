@@ -95,6 +95,10 @@ export default class ContentTypeListView {
    * @return {HTMLElement}
    */
   createContentTypeRow(contentType, scope) {
+    const labels = {
+      icon: 'Icon'
+    };
+
     // create ids
     const index = this.rootElement.querySelectorAll('li').length;
     const contentTypeRowTitleId = `content-type-row-title-${index}`;
@@ -118,7 +122,7 @@ export default class ContentTypeListView {
 
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${image}" />
+      <img class="img-responsive" src="${image}" alt="${title} ${labels.icon}" />
       
       <div class="content-type-row-info">
         <h4 id="${contentTypeRowTitleId}">${title}</h4>

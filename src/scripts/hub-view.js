@@ -79,13 +79,16 @@ export default class HubView {
    * @param {boolean} expanded
    */
   createPanel({title = '', sectionId = 'content-types', expanded = false}) {
+    const labels = {
+      h5pHub: 'H5P Hub'
+    };
     const element = document.createElement('div');
     element.className += `h5p-hub h5p-sdk`;
 
     element.innerHTML = `
       <div class="panel">
         <div aria-level="1" role="heading">
-          <a href="#" clasS="icon-hub-icon" role="button" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">${title}</a>
+          <a role="button" aria-label="${labels.h5pHub}" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">${title}</a>
         </div>
         <div id="panel-body-${sectionId}" role="region" aria-hidden="${!expanded}">
           <div class="tab-panel">
@@ -138,13 +141,21 @@ export default class HubView {
     const tabPanel = document.createElement('div');
     tabPanel.id = tabPanelId;
     tabPanel.className += 'tabpanel';
-    tabPanel.setAttribute('aria-lablledby', tabId);
+    tabPanel.setAttribute('aria-labelledby', tabId);
     tabPanel.setAttribute('aria-hidden', (!selected).toString());
     tabPanel.setAttribute('role', 'tabpanel');
     tabPanel.appendChild(content);
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabPanel);
+
+    // fires the tab-change event when selected is created
+    if(selected) {
+      this.trigger('tab-change', {
+        element: tab,
+        id: id
+      });
+    }
   }
 
   /**

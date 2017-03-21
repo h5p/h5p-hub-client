@@ -18,9 +18,7 @@
 }
 
 @mixin section($color) {
-  &[open] {
-    border: 1px solid $color;
-  }
+  border: 1px solid $color;
 
   [role="tab"][aria-selected="true"] ~ span{
     background: $color;

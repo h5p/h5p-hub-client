@@ -100,7 +100,7 @@ export default class ContentBrowserView {
         </nav>
 
         <div class="input-group" role="search">
-          <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
+          <input id="hub-search-bar" class="form-control form-control-rounded" type="text" aria-label="${searchText}" placeholder="${searchText}" />
           <div class="input-group-addon icon-search"></div>
         </div>
       </div>`;
