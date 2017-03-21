@@ -646,7 +646,6 @@ var Keyboard = function () {
      * @property {function} boundHandleKeyDown
      */
     this.boundHandleKeyDown = this.handleKeyDown.bind(this);
-    this.boundHandleFocus = this.handleFocus.bind(this);
     /**
      * @property {number} selectedIndex
      */
@@ -668,7 +667,6 @@ var Keyboard = function () {
     value: function addElement(element) {
       this.elements.push(element);
       element.addEventListener('keydown', this.boundHandleKeyDown);
-      element.addEventListener('focus', this.boundHandleFocus);
 
       if (this.elements.length === 1) {
         // if first
@@ -693,7 +691,6 @@ var Keyboard = function () {
       this.elements = (0, _functional.without)([element], this.elements);
 
       element.removeEventListener('keydown', this.boundHandleKeyDown);
-      element.removeEventListener('focus', this.boundHandleFocus);
 
       // if removed element was selected
       if (hasTabIndex(element)) {
@@ -754,26 +751,14 @@ var Keyboard = function () {
       this.elements[this.selectedIndex].focus();
     }
   }, {
-    key: 'handleFocus',
+    key: 'forceSelectedIndex',
 
-
-    /**
-     * Updates the selected index with the focused element
-     *
-     * @param {FocusEvent} event
-     */
-    value: function handleFocus(event) {
-      this.selectedIndex = this.elements.indexOf(event.srcElement);
-    }
 
     /**
      * Sets the selected index, and updates the tab index
      *
      * @param {number} index
      */
-
-  }, {
-    key: 'forceSelectedIndex',
     value: function forceSelectedIndex(index) {
       this.selectedIndex = index;
       updateTabbable(this.elements, this.selectedIndex);
@@ -811,7 +796,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
  * @copyright Copyright (c) 2014 Yehuda Katz, Tom Dale, Stefan Penner and contributors (Conversion to ES6 API by Jake Archibald)
  * @license   Licensed under MIT license
  *            See https://raw.githubusercontent.com/stefanpenner/es6-promise/master/LICENSE
- * @version   4.1.0
+ * @version   3.3.1
  */
 
 (function (global, factory) {
@@ -889,13 +874,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
   // vertx
   function useVertxTimer() {
-    if (typeof vertxNext !== 'undefined') {
-      return function () {
-        vertxNext(flush);
-      };
-    }
-
-    return useSetTimeout();
+    return function () {
+      vertxNext(flush);
+    };
   }
 
   function useMutationObserver() {
@@ -1122,7 +1103,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     } else {
       if (then$$ === GET_THEN_ERROR) {
         _reject(promise, GET_THEN_ERROR.error);
-        GET_THEN_ERROR.error = null;
       } else if (then$$ === undefined) {
         fulfill(promise, maybeThenable);
       } else if (isFunction(then$$)) {
@@ -1243,7 +1223,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
       if (value === TRY_CATCH_ERROR) {
         failed = true;
         error = value.error;
-        value.error = null;
+        value = null;
       } else {
         succeeded = true;
       }
@@ -1959,6 +1939,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     local.Promise = Promise;
   }
 
+  polyfill();
   // Strange compat..
   Promise.polyfill = polyfill;
   Promise.Promise = Promise;
@@ -4357,7 +4338,7 @@ var HubServices = function () {
   }, {
     key: 'contentType',
     value: function contentType(machineName) {
-      return this.cachedContentTypes.then(function (contentTypes) {
+      return this.contentTypes().then(function (contentTypes) {
         return contentTypes.filter(function (contentType) {
           return contentType.machineName === machineName;
         })[0];
@@ -5918,9 +5899,7 @@ var initImage = (0, _functional.curry)(function (element, keyboard, image) {
 var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
   // on add image run initialization
   if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).filter(function (image) {
-      return image !== null;
-    }).forEach(initImage(element, keyboard));
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element, keyboard));
   }
 
   // update the view
