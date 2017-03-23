@@ -15,7 +15,7 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
 /**
  * @constant {number}
  */
-const MAX_TEXT_SIZE_DESCRIPTION = 300;
+const MAX_TEXT_SIZE_DESCRIPTION = 285;
 
 /**
  * Toggles the visibility if an element
@@ -277,7 +277,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -298,10 +298,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<span class="read-less link">Read less</span>`;
+      this.description.innerHTML = `${text}<button class="read-less link">Read less</button>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
     }
 
     this.description
@@ -328,8 +328,8 @@ export default class ContentTypeDetailView {
   setLicence(type, owner) {
     if(type){
       if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerText = `
-        <p>Copyright ${(new Date()).getFullYear()} &lt;COPYRIGHT HOLDER&gt;</p>
+        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+        <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
 
         <p>Permission is hereby granted, free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal

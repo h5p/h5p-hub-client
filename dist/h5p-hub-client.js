@@ -2722,7 +2722,7 @@ var ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
 /**
  * @constant {number}
  */
-var MAX_TEXT_SIZE_DESCRIPTION = 300;
+var MAX_TEXT_SIZE_DESCRIPTION = 285;
 
 /**
  * Toggles the visibility if an element
@@ -2997,7 +2997,7 @@ var ContentTypeDetailView = function () {
       var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
       if (text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<span class=\"read-more link\">Read more</span>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
         this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
           return _this2.toggleDescriptionExpanded(text);
         });
@@ -3022,9 +3022,9 @@ var ContentTypeDetailView = function () {
       this.descriptionExpanded = !this.descriptionExpanded;
 
       if (this.descriptionExpanded) {
-        this.description.innerHTML = text + "<span class=\"read-less link\">Read less</span>";
+        this.description.innerHTML = text + "<button class=\"read-less link\">Read less</button>";
       } else {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<span class=\"read-more link\">Read more</span>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
       }
 
       this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
@@ -3057,7 +3057,7 @@ var ContentTypeDetailView = function () {
     value: function setLicence(type, owner) {
       if (type) {
         if (type === 'MIT') {
-          this.licencePanelBody.querySelector('.panel-body').innerText = "\n        <p>Copyright " + new Date().getFullYear() + " &lt;COPYRIGHT HOLDER&gt;</p>\n\n        <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n        of this software and associated documentation files (the \"Software\"), to deal\n        in the Software without restriction, including without limitation the rights\n        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n        copies of the Software, and to permit persons to whom the Software is\n        furnished to do so, subject to the following conditions:</p>\n        \n        <p>The above copyright notice and this permission notice shall be included in\n        all copies or substantial portions of the Software.</p>\n        \n        <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n        THE SOFTWARE.</p>\n        ";
+          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n        <p>Copyright " + new Date().getFullYear() + " " + owner + "</p>\n\n        <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n        of this software and associated documentation files (the \"Software\"), to deal\n        in the Software without restriction, including without limitation the rights\n        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n        copies of the Software, and to permit persons to whom the Software is\n        furnished to do so, subject to the following conditions:</p>\n        \n        <p>The above copyright notice and this permission notice shall be included in\n        all copies or substantial portions of the Software.</p>\n        \n        <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n        THE SOFTWARE.</p>\n        ";
         } else {
           this.licencePanelBody.querySelector('.panel-body').innerText = type;
         }
