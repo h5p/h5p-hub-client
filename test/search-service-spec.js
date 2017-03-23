@@ -1,28 +1,13 @@
 import SearchService from '../src/scripts/search-service/search-service';
 import cacheMock from './mock/api/content-type-cache.json';
 
-// describe('Search Service', () => {
-//   // Check that attach is called
-//   it('should return something', () => {
-//     console.log('test');
-//
-//     let service = new SearchService({
-//       apiRootUrl: 'test/mock/api/'
-//     });
-//
-//     let result = service.search('test')
-//       .then(result => console.log(JSON.stringify(result)));
-//   });
-//
-//   it('should return something else', () => {
-//     console.log('test2');
-//   });
-// });
-
 describe('Search service', () => {
   const mockedService = {
     contentTypes: () => {
       return Promise.resolve(cacheMock.libraries);
+    },
+    recentlyUsed: () => {
+      return Promise.resolve(cacheMock.recentlyUsed);
     }
   };
   const search = new SearchService(mockedService);
@@ -60,9 +45,17 @@ describe('Search service', () => {
     it('should filter content types without popularity last', (done) => {
       search.sortOn('popularity')
         .then(cts => {
-          expect(cts[cts.length - 1].machineName).toEqual('H5P.Boardgame');
+          expect(cts[cts.length - 1].popularity).toEqual(undefined);
           done();
         });
+    });
+
+    it('should sort most recently used content type first', (done) => {
+      search.sortOnRecent()
+        .then(cts => {
+          expect(cts[0]).toEqual('H5P.InteractiveVideo');
+          done();
+        })
     });
 
   });
