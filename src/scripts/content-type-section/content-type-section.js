@@ -48,7 +48,7 @@ export default class ContentTypeSection {
     // controller
     this.searchService = new SearchService(services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail({}, services);
+    this.contentTypeDetail = new ContentTypeDetail(state, services);
 
     // add menu items
     for (const tab in ContentTypeSectionTabs) {

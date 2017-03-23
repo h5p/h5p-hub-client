@@ -11,6 +11,12 @@ import { Eventful } from './mixins/eventful';
  * @property {string} sectionId
  * @property {boolean} expanded
  * @property {string} apiRootUrl
+ * @property {ApiVersion} apiVersion
+ */
+/**
+ * @typedef {object} ApiVersion
+ * @property {number} major
+ * @property {number} minor
  */
 /**
  * @typedef {object} ErrorMessage

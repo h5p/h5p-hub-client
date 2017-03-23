@@ -13,6 +13,8 @@ export default class ContentTypeDetail {
     // services
     this.services = services;
 
+    this.apiVersion = state.apiVersion;
+
     // views
     this.view = new ContetTypeDetailView(state);
     this.view.on('install', this.install, this);
@@ -98,6 +100,11 @@ export default class ContentTypeDetail {
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license);
+
+    // Check if api version is supported
+    this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||
+      (this.apiVersion.major == contentType.h5pMajorVersion &&
+       this.apiVersion.minor >= contentType.h5pMinorVersion));
 
     // update carousel
     this.view.removeAllImagesInCarousel();

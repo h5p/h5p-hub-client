@@ -6,6 +6,7 @@ import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
+import MessageView from '../message-view/message-view';
 
 /**
  * @constant {string}
@@ -63,6 +64,7 @@ export default class ContentTypeDetailView {
     this.carouselList = this.carousel.querySelector('ul');
     this.licencePanel = this.rootElement.querySelector('.licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
+    this.container = this.rootElement.querySelector('.container');
 
     // hide message on close button click
     let installMessageClose = this.installMessage.querySelector('.message-close');
@@ -173,6 +175,34 @@ export default class ContentTypeDetailView {
    */
   reset() {
     hide(this.installMessage);
+  }
+
+  /**
+   * Informs view if api version required by content type is supported. The view
+   * will disable the install-button and display a warning message.
+   *
+   * @param {boolean} supported - true if supported, otherwise false
+   */
+  setApiVersionSupported(supported) {
+    this.installButton.removeAttribute('disabled');
+    if (this.messageViewElement) {
+      this.container.removeChild(this.messageViewElement);
+      delete this.messageViewElement;
+    }
+
+    if (!supported) {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
+
+      let messageView = new MessageView({
+        type: 'success',
+        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+    }
   }
 
   /**
