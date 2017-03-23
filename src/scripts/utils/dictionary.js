@@ -22,6 +22,10 @@ export default class Dictionary {
   static get(key, replacements) {
     let translation = Dictionary.dictionary[key];
 
+    if (translation === undefined) {
+      return `Key not found in dictionary: ${key}`;
+    }
+
     // Replace placeholder with variables.
     for (let placeholder in replacements) {
       if (!replacements[placeholder]) {
