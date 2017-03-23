@@ -2773,6 +2773,15 @@ var disable = (0, _elements.setAttribute)('disabled', '');
 var enable = (0, _elements.removeAttribute)('disabled');
 
 /**
+ * Returns true if attribute aria-hidden = 'true' on an element
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+var _isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
+
+/**
  * @class
  * @mixes Eventful
  */
@@ -3171,6 +3180,18 @@ var ContentTypeDetailView = function () {
     }
 
     /**
+     * Returns whether the detailview is hidden
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: "isHidden",
+    value: function isHidden() {
+      return _isHidden(this.rootElement);
+    }
+
+    /**
      * Returns the root html element
      * @return {HTMLElement}
      */
@@ -3263,6 +3284,18 @@ var ContentTypeDetail = function () {
     key: 'focus',
     value: function focus() {
       this.view.focus();
+    }
+
+    /**
+     * Returns whether the detailview is hidden
+     *
+     * @return {boolean}
+     */
+
+  }, {
+    key: 'isHidden',
+    value: function isHidden() {
+      return this.view.isHidden();
     }
 
     /**
@@ -4223,11 +4256,13 @@ var ContentTypeSection = function () {
   }, {
     key: "closeDetailView",
     value: function closeDetailView() {
-      this.contentTypeDetail.hide();
-      this.contentTypeList.show();
-      this.view.typeAheadEnabled = true;
-      this.view.addDeactivatedStyleToMenu();
-      this.contentTypeList.focus();
+      if (!this.contentTypeDetail.isHidden()) {
+        this.contentTypeDetail.hide();
+        this.contentTypeList.show();
+        this.view.typeAheadEnabled = true;
+        this.view.addDeactivatedStyleToMenu();
+        this.contentTypeList.focus();
+      }
     }
 
     /**

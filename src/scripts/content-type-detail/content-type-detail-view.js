@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, removeChild, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -60,6 +60,15 @@ const disable = setAttribute('disabled', '');
  * @function
  */
 const enable = removeAttribute('disabled');
+
+/**
+ * Returns true if attribute aria-hidden = 'true' on an element
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const isHidden = attributeEquals('aria-hidden', 'true');
 
 /**
  * @class
@@ -434,6 +443,15 @@ export default class ContentTypeDetailView {
    */
   focus() {
     setTimeout(() => this.rootElement.focus(), 10);
+  }
+
+  /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return isHidden(this.rootElement);
   }
 
   /**

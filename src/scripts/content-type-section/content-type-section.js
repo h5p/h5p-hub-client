@@ -170,11 +170,13 @@ export default class ContentTypeSection {
    * Close detail view
    */
   closeDetailView() {
-    this.contentTypeDetail.hide();
-    this.contentTypeList.show();
-    this.view.typeAheadEnabled = true;
-    this.view.addDeactivatedStyleToMenu();
-    this.contentTypeList.focus();
+    if(!this.contentTypeDetail.isHidden()) {
+      this.contentTypeDetail.hide();
+      this.contentTypeList.show();
+      this.view.typeAheadEnabled = true;
+      this.view.addDeactivatedStyleToMenu();
+      this.contentTypeList.focus();
+    }
   }
 
   /**

@@ -43,6 +43,15 @@ export default class ContentTypeDetail {
   }
 
   /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return this.view.isHidden();
+  }
+
+  /**
    * Loads a Content Type description
    *
    * @param {string} id
