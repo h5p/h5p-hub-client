@@ -13,6 +13,8 @@ export default class ContentTypeDetail {
     // services
     this.services = services;
 
+    this.apiVersion = state.apiVersion;
+
     // views
     this.view = new ContetTypeDetailView(state);
     this.view.on('install', this.install, this);
@@ -40,6 +42,15 @@ export default class ContentTypeDetail {
    */
   focus() {
     this.view.focus();
+  }
+
+  /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return this.view.isHidden();
   }
 
   /**
@@ -104,6 +115,11 @@ export default class ContentTypeDetail {
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license, contentType.owner);
     this.view.setIsRestricted(contentType.restricted);
+
+    // Check if api version is supported
+    this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||
+      (this.apiVersion.major == contentType.h5pMajorVersion &&
+       this.apiVersion.minor >= contentType.h5pMinorVersion));
 
     // update carousel
     this.view.removeAllImagesInCarousel();

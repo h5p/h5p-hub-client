@@ -47,7 +47,7 @@ export default class ContentTypeSection {
     // controller
     this.searchService = new SearchService(services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail({}, services);
+    this.contentTypeDetail = new ContentTypeDetail(state, services);
 
     // Element for holding list and details views
     const section = document.createElement('div');
@@ -170,11 +170,13 @@ export default class ContentTypeSection {
    * Close detail view
    */
   closeDetailView() {
-    this.contentTypeDetail.hide();
-    this.contentTypeList.show();
-    this.view.typeAheadEnabled = true;
-    this.view.addDeactivatedStyleToMenu();
-    this.contentTypeList.focus();
+    if(!this.contentTypeDetail.isHidden()) {
+      this.contentTypeDetail.hide();
+      this.contentTypeList.show();
+      this.view.typeAheadEnabled = true;
+      this.view.addDeactivatedStyleToMenu();
+      this.contentTypeList.focus();
+    }
   }
 
   /**

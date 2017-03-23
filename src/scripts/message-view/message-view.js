@@ -2,7 +2,7 @@ import {Eventful} from '../mixins/eventful';
 import {relayClickEventAs} from '../utils/events';
 
 /**
- * @class ContentBrowserView
+ * @class MessageView
  * @mixes Eventful
  */
 export default class MessageView {

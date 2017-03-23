@@ -42,7 +42,7 @@ export default class ContentTypeList {
     this.view.show();
   }
 
-  focus(){
+  focus() {
     this.view.focus();
   }
 

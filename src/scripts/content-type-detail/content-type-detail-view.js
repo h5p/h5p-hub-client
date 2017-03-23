@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, removeChild, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -6,6 +6,7 @@ import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
+import MessageView from '../message-view/message-view';
 
 /**
  * @constant {string}
@@ -15,7 +16,7 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
 /**
  * @constant {number}
  */
-const MAX_TEXT_SIZE_DESCRIPTION = 300;
+const MAX_TEXT_SIZE_DESCRIPTION = 285;
 
 /**
  * Toggles the visibility if an element
@@ -62,6 +63,15 @@ const disable = setAttribute('disabled', '');
 const enable = removeAttribute('disabled');
 
 /**
+ * Returns true if attribute aria-hidden = 'true' on an element
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const isHidden = attributeEquals('aria-hidden', 'true');
+
+/**
  * @class
  * @mixes Eventful
  */
@@ -90,6 +100,7 @@ export default class ContentTypeDetailView {
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
+    this.container = this.rootElement.querySelector('.container');
 
     // hide message on close button click
     let installMessageClose = this.installMessage.querySelector('.message-close');
@@ -234,6 +245,34 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Informs view if api version required by content type is supported. The view
+   * will disable the install-button and display a warning message.
+   *
+   * @param {boolean} supported - true if supported, otherwise false
+   */
+  setApiVersionSupported(supported) {
+    this.installButton.removeAttribute('disabled');
+    if (this.messageViewElement) {
+      this.container.removeChild(this.messageViewElement);
+      delete this.messageViewElement;
+    }
+
+    if (!supported) {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
+
+      let messageView = new MessageView({
+        type: 'success',
+        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+    }
+  }
+
+  /**
    * Sets the image
    *
    * @param {string} src
@@ -268,7 +307,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -289,10 +328,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<span class="read-less link">Read less</span>`;
+      this.description.innerHTML = `${text}<button class="read-less link">Read less</button>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
     }
 
     this.description
@@ -319,8 +358,8 @@ export default class ContentTypeDetailView {
   setLicence(type, owner) {
     if(type){
       if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerText = `
-        <p>Copyright ${(new Date()).getFullYear()} &lt;COPYRIGHT HOLDER&gt;</p>
+        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+        <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
 
         <p>Permission is hereby granted, free of charge, to any person obtaining a copy
         of this software and associated documentation files (the "Software"), to deal
@@ -434,6 +473,15 @@ export default class ContentTypeDetailView {
    */
   focus() {
     setTimeout(() => this.rootElement.focus(), 10);
+  }
+
+  /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return isHidden(this.rootElement);
   }
 
   /**
