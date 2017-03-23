@@ -4392,7 +4392,7 @@ var HubServices = function () {
   }, {
     key: 'contentType',
     value: function contentType(machineName) {
-      return this.cachedContentTypes.then(function (contentTypes) {
+      return this.contentTypes().then(function (contentTypes) {
         return contentTypes.filter(function (contentType) {
           return contentType.machineName === machineName;
         })[0];

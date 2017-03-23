@@ -70,9 +70,10 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   contentType(machineName) {
-    return this.cachedContentTypes.then(contentTypes => {
-      return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
-    });
+    return this.contentTypes()
+      .then(contentTypes => {
+        return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
+      });
 
     /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {
       method: 'GET',
