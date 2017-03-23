@@ -4,6 +4,7 @@ import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
 import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
+import Dictionary from '../utils/dictionary';
 
 /**
  * @param {HTMLElement[]} elements
@@ -112,7 +113,7 @@ export default class ContentBrowserView {
     var self = this;
     // Set the action
     // TODO - should be translatable
-    config.action = "Reload";
+    config.action = Dictionary.get('reloadButtonLabel');
 
     var messageView = new MessageView(config);
     var element = messageView.getElement();

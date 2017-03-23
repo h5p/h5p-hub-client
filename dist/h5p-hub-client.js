@@ -1983,6 +1983,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Class responsible for providing translations
+ */
 var Dictionary = function () {
   function Dictionary() {
     _classCallCheck(this, Dictionary);
@@ -1990,12 +1993,20 @@ var Dictionary = function () {
 
   _createClass(Dictionary, null, [{
     key: "init",
+
+
+    /**
+     * Initialize the dictionary
+     *
+     * @param {Object} dictionary - dictionary as key/value
+     */
     value: function init(dictionary) {
       Dictionary.dictionary = dictionary;
     }
 
     /**
      * Get a string from the dictionary. Optionally replace variables
+     *
      * @param {string} key
      * @param {Object} replacements
      * @returns {string}
@@ -2004,18 +2015,21 @@ var Dictionary = function () {
   }, {
     key: "get",
     value: function get(key, replacements) {
+      var translation = Dictionary.dictionary[key];
 
-      // var translation = Dictionary.dictionary[key];
-      //
-      // // Replace placeholder with variables.
-      // for (var placeholder in replacements) {
-      //   if (!replacements[placeholder]) {
-      //     continue;
-      //   }
-      //   translation = translation.replace(placeholder, replacements[placeholder]);
-      // }
-      //
-      // return translation;
+      if (translation === undefined) {
+        return "Key not found in dictionary: " + key;
+      }
+
+      // Replace placeholder with variables.
+      for (var placeholder in replacements) {
+        if (!replacements[placeholder]) {
+          continue;
+        }
+        translation = translation.replace(placeholder, replacements[placeholder]);
+      }
+
+      return translation;
     }
   }]);
 
@@ -2046,14 +2060,14 @@ var _events = __webpack_require__(3);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- * @class ContentBrowserView
+ * @class MessageView
  * @mixes Eventful
  */
 var MessageView = function () {
   /**
    * @constructor
    * @param {Object} state
-   * @param {string} state.type
+   * @param {string} state.type 'info', 'warning' or 'error'
    * @param {string} state.title
    * @param {string} state.content
    * @param {string} [state.action]
@@ -2075,6 +2089,7 @@ var MessageView = function () {
       // Create wrapper:
       var messageWrapper = document.createElement('div');
       messageWrapper.className = 'message ' + message.type + (message.dismissible ? ' dismissible' : '');
+      messageWrapper.setAttribute('role', 'alert');
 
       // Add close button if dismisable
       if (message.dismissible) {
@@ -2284,6 +2299,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @property {string} sectionId
  * @property {boolean} expanded
  * @property {string} apiRootUrl
+ * @property {ApiVersion} apiVersion
+ */
+/**
+ * @typedef {object} ApiVersion
+ * @property {number} major
+ * @property {number} minor
  */
 /**
  * @typedef {object} ErrorMessage
@@ -2710,6 +2731,10 @@ var _dictionary = __webpack_require__(6);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
+var _messageView = __webpack_require__(7);
+
+var _messageView2 = _interopRequireDefault(_messageView);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2815,6 +2840,7 @@ var ContentTypeDetailView = function () {
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
+    this.container = this.rootElement.querySelector('.container');
 
     // hide message on close button click
     var installMessageClose = this.installMessage.querySelector('.message-close');
@@ -2947,6 +2973,37 @@ var ContentTypeDetailView = function () {
     }
 
     /**
+     * Informs view if api version required by content type is supported. The view
+     * will disable the install-button and display a warning message.
+     *
+     * @param {boolean} supported - true if supported, otherwise false
+     */
+
+  }, {
+    key: "setApiVersionSupported",
+    value: function setApiVersionSupported(supported) {
+      this.installButton.removeAttribute('disabled');
+      if (this.messageViewElement) {
+        this.container.removeChild(this.messageViewElement);
+        delete this.messageViewElement;
+      }
+
+      if (!supported) {
+        // Disable install button
+        this.installButton.setAttribute('disabled', 'disabled');
+
+        var messageView = new _messageView2.default({
+          type: 'info',
+          title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
+          content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
+        });
+
+        this.messageViewElement = messageView.getElement();
+        this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+      }
+    }
+
+    /**
      * Sets the image
      *
      * @param {string} src
@@ -3065,11 +3122,9 @@ var ContentTypeDetailView = function () {
           to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
           copies of the Software, and to permit persons to whom the Software is
           furnished to do so, subject to the following conditions:</p>
-          
-          <p>The above copyright notice and this permission notice shall be included in
+           <p>The above copyright notice and this permission notice shall be included in
           all copies or substantial portions of the Software.</p>
-          
-          <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+           <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
           IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
           FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
           AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -3268,6 +3323,8 @@ var ContentTypeDetail = function () {
     // services
     this.services = services;
 
+    this.apiVersion = state.apiVersion;
+
     // views
     this.view = new _contentTypeDetailView2.default(state);
     this.view.on('install', this.install, this);
@@ -3392,6 +3449,9 @@ var ContentTypeDetail = function () {
       this.view.setIsInstalled(contentType.installed);
       this.view.setLicence(contentType.license, contentType.owner);
       this.view.setIsRestricted(contentType.restricted);
+
+      // Check if api version is supported
+      this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
 
       // update carousel
       this.view.removeAllImagesInCarousel();
@@ -3774,6 +3834,10 @@ var _navbar2 = _interopRequireDefault(_navbar);
 
 var _eventful = __webpack_require__(1);
 
+var _dictionary = __webpack_require__(6);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3877,7 +3941,7 @@ var ContentBrowserView = function () {
       var self = this;
       // Set the action
       // TODO - should be translatable
-      config.action = "Reload";
+      config.action = _dictionary2.default.get('reloadButtonLabel');
 
       var messageView = new _messageView2.default(config);
       var element = messageView.getElement();
@@ -4118,7 +4182,7 @@ var ContentTypeSection = function () {
     // controller
     this.searchService = new _searchService2.default(services);
     this.contentTypeList = new _contentTypeList2.default();
-    this.contentTypeDetail = new _contentTypeDetail2.default({}, services);
+    this.contentTypeDetail = new _contentTypeDetail2.default(state, services);
 
     // Element for holding list and details views
     var section = document.createElement('div');
@@ -5186,15 +5250,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @fires Hub#upload
  */
 var UploadSection = function () {
-  function UploadSection(services) {
+  function UploadSection(state, services) {
     _classCallCheck(this, UploadSection);
 
-    var self = this;
     _extends(this, (0, _eventful.Eventful)());
+    this.services = services;
 
     // Create the upload form
     var uploadForm = this.renderUploadForm();
-    this.initUploadForm(uploadForm, services);
+    this.initUploadForm(uploadForm);
 
     // Create a wrapper to hold user messages
     this.messageWrapper = document.createElement('div');
@@ -5222,53 +5286,59 @@ var UploadSection = function () {
       // TODO create variables for links to h5p.org so they can be changed easily
       // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <div class="upload-path-wrapper">\n            <input class="upload-path" placeholder="No file chosen" disabled />\n          </div>\n          <span class="button use-button">Use</span>\n          <label class="upload">\n            <input type="file" />\n            <span class="button upload-button">Upload a file</span>\n          </label>\n        </div>\n        <div class="upload-instructions">\n          <h3>Select a file to upload and create H5P content from.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="No file chosen"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">Upload a file</button>\n          </div>\n        </div>\n        <div class="upload-instructions">\n          <h3>Upload a H5P file.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
 
       return uploadForm;
     }
 
     /**
-     * Adds logic to bind the button to the form
+     * Adds logic to bind the buttons to the form
      * and to bind the form to the plugin
      *
      * @param  {HTMLElement} uploadForm
-     * @param  {HubServices} services
      */
 
   }, {
     key: 'initUploadForm',
-    value: function initUploadForm(uploadForm, services) {
-      var _this = this;
-
+    value: function initUploadForm(uploadForm) {
       var self = this;
-      var uploadInput = uploadForm.querySelector('.upload input[type="file"]');
+      var uploadInput = uploadForm.querySelector('.upload-wrapper input[type="file"]');
       var uploadButton = uploadForm.querySelector('.upload-button');
-      var uploadPathWrapper = uploadForm.querySelector('.upload-path-wrapper');
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
+      var firstInput = uploadPath;
+      var lastInput = uploadForm.querySelector('a');
 
       // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
 
+        if (this.value == '') {
+          return;
+        }
+
+        // Reset styles
         self.clearUserMessages();
         uploadPath.value = '';
 
-        var fileExtension = self.getFileExtension(this.value);
+        // Replace the placeholder text with the selected filepath
+        uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
-        if (fileExtension !== '' || fileExtension !== 'h5p') {
+        // Update the upload button
+        uploadButton.innerHTML = 'Change file';
+
+        // Check that it's a h5p file
+        var fileExtension = self.getFileExtension(this.value);
+        if (fileExtension !== 'h5p') {
           self.renderMessage({
             type: 'error',
             title: '.h5p file not found',
             content: 'You need to upload a file that ends in .h5p'
           });
+
+          // Hide the 'use' button for non-h5p files
+          useButton.style.display = 'none';
         } else {
-          // Replace the placeholder text with the selected filepath
-          uploadPath.value = this.value.replace('C:\\fakepath\\', '');
-
-          // Update the upload button
-          uploadButton.innerHTML = 'Change file';
-
-          // Only show the 'use' button once a file has been selected
+          // Only show the 'use' button once a h5p file has been selected
           useButton.style.display = 'inline-block';
         }
       };
@@ -5278,18 +5348,45 @@ var UploadSection = function () {
 
         // Add the H5P file to a form, ready for transportation
         var data = new FormData();
-        data.append('h5p', h5pUpload.files[0]);
+        data.append('h5p', uploadInput.files[0]);
 
         // Upload content to the plugin
-        _this.services.uploadContent(data).then(function (json) {
+        self.services.uploadContent(data).then(function (json) {
           // Fire the received data to any listeners
           self.trigger('upload', json);
         });
       });
 
       // Allow users to upload a file by clicking on path field
-      uploadPathWrapper.onclick = function () {
+      uploadPath.onclick = function () {
         uploadInput.click();
+      };
+
+      // Allow users to upload a file by pressing enter or spacebar
+      uploadPath.onkeydown = function (e) {
+        if (e.which === 13 || e.which === 32) {
+          uploadInput.click();
+        }
+      };
+
+      // Reuse the upload input logic to upload a file 
+      uploadButton.onclick = function () {
+        uploadInput.click();
+      };
+
+      // Allow users to upload a file by pressing enter or spacebar
+      uploadButton.onkeydown = function (e) {
+        if (e.which === 13 || e.which === 32) {
+          uploadInput.click();
+        }
+      };
+
+      // Cycle tabbing back to the first input
+      lastInput.onkeydown = function (e) {
+        if (e.which === 9 && !e.shiftKey) {
+          e.preventDefault();
+          firstInput.focus();
+        }
       };
     }
 

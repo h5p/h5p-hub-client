@@ -6,6 +6,7 @@ import initImageScroller from "components/image-scroller";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
+import MessageView from '../message-view/message-view';
 
 /**
  * @constant {string}
@@ -99,6 +100,7 @@ export default class ContentTypeDetailView {
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
+    this.container = this.rootElement.querySelector('.container');
 
     // hide message on close button click
     let installMessageClose = this.installMessage.querySelector('.message-close');
@@ -243,6 +245,34 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Informs view if api version required by content type is supported. The view
+   * will disable the install-button and display a warning message.
+   *
+   * @param {boolean} supported - true if supported, otherwise false
+   */
+  setApiVersionSupported(supported) {
+    this.installButton.removeAttribute('disabled');
+    if (this.messageViewElement) {
+      this.container.removeChild(this.messageViewElement);
+      delete this.messageViewElement;
+    }
+
+    if (!supported) {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
+
+      let messageView = new MessageView({
+        type: 'info',
+        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+    }
+  }
+
+  /**
    * Sets the image
    *
    * @param {string} src
@@ -337,10 +367,10 @@ export default class ContentTypeDetailView {
         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
         copies of the Software, and to permit persons to whom the Software is
         furnished to do so, subject to the following conditions:</p>
-        
+
         <p>The above copyright notice and this permission notice shall be included in
         all copies or substantial portions of the Software.</p>
-        
+
         <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
         IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
         FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE

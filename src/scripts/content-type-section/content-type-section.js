@@ -47,7 +47,7 @@ export default class ContentTypeSection {
     // controller
     this.searchService = new SearchService(services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail({}, services);
+    this.contentTypeDetail = new ContentTypeDetail(state, services);
 
     // Element for holding list and details views
     const section = document.createElement('div');

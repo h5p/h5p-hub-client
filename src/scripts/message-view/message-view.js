@@ -2,14 +2,14 @@ import {Eventful} from '../mixins/eventful';
 import {relayClickEventAs} from '../utils/events';
 
 /**
- * @class ContentBrowserView
+ * @class MessageView
  * @mixes Eventful
  */
 export default class MessageView {
   /**
    * @constructor
    * @param {Object} state
-   * @param {string} state.type
+   * @param {string} state.type 'info', 'warning' or 'error'
    * @param {string} state.title
    * @param {string} state.content
    * @param {string} [state.action]
@@ -27,6 +27,7 @@ export default class MessageView {
     // Create wrapper:
     const messageWrapper = document.createElement('div');
     messageWrapper.className = `message ${message.type}` + (message.dismissible ? ' dismissible' : '');
+    messageWrapper.setAttribute('role', 'alert');
 
     // Add close button if dismisable
     if (message.dismissible) {
