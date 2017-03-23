@@ -58,8 +58,16 @@
     font-size: $text-list-title;
     border-bottom: solid 1px $c2;
 
-    .navbar-header {
-      overflow: auto;
+    [role="menuitem"] {
+      outline-color: lighten($ac1, 30%);
+    }
+
+    .navbar-toggler {
+      color: inherit;
+    }
+
+    .navbar-toggler-selected {
+      float: right;
     }
 
     .icon-accordion-arrow {
@@ -77,14 +85,14 @@
 
   @media (min-width: $screen-small) {
     .navbar {
-      .navbar-header {
-        display: inline-block;
+      .navbar-toggler-selected {
+        display: none;
       }
 
       .navbar-brand {
         font-style: italic;
-        font-size: $text-title-large;
-        padding: 0.3em 0 0;
+        font-size: $text-title-small;
+        padding: 0.4em 0 0;
         display: inline-block;
       }
 
@@ -97,5 +105,6 @@
 
   .content-type-section {
     position: relative;
+    overflow: hidden;
   }
 }

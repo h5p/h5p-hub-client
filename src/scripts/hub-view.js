@@ -37,15 +37,30 @@ export default class HubView {
     // add event system
     Object.assign(this, Eventful());
 
-    this.renderTabPanel(state);
-    this.renderPanel(state);
+    /**
+     * @type {HTMLElement}
+     */
+    this.rootElement = this.createPanel(state);
+
+    // select dynamic elements
+    this.panel = this.rootElement.querySelector('.panel');
+    this.toggler = this.rootElement.querySelector('[aria-expanded][aria-controls]');
+    this.selectedName = this.rootElement.querySelector('.h5p-hub-selected');
+    this.tablist = this.rootElement.querySelector('[role="tablist"]');
+    this.tabContainerElement = this.rootElement.querySelector('.tab-panel');
+
+    // initiates panel
+    initPanel(this.panel);
+
+    // relay events
+    relayClickEventAs('panel-change', this, this.toggler);
   }
 
   /**
    * Closes the panel
    */
   closePanel() {
-    this.title.setAttribute('aria-expanded', 'false')
+    this.toggler.setAttribute('aria-expanded', 'false')
   }
 
   /**
@@ -54,7 +69,7 @@ export default class HubView {
    * @param {string} title
    */
   setTitle(title) {
-    this.title.innerHTML = title;
+    this.selectedName.innerText = title;
   }
 
   /**
@@ -64,43 +79,31 @@ export default class HubView {
    * @param {string} sectionId
    * @param {boolean} expanded
    */
-  renderPanel({title = '', sectionId = 'content-types', expanded = false}) {
-    /**
-     * @type {HTMLElement}
-     */
-    this.title = document.createElement('div');
-    this.title.className += "panel-header icon-hub-icon";
-    this.title.setAttribute('aria-expanded', (!!expanded).toString());
-    this.title.setAttribute('aria-controls', `panel-body-${sectionId}`);
-    this.title.innerHTML = title;
-    relayClickEventAs('panel-change', this, this.title);
+  createPanel({title = '', sectionId = 'content-types', expanded = false}) {
+    const labels = {
+      h5pHub: 'H5P Hub.'
+    };
+    const element = document.createElement('div');
+    element.className += `h5p-hub h5p-sdk`;
 
-    /**
-     * @type {HTMLElement}
-     */
-    this.body = document.createElement('div');
-    this.body.className += "panel-body";
-    this.body.setAttribute('aria-hidden', (!expanded).toString());
-    this.body.id = `panel-body-${sectionId}`;
-    this.body.appendChild(this.tabContainerElement);
+    element.innerHTML = `
+      <div class="panel">
+        <div aria-level="1" role="heading">
+          <span role="button" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">
+          <span class="h5p-hub-description">${labels.h5pHub}</span>
+          <span class="h5p-hub-selected"></span>
+        </span>
+        </div>
+        <div id="panel-body-${sectionId}" role="region" aria-hidden="${!expanded}">
+          <div class="tab-panel">
+            <nav>
+              <ul role="tablist"></ul>
+            </nav>
+          </div>
+        </div>
+      </div>`;
 
-    /**
-     * @type {HTMLElement}
-     */
-    this.panel = document.createElement('div');
-    this.panel.className += `panel h5p-section-${sectionId}`;
-    if(expanded){
-      this.panel.setAttribute('open', '');
-    }
-    this.panel.appendChild(this.title);
-    this.panel.appendChild(this.body);
-    /**
-     * @type {HTMLElement}
-     */
-    this.rootElement = document.createElement('div');
-    this.rootElement.className += `h5p-hub h5p-sdk`;
-    this.rootElement.appendChild(this.panel);
-    initPanel(this.rootElement);
+    return element;
   }
 
   /**
@@ -115,31 +118,6 @@ export default class HubView {
       panel.setAttribute('open', '');
       setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
     }
-  }
-
-  /**
-   * Creates the dom for the tab panel
-   */
-  renderTabPanel(state) {
-    /**
-     * @type {HTMLElement}
-     */
-    this.tablist = document.createElement('ul');
-    this.tablist.className += "tablist";
-    this.tablist.setAttribute ('role', 'tablist');
-
-    /**
-     * @type {HTMLElement}
-     */
-    this.tabListWrapper = document.createElement('nav');
-    this.tabListWrapper.appendChild(this.tablist);
-
-    /**
-     * @type {HTMLElement}
-     */
-    this.tabContainerElement = document.createElement('div');
-    this.tabContainerElement.className += 'tab-panel';
-    this.tabContainerElement.appendChild(this.tabListWrapper);
   }
 
   /**
@@ -161,19 +139,27 @@ export default class HubView {
     tab.setAttribute('aria-selected', selected.toString());
     tab.setAttribute(ATTRIBUTE_DATA_ID, id);
     tab.setAttribute('role', 'tab');
-    tab.innerHTML = title;
+    tab.innerText = title;
     relayClickEventAs('tab-change', this, tab);
 
     const tabPanel = document.createElement('div');
     tabPanel.id = tabPanelId;
     tabPanel.className += 'tabpanel';
-    tabPanel.setAttribute('aria-lablledby', tabId);
+    tabPanel.setAttribute('aria-labelledby', tabId);
     tabPanel.setAttribute('aria-hidden', (!selected).toString());
     tabPanel.setAttribute('role', 'tabpanel');
     tabPanel.appendChild(content);
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabPanel);
+
+    // fires the tab-change event when selected is created
+    if(selected) {
+      this.trigger('tab-change', {
+        element: tab,
+        id: id
+      });
+    }
   }
 
   /**

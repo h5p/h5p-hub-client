@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeChild, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -16,7 +16,7 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
 /**
  * @constant {number}
  */
-const MAX_TEXT_SIZE_DESCRIPTION = 300;
+const MAX_TEXT_SIZE_DESCRIPTION = 285;
 
 /**
  * Toggles the visibility if an element
@@ -35,7 +35,41 @@ const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
  */
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
 
+/**
+ * Hides all elements in an array
+ *
+ * @param {HTMLElement[]} elements
+ *
+ * @function
+ */
 const hideAll = forEach(hide);
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const disable = setAttribute('disabled', '');
+
+/**
+ * Disables an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const enable = removeAttribute('disabled');
+
+/**
+ * Returns true if attribute aria-hidden = 'true' on an element
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const isHidden = attributeEquals('aria-hidden', 'true');
 
 /**
  * @class
@@ -62,16 +96,18 @@ export default class ContentTypeDetailView {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
-    this.licencePanel = this.rootElement.querySelector('.licence-panel');
+    this.panel = this.rootElement.querySelector('.panel');
+    this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
+    this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
     this.installMessage = this.rootElement.querySelector('.install-message');
     this.container = this.rootElement.querySelector('.container');
 
     // hide message on close button click
     let installMessageClose = this.installMessage.querySelector('.message-close');
-    installMessageClose.addEventListener('click', () => hide(this.installMessage));
+    installMessageClose.addEventListener('click', () => this.resetInstallMessage());
 
     // init interactive elements
-    initPanel(this.licencePanel);
+    initPanel(this.panel);
     initImageScroller(this.carousel);
 
     // fire events on button click
@@ -86,45 +122,64 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
+    const labels = { // todo translate me
+      back: 'Back',
+      close: 'Close',
+      use: 'Use',
+      install: 'Install',
+      installing: 'Installing'
+    };
+
+    // ids
+    const titleId = 'content-type-detail-view-title';
+
+    // create element
     const element = document.createElement('div');
     element.className = 'content-type-detail';
+    element.id = 'content-type-detail';
+    element.setAttribute('role', 'region');
+    element.setAttribute('tabindex', '-1');
+    element.setAttribute('aria-labelledby', titleId);
     element.setAttribute('aria-hidden', 'true');
+
     element.innerHTML = `
-      <div class="back-button icon-arrow-thick"></div>
+      <button class="back-button icon-arrow-thick" aria-label="${labels.back}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
-          <h2 class="title"></h2>
+          <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
           <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <span class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
-        <span class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></span>
+        <button class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
-      <div class="install-message message dismissible simple info" aria-hidden="true">
-        <div class="message-close icon-close"></div>
-        <h3></h3>
+      <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
+        <button aria-label="${labels.close}" class="message-close icon-close"></button>
+        <h3 class="title"></h3>
       </div>
       <div class="button-bar">
-        <span class="button button-primary button-use" aria-hidden="false" data-id="">Use</span>
-        <span class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</span>
-        <span class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>Installing</span>
+        <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
+        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${labels.installing}</button>
       </div>
-      <div class="panel-group">
-        <div class="panel licence-panel" aria-hidden="true">
-          <div class="panel-header" aria-expanded="false" aria-controls="licence-panel"><span class="icon-accordion-arrow"></span> The Licence Info</div>
-          <div class="panel-body" id="licence-panel" aria-hidden="true">
-            <div class="panel-body-inner"></div>
-          </div>
-        </div>
-      </div>`;
+      <dl class="panel">
+        <dt aria-level="2" role="heading" class="licence-panel-heading">
+          <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
+            <span class="icon-accordion-arrow"></span> The Licence Info
+          </a>
+        </dt>
+        <dl id="licence-panel" role="region" aria-hidden="true">
+          <div class="panel-body"></div>
+        </dl>
+      </dl>`;
 
     return element;
   }
@@ -136,9 +191,21 @@ export default class ContentTypeDetailView {
    * @param {string} message
    */
   setInstallMessage({ success = true, message }){
-    this.installMessage.querySelector('h3').innerText = message;
-    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
     show(this.installMessage);
+    this.installMessage.querySelector('.title').innerText = message;
+    this.installMessage.querySelector('.title').innerText = message;
+    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
+  }
+
+  /**
+   * Sets a message on install
+   *
+   * @param {boolean} success
+   * @param {string} message
+   */
+  resetInstallMessage(){
+    hide(this.installMessage);
+    this.installMessage.querySelector('.title').innerText = '';
   }
 
   /**
@@ -238,9 +305,9 @@ export default class ContentTypeDetailView {
    *
    * @param {string} text
    */
-  setDescription(text) {
-    if(text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+  setDescription(text = '') {
+    if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -261,10 +328,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<span class="read-less link">Read less</span>`;
+      this.description.innerHTML = `${text}<button class="read-less link">Read less</button>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<span class="read-more link">Read more</span>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
     }
 
     this.description
@@ -286,15 +353,42 @@ export default class ContentTypeDetailView {
    * Sets the licence
    *
    * @param {string} type
+   * @param {string} owner
    */
-  setLicence(type) {
+  setLicence(type, owner) {
     if(type){
-      this.licencePanel.querySelector('.panel-body-inner').innerText = type;
-      show(this.licencePanel);
+      if(type === 'MIT') {
+        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+        <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
+
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:</p>
+        
+        <p>The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.</p>
+        
+        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.</p>
+        `
+      }
+      else {
+        this.licencePanelBody.querySelector('.panel-body').innerText = type;
+      }
+
+      show(this.licencePanelHeading);
     }
-    else {
-      hide(this.licencePanel);
-    }
+
+    // Close licence panel body by default
+    hide(this.licencePanelBody);
   }
 
   /**
@@ -331,6 +425,22 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Marks content type as restricted, disabling installing and using the content type.
+   *
+   * @param {boolean} restricted True if content type is restricted
+   */
+  setIsRestricted(restricted) {
+    if(restricted) {
+      disable(this.useButton);
+      disable(this.installButton);
+    }
+    else {
+      enable(this.useButton);
+      enable(this.installButton);
+    }
+  }
+
+  /**
    * Hides all buttons and shows the button on the selector again
    *
    * @param {string}selector
@@ -356,6 +466,22 @@ export default class ContentTypeDetailView {
    */
   show() {
     show(this.rootElement);
+  }
+
+  /**
+   * Focuses on the title
+   */
+  focus() {
+    setTimeout(() => this.rootElement.focus(), 10);
+  }
+
+  /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return isHidden(this.rootElement);
   }
 
   /**

@@ -42,6 +42,10 @@ export default class ContentTypeList {
     this.view.show();
   }
 
+  focus() {
+    this.view.focus();
+  }
+
   /**
    * Update the list with new content types
    *

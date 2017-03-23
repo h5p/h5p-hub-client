@@ -38,6 +38,22 @@ export default class ContentTypeDetail {
   }
 
   /**
+   * Focuses on the title
+   */
+  focus() {
+    this.view.focus();
+  }
+
+  /**
+   * Returns whether the detailview is hidden
+   *
+   * @return {boolean}
+   */
+  isHidden() {
+    return this.view.isHidden();
+  }
+
+  /**
    * Loads a Content Type description
    *
    * @param {string} id
@@ -60,29 +76,27 @@ export default class ContentTypeDetail {
      // set spinner
      this.view.showButtonBySelector('.button-installing');
 
-     return this.services.contentType(id)
-       .then(contentType => this.services.installContentType(contentType.machineName))
-       .then(contentType => {
-         this.view.setIsInstalled(true);
-         this.view.showButtonBySelector('.button-get');
-         this.view.setInstallMessage({
-           message: `${contentType.title} successfully installed!`,
-         });
-       })
-       .catch(error => {
-         this.view.showButtonBySelector('.button-install');
+     return this.services.installContentType(id).then(response => {
+        this.view.setIsInstalled(true);
+        this.view.showButtonBySelector('.button-get');
+        this.view.setInstallMessage({
+          message: `${id} successfully installed!`,
+        });
+      })
+      .catch(error => {
+        this.view.showButtonBySelector('.button-install');
 
-         // print error message
-         let errorMessage = (error.errorCode) ? error : {
-           success: false,
-           errorCode: 'RESPONSE_FAILED',
-           message: `${id} could not be installed! Contact your administrator.`,
-         };
-         this.view.setInstallMessage(errorMessage);
+        // print error message
+        let errorMessage = (error.errorCode) ? error : {
+          success: false,
+          errorCode: 'RESPONSE_FAILED',
+          message: `${id} could not be installed! Contact your administrator.`,
+        };
+        this.view.setInstallMessage(errorMessage);
 
-         // log whole error message to console
-         console.error('Installation error', error);
-       });
+        // log whole error message to console
+        console.error('Installation error', error);
+      });
    }
 
   /**
@@ -93,13 +107,14 @@ export default class ContentTypeDetail {
   update(contentType) {
     this.view.reset();
     this.view.setId(contentType.machineName);
-    this.view.setTitle(contentType.title);
+    this.view.setTitle(contentType.title || contentType.machineName);
     this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicence(contentType.license);
+    this.view.setLicence(contentType.license, contentType.owner);
+    this.view.setIsRestricted(contentType.restricted);
 
     // Check if api version is supported
     this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||

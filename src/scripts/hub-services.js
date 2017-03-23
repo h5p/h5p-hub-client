@@ -41,22 +41,7 @@ export default class HubServices {
       credentials: 'include'
     })
     .then(result => result.json())
-    .then(this.isValid)
-    .then(json => json.libraries);
-  }
-
-  /**
-   *
-   * @param  {ContentType[]|ErrorMessage} response
-   * @return {Promise<ContentType[]|ErrorMessage>}
-   */
-  isValid(response) {
-    if (response.messageCode) {
-      return Promise.reject(response);
-    }
-    else {
-      return Promise.resolve(response);
-    }
+    .then(this.isValid);
   }
 
   /**
@@ -65,7 +50,16 @@ export default class HubServices {
    * @return {Promise.<ContentType[]>}
    */
   contentTypes() {
-    return this.cachedContentTypes;
+    return this.cachedContentTypes.then(json => json.libraries);
+  }
+
+  /**
+   * Returns a list of H5P Machine names ordered by most recently used
+   *
+   * @return {string[]}  Machine names
+   */
+  recentlyUsed() {
+    return this.cachedContentTypes.then(json => json.recentlyUsed);
   }
 
   /**
@@ -76,9 +70,10 @@ export default class HubServices {
    * @return {Promise.<ContentType>}
    */
   contentType(machineName) {
-    return this.cachedContentTypes.then(contentTypes => {
-      return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
-    });
+    return this.contentTypes()
+      .then(contentTypes => {
+        return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
+      });
 
     /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {
       method: 'GET',
@@ -98,7 +93,9 @@ export default class HubServices {
       method: 'POST',
       credentials: 'include',
       body: ''
-    }).then(result => result.json());
+    })
+     .then(result => result.json())
+     .then(this.rejectIfNotSuccess);
   }
 
 
@@ -109,6 +106,7 @@ export default class HubServices {
       credentials: 'include'
     })
       .then(result => result.json())
+      .then(this.rejectIfNotSuccess)
       .then(result => {
         return new Promise(function(resolve, reject) {
           setTimeout(function() {
@@ -131,5 +129,31 @@ export default class HubServices {
       credentials: 'include',
       body: formData
     }).then(result => result.json());
+  }
+
+  /**
+   *
+   * @param  {ContentType[]|ErrorMessage} response
+   *
+   * @return {Promise<ContentType[]|ErrorMessage>}
+   */
+  isValid(response) {
+    if (response.messageCode) {
+      return Promise.reject(response);
+    }
+    else {
+      return Promise.resolve(response);
+    }
+  }
+
+  /**
+   * Rejects the Promise if response.success != true
+   *
+   * @param {object} response
+   *
+   * @return {Promise<ContentType[]|ErrorMessage>}
+   */
+  rejectIfNotSuccess(response) {
+    return Promise[response.success ? 'resolve' : 'reject'](response);
   }
 }

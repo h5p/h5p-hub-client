@@ -1,8 +1,9 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, removeChild } from "utils/elements";
+import { setAttribute, getAttribute, removeChild, querySelector } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
+import Keyboard from 'utils/keyboard';
 
 /**
  * @function
@@ -13,6 +14,11 @@ const hide = setAttribute('aria-hidden', 'true');
  * @function
  */
 const show = setAttribute('aria-hidden', 'false');
+
+/**
+ * @function
+ */
+const getRowId = getAttribute('data-id');
 
 /**
  * @class
@@ -27,8 +33,18 @@ export default class ContentTypeListView {
     // add event system
     Object.assign(this, Eventful());
 
+    // setup keyboard
+    this.keyboard = new Keyboard();
+    this.keyboard.onSelect = element => {
+      this.trigger('row-selected', {
+        element: element,
+        id: getRowId(element)
+      })
+    };
+
     // create root element
     this.rootElement = document.createElement('ul');
+    this.rootElement.setAttribute('role', 'list');
     this.rootElement.className = 'content-type-list';
   }
 
@@ -47,11 +63,25 @@ export default class ContentTypeListView {
   }
 
   /**
+   * Focuses on the previously selected element
+   */
+  focus() {
+    const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
+
+    if(selectedElement) {
+      selectedElement.focus();
+    }
+  }
+
+  /**
    * Removes all rows from root element
    */
   removeAllRows() {
-    while(this.rootElement.hasChildNodes() ){
-      this.rootElement.removeChild(this.rootElement.lastChild);
+    while(this.rootElement.hasChildNodes()){
+      let row = this.rootElement.lastChild;
+
+      this.keyboard.removeElement(row);
+      this.rootElement.removeChild(row);
     }
   }
 
@@ -63,7 +93,8 @@ export default class ContentTypeListView {
   addRow(contentType) {
     const row = this.createContentTypeRow(contentType, this);
     relayClickEventAs('row-selected', this, row);
-    this.rootElement.appendChild(row)
+    this.rootElement.appendChild(row);
+    this.keyboard.addElement(row);
   }
 
   /**
@@ -75,27 +106,46 @@ export default class ContentTypeListView {
    * @return {HTMLElement}
    */
   createContentTypeRow(contentType, scope) {
+    const labels = {
+      icon: 'Icon'
+    };
+
+    // create ids
+    const index = this.rootElement.querySelectorAll('li').length;
+    const contentTypeRowTitleId = `content-type-row-title-${index}`;
+    const contentTypeRowDescriptionId = `content-type-row-description-${index}`;
+
+    // field configuration
+    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
+    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
+    const button = contentType.installed ?  useButtonConfig: installButtonConfig;
+    const title = contentType.title || contentType.machineName;
+    const description = contentType.summary || '';
+    const image = contentType.icon || noIcon;
+    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+
     // row item
     const element = document.createElement('li');
     element.id = `content-type-${contentType.machineName}`;
     element.setAttribute('data-id', contentType.machineName);
-
-    // create button config
-    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
-    const button = contentType.installed ?  useButtonConfig: installButtonConfig;
-
-    const title = contentType.title || contentType.machineName;
-    const description = contentType.summary || '';
-
-    const image = contentType.icon || noIcon;
+    element.setAttribute('aria-labelledby', contentTypeRowTitleId);
+    element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${image}">
-      <span class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0"><span class="${button.icon}"></span>${button.text}</span>
-      <h4>${title}</h4>
-      <div class="description">${description}</div>
+      <img class="img-responsive" src="${image}" alt="${title} ${labels.icon}" />
+      
+      <div class="content-type-row-info">
+        <h4 id="${contentTypeRowTitleId}">${title}</h4>
+        <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
+      </div>
+      
+      <div class="content-type-row-button">
+        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
+          <span class="${button.icon}"></span>
+          ${button.text}
+        </button>
+      </div>
    `;
 
     // handle use button

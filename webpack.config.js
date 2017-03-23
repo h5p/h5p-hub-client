@@ -7,6 +7,10 @@ const extractSass = new ExtractTextPlugin({
   filename: "h5p-hub-client.css"
 });
 
+const polyfillPromise = new webpack.ProvidePlugin({
+  'Promise': 'es6-promise',
+});
+
 const config = {
   entry: "./src/entries/dist.js",
   devtool: 'cheap-source-map',
@@ -57,11 +61,14 @@ const config = {
     ]
   },
   plugins: [
-    extractSass
+    extractSass,
+    polyfillPromise
   ]
 };
 
 if (!isDevMode) {
+  //config.devtool = 'eval';
+
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false

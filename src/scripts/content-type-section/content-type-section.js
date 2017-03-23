@@ -22,8 +22,7 @@ const ContentTypeSectionTabs = {
   MOST_POPULAR: {
     id: 'filter-most-popular',
     title: 'Most Popular',
-    eventName: 'most-popular',
-    filterProperty: 'popularity'
+    eventName: 'most-popular'
   }
 };
 
@@ -50,14 +49,6 @@ export default class ContentTypeSection {
     this.contentTypeList = new ContentTypeList();
     this.contentTypeDetail = new ContentTypeDetail(state, services);
 
-    // add menu items
-    for (const tab in ContentTypeSectionTabs) {
-      if (ContentTypeSectionTabs.hasOwnProperty(tab)) {
-        this.view.addMenuItem(ContentTypeSectionTabs[tab]);
-      }
-    }
-    this.view.initMenu();
-
     // Element for holding list and details views
     const section = document.createElement('div');
     section.classList.add('content-type-section');
@@ -76,7 +67,7 @@ export default class ContentTypeSection {
     // register listeners
     this.view.on('search', this.search, this);
     this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
-    this.view.on('search', this.resetMenuOnEnter, this);
+    // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
@@ -85,17 +76,10 @@ export default class ContentTypeSection {
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
-    this.initContentTypeList();
-  }
-
-  /**
-   * Initiates the content type list with a search
-   */
-  initContentTypeList() {
-    // initialize by search
-    this.searchService.search("")
-      .then(contentTypes => this.contentTypeList.update(contentTypes))
-      .catch(error => this.handleError(error));
+    // add menu items
+    Object.keys(ContentTypeSectionTabs)
+      .forEach(tab => this.view.addMenuItem(ContentTypeSectionTabs[tab]));
+    this.view.initMenu();
   }
 
   /**
@@ -137,11 +121,21 @@ export default class ContentTypeSection {
    */
   applySearchFilter(e) {
     switch(e.choice) {
+      case ContentTypeSectionTabs.ALL.eventName:
+        this.searchService.sortOn('restricted')
+          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
+        break;
+
+      case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
+        this.searchService.sortOnRecent()
+          .then(filteredContentTypes => this.contentTypeList.update(filteredContentTypes));
+        break;
+
       case ContentTypeSectionTabs.MOST_POPULAR.eventName:
-        // Filter on tab's filter property, then update content type list
+        const sortOrder = ['restricted', 'popularity'];
         this.searchService
-          .filter(ContentTypeSectionTabs.MOST_POPULAR.filterProperty)
-          .then(cts => {this.contentTypeList.update(cts)});
+          .sortOn(sortOrder)
+          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
     }
 
@@ -169,16 +163,20 @@ export default class ContentTypeSection {
     this.contentTypeDetail.show();
     this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
+    this.contentTypeDetail.focus();
   }
 
   /**
    * Close detail view
    */
   closeDetailView() {
-    this.contentTypeDetail.hide();
-    this.contentTypeList.show()
-    this.view.typeAheadEnabled = true;
-    this.view.addDeactivatedStyleToMenu();
+    if(!this.contentTypeDetail.isHidden()) {
+      this.contentTypeDetail.hide();
+      this.contentTypeList.show();
+      this.view.typeAheadEnabled = true;
+      this.view.addDeactivatedStyleToMenu();
+      this.contentTypeList.focus();
+    }
   }
 
   /**

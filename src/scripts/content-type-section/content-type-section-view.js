@@ -2,7 +2,7 @@ import MessageView from "../message-view/message-view";
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
 import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
-import initMenu from 'components/menu';
+import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
 
 /**
@@ -10,6 +10,11 @@ import { Eventful } from '../mixins/eventful';
  * @function
  */
 const unselectAll = forEach(removeAttribute('aria-selected'));
+
+/**
+ * @constant {number}
+ */
+const KEY_CODE_TAB = 9;
 
 /**
  * @class ContentBrowserView
@@ -39,14 +44,16 @@ export default class ContentBrowserView {
 
     // input field
     this.inputField.addEventListener('keyup', event => {
-      let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-      
-      // Only searching if the enter key is pressed
-      if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
-        this.trigger('search', {
-          element: searchbar,
-          query: searchbar.value
-        });
+      if(event.keyCode != KEY_CODE_TAB) {
+        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
+
+        // Only searching if the enter key is pressed
+        if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
+          this.trigger('search', {
+            element: searchbar,
+            query: searchbar.value
+          });
+        }
       }
     });
 
@@ -82,18 +89,18 @@ export default class ContentBrowserView {
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
           <div class="navbar-header">
-             <span class="navbar-toggler navbar-toggler-right" aria-controls="${menuId}" aria-expanded="false">
-               <span class="navbar-toggler-selected"></span>
+             <button class="navbar-toggler navbar-toggler-right" tabindex="0" aria-haspopup="true" aria-controls="${menuId}" aria-expanded="false">
                <span class="icon-accordion-arrow"></span>
-             </span>
+             </button>
+            <span class="navbar-toggler-selected"></span>
             <span class="navbar-brand">${menutitle}</span>
           </div>
 
-          <ul id="${menuId}" class="navbar-nav" aria-hidden="true"></ul>
+          <ul id="${menuId}" class="navbar-nav"></ul>
         </nav>
 
         <div class="input-group" role="search">
-          <input id="hub-search-bar" class="form-control form-control-rounded" type="text" placeholder="${searchText}" />
+          <input id="hub-search-bar" class="form-control form-control-rounded" type="text" aria-label="${searchText}" placeholder="${searchText}" />
           <div class="input-group-addon icon-search"></div>
         </div>
       </div>`;
@@ -140,6 +147,10 @@ export default class ContentBrowserView {
     if(selected) {
       element.setAttribute('aria-selected', 'true');
       this.displaySelected.innerText = title;
+      this.trigger('menu-selected', {
+        element: element,
+        choice: eventName
+      });
     }
 
     element.addEventListener('click', event => {
@@ -197,7 +208,7 @@ export default class ContentBrowserView {
     this.menubar.appendChild(underline);
 
     // call init menu from sdk
-    initMenu(this.rootElement);
+    initNavbar(this.menu);
   }
 
   /**

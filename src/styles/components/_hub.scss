@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 @mixin h5p-hub-icon($char) {
-  font-family: 'h5p' !important;
+  font-family: 'h5p-hub' !important;
   content: $char;
   display: inline-block;
   speak: none;
@@ -18,9 +18,7 @@
 }
 
 @mixin section($color) {
-  &[open] {
-    border: 1px solid $color;
-  }
+  border: 1px solid $color;
 
   [role="tab"][aria-selected="true"] ~ span{
     background: $color;
@@ -46,22 +44,32 @@
   &>.panel {
     border: 1px solid $c1;
 
-    &>.panel-header {
+    &>[role="heading"] {
       background-color: white;
       color: $c1;
       font-style: italic;
       font-weight: 600;
 
-      &:before {
-        font-style: normal;
-        font-weight: normal;
-        margin-right: 1em;
+      .h5p-hub-description {
+        color: transparent;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        display: inline-block;
       }
 
-      &:after {
-        @include h5p-hub-icon("\e924");
-        font-size: 0.9em;
-        float: right;
+      [role="button"] {
+        &:before {
+          font-style: normal;
+          font-weight: normal;
+          margin-right: 1em;
+        }
+
+        &:after {
+          @include h5p-hub-icon("\e924");
+          font-size: 0.9em;
+          float: right;
+        }
       }
     }
 
@@ -81,22 +89,21 @@
   .tab-panel {
     border: none;
 
-    > nav > ul {
+    > nav > [role="tablist"] {
       background-color: $c4;
       border-bottom: none;
 
       [role="tab"] {
         color: $c3;
+        outline-color: lighten($ac1, 10%);
+
+        &:before {
+          @include h5p-hub-icon("\e91d");
+        }
 
         &[aria-selected='true'] {
           &:before {
             @include h5p-hub-icon("\e91b");
-          }
-        }
-
-        &[aria-selected='false'] {
-          &:before {
-            @include h5p-hub-icon("\e91d");
           }
         }
 
