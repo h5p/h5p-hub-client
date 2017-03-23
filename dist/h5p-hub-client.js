@@ -646,6 +646,7 @@ var Keyboard = function () {
      * @property {function} boundHandleKeyDown
      */
     this.boundHandleKeyDown = this.handleKeyDown.bind(this);
+    this.boundHandleFocus = this.handleFocus.bind(this);
     /**
      * @property {number} selectedIndex
      */
@@ -667,6 +668,7 @@ var Keyboard = function () {
     value: function addElement(element) {
       this.elements.push(element);
       element.addEventListener('keydown', this.boundHandleKeyDown);
+      element.addEventListener('focus', this.boundHandleFocus);
 
       if (this.elements.length === 1) {
         // if first
@@ -691,6 +693,7 @@ var Keyboard = function () {
       this.elements = (0, _functional.without)([element], this.elements);
 
       element.removeEventListener('keydown', this.boundHandleKeyDown);
+      element.removeEventListener('focus', this.boundHandleFocus);
 
       // if removed element was selected
       if (hasTabIndex(element)) {
@@ -751,14 +754,26 @@ var Keyboard = function () {
       this.elements[this.selectedIndex].focus();
     }
   }, {
-    key: 'forceSelectedIndex',
+    key: 'handleFocus',
 
+
+    /**
+     * Updates the selected index with the focused element
+     *
+     * @param {FocusEvent} event
+     */
+    value: function handleFocus(event) {
+      this.selectedIndex = this.elements.indexOf(event.srcElement);
+    }
 
     /**
      * Sets the selected index, and updates the tab index
      *
      * @param {number} index
      */
+
+  }, {
+    key: 'forceSelectedIndex',
     value: function forceSelectedIndex(index) {
       this.selectedIndex = index;
       updateTabbable(this.elements, this.selectedIndex);
@@ -5111,15 +5126,15 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @fires Hub#upload
  */
 var UploadSection = function () {
-  function UploadSection(services) {
+  function UploadSection(state, services) {
     _classCallCheck(this, UploadSection);
 
-    var self = this;
     _extends(this, (0, _eventful.Eventful)());
+    this.services = services;
 
     // Create the upload form
     var uploadForm = this.renderUploadForm();
-    this.initUploadForm(uploadForm, services);
+    this.initUploadForm(uploadForm);
 
     // Create a wrapper to hold user messages
     this.messageWrapper = document.createElement('div');
@@ -5147,53 +5162,59 @@ var UploadSection = function () {
       // TODO create variables for links to h5p.org so they can be changed easily
       // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <div class="upload-path-wrapper">\n            <input class="upload-path" placeholder="No file chosen" disabled />\n          </div>\n          <span class="button use-button">Use</span>\n          <label class="upload">\n            <input type="file" />\n            <span class="button upload-button">Upload a file</span>\n          </label>\n        </div>\n        <div class="upload-instructions">\n          <h3>Select a file to upload and create H5P content from.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="No file chosen"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">Upload a file</button>\n          </div>\n        </div>\n        <div class="upload-instructions">\n          <h3>Upload a H5P file.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
 
       return uploadForm;
     }
 
     /**
-     * Adds logic to bind the button to the form
+     * Adds logic to bind the buttons to the form
      * and to bind the form to the plugin
      *
      * @param  {HTMLElement} uploadForm
-     * @param  {HubServices} services
      */
 
   }, {
     key: 'initUploadForm',
-    value: function initUploadForm(uploadForm, services) {
-      var _this = this;
-
+    value: function initUploadForm(uploadForm) {
       var self = this;
-      var uploadInput = uploadForm.querySelector('.upload input[type="file"]');
+      var uploadInput = uploadForm.querySelector('.upload-wrapper input[type="file"]');
       var uploadButton = uploadForm.querySelector('.upload-button');
-      var uploadPathWrapper = uploadForm.querySelector('.upload-path-wrapper');
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
+      var firstInput = uploadPath;
+      var lastInput = uploadForm.querySelector('a');
 
       // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
 
+        if (this.value == '') {
+          return;
+        }
+
+        // Reset styles
         self.clearUserMessages();
         uploadPath.value = '';
 
-        var fileExtension = self.getFileExtension(this.value);
+        // Replace the placeholder text with the selected filepath
+        uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
-        if (fileExtension !== '' || fileExtension !== 'h5p') {
+        // Update the upload button
+        uploadButton.innerHTML = 'Change file';
+
+        // Check that it's a h5p file
+        var fileExtension = self.getFileExtension(this.value);
+        if (fileExtension !== 'h5p') {
           self.renderMessage({
             type: 'error',
             title: '.h5p file not found',
             content: 'You need to upload a file that ends in .h5p'
           });
+
+          // Hide the 'use' button for non-h5p files
+          useButton.style.display = 'none';
         } else {
-          // Replace the placeholder text with the selected filepath
-          uploadPath.value = this.value.replace('C:\\fakepath\\', '');
-
-          // Update the upload button
-          uploadButton.innerHTML = 'Change file';
-
-          // Only show the 'use' button once a file has been selected
+          // Only show the 'use' button once a h5p file has been selected
           useButton.style.display = 'inline-block';
         }
       };
@@ -5203,18 +5224,45 @@ var UploadSection = function () {
 
         // Add the H5P file to a form, ready for transportation
         var data = new FormData();
-        data.append('h5p', h5pUpload.files[0]);
+        data.append('h5p', uploadInput.files[0]);
 
         // Upload content to the plugin
-        _this.services.uploadContent(data).then(function (json) {
+        self.services.uploadContent(data).then(function (json) {
           // Fire the received data to any listeners
           self.trigger('upload', json);
         });
       });
 
       // Allow users to upload a file by clicking on path field
-      uploadPathWrapper.onclick = function () {
+      uploadPath.onclick = function () {
         uploadInput.click();
+      };
+
+      // Allow users to upload a file by pressing enter or spacebar
+      uploadPath.onkeydown = function (e) {
+        if (e.which === 13 || e.which === 32) {
+          uploadInput.click();
+        }
+      };
+
+      // Reuse the upload input logic to upload a file 
+      uploadButton.onclick = function () {
+        uploadInput.click();
+      };
+
+      // Allow users to upload a file by pressing enter or spacebar
+      uploadButton.onkeydown = function (e) {
+        if (e.which === 13 || e.which === 32) {
+          uploadInput.click();
+        }
+      };
+
+      // Cycle tabbing back to the first input
+      lastInput.onkeydown = function (e) {
+        if (e.which === 9 && !e.shiftKey) {
+          e.preventDefault();
+          firstInput.focus();
+        }
       };
     }
 
@@ -5818,6 +5866,13 @@ var toggleVisibility = (0, _functional.curry)(function (hidden, element) {
 var isDisabled = (0, _elements.hasAttribute)('disabled');
 
 /**
+ * @type {function}
+ */
+var showImageLightbox = (0, _functional.curry)(function (lightbox, imageIndex) {
+  return (0, _elements.setAttribute)('data-show', imageIndex, lightbox);
+});
+
+/**
  * Update the view
  *
  * @param {HTMLElement} element
@@ -5872,15 +5927,12 @@ var onNavigationButtonClick = function onNavigationButtonClick(element, state, b
  * @function
  * @return {HTMLElement}
  */
-var initImage = (0, _functional.curry)(function (element, keyboard, image) {
+var initImage = (0, _functional.curry)(function (element, keyboard, image, imageIndex) {
   var targetId = image.getAttribute('aria-controls');
-  var lightBox = element.querySelector('#' + targetId);
+  var lightBox = document.querySelector('#' + targetId);
 
-  lightBox.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'true');
-  });
   image.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'false');
+    return showImageLightbox(lightBox, imageIndex);
   });
 
   keyboard.addElement(image);
@@ -5899,7 +5951,9 @@ var initImage = (0, _functional.curry)(function (element, keyboard, image) {
 var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
   // on add image run initialization
   if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).forEach(initImage(element, keyboard));
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).filter(function (image) {
+      return image !== null;
+    }).forEach(initImage(element, keyboard));
   }
 
   // update the view
