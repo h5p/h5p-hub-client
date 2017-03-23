@@ -83,7 +83,7 @@ export default class HubView {
     const labels = {
       h5pHub: 'H5P Hub.'
     };
-    const element = document.createElement('div');
+    const element = document.createElement('section');
     element.className += `h5p-hub h5p-sdk`;
 
     element.innerHTML = `

@@ -3057,7 +3057,28 @@ var ContentTypeDetailView = function () {
     value: function setLicence(type, owner) {
       if (type) {
         if (type === 'MIT') {
-          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n        <p>Copyright " + new Date().getFullYear() + " " + owner + "</p>\n\n        <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n        of this software and associated documentation files (the \"Software\"), to deal\n        in the Software without restriction, including without limitation the rights\n        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n        copies of the Software, and to permit persons to whom the Software is\n        furnished to do so, subject to the following conditions:</p>\n        \n        <p>The above copyright notice and this permission notice shall be included in\n        all copies or substantial portions of the Software.</p>\n        \n        <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n        THE SOFTWARE.</p>\n        ";
+          /*this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+          <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
+           <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+          of this software and associated documentation files (the "Software"), to deal
+          in the Software without restriction, including without limitation the rights
+          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+          copies of the Software, and to permit persons to whom the Software is
+          furnished to do so, subject to the following conditions:</p>
+          
+          <p>The above copyright notice and this permission notice shall be included in
+          all copies or substantial portions of the Software.</p>
+          
+          <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+          THE SOFTWARE.</p>
+          `;*/
+
+          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n          <dl class=\"dl-horizontal\">\n            <dt>Can</dt>\n            <dd>Use commercially</dd>\n            <dd>Modify</dd>\n            <dd>Distribute</dd>\n            <dd>Sublicense</dd>\n            <dd>Private use</dd>\n            \n            <dt>Cannot</dt>\n            <dd>Hold liable</dd>\n            \n            <dt>Must</dt>\n            <dd>Include copyright</dd>\n            <dd>Include license</dd>\n          </dl>\n        ";
         } else {
           this.licencePanelBody.querySelector('.panel-body').innerText = type;
         }
@@ -4633,7 +4654,7 @@ var HubView = function () {
       var labels = {
         h5pHub: 'H5P Hub.'
       };
-      var element = document.createElement('div');
+      var element = document.createElement('section');
       element.className += "h5p-hub h5p-sdk";
 
       element.innerHTML = "\n      <div class=\"panel\">\n        <div aria-level=\"1\" role=\"heading\">\n          <span role=\"button\" class=\"icon-hub-icon\" aria-expanded=\"" + expanded + "\" aria-controls=\"panel-body-" + sectionId + "\">\n          <span class=\"h5p-hub-description\">" + labels.h5pHub + "</span>\n          <span class=\"h5p-hub-selected\"></span>\n        </span>\n        </div>\n        <div id=\"panel-body-" + sectionId + "\" role=\"region\" aria-hidden=\"" + !expanded + "\">\n          <div class=\"tab-panel\">\n            <nav>\n              <ul role=\"tablist\"></ul>\n            </nav>\n          </div>\n        </div>\n      </div>";
