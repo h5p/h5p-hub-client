@@ -1,5 +1,6 @@
 import ContetTypeDetailView from "./content-type-detail-view";
 import { Eventful } from '../mixins/eventful';
+import Dictionary from '../utils/dictionary';
 
 /**
  * @class
@@ -80,7 +81,7 @@ export default class ContentTypeDetail {
         this.view.setIsInstalled(true);
         this.view.showButtonBySelector('.button-get');
         this.view.setInstallMessage({
-          message: `${id} successfully installed!`,
+          message: Dictionary('contentTypeInstallSuccess', {':contentType': $id}),
         });
       })
       .catch(error => {
@@ -90,7 +91,7 @@ export default class ContentTypeDetail {
         let errorMessage = (error.errorCode) ? error : {
           success: false,
           errorCode: 'RESPONSE_FAILED',
-          message: `${id} could not be installed! Contact your administrator.`,
+          message: Dictionary.get('contentTypeInstallError', {':contentType': $id})
         };
         this.view.setInstallMessage(errorMessage);
 
@@ -117,9 +118,14 @@ export default class ContentTypeDetail {
     this.view.setIsRestricted(contentType.restricted);
 
     // Check if api version is supported
-    this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||
+    const apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion ||
       (this.apiVersion.major == contentType.h5pMajorVersion &&
-       this.apiVersion.minor >= contentType.h5pMinorVersion));
+       this.apiVersion.minor >= contentType.h5pMinorVersion);
+
+    // If not installed and unsupported version - let view know
+    if (!contentType.installed && !apiVersionSupported) {
+      this.view.apiVersionUnsupported();
+    }
 
     // update carousel
     this.view.removeAllImagesInCarousel();

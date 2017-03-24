@@ -4,6 +4,8 @@ import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Keyboard from 'utils/keyboard';
+import Dictionary from '../utils/dictionary';
+
 
 /**
  * @function
@@ -106,18 +108,14 @@ export default class ContentTypeListView {
    * @return {HTMLElement}
    */
   createContentTypeRow(contentType, scope) {
-    const labels = {
-      icon: 'Icon'
-    };
-
     // create ids
     const index = this.rootElement.querySelectorAll('li').length;
     const contentTypeRowTitleId = `content-type-row-title-${index}`;
     const contentTypeRowDescriptionId = `content-type-row-description-${index}`;
 
     // field configuration
-    const useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-    const installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
+    const useButtonConfig = { text: Dictionary.get('contentTypeUseButtonLabel'), cls: 'button-primary', icon: '' };
+    const installButtonConfig = { text: Dictionary.get('contentTypeGetButtonLabel'), cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick'};
     const button = contentType.installed ?  useButtonConfig: installButtonConfig;
     const title = contentType.title || contentType.machineName;
     const description = contentType.summary || '';
@@ -133,13 +131,13 @@ export default class ContentTypeListView {
 
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${image}" alt="${title} ${labels.icon}" />
-      
+      <img class="img-responsive" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
+
       <div class="content-type-row-info">
         <h4 id="${contentTypeRowTitleId}">${title}</h4>
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
-      
+
       <div class="content-type-row-button">
         <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
           <span class="${button.icon}"></span>

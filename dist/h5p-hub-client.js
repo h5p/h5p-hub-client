@@ -237,85 +237,6 @@ var inverseBooleanString = exports.inverseBooleanString = function inverseBoolea
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-/**
- * @mixin
- */
-var Eventful = exports.Eventful = function Eventful() {
-  return {
-    listeners: {},
-
-    /**
-     * Listen to event
-     *
-     * @param {string} type
-     * @param {function} listener
-     * @param {object} [scope]
-     *
-     * @function
-     * @return {Eventful}
-     */
-    on: function on(type, listener, scope) {
-      /**
-       * @typedef {object} Trigger
-       * @property {function} listener
-       * @property {object} scope
-       */
-      var trigger = {
-        'listener': listener,
-        'scope': scope
-      };
-
-      this.listeners[type] = this.listeners[type] || [];
-      this.listeners[type].push(trigger);
-
-      return this;
-    },
-
-    /**
-     * Triggers event. If any of the listeners returns false, return false
-     *
-     * @param {string} type
-     * @param {object} [event]
-     *
-     * @function
-     * @return {boolean}
-     */
-    trigger: function trigger(type, event) {
-      var triggers = this.listeners[type] || [];
-
-      return triggers.every(function (trigger) {
-        return trigger.listener.call(trigger.scope || this, event) !== false;
-      });
-    },
-
-    /**
-     * Listens for events on another Eventful, and propagate it trough this Eventful
-     *
-     * @param {string[]} types
-     * @param {Eventful} eventful
-     * @param {String} [eventName] the name of the event when propogated
-     */
-    propagate: function propagate(types, eventful, newType) {
-      var self = this;
-      types.forEach(function (type) {
-        return eventful.on(type, function (event) {
-          return self.trigger(newType || type, event);
-        });
-      });
-    }
-  };
-};
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.nodeListToArray = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
 
 var _functional = __webpack_require__(0);
@@ -510,6 +431,85 @@ var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, ad
 });
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @mixin
+ */
+var Eventful = exports.Eventful = function Eventful() {
+  return {
+    listeners: {},
+
+    /**
+     * Listen to event
+     *
+     * @param {string} type
+     * @param {function} listener
+     * @param {object} [scope]
+     *
+     * @function
+     * @return {Eventful}
+     */
+    on: function on(type, listener, scope) {
+      /**
+       * @typedef {object} Trigger
+       * @property {function} listener
+       * @property {object} scope
+       */
+      var trigger = {
+        'listener': listener,
+        'scope': scope
+      };
+
+      this.listeners[type] = this.listeners[type] || [];
+      this.listeners[type].push(trigger);
+
+      return this;
+    },
+
+    /**
+     * Triggers event. If any of the listeners returns false, return false
+     *
+     * @param {string} type
+     * @param {object} [event]
+     *
+     * @function
+     * @return {boolean}
+     */
+    trigger: function trigger(type, event) {
+      var triggers = this.listeners[type] || [];
+
+      return triggers.every(function (trigger) {
+        return trigger.listener.call(trigger.scope || this, event) !== false;
+      });
+    },
+
+    /**
+     * Listens for events on another Eventful, and propagate it trough this Eventful
+     *
+     * @param {string[]} types
+     * @param {Eventful} eventful
+     * @param {String} [eventName] the name of the event when propogated
+     */
+    propagate: function propagate(types, eventful, newType) {
+      var self = this;
+      types.forEach(function (type) {
+        return eventful.on(type, function (event) {
+          return self.trigger(newType || type, event);
+        });
+      });
+    }
+  };
+};
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -519,32 +519,65 @@ var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, ad
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.relayClickEventAs = undefined;
 
-var _functional = __webpack_require__(0);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
- *  Transforms a DOM click event into an Eventful's event
- *  @see Eventful
- *
- * @param  {string | Object} type
- * @param  {Eventful} eventful
- * @param  {HTMLElement} element
- * @return {HTMLElement}
+ * Class responsible for providing translations
  */
-var relayClickEventAs = exports.relayClickEventAs = (0, _functional.curry)(function (type, eventful, element) {
-  element.addEventListener('click', function (event) {
-    eventful.trigger(type, {
-      element: element,
-      id: element.getAttribute('data-id')
-    }, false);
+var Dictionary = function () {
+  function Dictionary() {
+    _classCallCheck(this, Dictionary);
+  }
 
-    // don't bubble
-    event.stopPropagation();
-  });
+  _createClass(Dictionary, null, [{
+    key: "init",
 
-  return element;
-});
+
+    /**
+     * Initialize the dictionary
+     *
+     * @param {Object} dictionary - dictionary as key/value
+     */
+    value: function init(dictionary) {
+      Dictionary.dictionary = dictionary;
+    }
+
+    /**
+     * Get a string from the dictionary. Optionally replace variables
+     *
+     * @param {string} key
+     * @param {Object} replacements
+     * @returns {string}
+     */
+
+  }, {
+    key: "get",
+    value: function get(key, replacements) {
+      var translation = Dictionary.dictionary[key];
+
+      if (translation === undefined) {
+        return "Key not found in dictionary: " + key;
+      }
+
+      // Replace placeholder with variables.
+      for (var placeholder in replacements) {
+        if (!replacements[placeholder]) {
+          continue;
+        }
+        translation = translation.replace(placeholder, replacements[placeholder]);
+      }
+
+      return translation;
+    }
+  }]);
+
+  return Dictionary;
+}();
+
+exports.default = Dictionary;
 
 /***/ }),
 /* 4 */
@@ -559,7 +592,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 var _functional = __webpack_require__(0);
 
@@ -807,65 +840,32 @@ exports.default = Keyboard;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.relayClickEventAs = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _functional = __webpack_require__(0);
 
 /**
- * Class responsible for providing translations
+ *  Transforms a DOM click event into an Eventful's event
+ *  @see Eventful
+ *
+ * @param  {string | Object} type
+ * @param  {Eventful} eventful
+ * @param  {HTMLElement} element
+ * @return {HTMLElement}
  */
-var Dictionary = function () {
-  function Dictionary() {
-    _classCallCheck(this, Dictionary);
-  }
+var relayClickEventAs = exports.relayClickEventAs = (0, _functional.curry)(function (type, eventful, element) {
+  element.addEventListener('click', function (event) {
+    eventful.trigger(type, {
+      element: element,
+      id: element.getAttribute('data-id')
+    }, false);
 
-  _createClass(Dictionary, null, [{
-    key: "init",
+    // don't bubble
+    event.stopPropagation();
+  });
 
-
-    /**
-     * Initialize the dictionary
-     *
-     * @param {Object} dictionary - dictionary as key/value
-     */
-    value: function init(dictionary) {
-      Dictionary.dictionary = dictionary;
-    }
-
-    /**
-     * Get a string from the dictionary. Optionally replace variables
-     *
-     * @param {string} key
-     * @param {Object} replacements
-     * @returns {string}
-     */
-
-  }, {
-    key: "get",
-    value: function get(key, replacements) {
-      var translation = Dictionary.dictionary[key];
-
-      if (translation === undefined) {
-        return "Key not found in dictionary: " + key;
-      }
-
-      // Replace placeholder with variables.
-      for (var placeholder in replacements) {
-        if (!replacements[placeholder]) {
-          continue;
-        }
-        translation = translation.replace(placeholder, replacements[placeholder]);
-      }
-
-      return translation;
-    }
-  }]);
-
-  return Dictionary;
-}();
-
-exports.default = Dictionary;
+  return element;
+});
 
 /***/ }),
 /* 6 */
@@ -1015,7 +1015,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   function attemptVertx() {
     try {
       var r = require;
-      var vertx = __webpack_require__(30);
+      var vertx = __webpack_require__(31);
       vertxNext = vertx.runOnLoop || vertx.runOnContext;
       return useVertxTimer();
     } catch (e) {
@@ -2053,9 +2053,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(5);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2156,7 +2156,7 @@ var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2196,7 +2196,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initCollapsible = undefined;
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 /**
  * Returns true if aria-expanded=true on element
@@ -2283,11 +2283,11 @@ var _hubServices = __webpack_require__(22);
 
 var _hubServices2 = _interopRequireDefault(_hubServices);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2428,11 +2428,11 @@ var Hub = function () {
           sectionId = _ref3$sectionId === undefined ? 'content-types' : _ref3$sectionId;
 
       var tabConfigs = [{
-        title: 'Create Content',
+        title: _dictionary2.default.get('createContentTabLabel'),
         id: 'content-types',
         content: this.contentTypeSection.getElement()
       }, {
-        title: 'Upload',
+        title: _dictionary2.default.get('uploadTabLabel'),
         id: 'upload',
         content: this.uploadSection.getElement()
       }];
@@ -2720,31 +2720,31 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 var _functional = __webpack_require__(0);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _panel = __webpack_require__(8);
 
 var _panel2 = _interopRequireDefault(_panel);
 
-var _imageScroller = __webpack_require__(27);
+var _imageScroller = __webpack_require__(28);
 
 var _imageScroller2 = _interopRequireDefault(_imageScroller);
 
-var _imageLightbox = __webpack_require__(41);
+var _imageLightbox = __webpack_require__(27);
 
 var _imageLightbox2 = _interopRequireDefault(_imageLightbox);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(5);
 
 var _contentTypePlaceholder = __webpack_require__(10);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -2893,13 +2893,6 @@ var ContentTypeDetailView = function () {
   _createClass(ContentTypeDetailView, [{
     key: "createView",
     value: function createView() {
-      var labels = { // todo translate me
-        back: 'Back',
-        close: 'Close',
-        use: 'Use',
-        install: 'Install',
-        installing: 'Installing'
-      };
 
       // Localized text strings
       var l10n = { // TODO: Translate
@@ -2922,7 +2915,7 @@ var ContentTypeDetailView = function () {
       element.setAttribute('aria-labelledby', titleId);
       element.setAttribute('aria-hidden', 'true');
 
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>installButtonLabel</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>\n      <div id=\"" + IMAGELIGHTBOX + "-detail\" class=\"" + IMAGELIGHTBOX + "\" role=\"dialog\" aria-label=\"" + l10n.title + "\">\n        <ol class=\"" + IMAGELIGHTBOX + "-list\"></ol>\n        <div class=\"" + IMAGELIGHTBOX + "-progress\">" + l10n.progress + "</div>\n        <div class=\"" + IMAGELIGHTBOX + "-button next\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.next + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button previous\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.prev + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button close\" role=\"button\" tabindex=\"0\" aria-label=\"" + l10n.close + "\"></div>\n      </div>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + _dictionary2.default.get("contentTypeBackButtonLabel") + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">" + _dictionary2.default.get("contentTypeDemoButtonLabel") + "</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + _dictionary2.default.get("contentTypeCloseButtonLabel") + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + _dictionary2.default.get("contentTypeUseButtonLabel") + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('contentTypeInstallButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + _dictionary2.default.get("contentTypeInstallingButtonLabel") + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> " + _dictionary2.default.get('contentTypeLicensePanelTitle') + "\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>\n      <div id=\"" + IMAGELIGHTBOX + "-detail\" class=\"" + IMAGELIGHTBOX + "\" role=\"dialog\" aria-label=\"" + l10n.title + "\">\n        <ol class=\"" + IMAGELIGHTBOX + "-list\"></ol>\n        <div class=\"" + IMAGELIGHTBOX + "-progress\">" + l10n.progress + "</div>\n        <div class=\"" + IMAGELIGHTBOX + "-button next\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.next + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button previous\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.prev + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button close\" role=\"button\" tabindex=\"0\" aria-label=\"" + l10n.close + "\"></div>\n      </div>";
 
       return element;
     }
@@ -3001,38 +2994,33 @@ var ContentTypeDetailView = function () {
   }, {
     key: "reset",
     value: function reset() {
-      (0, _elements.hide)(this.installMessage);
-    }
-
-    /**
-     * Informs view if api version required by content type is supported. The view
-     * will disable the install-button and display a warning message.
-     *
-     * @param {boolean} supported - true if supported, otherwise false
-     */
-
-  }, {
-    key: "setApiVersionSupported",
-    value: function setApiVersionSupported(supported) {
       this.installButton.removeAttribute('disabled');
       if (this.messageViewElement) {
         this.container.removeChild(this.messageViewElement);
         delete this.messageViewElement;
       }
+      (0, _elements.hide)(this.installMessage);
+    }
 
-      if (!supported) {
-        // Disable install button
-        this.installButton.setAttribute('disabled', 'disabled');
+    /**
+     * Informs view if api version required by content type is un supported. The view
+     * will disable the install-button and display a warning message.
+     */
 
-        var messageView = new _messageView2.default({
-          type: 'info',
-          title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
-          content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
-        });
+  }, {
+    key: "apiVersionUnsupported",
+    value: function apiVersionUnsupported() {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
 
-        this.messageViewElement = messageView.getElement();
-        this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-      }
+      var messageView = new _messageView2.default({
+        type: 'warning',
+        title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
+        content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
     }
 
     /**
@@ -3086,7 +3074,7 @@ var ContentTypeDetailView = function () {
       var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
       if (text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
         this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
           return _this2.toggleDescriptionExpanded(text);
         });
@@ -3111,9 +3099,9 @@ var ContentTypeDetailView = function () {
       this.descriptionExpanded = !this.descriptionExpanded;
 
       if (this.descriptionExpanded) {
-        this.description.innerHTML = text + "<button class=\"read-less link\">Read less</button>";
+        this.description.innerHTML = text + "<button class=\"read-less link\">" + _dictionary2.default.get('contentTypeReadLess') + "</button>";
       } else {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
       }
 
       this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
@@ -3187,7 +3175,7 @@ var ContentTypeDetailView = function () {
     key: "setOwner",
     value: function setOwner(owner) {
       if (owner) {
-        this.owner.innerHTML = "By " + owner;
+        this.owner.innerHTML = _dictionary2.default.get('contentTypeOwner', { ':owner': owner });
       } else {
         this.owner.innerHTML = '';
       }
@@ -3335,7 +3323,11 @@ var _contentTypeDetailView = __webpack_require__(16);
 
 var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
+
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3444,7 +3436,7 @@ var ContentTypeDetail = function () {
         _this.view.setIsInstalled(true);
         _this.view.showButtonBySelector('.button-get');
         _this.view.setInstallMessage({
-          message: id + ' successfully installed!'
+          message: (0, _dictionary2.default)('contentTypeInstallSuccess', { ':contentType': $id })
         });
       }).catch(function (error) {
         _this.view.showButtonBySelector('.button-install');
@@ -3453,7 +3445,7 @@ var ContentTypeDetail = function () {
         var errorMessage = error.errorCode ? error : {
           success: false,
           errorCode: 'RESPONSE_FAILED',
-          message: id + ' could not be installed! Contact your administrator.'
+          message: _dictionary2.default.get('contentTypeInstallError', { ':contentType': $id })
         };
         _this.view.setInstallMessage(errorMessage);
 
@@ -3483,7 +3475,12 @@ var ContentTypeDetail = function () {
       this.view.setIsRestricted(contentType.restricted);
 
       // Check if api version is supported
-      this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
+      var apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion;
+
+      // If not installed and unsupported version - let view know
+      if (!contentType.installed && !apiVersionSupported) {
+        this.view.apiVersionUnsupported();
+      }
 
       // update carousel
       this.view.removeAllImagesInCarousel();
@@ -3525,11 +3522,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _functional = __webpack_require__(0);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(5);
 
 var _contentTypePlaceholder = __webpack_require__(10);
 
@@ -3538,6 +3535,10 @@ var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3668,18 +3669,14 @@ var ContentTypeListView = function () {
   }, {
     key: "createContentTypeRow",
     value: function createContentTypeRow(contentType, scope) {
-      var labels = {
-        icon: 'Icon'
-      };
-
       // create ids
       var index = this.rootElement.querySelectorAll('li').length;
       var contentTypeRowTitleId = "content-type-row-title-" + index;
       var contentTypeRowDescriptionId = "content-type-row-description-" + index;
 
       // field configuration
-      var useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-      var installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
+      var useButtonConfig = { text: _dictionary2.default.get('contentTypeUseButtonLabel'), cls: 'button-primary', icon: '' };
+      var installButtonConfig = { text: _dictionary2.default.get('contentTypeGetButtonLabel'), cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
       var button = contentType.installed ? useButtonConfig : installButtonConfig;
       var title = contentType.title || contentType.machineName;
       var description = contentType.summary || '';
@@ -3694,7 +3691,7 @@ var ContentTypeListView = function () {
       element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
       // create html
-      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + labels.icon + "\" />\n      \n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n      \n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
+      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + _dictionary2.default.get('contentTypeIconAltText') + "\" />\n\n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n\n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
 
       // handle use button
       var useButton = element.querySelector('.button-primary');
@@ -3742,7 +3739,7 @@ var _contentTypeListView = __webpack_require__(18);
 
 var _contentTypeListView2 = _interopRequireDefault(_contentTypeListView);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3854,19 +3851,19 @@ var _messageView = __webpack_require__(7);
 
 var _messageView2 = _interopRequireDefault(_messageView);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 var _functional = __webpack_require__(0);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(5);
 
-var _navbar = __webpack_require__(28);
+var _navbar = __webpack_require__(29);
 
 var _navbar2 = _interopRequireDefault(_navbar);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -3956,14 +3953,13 @@ var ContentBrowserView = function () {
   _createClass(ContentBrowserView, [{
     key: "createElement",
     value: function createElement(state) {
-      var menutitle = 'Browse content types';
       var menuId = 'content-type-filter';
-      var searchText = 'Search for Content Types';
+      var searchText = _dictionary2.default.get('contentTypeSearchFieldPlaceholder');
 
       // create element
       var element = document.createElement('div');
       element.className = 'content-type-section-view';
-      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + menutitle + "</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
+      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + _dictionary2.default.get("contentTypeSectionTitle") + "}</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
 
       return element;
     }
@@ -4160,33 +4156,15 @@ var _contentTypeDetail = __webpack_require__(17);
 
 var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
+
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Tab section constants
- */
-var ContentTypeSectionTabs = {
-  ALL: {
-    id: 'filter-all',
-    title: 'All',
-    eventName: 'all'
-  },
-  MY_CONTENT_TYPES: {
-    id: 'filter-my-content-types',
-    title: 'My Content Types',
-    eventName: 'my-content-types',
-    selected: true
-  },
-  MOST_POPULAR: {
-    id: 'filter-most-popular',
-    title: 'Most Popular',
-    eventName: 'most-popular'
-  }
-};
 
 /**
  * @class ContentTypeSection
@@ -4194,8 +4172,8 @@ var ContentTypeSectionTabs = {
  *
  * @fires Hub#select
  */
-
 var ContentTypeSection = function () {
+
   /**
    * @param {object} state
    * @param {HubServices} services
@@ -4207,6 +4185,28 @@ var ContentTypeSection = function () {
 
     // add event system
     _extends(this, (0, _eventful.Eventful)());
+
+    /*
+     * Tab section constants
+     */
+    ContentTypeSection.Tabs = {
+      ALL: {
+        id: 'filter-all',
+        title: _dictionary2.default.get('contentTypeSectionAll'),
+        eventName: 'all'
+      },
+      MY_CONTENT_TYPES: {
+        id: 'filter-my-content-types',
+        title: _dictionary2.default.get('contentTypeSectionMine'),
+        eventName: 'my-content-types',
+        selected: true
+      },
+      MOST_POPULAR: {
+        id: 'filter-most-popular',
+        title: _dictionary2.default.get('contentTypeSectionPopular'),
+        eventName: 'most-popular'
+      }
+    };
 
     // add view
     this.view = new _contentTypeSectionView2.default(state);
@@ -4233,7 +4233,7 @@ var ContentTypeSection = function () {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
+    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSection.Tabs.ALL.id));
     // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
@@ -4244,8 +4244,8 @@ var ContentTypeSection = function () {
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
     // add menu items
-    Object.keys(ContentTypeSectionTabs).forEach(function (tab) {
-      return _this.view.addMenuItem(ContentTypeSectionTabs[tab]);
+    Object.keys(ContentTypeSection.Tabs).forEach(function (tab) {
+      return _this.view.addMenuItem(ContentTypeSection.Tabs[tab]);
     });
     this.view.initMenu();
   }
@@ -4261,8 +4261,8 @@ var ContentTypeSection = function () {
       // TODO - use translation system:
       this.view.displayMessage({
         type: 'error',
-        title: 'Not able to communicate with hub.',
-        content: 'Error occured. Please try again.'
+        title: _dictionary2.default.get('errorCommunicatingHubTitle'),
+        content: _dictionary2.default.get('errorCommunicatingHubContent')
       });
     }
 
@@ -4310,13 +4310,13 @@ var ContentTypeSection = function () {
       var _this3 = this;
 
       switch (e.choice) {
-        case ContentTypeSectionTabs.ALL.eventName:
+        case ContentTypeSection.Tabs.ALL.eventName:
           this.searchService.sortOn('restricted').then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
           });
           break;
 
-        case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
+        case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
           this.searchService.filterOutRestricted().then(function (filteredContentTypes) {
             return _this3.searchService.sortOnRecent(filteredContentTypes);
           }).then(function (sortedContentTypes) {
@@ -4324,7 +4324,7 @@ var ContentTypeSection = function () {
           });
           break;
 
-        case ContentTypeSectionTabs.MOST_POPULAR.eventName:
+        case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
           var sortOrder = ['restricted', 'popularity'];
           this.searchService.sortOn(sortOrder).then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
@@ -4344,7 +4344,7 @@ var ContentTypeSection = function () {
     value: function clearInputField(_ref2) {
       var id = _ref2.id;
 
-      if (id !== ContentTypeSectionTabs.ALL.id) {
+      if (id !== ContentTypeSection.Tabs.ALL.id) {
         this.view.clearInputField();
       }
     }
@@ -4637,17 +4637,17 @@ var _panel = __webpack_require__(8);
 
 var _panel2 = _interopRequireDefault(_panel);
 
-var _tabPanel = __webpack_require__(29);
+var _tabPanel = __webpack_require__(30);
 
 var _tabPanel2 = _interopRequireDefault(_tabPanel);
 
 var _functional = __webpack_require__(0);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(5);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5268,11 +5268,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _messageView = __webpack_require__(7);
 
@@ -5321,11 +5321,9 @@ var UploadSection = function () {
     key: 'renderUploadForm',
     value: function renderUploadForm() {
       // Create the html
-      // TODO get use button text from dictionary
       // TODO create variables for links to h5p.org so they can be changed easily
-      // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="No file chosen"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">Upload a file</button>\n          </div>\n        </div>\n        <div class="upload-instructions">\n          <h3>Upload a H5P file.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="' + _dictionary2.default.get("uploadPlaceholder") + '"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">' + _dictionary2.default.get('uploadFileButtonLabel') + '</button>\n          </div>\n        </div>\n        <div class="upload-instructions">' + _dictionary2.default.get('uploadInstructions') + '</div>\n      </div>\n    ';
 
       return uploadForm;
     }
@@ -5346,7 +5344,7 @@ var UploadSection = function () {
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
       var firstInput = uploadPath;
-      var lastInput = uploadForm.querySelector('a');
+      //const lastInput = uploadForm.querySelector('a');
 
       // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
@@ -5370,8 +5368,8 @@ var UploadSection = function () {
         if (fileExtension !== 'h5p') {
           self.renderMessage({
             type: 'error',
-            title: '.h5p file not found',
-            content: 'You need to upload a file that ends in .h5p'
+            title: _dictionary2.default.get('h5pFileWrongExtensionTitle'),
+            content: _dictionary2.default.get('h5pFileWrongExtensionContent')
           });
 
           // Hide the 'use' button for non-h5p files
@@ -5408,7 +5406,7 @@ var UploadSection = function () {
         }
       };
 
-      // Reuse the upload input logic to upload a file 
+      // Reuse the upload input logic to upload a file
       uploadButton.onclick = function () {
         uploadInput.click();
       };
@@ -5421,12 +5419,13 @@ var UploadSection = function () {
       };
 
       // Cycle tabbing back to the first input
-      lastInput.onkeydown = function (e) {
-        if (e.which === 9 && !e.shiftKey) {
-          e.preventDefault();
-          firstInput.focus();
+      // TODO - why do we need this?
+      /*lastInput.onkeydown = function (e) {
+        if ((e.which === 9 && !e.shiftKey)) {
+           e.preventDefault();
+           firstInput.focus();
         }
-      };
+      }*/
     }
 
     /*
@@ -5982,432 +5981,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = init;
 
-var _elements = __webpack_require__(2);
-
-var _functional = __webpack_require__(0);
-
-var _keyboard = __webpack_require__(4);
-
-var _keyboard2 = _interopRequireDefault(_keyboard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @constant
- */
-var ATTRIBUTE_SIZE = 'data-size';
-
-/**
- * @type {function}
- */
-var disable = (0, _elements.setAttribute)('disabled', '');
-
-/**
- * @type {function}
- */
-var enable = (0, _elements.removeAttribute)('disabled');
-
-/**
- * @param {HTMLElement} element
- * @param {boolean} enabled
- */
-var toggleEnabled = function toggleEnabled(element, enabled) {
-  return (enabled ? enable : disable)(element);
-};
-
-/**
- * @param {HTMLElement} element
- * @param {boolean} hidden
- */
-var toggleVisibility = (0, _functional.curry)(function (hidden, element) {
-  return (0, _elements.setAttribute)('aria-hidden', hidden.toString(), element);
-});
-
-/**
- * @type {function}
- */
-var isDisabled = (0, _elements.hasAttribute)('disabled');
-
-/**
- * @type {function}
- */
-var showImageLightbox = (0, _functional.curry)(function (lightbox, imageIndex) {
-  return (0, _elements.setAttribute)('data-show', imageIndex, lightbox);
-});
-
-/**
- * Update the view
- *
- * @param {HTMLElement} element
- * @param {ImageScrollerState} state
- */
-var updateView = function updateView(element, state) {
-  var prevButton = element.querySelector('.previous');
-  var nextButton = element.querySelector('.next');
-  var list = element.querySelector('ul');
-  var totalCount = list.childElementCount;
-
-  // update list sizes
-  list.style.width = 100 / state.displayCount * totalCount + '%';
-  list.style.marginLeft = state.position * (100 / state.displayCount) + '%';
-
-  // update image sizes
-  (0, _elements.querySelectorAll)('li', element).forEach(function (element) {
-    return element.style.width = 100 / totalCount + '%';
-  });
-
-  // toggle button visibility
-  [prevButton, nextButton].forEach(toggleVisibility(state.displayCount >= totalCount));
-
-  // toggle button enable, disabled
-  toggleEnabled(nextButton, state.position > state.displayCount - totalCount);
-  toggleEnabled(prevButton, state.position < 0);
-};
-
-/**
- * Handles button clicked
- *
- * @param {HTMLElement} element
- * @param {ImageScrollerState} state
- * @param {HTMLElement} button
- * @param {function} updateState
- *
- * @function
- */
-var onNavigationButtonClick = function onNavigationButtonClick(element, state, button, updateState) {
-  if (!isDisabled(button)) {
-    updateState(state);
-    updateView(element, state);
-  }
-};
-
-/**
- * Initializes an image
- *
- * @param {HTMLElement} element
- * @param {HTMLElement} image
- *
- * @function
- * @return {HTMLElement}
- */
-var initImage = (0, _functional.curry)(function (element, keyboard, image, imageIndex) {
-  var targetId = image.getAttribute('aria-controls');
-  var lightBox = document.querySelector('#' + targetId);
-
-  image.addEventListener('click', function (event) {
-    return showImageLightbox(lightBox, imageIndex);
-  });
-
-  keyboard.addElement(image);
-
-  return image;
-});
-
-/**
- * Callback for when the dom is updated
- *
- * @param {HTMLElement} element
- * @param {ImageScrollerState} state
- * @param {MutationRecord} record
- * @function
- */
-var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
-  // on add image run initialization
-  if (record.type === 'childList') {
-    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).filter(function (image) {
-      return image !== null;
-    }).forEach(initImage(element, keyboard));
-  }
-
-  // update the view
-  updateView(element, _extends(state, {
-    displayCount: element.getAttribute(ATTRIBUTE_SIZE) || 5,
-    position: 0
-  }));
-});
-
-/**
- * Initializes a panel
- *
- * @param {HTMLElement} element
- * @return {HTMLElement}
- */
-function init(element) {
-  // get button html elements
-  var nextButton = element.querySelector('.next');
-  var prevButton = element.querySelector('.previous');
-  var keyboard = new _keyboard2.default();
-
-  /**
-   * @typedef {object} ImageScrollerState
-   * @property {number} displayCount
-   * @property {number} position
-   */
-  var state = {
-    displayCount: element.getAttribute(ATTRIBUTE_SIZE) || 5,
-    position: 0
-  };
-
-  // initialize buttons
-  nextButton.addEventListener('click', function () {
-    return onNavigationButtonClick(element, state, nextButton, function (state) {
-      return state.position--;
-    });
-  });
-  prevButton.addEventListener('click', function () {
-    return onNavigationButtonClick(element, state, prevButton, function (state) {
-      return state.position++;
-    });
-  });
-
-  // initialize images
-  (0, _elements.querySelectorAll)('[aria-controls]', element).forEach(initImage(element, keyboard));
-
-  // listen for updates to data-size
-  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state, keyboard)));
-
-  observer.observe(element, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    attributeOldValue: true,
-    attributeFilter: [ATTRIBUTE_SIZE]
-  });
-
-  // initialize position
-  updateView(element, state);
-
-  return element;
-}
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = init;
-
-var _elements = __webpack_require__(2);
-
-var _functional = __webpack_require__(0);
-
-var _collapsible = __webpack_require__(9);
-
-var _keyboard = __webpack_require__(4);
-
-var _keyboard2 = _interopRequireDefault(_keyboard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * Unselects all elements in an array
- *
- * @param {HTMLElement[]} elements
- * @function
- */
-var unSelectAll = (0, _functional.forEach)((0, _elements.removeAttribute)('aria-selected'));
-
-/**
- * Sets the aria-expanded attribute on an element to false
- *
- * @param {HTMLElement} element
- */
-var unExpand = (0, _elements.setAttribute)('aria-expanded', 'false');
-
-/**
- * Selects an element, and un selects all other menu items
- *
- * @param {HTMLElement[]} menuItems
- * @param {HTMLElement} element
- * @function
- */
-var onSelectMenuItem = function onSelectMenuItem(menuItems, element) {
-  unSelectAll(menuItems);
-  element.setAttribute('aria-selected', 'true');
-};
-
-/**
- * Initiates a tab panel
- *
- * @param {HTMLElement} element
- */
-function init(element) {
-  // elements
-  var menuItems = (0, _elements.querySelectorAll)('[role="menuitem"]', element);
-  var toggler = element.querySelector('[aria-controls][aria-expanded]');
-  var keyboard = new _keyboard2.default();
-
-  keyboard.onSelect = function (element) {
-    onSelectMenuItem(menuItems, element);
-    unExpand(toggler);
-  };
-
-  // move select
-  menuItems.forEach(function (menuItem) {
-    // add mouse click listener
-    menuItem.addEventListener('click', function (event) {
-      var element = event.target;
-      var elementIndex = menuItems.indexOf(element);
-
-      onSelectMenuItem(menuItems, element);
-      unExpand(toggler);
-      keyboard.forceSelectedIndex(elementIndex);
-    });
-
-    // add keyboard support
-    keyboard.addElement(menuItem);
-  });
-
-  // init collapse and open
-  (0, _collapsible.initCollapsible)(element, function (expanded, el) {
-    return (0, _elements.toggleClass)('collapsed', !expanded, el);
-  });
-}
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = init;
-
-var _elements = __webpack_require__(2);
-
-var _functional = __webpack_require__(0);
-
-var _keyboard = __webpack_require__(4);
-
-var _keyboard2 = _interopRequireDefault(_keyboard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/**
- * @function
- */
-var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
-
-/**
- * @function
- */
-var show = (0, _elements.setAttribute)('aria-hidden', 'false');
-
-/**
- * @function
- */
-var isSelected = (0, _elements.attributeEquals)('aria-selected', 'true');
-
-/**
- * @function
- */
-var unSelectAll = (0, _functional.forEach)((0, _elements.removeAttribute)('aria-selected'));
-
-/**
- * Change tab panel when tab's aria-selected is changed
- *
- * @param {HTMLElement} element
- * @param {HTMLElement} tab
- */
-var addAriaSelectedObserver = function addAriaSelectedObserver(element, tab) {
-  // set observer on title for aria-expanded
-  var observer = new MutationObserver(function () {
-    var panelId = tab.getAttribute('aria-controls');
-    var panel = element.querySelector('#' + panelId);
-    var allPanels = (0, _elements.querySelectorAll)('[role="tabpanel"]', element);
-
-    if (isSelected(tab)) {
-      hideAll(allPanels);
-      show(panel);
-    }
-  });
-
-  observer.observe(tab, {
-    attributes: true,
-    attributeOldValue: true,
-    attributeFilter: ["aria-selected"]
-  });
-};
-
-/**
- * Selects an element, and unselects all other tabs
- *
- * @param {HTMLElement[]} allTabs
- * @param {HTMLElement} element
- * @function
- */
-var selectTab = (0, _functional.curry)(function (allTabs, element) {
-  unSelectAll(allTabs);
-  element.setAttribute('aria-selected', 'true');
-});
-
-/**
- * Initiates a tab panel
- *
- * @param {HTMLElement} element
- */
-function init(element) {
-  var tabs = (0, _elements.querySelectorAll)('[role="tab"]', element);
-  var keyboard = new _keyboard2.default();
-
-  // handle enter + space click
-  keyboard.onSelect = selectTab(tabs);
-
-  // init tabs
-  tabs.forEach(function (tab) {
-    addAriaSelectedObserver(element, tab);
-
-    tab.addEventListener('click', function (event) {
-      var element = event.target;
-      var elementIndex = tabs.indexOf(element);
-      selectTab(tabs, element);
-      keyboard.forceSelectedIndex(elementIndex);
-    });
-
-    keyboard.addElement(tab);
-  });
-}
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-/* 31 */,
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-exports.default = init;
-
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(1);
 
 var _functional = __webpack_require__(0);
 
@@ -6764,6 +6338,421 @@ function init(element) {
 
   return element;
 }
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = init;
+
+var _elements = __webpack_require__(1);
+
+var _functional = __webpack_require__(0);
+
+var _keyboard = __webpack_require__(4);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @constant
+ */
+var ATTRIBUTE_SIZE = 'data-size';
+
+/**
+ * @type {function}
+ */
+var disable = (0, _elements.setAttribute)('disabled', '');
+
+/**
+ * @type {function}
+ */
+var enable = (0, _elements.removeAttribute)('disabled');
+
+/**
+ * @param {HTMLElement} element
+ * @param {boolean} enabled
+ */
+var toggleEnabled = function toggleEnabled(element, enabled) {
+  return (enabled ? enable : disable)(element);
+};
+
+/**
+ * @param {HTMLElement} element
+ * @param {boolean} hidden
+ */
+var toggleVisibility = (0, _functional.curry)(function (hidden, element) {
+  return (0, _elements.setAttribute)('aria-hidden', hidden.toString(), element);
+});
+
+/**
+ * @type {function}
+ */
+var isDisabled = (0, _elements.hasAttribute)('disabled');
+
+/**
+ * @type {function}
+ */
+var showImageLightbox = (0, _functional.curry)(function (lightbox, imageIndex) {
+  return (0, _elements.setAttribute)('data-show', imageIndex, lightbox);
+});
+
+/**
+ * Update the view
+ *
+ * @param {HTMLElement} element
+ * @param {ImageScrollerState} state
+ */
+var updateView = function updateView(element, state) {
+  var prevButton = element.querySelector('.previous');
+  var nextButton = element.querySelector('.next');
+  var list = element.querySelector('ul');
+  var totalCount = list.childElementCount;
+
+  // update list sizes
+  list.style.width = 100 / state.displayCount * totalCount + '%';
+  list.style.marginLeft = state.position * (100 / state.displayCount) + '%';
+
+  // update image sizes
+  (0, _elements.querySelectorAll)('li', element).forEach(function (element) {
+    return element.style.width = 100 / totalCount + '%';
+  });
+
+  // toggle button visibility
+  [prevButton, nextButton].forEach(toggleVisibility(state.displayCount >= totalCount));
+
+  // toggle button enable, disabled
+  toggleEnabled(nextButton, state.position > state.displayCount - totalCount);
+  toggleEnabled(prevButton, state.position < 0);
+};
+
+/**
+ * Handles button clicked
+ *
+ * @param {HTMLElement} element
+ * @param {ImageScrollerState} state
+ * @param {HTMLElement} button
+ * @param {function} updateState
+ *
+ * @function
+ */
+var onNavigationButtonClick = function onNavigationButtonClick(element, state, button, updateState) {
+  if (!isDisabled(button)) {
+    updateState(state);
+    updateView(element, state);
+  }
+};
+
+/**
+ * Initializes an image
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} image
+ *
+ * @function
+ * @return {HTMLElement}
+ */
+var initImage = (0, _functional.curry)(function (element, keyboard, image, imageIndex) {
+  var targetId = image.getAttribute('aria-controls');
+  var lightBox = document.querySelector('#' + targetId);
+
+  image.addEventListener('click', function (event) {
+    return showImageLightbox(lightBox, imageIndex);
+  });
+
+  keyboard.addElement(image);
+
+  return image;
+});
+
+/**
+ * Callback for when the dom is updated
+ *
+ * @param {HTMLElement} element
+ * @param {ImageScrollerState} state
+ * @param {MutationRecord} record
+ * @function
+ */
+var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
+  // on add image run initialization
+  if (record.type === 'childList') {
+    (0, _elements.nodeListToArray)(record.addedNodes).filter((0, _elements.classListContains)('slide')).map((0, _elements.querySelector)('img')).filter(function (image) {
+      return image !== null;
+    }).forEach(initImage(element, keyboard));
+  }
+
+  // update the view
+  updateView(element, _extends(state, {
+    displayCount: element.getAttribute(ATTRIBUTE_SIZE) || 5,
+    position: 0
+  }));
+});
+
+/**
+ * Initializes a panel
+ *
+ * @param {HTMLElement} element
+ * @return {HTMLElement}
+ */
+function init(element) {
+  // get button html elements
+  var nextButton = element.querySelector('.next');
+  var prevButton = element.querySelector('.previous');
+  var keyboard = new _keyboard2.default();
+
+  /**
+   * @typedef {object} ImageScrollerState
+   * @property {number} displayCount
+   * @property {number} position
+   */
+  var state = {
+    displayCount: element.getAttribute(ATTRIBUTE_SIZE) || 5,
+    position: 0
+  };
+
+  // initialize buttons
+  nextButton.addEventListener('click', function () {
+    return onNavigationButtonClick(element, state, nextButton, function (state) {
+      return state.position--;
+    });
+  });
+  prevButton.addEventListener('click', function () {
+    return onNavigationButtonClick(element, state, prevButton, function (state) {
+      return state.position++;
+    });
+  });
+
+  // initialize images
+  (0, _elements.querySelectorAll)('[aria-controls]', element).forEach(initImage(element, keyboard));
+
+  // listen for updates to data-size
+  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state, keyboard)));
+
+  observer.observe(element, {
+    subtree: true,
+    childList: true,
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: [ATTRIBUTE_SIZE]
+  });
+
+  // initialize position
+  updateView(element, state);
+
+  return element;
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = init;
+
+var _elements = __webpack_require__(1);
+
+var _functional = __webpack_require__(0);
+
+var _collapsible = __webpack_require__(9);
+
+var _keyboard = __webpack_require__(4);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Unselects all elements in an array
+ *
+ * @param {HTMLElement[]} elements
+ * @function
+ */
+var unSelectAll = (0, _functional.forEach)((0, _elements.removeAttribute)('aria-selected'));
+
+/**
+ * Sets the aria-expanded attribute on an element to false
+ *
+ * @param {HTMLElement} element
+ */
+var unExpand = (0, _elements.setAttribute)('aria-expanded', 'false');
+
+/**
+ * Selects an element, and un selects all other menu items
+ *
+ * @param {HTMLElement[]} menuItems
+ * @param {HTMLElement} element
+ * @function
+ */
+var onSelectMenuItem = function onSelectMenuItem(menuItems, element) {
+  unSelectAll(menuItems);
+  element.setAttribute('aria-selected', 'true');
+};
+
+/**
+ * Initiates a tab panel
+ *
+ * @param {HTMLElement} element
+ */
+function init(element) {
+  // elements
+  var menuItems = (0, _elements.querySelectorAll)('[role="menuitem"]', element);
+  var toggler = element.querySelector('[aria-controls][aria-expanded]');
+  var keyboard = new _keyboard2.default();
+
+  keyboard.onSelect = function (element) {
+    onSelectMenuItem(menuItems, element);
+    unExpand(toggler);
+  };
+
+  // move select
+  menuItems.forEach(function (menuItem) {
+    // add mouse click listener
+    menuItem.addEventListener('click', function (event) {
+      var element = event.target;
+      var elementIndex = menuItems.indexOf(element);
+
+      onSelectMenuItem(menuItems, element);
+      unExpand(toggler);
+      keyboard.forceSelectedIndex(elementIndex);
+    });
+
+    // add keyboard support
+    keyboard.addElement(menuItem);
+  });
+
+  // init collapse and open
+  (0, _collapsible.initCollapsible)(element, function (expanded, el) {
+    return (0, _elements.toggleClass)('collapsed', !expanded, el);
+  });
+}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = init;
+
+var _elements = __webpack_require__(1);
+
+var _functional = __webpack_require__(0);
+
+var _keyboard = __webpack_require__(4);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @function
+ */
+var hideAll = (0, _functional.forEach)((0, _elements.setAttribute)('aria-hidden', 'true'));
+
+/**
+ * @function
+ */
+var show = (0, _elements.setAttribute)('aria-hidden', 'false');
+
+/**
+ * @function
+ */
+var isSelected = (0, _elements.attributeEquals)('aria-selected', 'true');
+
+/**
+ * @function
+ */
+var unSelectAll = (0, _functional.forEach)((0, _elements.removeAttribute)('aria-selected'));
+
+/**
+ * Change tab panel when tab's aria-selected is changed
+ *
+ * @param {HTMLElement} element
+ * @param {HTMLElement} tab
+ */
+var addAriaSelectedObserver = function addAriaSelectedObserver(element, tab) {
+  // set observer on title for aria-expanded
+  var observer = new MutationObserver(function () {
+    var panelId = tab.getAttribute('aria-controls');
+    var panel = element.querySelector('#' + panelId);
+    var allPanels = (0, _elements.querySelectorAll)('[role="tabpanel"]', element);
+
+    if (isSelected(tab)) {
+      hideAll(allPanels);
+      show(panel);
+    }
+  });
+
+  observer.observe(tab, {
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: ["aria-selected"]
+  });
+};
+
+/**
+ * Selects an element, and unselects all other tabs
+ *
+ * @param {HTMLElement[]} allTabs
+ * @param {HTMLElement} element
+ * @function
+ */
+var selectTab = (0, _functional.curry)(function (allTabs, element) {
+  unSelectAll(allTabs);
+  element.setAttribute('aria-selected', 'true');
+});
+
+/**
+ * Initiates a tab panel
+ *
+ * @param {HTMLElement} element
+ */
+function init(element) {
+  var tabs = (0, _elements.querySelectorAll)('[role="tab"]', element);
+  var keyboard = new _keyboard2.default();
+
+  // handle enter + space click
+  keyboard.onSelect = selectTab(tabs);
+
+  // init tabs
+  tabs.forEach(function (tab) {
+    addAriaSelectedObserver(element, tab);
+
+    tab.addEventListener('click', function (event) {
+      var element = event.target;
+      var elementIndex = tabs.indexOf(element);
+      selectTab(tabs, element);
+      keyboard.forceSelectedIndex(elementIndex);
+    });
+
+    keyboard.addElement(tab);
+  });
+}
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ })
 /******/ ]);

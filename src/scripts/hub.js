@@ -117,12 +117,12 @@ export default class Hub {
    */
   initTabPanel({ sectionId = 'content-types' }) {
     const tabConfigs = [{
-      title: 'Create Content',
+      title: Dictionary.get('createContentTabLabel'),
       id: 'content-types',
       content: this.contentTypeSection.getElement(),
     },
     {
-      title: 'Upload',
+      title: Dictionary.get('uploadTabLabel'),
       id: 'upload',
       content: this.uploadSection.getElement()
     }];

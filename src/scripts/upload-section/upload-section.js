@@ -36,24 +36,19 @@ export default class UploadSection {
    */
   renderUploadForm() {
     // Create the html
-    // TODO get use button text from dictionary
     // TODO create variables for links to h5p.org so they can be changed easily
-    // useButton.textContent = Dictionary.get('useButtonLabel');
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
         <div class="upload-form">
-          <input readonly class="upload-path" placeholder="No file chosen"/>
+          <input readonly class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}"/>
           <button class="button use-button">Use</button>
           <div class="input-wrapper">
             <input type="file" />
-            <button class="button upload-button" tabindex="0">Upload a file</button>
+            <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
-        <div class="upload-instructions">
-          <h3>Upload a H5P file.</h3>
-          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>
-        </div>
+        <div class="upload-instructions">${Dictionary.get('uploadInstructions')}</div>
       </div>
     `;
 
@@ -73,7 +68,7 @@ export default class UploadSection {
     const uploadPath = uploadForm.querySelector('.upload-path');
     const useButton =  uploadForm.querySelector('.use-button');
     let firstInput = uploadPath;
-    const lastInput = uploadForm.querySelector('a');
+    //const lastInput = uploadForm.querySelector('a');
 
     // Handle errors and update styles when a file is selected
     uploadInput.onchange = function () {
@@ -97,8 +92,8 @@ export default class UploadSection {
       if (fileExtension !== 'h5p') {
         self.renderMessage({
           type: 'error',
-          title: '.h5p file not found',
-          content: 'You need to upload a file that ends in .h5p'
+          title: Dictionary.get('h5pFileWrongExtensionTitle'),
+          content: Dictionary.get('h5pFileWrongExtensionContent')
         });
 
         // Hide the 'use' button for non-h5p files
@@ -137,7 +132,7 @@ export default class UploadSection {
       }
     }
 
-    // Reuse the upload input logic to upload a file 
+    // Reuse the upload input logic to upload a file
     uploadButton.onclick = function () {
       uploadInput.click();
     }
@@ -150,12 +145,13 @@ export default class UploadSection {
     }
 
     // Cycle tabbing back to the first input
-    lastInput.onkeydown = function (e) {
+    // TODO - why do we need this?
+    /*lastInput.onkeydown = function (e) {
       if ((e.which === 9 && !e.shiftKey)) {
          e.preventDefault();
          firstInput.focus();
       }
-    }
+    }*/
   }
 
   /*
