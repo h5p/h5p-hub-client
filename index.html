@@ -38,7 +38,11 @@
     const hubClient = new H5P.HubClient({
       expanded: true,
       apiRootUrl: '/test/mock/api/',
-      descriptionExpanded: true
+      descriptionExpanded: true,
+      apiVersion: {
+        majorVersion: 1,
+        minorVersion: 12
+      }
     }, {}).on('select', function(event) {
       console.debug('Content Type Selected', event);
     });

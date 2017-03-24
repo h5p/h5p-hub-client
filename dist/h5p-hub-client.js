@@ -519,6 +519,76 @@ var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, ad
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Class responsible for providing translations
+ */
+var Dictionary = function () {
+  function Dictionary() {
+    _classCallCheck(this, Dictionary);
+  }
+
+  _createClass(Dictionary, null, [{
+    key: "init",
+
+
+    /**
+     * Initialize the dictionary
+     *
+     * @param {Object} dictionary - dictionary as key/value
+     */
+    value: function init(dictionary) {
+      Dictionary.dictionary = dictionary;
+    }
+
+    /**
+     * Get a string from the dictionary. Optionally replace variables
+     *
+     * @param {string} key
+     * @param {Object} replacements
+     * @returns {string}
+     */
+
+  }, {
+    key: "get",
+    value: function get(key, replacements) {
+      var translation = Dictionary.dictionary[key];
+
+      if (translation === undefined) {
+        return "Key not found in dictionary: " + key;
+      }
+
+      // Replace placeholder with variables.
+      for (var placeholder in replacements) {
+        if (!replacements[placeholder]) {
+          continue;
+        }
+        translation = translation.replace(placeholder, replacements[placeholder]);
+      }
+
+      return translation;
+    }
+  }]);
+
+  return Dictionary;
+}();
+
+exports.default = Dictionary;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.relayClickEventAs = undefined;
 
 var _functional = __webpack_require__(0);
@@ -547,7 +617,7 @@ var relayClickEventAs = exports.relayClickEventAs = (0, _functional.curry)(funct
 });
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -796,76 +866,6 @@ var Keyboard = function () {
 }();
 
 exports.default = Keyboard;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Class responsible for providing translations
- */
-var Dictionary = function () {
-  function Dictionary() {
-    _classCallCheck(this, Dictionary);
-  }
-
-  _createClass(Dictionary, null, [{
-    key: "init",
-
-
-    /**
-     * Initialize the dictionary
-     *
-     * @param {Object} dictionary - dictionary as key/value
-     */
-    value: function init(dictionary) {
-      Dictionary.dictionary = dictionary;
-    }
-
-    /**
-     * Get a string from the dictionary. Optionally replace variables
-     *
-     * @param {string} key
-     * @param {Object} replacements
-     * @returns {string}
-     */
-
-  }, {
-    key: "get",
-    value: function get(key, replacements) {
-      var translation = Dictionary.dictionary[key];
-
-      if (translation === undefined) {
-        return "Key not found in dictionary: " + key;
-      }
-
-      // Replace placeholder with variables.
-      for (var placeholder in replacements) {
-        if (!replacements[placeholder]) {
-          continue;
-        }
-        translation = translation.replace(placeholder, replacements[placeholder]);
-      }
-
-      return translation;
-    }
-  }]);
-
-  return Dictionary;
-}();
-
-exports.default = Dictionary;
 
 /***/ }),
 /* 6 */
@@ -2051,7 +2051,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _eventful = __webpack_require__(1);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2148,7 +2148,7 @@ exports.default = init;
 
 var _collapsible = __webpack_require__(9);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(5);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -2279,7 +2279,7 @@ var _hubServices = __webpack_require__(21);
 
 var _hubServices2 = _interopRequireDefault(_hubServices);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -2424,11 +2424,11 @@ var Hub = function () {
           sectionId = _ref3$sectionId === undefined ? 'content-types' : _ref3$sectionId;
 
       var tabConfigs = [{
-        title: 'Create Content',
+        title: _dictionary2.default.get('createContentTabLabel'),
         id: 'content-types',
         content: this.contentTypeSection.getElement()
       }, {
-        title: 'Upload',
+        title: _dictionary2.default.get('uploadTabLabel'),
         id: 'upload',
         content: this.uploadSection.getElement()
       }];
@@ -2717,13 +2717,13 @@ var _imageScroller = __webpack_require__(26);
 
 var _imageScroller2 = _interopRequireDefault(_imageScroller);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(4);
 
 var _contentTypePlaceholder = __webpack_require__(10);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -2864,14 +2864,6 @@ var ContentTypeDetailView = function () {
   _createClass(ContentTypeDetailView, [{
     key: "createView",
     value: function createView() {
-      var labels = { // todo translate me
-        back: 'Back',
-        close: 'Close',
-        use: 'Use',
-        install: 'Install',
-        installing: 'Installing'
-      };
-
       // ids
       var titleId = 'content-type-detail-view-title';
 
@@ -2884,7 +2876,7 @@ var ContentTypeDetailView = function () {
       element.setAttribute('aria-labelledby', titleId);
       element.setAttribute('aria-hidden', 'true');
 
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>installButtonLabel</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + _dictionary2.default.get("contentTypeBackButtonLabel") + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">" + _dictionary2.default.get("contentTypeDemoButtonLabel") + "</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + _dictionary2.default.get("contentTypeCloseButtonLabel") + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + _dictionary2.default.get("contentTypeUseButtonLabel") + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('contentTypeInstallButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + _dictionary2.default.get("contentTypeInstallingButtonLabel") + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> " + _dictionary2.default.get('contentTypeLicensePanelTitle') + "\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
 
       return element;
     }
@@ -2965,38 +2957,33 @@ var ContentTypeDetailView = function () {
   }, {
     key: "reset",
     value: function reset() {
-      (0, _elements.hide)(this.installMessage);
-    }
-
-    /**
-     * Informs view if api version required by content type is supported. The view
-     * will disable the install-button and display a warning message.
-     *
-     * @param {boolean} supported - true if supported, otherwise false
-     */
-
-  }, {
-    key: "setApiVersionSupported",
-    value: function setApiVersionSupported(supported) {
       this.installButton.removeAttribute('disabled');
       if (this.messageViewElement) {
         this.container.removeChild(this.messageViewElement);
         delete this.messageViewElement;
       }
+      (0, _elements.hide)(this.installMessage);
+    }
 
-      if (!supported) {
-        // Disable install button
-        this.installButton.setAttribute('disabled', 'disabled');
+    /**
+     * Informs view if api version required by content type is un supported. The view
+     * will disable the install-button and display a warning message.
+     */
 
-        var messageView = new _messageView2.default({
-          type: 'info',
-          title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
-          content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
-        });
+  }, {
+    key: "apiVersionUnsupported",
+    value: function apiVersionUnsupported() {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
 
-        this.messageViewElement = messageView.getElement();
-        this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-      }
+      var messageView = new _messageView2.default({
+        type: 'warning',
+        title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
+        content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
     }
 
     /**
@@ -3050,7 +3037,7 @@ var ContentTypeDetailView = function () {
       var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
       if (text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
         this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
           return _this2.toggleDescriptionExpanded(text);
         });
@@ -3075,9 +3062,9 @@ var ContentTypeDetailView = function () {
       this.descriptionExpanded = !this.descriptionExpanded;
 
       if (this.descriptionExpanded) {
-        this.description.innerHTML = text + "<button class=\"read-less link\">Read less</button>";
+        this.description.innerHTML = text + "<button class=\"read-less link\">" + _dictionary2.default.get('contentTypeReadLess') + "</button>";
       } else {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
       }
 
       this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
@@ -3129,7 +3116,7 @@ var ContentTypeDetailView = function () {
           THE SOFTWARE.</p>
           `;*/
 
-          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n          <dl class=\"dl-horizontal\">\n            <dt>Can</dt>\n            <dd>Use commercially</dd>\n            <dd>Modify</dd>\n            <dd>Distribute</dd>\n            <dd>Sublicense</dd>\n            <dd>Private use</dd>\n            \n            <dt>Cannot</dt>\n            <dd>Hold liable</dd>\n            \n            <dt>Must</dt>\n            <dd>Include copyright</dd>\n            <dd>Include license</dd>\n          </dl>\n        ";
+          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n          <dl class=\"dl-horizontal\">\n            <dt>Can</dt>\n            <dd>Use commercially</dd>\n            <dd>Modify</dd>\n            <dd>Distribute</dd>\n            <dd>Sublicense</dd>\n            <dd>Private use</dd>\n\n            <dt>Cannot</dt>\n            <dd>Hold liable</dd>\n\n            <dt>Must</dt>\n            <dd>Include copyright</dd>\n            <dd>Include license</dd>\n          </dl>\n        ";
         } else {
           this.licencePanelBody.querySelector('.panel-body').innerText = type;
         }
@@ -3151,7 +3138,7 @@ var ContentTypeDetailView = function () {
     key: "setOwner",
     value: function setOwner(owner) {
       if (owner) {
-        this.owner.innerHTML = "By " + owner;
+        this.owner.innerHTML = _dictionary2.default.get('contentTypeOwner', { ':owner': owner });
       } else {
         this.owner.innerHTML = '';
       }
@@ -3301,6 +3288,10 @@ var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
 
 var _eventful = __webpack_require__(1);
 
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3408,7 +3399,7 @@ var ContentTypeDetail = function () {
         _this.view.setIsInstalled(true);
         _this.view.showButtonBySelector('.button-get');
         _this.view.setInstallMessage({
-          message: id + ' successfully installed!'
+          message: (0, _dictionary2.default)('contentTypeInstallSuccess', { ':contentType': $id })
         });
       }).catch(function (error) {
         _this.view.showButtonBySelector('.button-install');
@@ -3417,7 +3408,7 @@ var ContentTypeDetail = function () {
         var errorMessage = error.errorCode ? error : {
           success: false,
           errorCode: 'RESPONSE_FAILED',
-          message: id + ' could not be installed! Contact your administrator.'
+          message: _dictionary2.default.get('contentTypeInstallError', { ':contentType': $id })
         };
         _this.view.setInstallMessage(errorMessage);
 
@@ -3447,7 +3438,12 @@ var ContentTypeDetail = function () {
       this.view.setIsRestricted(contentType.restricted);
 
       // Check if api version is supported
-      this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
+      var apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion;
+
+      // If not installed and unsupported version - let view know
+      if (!contentType.installed && !apiVersionSupported) {
+        this.view.apiVersionUnsupported();
+      }
 
       // update carousel
       this.view.removeAllImagesInCarousel();
@@ -3493,15 +3489,19 @@ var _elements = __webpack_require__(2);
 
 var _eventful = __webpack_require__(1);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(4);
 
 var _contentTypePlaceholder = __webpack_require__(10);
 
 var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(5);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3632,18 +3632,14 @@ var ContentTypeListView = function () {
   }, {
     key: "createContentTypeRow",
     value: function createContentTypeRow(contentType, scope) {
-      var labels = {
-        icon: 'Icon'
-      };
-
       // create ids
       var index = this.rootElement.querySelectorAll('li').length;
       var contentTypeRowTitleId = "content-type-row-title-" + index;
       var contentTypeRowDescriptionId = "content-type-row-description-" + index;
 
       // field configuration
-      var useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-      var installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
+      var useButtonConfig = { text: _dictionary2.default.get('contentTypeUseButtonLabel'), cls: 'button-primary', icon: '' };
+      var installButtonConfig = { text: _dictionary2.default.get('contentTypeGetButtonLabel'), cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
       var button = contentType.installed ? useButtonConfig : installButtonConfig;
       var title = contentType.title || contentType.machineName;
       var description = contentType.summary || '';
@@ -3658,7 +3654,7 @@ var ContentTypeListView = function () {
       element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
       // create html
-      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + labels.icon + "\" />\n      \n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n      \n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
+      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + _dictionary2.default.get('contentTypeIconAltText') + "\" />\n\n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n\n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
 
       // handle use button
       var useButton = element.querySelector('.button-primary');
@@ -3822,7 +3818,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(4);
 
 var _navbar = __webpack_require__(27);
 
@@ -3830,7 +3826,7 @@ var _navbar2 = _interopRequireDefault(_navbar);
 
 var _eventful = __webpack_require__(1);
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -3920,14 +3916,13 @@ var ContentBrowserView = function () {
   _createClass(ContentBrowserView, [{
     key: "createElement",
     value: function createElement(state) {
-      var menutitle = 'Browse content types';
       var menuId = 'content-type-filter';
-      var searchText = 'Search for Content Types';
+      var searchText = _dictionary2.default.get('contentTypeSearchFieldPlaceholder');
 
       // create element
       var element = document.createElement('div');
       element.className = 'content-type-section-view';
-      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + menutitle + "</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
+      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + _dictionary2.default.get("contentTypeSectionTitle") + "}</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
 
       return element;
     }
@@ -4126,31 +4121,13 @@ var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
 var _eventful = __webpack_require__(1);
 
+var _dictionary = __webpack_require__(3);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Tab section constants
- */
-var ContentTypeSectionTabs = {
-  ALL: {
-    id: 'filter-all',
-    title: 'All',
-    eventName: 'all'
-  },
-  MY_CONTENT_TYPES: {
-    id: 'filter-my-content-types',
-    title: 'My Content Types',
-    eventName: 'my-content-types',
-    selected: true
-  },
-  MOST_POPULAR: {
-    id: 'filter-most-popular',
-    title: 'Most Popular',
-    eventName: 'most-popular'
-  }
-};
 
 /**
  * @class ContentTypeSection
@@ -4158,8 +4135,8 @@ var ContentTypeSectionTabs = {
  *
  * @fires Hub#select
  */
-
 var ContentTypeSection = function () {
+
   /**
    * @param {object} state
    * @param {HubServices} services
@@ -4171,6 +4148,28 @@ var ContentTypeSection = function () {
 
     // add event system
     _extends(this, (0, _eventful.Eventful)());
+
+    /*
+     * Tab section constants
+     */
+    ContentTypeSection.Tabs = {
+      ALL: {
+        id: 'filter-all',
+        title: _dictionary2.default.get('contentTypeSectionAll'),
+        eventName: 'all'
+      },
+      MY_CONTENT_TYPES: {
+        id: 'filter-my-content-types',
+        title: _dictionary2.default.get('contentTypeSectionMine'),
+        eventName: 'my-content-types',
+        selected: true
+      },
+      MOST_POPULAR: {
+        id: 'filter-most-popular',
+        title: _dictionary2.default.get('contentTypeSectionPopular'),
+        eventName: 'most-popular'
+      }
+    };
 
     // add view
     this.view = new _contentTypeSectionView2.default(state);
@@ -4197,7 +4196,7 @@ var ContentTypeSection = function () {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
+    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSection.Tabs.ALL.id));
     // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
@@ -4208,8 +4207,8 @@ var ContentTypeSection = function () {
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
     // add menu items
-    Object.keys(ContentTypeSectionTabs).forEach(function (tab) {
-      return _this.view.addMenuItem(ContentTypeSectionTabs[tab]);
+    Object.keys(ContentTypeSection.Tabs).forEach(function (tab) {
+      return _this.view.addMenuItem(ContentTypeSection.Tabs[tab]);
     });
     this.view.initMenu();
   }
@@ -4225,8 +4224,8 @@ var ContentTypeSection = function () {
       // TODO - use translation system:
       this.view.displayMessage({
         type: 'error',
-        title: 'Not able to communicate with hub.',
-        content: 'Error occured. Please try again.'
+        title: _dictionary2.default.get('errorCommunicatingHubTitle'),
+        content: _dictionary2.default.get('errorCommunicatingHubContent')
       });
     }
 
@@ -4274,13 +4273,13 @@ var ContentTypeSection = function () {
       var _this3 = this;
 
       switch (e.choice) {
-        case ContentTypeSectionTabs.ALL.eventName:
+        case ContentTypeSection.Tabs.ALL.eventName:
           this.searchService.sortOn('restricted').then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
           });
           break;
 
-        case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
+        case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
           this.searchService.filterOutRestricted().then(function (filteredContentTypes) {
             return _this3.searchService.sortOnRecent(filteredContentTypes);
           }).then(function (sortedContentTypes) {
@@ -4288,7 +4287,7 @@ var ContentTypeSection = function () {
           });
           break;
 
-        case ContentTypeSectionTabs.MOST_POPULAR.eventName:
+        case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
           var sortOrder = ['restricted', 'popularity'];
           this.searchService.sortOn(sortOrder).then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
@@ -4308,7 +4307,7 @@ var ContentTypeSection = function () {
     value: function clearInputField(_ref2) {
       var id = _ref2.id;
 
-      if (id !== ContentTypeSectionTabs.ALL.id) {
+      if (id !== ContentTypeSection.Tabs.ALL.id) {
         this.view.clearInputField();
       }
     }
@@ -4611,7 +4610,7 @@ var _elements = __webpack_require__(2);
 
 var _eventful = __webpack_require__(1);
 
-var _events = __webpack_require__(3);
+var _events = __webpack_require__(4);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5232,7 +5231,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dictionary = __webpack_require__(5);
+var _dictionary = __webpack_require__(3);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
@@ -5285,11 +5284,9 @@ var UploadSection = function () {
     key: 'renderUploadForm',
     value: function renderUploadForm() {
       // Create the html
-      // TODO get use button text from dictionary
       // TODO create variables for links to h5p.org so they can be changed easily
-      // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="No file chosen"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">Upload a file</button>\n          </div>\n        </div>\n        <div class="upload-instructions">\n          <h3>Upload a H5P file.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="' + _dictionary2.default.get("uploadPlaceholder") + '"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">' + _dictionary2.default.get('uploadFileButtonLabel') + '</button>\n          </div>\n        </div>\n        <div class="upload-instructions">' + _dictionary2.default.get('uploadInstructions') + '</div>\n      </div>\n    ';
 
       return uploadForm;
     }
@@ -5310,7 +5307,7 @@ var UploadSection = function () {
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
       var firstInput = uploadPath;
-      var lastInput = uploadForm.querySelector('a');
+      //const lastInput = uploadForm.querySelector('a');
 
       // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
@@ -5334,8 +5331,8 @@ var UploadSection = function () {
         if (fileExtension !== 'h5p') {
           self.renderMessage({
             type: 'error',
-            title: '.h5p file not found',
-            content: 'You need to upload a file that ends in .h5p'
+            title: _dictionary2.default.get('h5pFileWrongExtensionTitle'),
+            content: _dictionary2.default.get('h5pFileWrongExtensionContent')
           });
 
           // Hide the 'use' button for non-h5p files
@@ -5372,7 +5369,7 @@ var UploadSection = function () {
         }
       };
 
-      // Reuse the upload input logic to upload a file 
+      // Reuse the upload input logic to upload a file
       uploadButton.onclick = function () {
         uploadInput.click();
       };
@@ -5385,12 +5382,13 @@ var UploadSection = function () {
       };
 
       // Cycle tabbing back to the first input
-      lastInput.onkeydown = function (e) {
-        if (e.which === 9 && !e.shiftKey) {
-          e.preventDefault();
-          firstInput.focus();
+      // TODO - why do we need this?
+      /*lastInput.onkeydown = function (e) {
+        if ((e.which === 9 && !e.shiftKey)) {
+           e.preventDefault();
+           firstInput.focus();
         }
-      };
+      }*/
     }
 
     /*
@@ -5950,7 +5948,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(5);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -6162,7 +6160,7 @@ var _functional = __webpack_require__(0);
 
 var _collapsible = __webpack_require__(9);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(5);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
@@ -6249,7 +6247,7 @@ var _elements = __webpack_require__(2);
 
 var _functional = __webpack_require__(0);
 
-var _keyboard = __webpack_require__(4);
+var _keyboard = __webpack_require__(5);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 

@@ -3,28 +3,7 @@ import SearchService from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
-
-/**
- * Tab section constants
- */
-const ContentTypeSectionTabs = {
-  ALL: {
-    id: 'filter-all',
-    title: 'All',
-    eventName: 'all'
-  },
-  MY_CONTENT_TYPES: {
-    id: 'filter-my-content-types',
-    title: 'My Content Types',
-    eventName: 'my-content-types',
-    selected: true
-  },
-  MOST_POPULAR: {
-    id: 'filter-most-popular',
-    title: 'Most Popular',
-    eventName: 'most-popular'
-  }
-};
+import Dictionary from '../utils/dictionary';
 
 /**
  * @class ContentTypeSection
@@ -33,6 +12,7 @@ const ContentTypeSectionTabs = {
  * @fires Hub#select
  */
 export default class ContentTypeSection {
+
   /**
    * @param {object} state
    * @param {HubServices} services
@@ -40,6 +20,28 @@ export default class ContentTypeSection {
   constructor(state, services) {
     // add event system
     Object.assign(this, Eventful());
+
+    /*
+     * Tab section constants
+     */
+    ContentTypeSection.Tabs = {
+      ALL: {
+        id: 'filter-all',
+        title: Dictionary.get('contentTypeSectionAll'),
+        eventName: 'all'
+      },
+      MY_CONTENT_TYPES: {
+        id: 'filter-my-content-types',
+        title: Dictionary.get('contentTypeSectionMine'),
+        eventName: 'my-content-types',
+        selected: true
+      },
+      MOST_POPULAR: {
+        id: 'filter-most-popular',
+        title: Dictionary.get('contentTypeSectionPopular'),
+        eventName: 'most-popular'
+      }
+    };
 
     // add view
     this.view = new ContentTypeSectionView(state);
@@ -66,7 +68,7 @@ export default class ContentTypeSection {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
+    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSection.Tabs.ALL.id));
     // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
@@ -77,8 +79,8 @@ export default class ContentTypeSection {
     this.contentTypeDetail.on('select', this.closeDetailView, this);
 
     // add menu items
-    Object.keys(ContentTypeSectionTabs)
-      .forEach(tab => this.view.addMenuItem(ContentTypeSectionTabs[tab]));
+    Object.keys(ContentTypeSection.Tabs)
+      .forEach(tab => this.view.addMenuItem(ContentTypeSection.Tabs[tab]));
     this.view.initMenu();
   }
 
@@ -89,8 +91,8 @@ export default class ContentTypeSection {
     // TODO - use translation system:
     this.view.displayMessage({
       type: 'error',
-      title: 'Not able to communicate with hub.',
-      content: 'Error occured. Please try again.'
+      title: Dictionary.get('errorCommunicatingHubTitle'),
+      content: Dictionary.get('errorCommunicatingHubContent')
     });
   }
 
@@ -121,18 +123,18 @@ export default class ContentTypeSection {
    */
   applySearchFilter(e) {
     switch(e.choice) {
-      case ContentTypeSectionTabs.ALL.eventName:
+      case ContentTypeSection.Tabs.ALL.eventName:
         this.searchService.sortOn('restricted')
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
 
-      case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
+      case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
         this.searchService.filterOutRestricted()
           .then(filteredContentTypes => this.searchService.sortOnRecent(filteredContentTypes))
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
 
-      case ContentTypeSectionTabs.MOST_POPULAR.eventName:
+      case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
         const sortOrder = ['restricted', 'popularity'];
         this.searchService
           .sortOn(sortOrder)
@@ -148,10 +150,11 @@ export default class ContentTypeSection {
    * @param {string} id
    */
   clearInputField({id}) {
-    if (id !== ContentTypeSectionTabs.ALL.id) {
+    if (id !== ContentTypeSection.Tabs.ALL.id) {
       this.view.clearInputField();
     }
   }
+
 
   /**
    * Shows detail view

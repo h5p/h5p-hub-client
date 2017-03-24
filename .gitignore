@@ -1,3 +1,4 @@
 node_modules
 h5p-hub-client.css.map
 npm-debug.log
+dist/*
