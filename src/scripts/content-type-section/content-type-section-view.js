@@ -79,9 +79,8 @@ export default class ContentBrowserView {
    * @return {HTMLElement}
    */
   createElement(state) {
-    let menutitle = 'Browse content types';
     let menuId = 'content-type-filter';
-    let searchText = 'Search for Content Types';
+    let searchText = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
     // create element
     const element = document.createElement('div');
@@ -94,7 +93,7 @@ export default class ContentBrowserView {
                <span class="icon-accordion-arrow"></span>
              </button>
             <span class="navbar-toggler-selected"></span>
-            <span class="navbar-brand">${menutitle}</span>
+            <span class="navbar-brand">${Dictionary.get("contentTypeSectionTitle")}}</span>
           </div>
 
           <ul id="${menuId}" class="navbar-nav"></ul>

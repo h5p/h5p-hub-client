@@ -122,14 +122,6 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
-    const labels = { // todo translate me
-      back: 'Back',
-      close: 'Close',
-      use: 'Use',
-      install: 'Install',
-      installing: 'Installing'
-    };
-
     // ids
     const titleId = 'content-type-detail-view-title';
 
@@ -143,14 +135,14 @@ export default class ContentTypeDetailView {
     element.setAttribute('aria-hidden', 'true');
 
     element.innerHTML = `
-      <button class="back-button icon-arrow-thick" aria-label="${labels.back}" tabindex="0"></button>
+      <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentDemoButtonLabel")}</a>
+          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
@@ -162,18 +154,18 @@ export default class ContentTypeDetailView {
       </div>
       <hr />
       <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
-        <button aria-label="${labels.close}" class="message-close icon-close"></button>
+        <button aria-label="${Dictionary.get("contentTypeCloseButtonLabel")}" class="message-close icon-close"></button>
         <h3 class="title"></h3>
       </div>
       <div class="button-bar">
-        <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
-        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</button>
-        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${labels.installing}</button>
+        <button class="button button-primary button-use" aria-hidden="false" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
       </div>
       <dl class="panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
-            <span class="icon-accordion-arrow"></span> The Licence Info
+            <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
           </a>
         </dt>
         <dl id="licence-panel" role="region" aria-hidden="true">
@@ -302,7 +294,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -323,10 +315,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<button class="read-less link">Read less</button>`;
+      this.description.innerHTML = `${text}<button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
     }
 
     this.description
@@ -393,7 +385,7 @@ export default class ContentTypeDetailView {
    */
   setOwner(owner) {
     if(owner) {
-      this.owner.innerHTML = `By ${owner}`;
+      this.owner.innerHTML = Dictionary.get('contentTypeOwner', {':owner', owner});
     }
     else {
       this.owner.innerHTML = '';
