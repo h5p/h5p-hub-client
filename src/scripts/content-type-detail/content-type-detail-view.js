@@ -3,6 +3,7 @@ import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initImageScroller from "components/image-scroller";
+import initImageLightbox from "components/image-lightbox";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
@@ -17,6 +18,11 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
  * @constant {number}
  */
 const MAX_TEXT_SIZE_DESCRIPTION = 285;
+
+/**
+ * @constant {string}
+ */
+const IMAGELIGHTBOX = 'imagelightbox';
 
 /**
  * Toggles the visibility if an element
@@ -96,6 +102,8 @@ export default class ContentTypeDetailView {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
+    const imageLightbox = this.rootElement.querySelector(`#${IMAGELIGHTBOX}-detail`);
+    this.imageLightboxList = imageLightbox.querySelector(`.${IMAGELIGHTBOX}-list`);
     this.panel = this.rootElement.querySelector('.panel');
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
@@ -109,6 +117,7 @@ export default class ContentTypeDetailView {
     // init interactive elements
     initPanel(this.panel);
     initImageScroller(this.carousel);
+    initImageLightbox(imageLightbox);
 
     // fire events on button click
     relayClickEventAs('close', this, this.rootElement.querySelector('.back-button'));
@@ -128,6 +137,15 @@ export default class ContentTypeDetailView {
       use: 'Use',
       install: 'Install',
       installing: 'Installing'
+    };
+
+    // Localized text strings
+    const l10n = { // TODO: Translate
+      title: 'Images',
+      progress: ':num of :total',
+      next: 'Next image',
+      prev: 'Previous image',
+      close: 'Close dialog'
     };
 
     // ids
@@ -179,7 +197,14 @@ export default class ContentTypeDetailView {
         <dl id="licence-panel" role="region" aria-hidden="true">
           <div class="panel-body"></div>
         </dl>
-      </dl>`;
+      </dl>
+      <div id="${IMAGELIGHTBOX}-detail" class="${IMAGELIGHTBOX}" role="dialog" aria-label="${l10n.title}">
+        <ol class="${IMAGELIGHTBOX}-list"></ol>
+        <div class="${IMAGELIGHTBOX}-progress">${l10n.progress}</div>
+        <div class="${IMAGELIGHTBOX}-button next" role="button" aria-disabled="true" aria-label="${l10n.next}"></div>
+        <div class="${IMAGELIGHTBOX}-button previous" role="button" aria-disabled="true" aria-label="${l10n.prev}"></div>
+        <div class="${IMAGELIGHTBOX}-button close" role="button" tabindex="0" aria-label="${l10n.close}"></div>
+      </div>`;
 
     return element;
   }
@@ -213,7 +238,7 @@ export default class ContentTypeDetailView {
    */
   removeAllImagesInCarousel() {
     this.carouselList.querySelectorAll('li').forEach(removeChild(this.carouselList));
-    this.carousel.querySelectorAll('.carousel-lightbox').forEach(removeChild(this.carousel));
+    this.imageLightboxList.innerHTML = '';
   }
 
   /**
@@ -223,17 +248,15 @@ export default class ContentTypeDetailView {
    */
   addImageToCarousel(image) {
     // add lightbox
-    const lightbox = document.createElement('div');
-    lightbox.id = `lightbox-${this.carouselList.childElementCount}`;
-    lightbox.className = 'carousel-lightbox';
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightbox.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
-    this.carousel.appendChild(lightbox);
+    var item = document.createElement('li');
+    item.classList.add(`${IMAGELIGHTBOX}-image`);
+    item.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
+    this.imageLightboxList.appendChild(item);
 
     // add thumbnail
     const thumbnail = document.createElement('li');
     thumbnail.className = 'slide';
-    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${lightbox.id}" />`;
+    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
     this.carouselList.appendChild(thumbnail);
   }
 
@@ -388,10 +411,10 @@ export default class ContentTypeDetailView {
             <dd>Distribute</dd>
             <dd>Sublicense</dd>
             <dd>Private use</dd>
-            
+
             <dt>Cannot</dt>
             <dd>Hold liable</dd>
-            
+
             <dt>Must</dt>
             <dd>Include copyright</dd>
             <dd>Include license</dd>
