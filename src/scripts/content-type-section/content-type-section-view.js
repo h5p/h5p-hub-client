@@ -93,7 +93,7 @@ export default class ContentBrowserView {
                <span class="icon-accordion-arrow"></span>
              </button>
             <span class="navbar-toggler-selected"></span>
-            <span class="navbar-brand">${Dictionary.get("contentTypeSectionTitle")}}</span>
+            <span class="navbar-brand">${Dictionary.get("contentTypeSectionTitle")}</span>
           </div>
 
           <ul id="${menuId}" class="navbar-nav"></ul>
