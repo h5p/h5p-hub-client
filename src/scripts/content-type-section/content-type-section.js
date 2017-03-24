@@ -129,8 +129,9 @@ export default class ContentTypeSection {
         break;
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
-        this.searchService.sortOnRecent()
-          .then(filteredContentTypes => this.contentTypeList.update(filteredContentTypes));
+        this.searchService.filterOutRestricted()
+          .then(filteredContentTypes => this.searchService.sortOnRecent(filteredContentTypes))
+          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
 
       case ContentTypeSection.Tabs.MOST_POPULAR.eventName:

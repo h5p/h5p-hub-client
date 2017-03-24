@@ -345,7 +345,7 @@ export default class ContentTypeDetailView {
   setLicence(type, owner) {
     if(type){
       if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+        /*this.licencePanelBody.querySelector('.panel-body').innerHTML = `
         <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
 
         <p>Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -365,7 +365,25 @@ export default class ContentTypeDetailView {
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
         OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
         THE SOFTWARE.</p>
-        `
+        `;*/
+
+        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
+          <dl class="dl-horizontal">
+            <dt>Can</dt>
+            <dd>Use commercially</dd>
+            <dd>Modify</dd>
+            <dd>Distribute</dd>
+            <dd>Sublicense</dd>
+            <dd>Private use</dd>
+
+            <dt>Cannot</dt>
+            <dd>Hold liable</dd>
+
+            <dt>Must</dt>
+            <dd>Include copyright</dd>
+            <dd>Include license</dd>
+          </dl>
+        `;
       }
       else {
         this.licencePanelBody.querySelector('.panel-body').innerText = type;
@@ -385,7 +403,7 @@ export default class ContentTypeDetailView {
    */
   setOwner(owner) {
     if(owner) {
-      this.owner.innerHTML = Dictionary.get('contentTypeOwner', {':owner', owner});
+      this.owner.innerHTML = Dictionary.get('contentTypeOwner', {':owner': owner});
     }
     else {
       this.owner.innerHTML = '';

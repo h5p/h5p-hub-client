@@ -52,11 +52,9 @@ export default class SearchService {
    *
    * @return {ContentType[]}  Content Types
    */
-  sortOnRecent() {
-    return Promise.all([this.services.contentTypes(), this.services.recentlyUsed()])
-      .then(cacheData => {
-        return sortContentTypesByMachineName(cacheData[0], cacheData[1]);
-      })
+  sortOnRecent(contentTypes) {
+    return this.services.recentlyUsed()
+      .then(recentlyUsed => sortContentTypesByMachineName(contentTypes, recentlyUsed));
   }
 
   /**
@@ -324,17 +322,22 @@ const arrayHasSubString = function(subString, arr) {
  * @return {ContentType[]}              filtered content types
  */
 const sortContentTypesByMachineName = function(contentTypes, machineNames) {
-  let result = [];
+  return contentTypes.sort((a,b) => {
 
-  machineNames.forEach(machineName => {
-    let found = false;
-    contentTypes.forEach(contentType => {
-      if(!found && contentType.machineName == machineName) {
-        result.push(contentType);
-        found = true;
-      }
-    })
-  })
+    const aIndex = machineNames.indexOf(a.machineName.toString());
+    const bIndex = machineNames.indexOf(b.machineName.toString());
 
-  return result;
-}
+    if (aIndex === -1 && bIndex === -1) { // neither are recently used
+      return 0;
+    }
+    else if (aIndex !== -1 && bIndex === -1) { // b is not recently used
+      return -1;
+    }
+    else if (aIndex === -1 && bIndex !== -1) { // a is not recently used
+      return 1;
+    }
+    else if (aIndex !== -1 && bIndex !== -1) { // both are recently used
+        return (aIndex < bIndex) ? -1 : 1;
+    }
+  });
+};
