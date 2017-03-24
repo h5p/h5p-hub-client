@@ -7,12 +7,12 @@
   }
 
   .upload-path {
-    width: 60;
     margin-bottom: 1em;
   }
 
   @media (min-width: $screen-small) {
     .upload-path {
+      width: 60%;
       margin-bottom: 0;
     }
   }
