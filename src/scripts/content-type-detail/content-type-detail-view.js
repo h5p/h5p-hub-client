@@ -150,7 +150,7 @@ export default class ContentTypeDetailView {
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
+          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentDemoButtonLabel")}</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
@@ -241,35 +241,30 @@ export default class ContentTypeDetailView {
    * Resets the detail view
    */
   reset() {
-    hide(this.installMessage);
-  }
-
-  /**
-   * Informs view if api version required by content type is supported. The view
-   * will disable the install-button and display a warning message.
-   *
-   * @param {boolean} supported - true if supported, otherwise false
-   */
-  setApiVersionSupported(supported) {
     this.installButton.removeAttribute('disabled');
     if (this.messageViewElement) {
       this.container.removeChild(this.messageViewElement);
       delete this.messageViewElement;
     }
+    hide(this.installMessage);
+  }
 
-    if (!supported) {
-      // Disable install button
-      this.installButton.setAttribute('disabled', 'disabled');
+  /**
+   * Informs view if api version required by content type is un supported. The view
+   * will disable the install-button and display a warning message.
+   */
+  apiVersionUnsupported() {
+    // Disable install button
+    this.installButton.setAttribute('disabled', 'disabled');
 
-      let messageView = new MessageView({
-        type: 'info',
-        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-      });
+    let messageView = new MessageView({
+      type: 'warning',
+      title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+      content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+    });
 
-      this.messageViewElement = messageView.getElement();
-      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-    }
+    this.messageViewElement = messageView.getElement();
+    this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
   }
 
   /**
