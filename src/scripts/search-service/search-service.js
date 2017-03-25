@@ -60,13 +60,50 @@ export default class SearchService {
   /**
    * Filter out restricted if it is defined and false
    *
+   * @param {string[]} filters Filters that should be applied
+   *
    * @return {Promise.<ContentType[]>}
    */
-  filterOutRestricted() {
+  applyFilters(filters) {
     return this.services.contentTypes()
-      .then(contentTypes => contentTypes.filter(contentType => !contentType.restricted));
+      .then(contentTypes => multiFilter(contentTypes, filters));
   }
 }
+
+/**
+ * Apply multiple filters to content types
+ *
+ * @param {ContentType[]} contentTypes Content types that should be filtered
+ * @param {string[]} filters Filters that should be applied
+ *
+ * @return {ContentType[]} Remaining content types after filtering
+ */
+const multiFilter = (contentTypes, filters) => {
+  // Finished filtering
+  if (!filters.length) {
+    return contentTypes;
+  }
+
+  // Apply filter
+  return multiFilter(handleFilter(contentTypes, filters.shift()), filters);
+};
+
+/**
+ * Applies a single filter to content types
+ *
+ * @param {ContentType[]} contentTypes Content types that should be filtered
+ * @param {string} filter Filter that should be applied
+ *
+ * @return {ContentType[]} Content types remaining after applying filter
+ */
+const handleFilter = (contentTypes, filter) => {
+  switch(filter) {
+    case 'restricted':
+      return contentTypes.filter(contentType => !contentType.restricted);
+    case 'installed':
+      return contentTypes.filter(contentType => contentType.installed);
+  }
+};
 
 /**
  * Sort on multiple properties
