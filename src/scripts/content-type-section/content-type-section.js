@@ -167,7 +167,13 @@ export default class ContentTypeSection {
     this.contentTypeDetail.show();
     this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
-    this.contentTypeDetail.focus();
+
+    // Wait for transition before focusing since focusing an element will force the browser to
+    // put that element into view. Doing so before the element is in the correct position will
+    // skew all elements on the page.
+    setTimeout(() => {
+      this.contentTypeDetail.focus();
+    }, 300);
   }
 
   /**
