@@ -87,6 +87,9 @@ export default class Hub {
       self.services.setup();
       self.contentTypeSection.initContentTypeList();
     });
+    this.on('clear-upload-form', function () {
+      self.uploadSection.clearUploadForm();
+    });
 
     this.initTabPanel(state)
   }

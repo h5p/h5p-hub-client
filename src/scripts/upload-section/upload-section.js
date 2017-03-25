@@ -67,25 +67,22 @@ export default class UploadSection {
     const uploadButton = uploadForm.querySelector('.upload-button');
     const uploadPath = uploadForm.querySelector('.upload-path');
     const useButton =  uploadForm.querySelector('.use-button');
-    let firstInput = uploadPath;
-    //const lastInput = uploadForm.querySelector('a');
 
     // Handle errors and update styles when a file is selected
     uploadInput.onchange = function () {
 
-      if (this.value == '') {
+      if (this.value === '') {
         return;
       }
 
       // Reset styles
       self.clearUserMessages();
-      uploadPath.value = '';
 
       // Replace the placeholder text with the selected filepath
       uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
       // Update the upload button
-      uploadButton.innerHTML = 'Change file';
+      uploadButton.textContent = Dictionary.get('uploadFileButtonChangeLabel');
 
       // Check that it's a h5p file
       const fileExtension = self.getFileExtension(this.value);
@@ -123,38 +120,44 @@ export default class UploadSection {
     // Allow users to upload a file by clicking on path field
     uploadPath.onclick = function () {
       uploadInput.click();
-    }
+    };
 
     // Allow users to upload a file by pressing enter or spacebar
     uploadPath.onkeydown = function (e) {
       if (e.which === 13 || e.which === 32) {
         uploadInput.click();
       }
-    }
+    };
 
     // Reuse the upload input logic to upload a file
     uploadButton.onclick = function () {
       uploadInput.click();
-    }
+    };
 
     // Allow users to upload a file by pressing enter or spacebar
     uploadButton.onkeydown = function (e) {
       if (e.which === 13 || e.which === 32) {
         uploadInput.click();
       }
-    }
+    };
 
-    // Cycle tabbing back to the first input
-    // TODO - why do we need this?
-    /*lastInput.onkeydown = function (e) {
-      if ((e.which === 9 && !e.shiftKey)) {
-         e.preventDefault();
-         firstInput.focus();
-      }
-    }*/
+    this.uploadInput = uploadInput;
+    this.uploadPath = uploadPath;
+    this.uploadButton = uploadButton;
+    this.useButton = useButton;
   }
 
-  /*
+  /**
+   * Clear input of file upload form
+   */
+  clearUploadForm() {
+    this.uploadInput.value = '';
+    this.uploadPath.value = Dictionary.get("uploadPlaceholder");
+    this.uploadButton.textContent = Dictionary.get('uploadFileButtonLabel');
+    this.useButton.style.display = 'none';
+  }
+
+  /**
    * Empties the message wrapper
    */
   clearUserMessages() {
@@ -177,7 +180,7 @@ export default class UploadSection {
    * @param  {Object} config
    */
   renderMessage(config) {
-    var messageView = new MessageView(config);
+    const messageView = new MessageView(config);
     this.prepend(this.messageWrapper, messageView.getElement());
   }
 
