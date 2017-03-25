@@ -81,7 +81,7 @@ export default class ContentTypeDetail {
         this.view.setIsInstalled(true);
         this.view.showButtonBySelector('.button-get');
         this.view.setInstallMessage({
-          message: Dictionary('contentTypeInstallSuccess', {':contentType': $id}),
+          message: Dictionary.get('contentTypeInstallSuccess', {':contentType': id}),
         });
       })
       .catch(error => {
@@ -91,7 +91,7 @@ export default class ContentTypeDetail {
         let errorMessage = (error.errorCode) ? error : {
           success: false,
           errorCode: 'RESPONSE_FAILED',
-          message: Dictionary.get('contentTypeInstallError', {':contentType': $id})
+          message: Dictionary.get('contentTypeInstallError', {':contentType': id})
         };
         this.view.setInstallMessage(errorMessage);
 
