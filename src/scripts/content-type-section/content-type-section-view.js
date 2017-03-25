@@ -5,6 +5,7 @@ import { relayClickEventAs } from '../utils/events';
 import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
+import ContentTypeSection from './content-type-section';
 
 /**
  * @param {HTMLElement[]} elements
@@ -32,6 +33,7 @@ export default class ContentBrowserView {
 
     // general configuration
     this.typeAheadEnabled = true;
+    this.currentlySelected = {};
 
     // create elements
     this.rootElement = this.createElement(state);
@@ -109,13 +111,12 @@ export default class ContentBrowserView {
   }
 
   displayMessage(config) {
-    var self = this;
+    const self = this;
     // Set the action
-    // TODO - should be translatable
     config.action = Dictionary.get('reloadButtonLabel');
 
-    var messageView = new MessageView(config);
-    var element = messageView.getElement();
+    const messageView = new MessageView(config);
+    const element = messageView.getElement();
 
     messageView.on('action-clicked', function () {
       self.rootElement.classList.remove('error');
@@ -132,32 +133,33 @@ export default class ContentBrowserView {
    *
    * @param {string} title
    * @param {string} id
-   * @param {boolean} selected Determines if tab is already selected
    * @param {string} eventName Name of event that tab will fire off
    *
    * @return {HTMLElement}
    */
-  addMenuItem({ title, id, selected, eventName }) {
+  addMenuItem({ title, id, eventName }) {
+    const self = this;
     const element = document.createElement('li');
     element.setAttribute('role', 'menuitem');
     element.setAttribute('data-id', id);
     element.innerText = title;
 
-    // sets if this menuitem should be selected
-    if(selected) {
-      element.setAttribute('aria-selected', 'true');
-      this.displaySelected.innerText = title;
-      this.trigger('menu-selected', {
-        element: element,
-        choice: eventName
-      });
-    }
-
     element.addEventListener('click', event => {
+      // Skip if already selected
+      if (self.currentlySelected.eventName === eventName) {
+        return;
+      }
+
       this.trigger('menu-selected', {
         element: event.target,
         choice: eventName
       });
+    });
+
+    this.on('menu-selected', event => {
+      self.currentlySelected = Object.keys(ContentTypeSection.Tabs)
+        .map(menuItemName => ContentTypeSection.Tabs[menuItemName])
+        .find(menu => menu.eventName === event.choice);
     });
 
     // add to menu bar
@@ -173,6 +175,13 @@ export default class ContentBrowserView {
   }
 
   /**
+   * Clears menu item selection
+   */
+  clearSelection() {
+    this.currentlySelected = {};
+  }
+
+  /**
    * Sets the name of the currently selected filter
    *
    * @param {string} selectedName
@@ -182,11 +191,17 @@ export default class ContentBrowserView {
   }
 
   /**
-   * Selects a menu item by id
+   * Selects a menu item
    *
-   * @param {string} id
+   * @param {string} id Id of menu
+   * @param {string} eventName Event name of menu
    */
-  selectMenuItemById(id) {
+  selectMenuItem({id, eventName}) {
+    // Skip if already selected
+    if (this.currentlySelected.eventName === eventName) {
+      return;
+    }
+
     const menuItems = this.menubar.querySelectorAll('[role="menuitem"]');
     const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
 
@@ -196,7 +211,8 @@ export default class ContentBrowserView {
 
       this.trigger('menu-selected', {
         element: selectedMenuItem,
-        id: selectedMenuItem.getAttribute('data-id')
+        id: id,
+        choice: eventName
       });
     }
   }
