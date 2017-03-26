@@ -44,19 +44,14 @@ export default class ContentBrowserView {
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
+    const searchBar = this.rootElement.querySelector('#hub-search-bar');
 
-    // input field
-    this.inputField.addEventListener('keyup', event => {
-      if(event.keyCode != KEY_CODE_TAB) {
-        let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-
-        // Only searching if the enter key is pressed
-        if (this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
-          this.trigger('search', {
-            element: searchbar,
-            query: searchbar.value
-          });
-        }
+    this.inputField.addEventListener('input', event => {
+      if (this.typeAheadEnabled || event.which === 13) {
+        this.trigger('search', {
+          element: searchBar,
+          query: searchBar.value
+        });
       }
     });
 
@@ -144,16 +139,15 @@ export default class ContentBrowserView {
     element.setAttribute('data-id', id);
     element.innerText = title;
 
-    element.addEventListener('click', event => {
-      // Skip if already selected
-      if (self.currentlySelected.eventName === eventName) {
-        return;
-      }
+    element.addEventListener('click', () => {
+      self.selectMenuItem({id, eventName});
+    });
 
-      this.trigger('menu-selected', {
-        element: event.target,
-        choice: eventName
-      });
+    element.addEventListener('keyup', event => {
+      if (event.which === 13 || event.which === 32) {
+        self.selectMenuItem({id, eventName});
+        event.stopPropagation();
+      }
     });
 
     this.on('menu-selected', event => {
