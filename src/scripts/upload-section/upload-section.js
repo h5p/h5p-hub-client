@@ -36,23 +36,50 @@ export default class UploadSection {
    */
   renderUploadForm() {
     // Create the html
-    // TODO create variables for links to h5p.org so they can be changed easily
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
         <div class="upload-form">
-          <input readonly class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}"/>
+          <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" disabled/>
           <button class="button use-button">Use</button>
           <div class="input-wrapper">
             <input type="file" />
             <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
-        <div class="upload-instructions">${Dictionary.get('uploadInstructions')}</div>
       </div>
     `;
 
+    // Create the html for the upload instructions separately as it needs to be styled
+    const uploadInstructions = document.createElement('div');
+    uploadInstructions.className = 'upload-instructions';
+    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructions'));
+    uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
+
     return uploadForm;
+  }
+
+
+  /**
+   * Creates html for the upload instructions and appends them to a wrapping div.
+   * Splits the input text into sentences and styles the first sentence differently.
+   *
+   * @param  {HTMLElement} container
+   * @param  {string} text
+   */
+  renderUploadInstructions(container, text) {
+    const textElements = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g); // match on sentences
+
+    const header = document.createElement('p');
+    header.className = 'upload-instruction-header';
+    header.innerHTML = textElements.shift(); // grab the first sentence
+
+    const description = document.createElement('p');
+    description.className = 'upload-instruction-description';
+    description.innerHTML = textElements.join(''); // join the rest
+
+    container.appendChild(header);
+    container.appendChild(description);
   }
 
   /**
@@ -183,7 +210,6 @@ export default class UploadSection {
     const messageView = new MessageView(config);
     this.prepend(this.messageWrapper, messageView.getElement());
   }
-
 
   /**
    * Helper function. Prepends an element to another
