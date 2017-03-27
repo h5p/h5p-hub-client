@@ -66,6 +66,7 @@ export default class Hub {
     this.services = new HubServices({
       apiRootUrl: state.apiRootUrl
     });
+    this.setupServices();
 
     // controllers
     this.contentTypeSection = new ContentTypeSection(state, this.services);
@@ -83,14 +84,29 @@ export default class Hub {
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
-    this.contentTypeSection.on('reload', function() {
-      self.services.setup();
-      self.contentTypeSection.initContentTypeList();
+    this.contentTypeSection.on('reload', this.setupServices, this);
+
+    this.on('clear-upload-form', function () {
+      self.uploadSection.clearUploadForm();
     });
 
     this.initTabPanel(state)
   }
 
+  /**
+   * Setup services and handle fetching data
+   */
+  setupServices() {
+    const self = this;
+
+    this.services.setup()
+      .then(function () {
+        self.contentTypeSection.loaded();
+      })
+      .catch(function (error) {
+        self.contentTypeSection.handleError(error);
+      });
+  }
 
   /**
    * Returns the promise of a content type

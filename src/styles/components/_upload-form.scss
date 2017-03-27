@@ -1,10 +1,36 @@
+@import "~h5p-sdk/src/styles/base/variables";
+
 .h5p-hub {
 
   .upload-wrapper {
     padding: 2em;
+
+    [aria-hidden="true"] {
+      display: none;
+    }
+
+    [aria-hidden="false"] {
+      display: inline-block;
+    }
   }
 
   .upload-path {
-    width: 60%;
+    margin-bottom: 1em;
+    cursor: default;
+  }
+
+  p.upload-instruction-header {
+    font-size: 1.250em;
+  }
+
+  p.upload-instruction-description {
+    font-size: 1.042em;
+  }
+
+  @media (min-width: $screen-small) {
+    .upload-path {
+      width: 60%;
+      margin-bottom: 0;
+    }
   }
 }

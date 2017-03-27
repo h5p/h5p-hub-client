@@ -1,7 +1,8 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
+import initModal from "components/modal";
 import initImageScroller from "components/image-scroller";
 import initImageLightbox from "components/image-lightbox";
 import { relayClickEventAs } from '../utils/events';
@@ -23,14 +24,6 @@ const MAX_TEXT_SIZE_DESCRIPTION = 285;
  * @constant {string}
  */
 const IMAGELIGHTBOX = 'imagelightbox';
-
-/**
- * Toggles the visibility if an element
- *
- * @param {HTMLElement} element
- * @param {boolean} visible
- */
-const toggleVisibility = (element, visible) => (visible ? show : hide)(element);
 
 /**
  * Checks if a string is empty
@@ -76,6 +69,41 @@ const enable = removeAttribute('disabled');
  * @function
  */
 const isHidden = attributeEquals('aria-hidden', 'true');
+
+const LICENCE_DATA = {
+  "MIT": {
+    title: 'MIT License',
+    short: `
+    <ul class="ul">
+      <li>Can use comercially</li>
+      <li>Can modify</li>
+      <li>Can distribute</li>
+      <li>Can sublicense</li>
+      <li>Cannot hold liable</li>
+      <li>Must include copyright</li>
+      <li>Must include license</li>
+    </ul>`,
+    full: owner => `<p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
+    
+      <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+      of this software and associated documentation files (the "Software"), to deal
+      in the Software without restriction, including without limitation the rights
+      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+      copies of the Software, and to permit persons to whom the Software is
+      furnished to do so, subject to the following conditions:</p>
+    
+      <p>The above copyright notice and this permission notice shall be included in
+      all copies or substantial portions of the Software.</p>
+    
+      <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+      THE SOFTWARE.</p>`
+  }
+};
 
 /**
  * @class
@@ -384,47 +412,30 @@ export default class ContentTypeDetailView {
    * @param {string} owner
    */
   setLicence(type, owner) {
-    if(type){
+    const details = LICENCE_DATA[type];
+
+    if(type && details){
+
       if(type === 'MIT') {
-        /*this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-        <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-
-        <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-        of this software and associated documentation files (the "Software"), to deal
-        in the Software without restriction, including without limitation the rights
-        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-        copies of the Software, and to permit persons to whom the Software is
-        furnished to do so, subject to the following conditions:</p>
-
-        <p>The above copyright notice and this permission notice shall be included in
-        all copies or substantial portions of the Software.</p>
-
-        <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-        THE SOFTWARE.</p>
-        `;*/
-
         this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-          <dl class="dl-horizontal">
-            <dt>Can</dt>
-            <dd>Use commercially</dd>
-            <dd>Modify</dd>
-            <dd>Distribute</dd>
-            <dd>Sublicense</dd>
-            <dd>Private use</dd>
-
-            <dt>Cannot</dt>
-            <dd>Hold liable</dd>
-
-            <dt>Must</dt>
-            <dd>Include copyright</dd>
-            <dd>Include license</dd>
-          </dl>
+          <button class="read-more">Read more</button>
         `;
+
+        const shortLicence = document.createElement('div');
+        shortLicence.innerHTML = details.short;
+
+        this.licencePanelBody.appendChild(shortLicence);
+
+        const modal = this.createModal({
+          title: 'Content License info',
+          subtitle: 'Click on a specific license to get info about proper usage',
+          licences: [{
+            title: details.title,
+            body: details.full(owner)
+          }]
+        });
+
+        this.licencePanelBody.querySelector('.read-more').addEventListener('click', () => show(modal))
       }
       else {
         this.licencePanelBody.querySelector('.panel-body').innerText = type;
@@ -435,6 +446,54 @@ export default class ContentTypeDetailView {
 
     // Close licence panel body by default
     hide(this.licencePanelBody);
+  }
+
+  createModal({title, subtitle, licences}) {
+    this.modal = document.createElement('div');
+    this.modal.innerHTML = `
+      <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="dialog-title">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span>&#10006;</span>
+              </button>
+              <h5 class="modal-title" id="dialog-title">${title}</h5>
+              <h5 class="modal-subtitle">${subtitle}</h5>
+            </div>
+            <div class="modal-body">
+              <dl class="panel"></dl>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    let panels = this.modal.querySelector('.panel');
+
+    licences.forEach((licence, index) => {
+      let id = `content-type-detail-licence-${index}`;
+
+      let title = document.createElement('dt');
+      title.setAttribute('role', 'heading');
+      title.setAttribute('aria-level', '2');
+      title.innerHTML = `<a href="#" role="button" aria-expanded="false" aria-controls="${id}">${licence.title}</a>`
+
+      let body = document.createElement('dd');
+      body.id = id;
+      body.setAttribute('role', 'region');
+      body.setAttribute('aria-hidden', 'true');
+      body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
+
+      panels.appendChild(title);
+      panels.appendChild(body);
+    });
+
+    initModal(this.modal);
+    initPanel(panels);
+
+    this.rootElement.appendChild(this.modal);
+
+    return this.modal;
   }
 
   /**
@@ -458,7 +517,7 @@ export default class ContentTypeDetailView {
    */
   setExample(url) {
     this.demoButton.setAttribute('href', url || '#');
-    toggleVisibility(this.demoButton, !isEmpty(url));
+    toggleVisibility(!isEmpty(url), this.demoButton);
   }
 
   /**

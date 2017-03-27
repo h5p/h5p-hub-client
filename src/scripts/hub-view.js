@@ -1,7 +1,7 @@
 import initPanel from "components/panel"
 import initTabPanel from "components/tab-panel"
 import { curry } from "utils/functional";
-import { attributeEquals, getAttribute, hasAttribute } from "utils/elements";
+import { attributeEquals, getAttribute, hasAttribute, show } from "utils/elements";
 import { Eventful } from './mixins/eventful';
 import { relayClickEventAs } from './utils/events';
 /**
@@ -171,6 +171,55 @@ export default class HubView {
 
   initTabPanel() {
     initTabPanel(this.tabContainerElement);
+  }
+
+  /**
+   *
+   * @param {string} title
+   * @param {string} subtitle
+   * @param {HTMLElement} body
+   */
+  updateModal({ title, subtitle, body }) {
+    if(!this.modal){
+      this.modal = this.createModal();
+    }
+
+    this.modal.querySelector('.modal-title').innerText = title;
+    this.modal.querySelector('.modal-subtitle').innerText = subtitle;
+    this.modal.querySelector('.modal-body').appendChild(body);
+
+    show(this.modal);
+  }
+
+  /**
+   * Creates a element for displaying a modal dialog
+   *
+   * @return {Element}
+   */
+  createModal() {
+    const dialogTitleId = 'dialog-title';
+
+    const modal = document.createElement('div');
+    modal.className = "modal";
+    modal.setAttribute('tabindex', '-1');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-labelledby', dialogTitleId);
+
+    modal.innerHTML = `
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span>&#10006;</span>
+            </button>
+            <h5 class="modal-title" id="${dialogTitleId}"></h5>
+            <h6 class="modal-subtitle"></h6>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+      </div>`;
+
+    return modal;
   }
 
   /**

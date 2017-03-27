@@ -4,6 +4,7 @@ import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
+import MessageView from '../message-view/message-view';
 
 /**
  * @class ContentTypeSection
@@ -18,6 +19,8 @@ export default class ContentTypeSection {
    * @param {HubServices} services
    */
   constructor(state, services) {
+    const self = this;
+
     // add event system
     Object.assign(this, Eventful());
 
@@ -33,8 +36,7 @@ export default class ContentTypeSection {
       MY_CONTENT_TYPES: {
         id: 'filter-my-content-types',
         title: Dictionary.get('contentTypeSectionMine'),
-        eventName: 'my-content-types',
-        selected: true
+        eventName: 'my-content-types'
       },
       MOST_POPULAR: {
         id: 'filter-most-popular',
@@ -68,27 +70,52 @@ export default class ContentTypeSection {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSection.Tabs.ALL.id));
-    // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
     this.view.on('menu-selected', this.updateDisplaySelected, this);
+    this.view.on('menu-selected', this.removeMessages, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
+    this.contentTypeList.on('row-selected', this.view.clearSelection, this.view);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
+    this.contentTypeDetail.on('installed-content-type', () => {
+      services.setup();
+      services.contentTypes()
+        .then(contentTypes => {
+          this.contentTypeList.refreshContentTypes(contentTypes);
+        })
+    });
 
     // add menu items
     Object.keys(ContentTypeSection.Tabs)
       .forEach(tab => this.view.addMenuItem(ContentTypeSection.Tabs[tab]));
     this.view.initMenu();
+
+    // Determine which browsing category to show initially
+    services.contentTypes().then(contentTypes => {
+      // Show my content types if any is installed
+      const installed = contentTypes.filter(contentType => {
+        return contentType.installed;
+      });
+
+      self.view.selectMenuItem(
+        installed.length ? ContentTypeSection.Tabs.MY_CONTENT_TYPES : ContentTypeSection.Tabs.ALL
+      );
+    })
+  }
+
+  /**
+   * Data has been loaded
+   */
+  loaded() {
+    this.view.loaded();
   }
 
   /**
    * Handle errors communicating with HUB
    */
   handleError(error) {
-    // TODO - use translation system:
     this.view.displayMessage({
       type: 'error',
       title: Dictionary.get('errorCommunicatingHubTitle'),
@@ -102,6 +129,8 @@ export default class ContentTypeSection {
    * @param {string} query
    */
   search({query, keyCode}) {
+    // Always browse ALL when searching
+    this.view.selectMenuItem(ContentTypeSection.Tabs.ALL);
     this.searchService.search(query)
       .then(contentTypes => this.contentTypeList.update(contentTypes));
   }
@@ -122,16 +151,23 @@ export default class ContentTypeSection {
    * @param {string} e.choice Event name of chosen tab
    */
   applySearchFilter(e) {
-    switch(e.choice) {
+    switch (e.choice) {
       case ContentTypeSection.Tabs.ALL.eventName:
         this.searchService.sortOn('restricted')
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
-        this.searchService.filterOutRestricted()
+        this.searchService.applyFilters(['restricted', 'installed'])
           .then(filteredContentTypes => this.searchService.sortOnRecent(filteredContentTypes))
-          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
+          .then(sortedContentTypes => {
+            this.contentTypeList.update(sortedContentTypes);
+
+            // Show warning if no local libraries
+            if (!sortedContentTypes.length) {
+              this.displayNoLibrariesWarning();
+            }
+          });
         break;
 
       case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
@@ -141,7 +177,6 @@ export default class ContentTypeSection {
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
     }
-
   }
 
   /**
@@ -155,6 +190,32 @@ export default class ContentTypeSection {
     }
   }
 
+  /**
+   * Display no libraries warning
+   */
+  displayNoLibrariesWarning() {
+    if (!this.noLibrariesMessage) {
+      const messageView = new MessageView({
+        type: 'warning',
+        title: Dictionary.get('warningNoContentTypesInstalled'),
+        content: Dictionary.get('warningChangeBrowsingToSeeResults')
+      });
+      const message = messageView.getElement();
+      message.classList.add('content-type-section-no-libraries-warning');
+      this.noLibrariesMessage = message;
+    }
+
+    this.rootElement.appendChild(this.noLibrariesMessage);
+  }
+
+  /**
+   * Remove messages if found
+   */
+  removeMessages() {
+    if (this.noLibrariesMessage && this.noLibrariesMessage.parentNode) {
+      this.noLibrariesMessage.parentNode.removeChild(this.noLibrariesMessage);
+    }
+  }
 
   /**
    * Shows detail view
@@ -167,14 +228,20 @@ export default class ContentTypeSection {
     this.contentTypeDetail.show();
     this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
-    this.contentTypeDetail.focus();
+
+    // Wait for transition before focusing since focusing an element will force the browser to
+    // put that element into view. Doing so before the element is in the correct position will
+    // skew all elements on the page.
+    setTimeout(() => {
+      this.contentTypeDetail.focus();
+    }, 300);
   }
 
   /**
    * Close detail view
    */
   closeDetailView() {
-    if(!this.contentTypeDetail.isHidden()) {
+    if (!this.contentTypeDetail.isHidden()) {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
       this.view.typeAheadEnabled = true;
