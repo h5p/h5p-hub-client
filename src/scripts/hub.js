@@ -85,6 +85,11 @@ export default class Hub {
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
     this.contentTypeSection.on('reload', this.setupServices, this);
+
+    this.on('clear-upload-form', function () {
+      self.uploadSection.clearUploadForm();
+    });
+
     this.initTabPanel(state)
   }
 

@@ -26,6 +26,7 @@ export default class ContentTypeList {
     // add the view
     this.view = new ContetTypeListView(state);
     this.propagate(['row-selected', 'select'], this.view);
+    this.currentContentTypes = [];
   }
 
   /**
@@ -55,8 +56,22 @@ export default class ContentTypeList {
     this.view.removeAllRows();
     contentTypes.forEach(this.view.addRow, this.view);
     this.trigger('update-content-type-list', {});
+    this.currentContentTypes = contentTypes;
   }
 
+  /**
+   * Refreshes the currently displayed content types with updated data
+   *
+   * @param {ContentType[]} contentTypes New content type data
+   */
+  refreshContentTypes(contentTypes) {
+    const displayedContentTypes = contentTypes.filter(contentType => {
+      return this.currentContentTypes.find(currentContentType => {
+        return currentContentType.machineName === contentType.machineName
+      });
+    });
+    this.update(displayedContentTypes);
+  }
 
   /**
    * Returns the views root element
