@@ -719,49 +719,65 @@ var Keyboard = function () {
     value: function handleKeyDown(event) {
       var lastIndex = this.elements.length - 1;
 
-      switch (event.which) {
-        case 13: // Enter
-        case 32:
-          // Space
-          this.select();
-          event.preventDefault();
-          break;
-        case 35:
-          // End
-          this.selectedIndex = lastIndex;
-          event.preventDefault();
-          break;
-        case 36:
-          // Home
-          this.selectedIndex = 0;
-          event.preventDefault();
-          break;
-        case 37: // Left Arrow
-        case 38:
-          // Up Arrow
-          this.selectedIndex = previousIndex(this.selectedIndex, lastIndex);
-          event.preventDefault();
-          break;
-        case 39: // Right Arrow
-        case 40:
-          // Down Arrow
-          this.selectedIndex = nextIndex(this.selectedIndex, lastIndex);
-          event.preventDefault();
-          break;
-      }
+      if (this.hasElement(event.target)) {
+        switch (event.which) {
+          case 13: // Enter
+          case 32:
+            // Space
+            this.select();
+            event.preventDefault();
+            break;
+          case 35:
+            // End
+            this.selectedIndex = lastIndex;
+            event.preventDefault();
+            break;
+          case 36:
+            // Home
+            this.selectedIndex = 0;
+            event.preventDefault();
+            break;
+          case 37: // Left Arrow
+          case 38:
+            // Up Arrow
+            this.selectedIndex = previousIndex(this.selectedIndex, lastIndex);
+            event.preventDefault();
+            break;
+          case 39: // Right Arrow
+          case 40:
+            // Down Arrow
+            this.selectedIndex = nextIndex(this.selectedIndex, lastIndex);
+            event.preventDefault();
+            break;
+        }
 
-      updateTabbable(this.elements, this.selectedIndex);
-      this.elements[this.selectedIndex].focus();
+        updateTabbable(this.elements, this.selectedIndex);
+        this.elements[this.selectedIndex].focus();
+      }
     }
   }, {
-    key: 'handleFocus',
+    key: 'hasElement',
 
+
+    /**
+     * Returns true if element is in list ov navigatable elements
+     *
+     * @param {Element|EventTarget} element
+     *
+     * @return {boolean}
+     */
+    value: function hasElement(element) {
+      return this.elements.indexOf(element) !== -1;
+    }
 
     /**
      * Updates the selected index with the focused element
      *
      * @param {FocusEvent} event
      */
+
+  }, {
+    key: 'handleFocus',
     value: function handleFocus(event) {
       this.selectedIndex = this.elements.indexOf(event.srcElement);
     }
@@ -2008,7 +2024,8 @@ var Dictionary = function () {
      * Get a string from the dictionary. Optionally replace variables
      *
      * @param {string} key
-     * @param {Object} replacements
+     * @param {Object} [replacements]
+     *
      * @returns {string}
      */
 
@@ -3591,6 +3608,11 @@ var _show = (0, _elements.setAttribute)('aria-hidden', 'false');
 /**
  * @function
  */
+var hasTabindex = (0, _elements.hasAttribute)('tabindex');
+
+/**
+ * @function
+ */
 var getRowId = (0, _elements.getAttribute)('data-id');
 
 /**
@@ -3605,8 +3627,6 @@ var ContentTypeListView = function () {
     var _this = this;
 
     _classCallCheck(this, ContentTypeListView);
-
-    this.state = state;
 
     // add event system
     _extends(this, (0, _eventful.Eventful)());
@@ -3725,13 +3745,28 @@ var ContentTypeListView = function () {
       element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
       // create html
-      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + _dictionary2.default.get('contentTypeIconAltText') + "\" />\n\n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n\n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
+      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + _dictionary2.default.get('contentTypeIconAltText') + "\" />\n\n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n\n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"-1\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
 
       // handle use button
       var useButton = element.querySelector('.button-primary');
       if (useButton) {
         (0, _events.relayClickEventAs)('select', scope, useButton);
       }
+
+      // listens for tabindex change, and update button too
+      var actionButton = element.querySelector('.button');
+      var observer = new MutationObserver(function (records) {
+        var el = records[0].target;
+
+        // use -1 since element is <button>
+        actionButton.setAttribute('tabindex', hasTabindex(el) ? '0' : '-1');
+      });
+
+      observer.observe(element, {
+        attributes: true,
+        attributeOldValue: true,
+        attributeFilter: ["tabindex"]
+      });
 
       return element;
     }

@@ -1,5 +1,5 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, removeChild, querySelector } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
@@ -20,6 +20,11 @@ const show = setAttribute('aria-hidden', 'false');
 /**
  * @function
  */
+const hasTabindex = hasAttribute('tabindex');
+
+/**
+ * @function
+ */
 const getRowId = getAttribute('data-id');
 
 /**
@@ -30,8 +35,6 @@ const getRowId = getAttribute('data-id');
  */
 export default class ContentTypeListView {
   constructor(state) {
-    this.state = state;
-
     // add event system
     Object.assign(this, Eventful());
 
@@ -139,7 +142,7 @@ export default class ContentTypeListView {
       </div>
 
       <div class="content-type-row-button">
-        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="0" ${disabled}>
+        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
           <span class="${button.icon}"></span>
           ${button.text}
         </button>
@@ -151,6 +154,21 @@ export default class ContentTypeListView {
     if(useButton){
       relayClickEventAs('select', scope, useButton);
     }
+
+    // listens for tabindex change, and update button too
+    const actionButton = element.querySelector('.button');
+    let observer = new MutationObserver(records => {
+      let el = records[0].target;
+
+      // use -1 since element is <button>
+      actionButton.setAttribute('tabindex', hasTabindex(el) ? '0' : '-1');
+    });
+
+    observer.observe(element, {
+      attributes: true,
+      attributeOldValue: true,
+      attributeFilter: ["tabindex"]
+    });
 
     return element;
   }

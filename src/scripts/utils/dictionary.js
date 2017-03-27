@@ -16,7 +16,8 @@ export default class Dictionary {
    * Get a string from the dictionary. Optionally replace variables
    *
    * @param {string} key
-   * @param {Object} replacements
+   * @param {Object} [replacements]
+   *
    * @returns {string}
    */
   static get(key, replacements) {
