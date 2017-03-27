@@ -4,6 +4,7 @@ import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initModal from "components/modal";
 import initImageScroller from "components/image-scroller";
+import initImageLightbox from "components/image-lightbox";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
@@ -18,6 +19,11 @@ const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
  * @constant {number}
  */
 const MAX_TEXT_SIZE_DESCRIPTION = 285;
+
+/**
+ * @constant {string}
+ */
+const IMAGELIGHTBOX = 'imagelightbox';
 
 /**
  * Checks if a string is empty
@@ -124,6 +130,8 @@ export default class ContentTypeDetailView {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
+    const imageLightbox = this.rootElement.querySelector(`#${IMAGELIGHTBOX}-detail`);
+    this.imageLightboxList = imageLightbox.querySelector(`.${IMAGELIGHTBOX}-list`);
     this.panel = this.rootElement.querySelector('.panel');
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
@@ -137,6 +145,7 @@ export default class ContentTypeDetailView {
     // init interactive elements
     initPanel(this.panel);
     initImageScroller(this.carousel);
+    initImageLightbox(imageLightbox);
 
     // fire events on button click
     relayClickEventAs('close', this, this.rootElement.querySelector('.back-button'));
@@ -150,12 +159,14 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
-    const labels = { // todo translate me
-      back: 'Back',
-      close: 'Close',
-      use: 'Use',
-      install: 'Install',
-      installing: 'Installing'
+
+    // Localized text strings
+    const l10n = { // TODO: Translate
+      title: 'Images',
+      progress: ':num of :total',
+      next: 'Next image',
+      prev: 'Previous image',
+      close: 'Close dialog'
     };
 
     // ids
@@ -171,14 +182,14 @@ export default class ContentTypeDetailView {
     element.setAttribute('aria-hidden', 'true');
 
     element.innerHTML = `
-      <button class="back-button icon-arrow-thick" aria-label="${labels.back}" tabindex="0"></button>
+      <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
         <div class="text-details">
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">Content Demo</a>
+          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
@@ -190,24 +201,31 @@ export default class ContentTypeDetailView {
       </div>
       <hr />
       <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
-        <button aria-label="${labels.close}" class="message-close icon-close"></button>
+        <button aria-label="${Dictionary.get("contentTypeCloseButtonLabel")}" class="message-close icon-close"></button>
         <h3 class="title"></h3>
       </div>
       <div class="button-bar">
-        <button class="button button-primary button-use" aria-hidden="false" data-id="">${labels.use}</button>
-        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('installButtonLabel')}</button>
-        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${labels.installing}</button>
+        <button class="button button-primary button-use" aria-hidden="false" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
       </div>
       <dl class="panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
-            <span class="icon-accordion-arrow"></span> The Licence Info
+            <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
           </a>
         </dt>
         <dl id="licence-panel" role="region" aria-hidden="true">
           <div class="panel-body"></div>
         </dl>
-      </dl>`;
+      </dl>
+      <div id="${IMAGELIGHTBOX}-detail" class="${IMAGELIGHTBOX}" role="dialog" aria-label="${l10n.title}">
+        <ol class="${IMAGELIGHTBOX}-list"></ol>
+        <div class="${IMAGELIGHTBOX}-progress">${l10n.progress}</div>
+        <div class="${IMAGELIGHTBOX}-button next" role="button" aria-disabled="true" aria-label="${l10n.next}"></div>
+        <div class="${IMAGELIGHTBOX}-button previous" role="button" aria-disabled="true" aria-label="${l10n.prev}"></div>
+        <div class="${IMAGELIGHTBOX}-button close" role="button" tabindex="0" aria-label="${l10n.close}"></div>
+      </div>`;
 
     return element;
   }
@@ -241,7 +259,7 @@ export default class ContentTypeDetailView {
    */
   removeAllImagesInCarousel() {
     this.carouselList.querySelectorAll('li').forEach(removeChild(this.carouselList));
-    this.carousel.querySelectorAll('.carousel-lightbox').forEach(removeChild(this.carousel));
+    this.imageLightboxList.innerHTML = '';
   }
 
   /**
@@ -251,17 +269,15 @@ export default class ContentTypeDetailView {
    */
   addImageToCarousel(image) {
     // add lightbox
-    const lightbox = document.createElement('div');
-    lightbox.id = `lightbox-${this.carouselList.childElementCount}`;
-    lightbox.className = 'carousel-lightbox';
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightbox.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
-    this.carousel.appendChild(lightbox);
+    var item = document.createElement('li');
+    item.classList.add(`${IMAGELIGHTBOX}-image`);
+    item.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
+    this.imageLightboxList.appendChild(item);
 
     // add thumbnail
     const thumbnail = document.createElement('li');
     thumbnail.className = 'slide';
-    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${lightbox.id}" />`;
+    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
     this.carouselList.appendChild(thumbnail);
   }
 
@@ -269,35 +285,30 @@ export default class ContentTypeDetailView {
    * Resets the detail view
    */
   reset() {
-    hide(this.installMessage);
-  }
-
-  /**
-   * Informs view if api version required by content type is supported. The view
-   * will disable the install-button and display a warning message.
-   *
-   * @param {boolean} supported - true if supported, otherwise false
-   */
-  setApiVersionSupported(supported) {
     this.installButton.removeAttribute('disabled');
     if (this.messageViewElement) {
       this.container.removeChild(this.messageViewElement);
       delete this.messageViewElement;
     }
+    hide(this.installMessage);
+  }
 
-    if (!supported) {
-      // Disable install button
-      this.installButton.setAttribute('disabled', 'disabled');
+  /**
+   * Informs view if api version required by content type is un supported. The view
+   * will disable the install-button and display a warning message.
+   */
+  apiVersionUnsupported() {
+    // Disable install button
+    this.installButton.setAttribute('disabled', 'disabled');
 
-      let messageView = new MessageView({
-        type: 'info',
-        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-      });
+    let messageView = new MessageView({
+      type: 'warning',
+      title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+      content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+    });
 
-      this.messageViewElement = messageView.getElement();
-      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-    }
+    this.messageViewElement = messageView.getElement();
+    this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
   }
 
   /**
@@ -335,7 +346,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -356,10 +367,10 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<button class="read-less link">Read less</button>`;
+      this.description.innerHTML = `${text}<button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">Read more</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
     }
 
     this.description
@@ -475,7 +486,7 @@ export default class ContentTypeDetailView {
    */
   setOwner(owner) {
     if(owner) {
-      this.owner.innerHTML = `By ${owner}`;
+      this.owner.innerHTML = Dictionary.get('contentTypeOwner', {':owner': owner});
     }
     else {
       this.owner.innerHTML = '';

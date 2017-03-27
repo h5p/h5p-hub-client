@@ -83,22 +83,43 @@
     display: none;
   }
 
-  @media (min-width: $screen-small) {
-    .navbar {
-      .navbar-toggler-selected {
-        display: none;
-      }
-
+  // just for the menu nav bar
+  @media (min-width: 820px) {
+    .navbar{
       .navbar-brand {
         font-style: italic;
         font-size: $text-title-small;
         padding: 0.4em 0 0;
         display: inline-block;
       }
+    }
+  }
 
-      .navbar-nav {
-        background-color: transparent;
-        border: none;
+  @media (min-width: 652px) {
+    .navbar {
+      padding: 0;
+    }
+    .navbar-header {
+      display: inline-block;
+    }
+
+    .navbar-brand {
+      padding: $gutter;
+    }
+
+    .navbar-toggler {
+      display: none;
+    }
+    .navbar-toggler-selected {
+      display: none;
+    }
+
+    .navbar-nav {
+      display: inline-block;
+      float: right;
+
+      &.collapsed {
+        display: block ! important;
       }
     }
   }
@@ -106,5 +127,16 @@
   .content-type-section {
     position: relative;
     overflow: hidden;
+  }
+
+  .content-type-section-no-libraries-warning {
+    position: absolute;
+    top: 0;
+    left: 2em;
+    width: calc(100% - 4em);
+    padding: 1em 2em;
+    box-sizing: border-box;
+    font-size: 0.9em;
+    margin: 2em 0;
   }
 }

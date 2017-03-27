@@ -2377,6 +2377,9 @@ var Hub = function () {
       self.services.setup();
       self.contentTypeSection.initContentTypeList();
     });
+    this.on('clear-upload-form', function () {
+      self.uploadSection.clearUploadForm();
+    });
 
     this.initTabPanel(state);
   }
@@ -2428,11 +2431,11 @@ var Hub = function () {
           sectionId = _ref3$sectionId === undefined ? 'content-types' : _ref3$sectionId;
 
       var tabConfigs = [{
-        title: 'Create Content',
+        title: _dictionary2.default.get('createContentTabLabel'),
         id: 'content-types',
         content: this.contentTypeSection.getElement()
       }, {
-        title: 'Upload',
+        title: _dictionary2.default.get('uploadTabLabel'),
         id: 'upload',
         content: this.uploadSection.getElement()
       }];
@@ -2725,6 +2728,10 @@ var _imageScroller = __webpack_require__(26);
 
 var _imageScroller2 = _interopRequireDefault(_imageScroller);
 
+var _imageLightbox = __webpack_require__(44);
+
+var _imageLightbox2 = _interopRequireDefault(_imageLightbox);
+
 var _events = __webpack_require__(3);
 
 var _contentTypePlaceholder = __webpack_require__(10);
@@ -2752,6 +2759,11 @@ var ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
  * @constant {number}
  */
 var MAX_TEXT_SIZE_DESCRIPTION = 285;
+
+/**
+ * @constant {string}
+ */
+var IMAGELIGHTBOX = 'imagelightbox';
 
 /**
  * Checks if a string is empty
@@ -2840,6 +2852,8 @@ var ContentTypeDetailView = function () {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
+    var imageLightbox = this.rootElement.querySelector("#" + IMAGELIGHTBOX + "-detail");
+    this.imageLightboxList = imageLightbox.querySelector("." + IMAGELIGHTBOX + "-list");
     this.panel = this.rootElement.querySelector('.panel');
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
@@ -2855,6 +2869,7 @@ var ContentTypeDetailView = function () {
     // init interactive elements
     (0, _panel2.default)(this.panel);
     (0, _imageScroller2.default)(this.carousel);
+    (0, _imageLightbox2.default)(imageLightbox);
 
     // fire events on button click
     (0, _events.relayClickEventAs)('close', this, this.rootElement.querySelector('.back-button'));
@@ -2872,12 +2887,14 @@ var ContentTypeDetailView = function () {
   _createClass(ContentTypeDetailView, [{
     key: "createView",
     value: function createView() {
-      var labels = { // todo translate me
-        back: 'Back',
-        close: 'Close',
-        use: 'Use',
-        install: 'Install',
-        installing: 'Installing'
+
+      // Localized text strings
+      var l10n = { // TODO: Translate
+        title: 'Images',
+        progress: ':num of :total',
+        next: 'Next image',
+        prev: 'Previous image',
+        close: 'Close dialog'
       };
 
       // ids
@@ -2892,7 +2909,7 @@ var ContentTypeDetailView = function () {
       element.setAttribute('aria-labelledby', titleId);
       element.setAttribute('aria-hidden', 'true');
 
-      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + labels.back + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">Content Demo</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + labels.close + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + labels.use + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('installButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + labels.installing + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> The Licence Info\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>";
+      element.innerHTML = "\n      <button class=\"back-button icon-arrow-thick\" aria-label=\"" + _dictionary2.default.get("contentTypeBackButtonLabel") + "\" tabindex=\"0\"></button>\n      <div class=\"container\">\n        <div class=\"image-wrapper\"><img class=\"img-responsive content-type-image\" src=\"" + _contentTypePlaceholder2.default + "\"></div>\n        <div class=\"text-details\">\n          <h2 id=\"" + titleId + "\" class=\"title\"></h2>\n          <div class=\"owner\"></div>\n          <p class=\"small\"></p>\n          <a class=\"button demo-button\" target=\"_blank\" aria-hidden=\"false\" href=\"#\">" + _dictionary2.default.get("contentTypeDemoButtonLabel") + "</a>\n        </div>\n      </div>\n      <div class=\"carousel\" role=\"region\" data-size=\"5\">\n        <button class=\"carousel-button previous\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <button class=\"carousel-button next\" aria-hidden=\"true\" disabled><span class=\"icon-arrow-thick\"></span></button>\n        <nav class=\"scroller\">\n          <ul></ul>\n        </nav>\n      </div>\n      <hr />\n      <div role=\"alert\" class=\"install-message message dismissible simple info\" aria-hidden=\"true\">\n        <button aria-label=\"" + _dictionary2.default.get("contentTypeCloseButtonLabel") + "\" class=\"message-close icon-close\"></button>\n        <h3 class=\"title\"></h3>\n      </div>\n      <div class=\"button-bar\">\n        <button class=\"button button-primary button-use\" aria-hidden=\"false\" data-id=\"\">" + _dictionary2.default.get("contentTypeUseButtonLabel") + "</button>\n        <button class=\"button button-inverse-primary button-install\" aria-hidden=\"true\" data-id=\"\"><span class=\"icon-arrow-thick\"></span>" + _dictionary2.default.get('contentTypeInstallButtonLabel') + "</button>\n        <button class=\"button button-inverse-primary button-installing\" aria-hidden=\"true\"><span class=\"icon-loading-search icon-spin\"></span>" + _dictionary2.default.get("contentTypeInstallingButtonLabel") + "</button>\n      </div>\n      <dl class=\"panel\">\n        <dt aria-level=\"2\" role=\"heading\" class=\"licence-panel-heading\">\n          <a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"licence-panel\">\n            <span class=\"icon-accordion-arrow\"></span> " + _dictionary2.default.get('contentTypeLicensePanelTitle') + "\n          </a>\n        </dt>\n        <dl id=\"licence-panel\" role=\"region\" aria-hidden=\"true\">\n          <div class=\"panel-body\"></div>\n        </dl>\n      </dl>\n      <div id=\"" + IMAGELIGHTBOX + "-detail\" class=\"" + IMAGELIGHTBOX + "\" role=\"dialog\" aria-label=\"" + l10n.title + "\">\n        <ol class=\"" + IMAGELIGHTBOX + "-list\"></ol>\n        <div class=\"" + IMAGELIGHTBOX + "-progress\">" + l10n.progress + "</div>\n        <div class=\"" + IMAGELIGHTBOX + "-button next\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.next + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button previous\" role=\"button\" aria-disabled=\"true\" aria-label=\"" + l10n.prev + "\"></div>\n        <div class=\"" + IMAGELIGHTBOX + "-button close\" role=\"button\" tabindex=\"0\" aria-label=\"" + l10n.close + "\"></div>\n      </div>";
 
       return element;
     }
@@ -2939,7 +2956,7 @@ var ContentTypeDetailView = function () {
     key: "removeAllImagesInCarousel",
     value: function removeAllImagesInCarousel() {
       this.carouselList.querySelectorAll('li').forEach((0, _elements.removeChild)(this.carouselList));
-      this.carousel.querySelectorAll('.carousel-lightbox').forEach((0, _elements.removeChild)(this.carousel));
+      this.imageLightboxList.innerHTML = '';
     }
 
     /**
@@ -2952,17 +2969,15 @@ var ContentTypeDetailView = function () {
     key: "addImageToCarousel",
     value: function addImageToCarousel(image) {
       // add lightbox
-      var lightbox = document.createElement('div');
-      lightbox.id = "lightbox-" + this.carouselList.childElementCount;
-      lightbox.className = 'carousel-lightbox';
-      lightbox.setAttribute('aria-hidden', 'true');
-      lightbox.innerHTML = "<img class=\"img-responsive\" src=\"" + image.url + "\" alt=\"" + image.alt + "\">";
-      this.carousel.appendChild(lightbox);
+      var item = document.createElement('li');
+      item.classList.add(IMAGELIGHTBOX + "-image");
+      item.innerHTML = "<img class=\"img-responsive\" src=\"" + image.url + "\" alt=\"" + image.alt + "\">";
+      this.imageLightboxList.appendChild(item);
 
       // add thumbnail
       var thumbnail = document.createElement('li');
       thumbnail.className = 'slide';
-      thumbnail.innerHTML = "<img src=\"" + image.url + "\" alt=\"" + image.alt + "\" class=\"img-responsive\" aria-controls=\"" + lightbox.id + "\" />";
+      thumbnail.innerHTML = "<img src=\"" + image.url + "\" alt=\"" + image.alt + "\" class=\"img-responsive\" aria-controls=\"" + IMAGELIGHTBOX + "-detail\" />";
       this.carouselList.appendChild(thumbnail);
     }
 
@@ -2973,38 +2988,33 @@ var ContentTypeDetailView = function () {
   }, {
     key: "reset",
     value: function reset() {
-      (0, _elements.hide)(this.installMessage);
-    }
-
-    /**
-     * Informs view if api version required by content type is supported. The view
-     * will disable the install-button and display a warning message.
-     *
-     * @param {boolean} supported - true if supported, otherwise false
-     */
-
-  }, {
-    key: "setApiVersionSupported",
-    value: function setApiVersionSupported(supported) {
       this.installButton.removeAttribute('disabled');
       if (this.messageViewElement) {
         this.container.removeChild(this.messageViewElement);
         delete this.messageViewElement;
       }
+      (0, _elements.hide)(this.installMessage);
+    }
 
-      if (!supported) {
-        // Disable install button
-        this.installButton.setAttribute('disabled', 'disabled');
+    /**
+     * Informs view if api version required by content type is un supported. The view
+     * will disable the install-button and display a warning message.
+     */
 
-        var messageView = new _messageView2.default({
-          type: 'info',
-          title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
-          content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
-        });
+  }, {
+    key: "apiVersionUnsupported",
+    value: function apiVersionUnsupported() {
+      // Disable install button
+      this.installButton.setAttribute('disabled', 'disabled');
 
-        this.messageViewElement = messageView.getElement();
-        this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-      }
+      var messageView = new _messageView2.default({
+        type: 'warning',
+        title: _dictionary2.default.get('contentTypeUnsupportedApiVersionTitle'),
+        content: _dictionary2.default.get('contentTypeUnsupportedApiVersionContent')
+      });
+
+      this.messageViewElement = messageView.getElement();
+      this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
     }
 
     /**
@@ -3058,7 +3068,7 @@ var ContentTypeDetailView = function () {
       var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
       if (text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
         this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
           return _this2.toggleDescriptionExpanded(text);
         });
@@ -3083,9 +3093,9 @@ var ContentTypeDetailView = function () {
       this.descriptionExpanded = !this.descriptionExpanded;
 
       if (this.descriptionExpanded) {
-        this.description.innerHTML = text + "<button class=\"read-less link\">Read less</button>";
+        this.description.innerHTML = text + "<button class=\"read-less link\">" + _dictionary2.default.get('contentTypeReadLess') + "</button>";
       } else {
-        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">Read more</button>";
+        this.description.innerHTML = this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text) + "<button class=\"read-more link\">" + _dictionary2.default.get('contentTypeReadMore') + "</button>";
       }
 
       this.description.querySelector('.read-more, .read-less').addEventListener('click', function () {
@@ -3198,7 +3208,7 @@ var ContentTypeDetailView = function () {
     key: "setOwner",
     value: function setOwner(owner) {
       if (owner) {
-        this.owner.innerHTML = "By " + owner;
+        this.owner.innerHTML = _dictionary2.default.get('contentTypeOwner', { ':owner': owner });
       } else {
         this.owner.innerHTML = '';
       }
@@ -3348,6 +3358,10 @@ var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
 
 var _eventful = __webpack_require__(2);
 
+var _dictionary = __webpack_require__(6);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3452,10 +3466,11 @@ var ContentTypeDetail = function () {
       this.view.showButtonBySelector('.button-installing');
 
       return this.services.installContentType(id).then(function (response) {
+        _this.trigger('installed-content-type');
         _this.view.setIsInstalled(true);
         _this.view.showButtonBySelector('.button-get');
         _this.view.setInstallMessage({
-          message: id + ' successfully installed!'
+          message: _dictionary2.default.get('contentTypeInstallSuccess', { ':contentType': id })
         });
       }).catch(function (error) {
         _this.view.showButtonBySelector('.button-install');
@@ -3464,7 +3479,7 @@ var ContentTypeDetail = function () {
         var errorMessage = error.errorCode ? error : {
           success: false,
           errorCode: 'RESPONSE_FAILED',
-          message: id + ' could not be installed! Contact your administrator.'
+          message: _dictionary2.default.get('contentTypeInstallError', { ':contentType': id })
         };
         _this.view.setInstallMessage(errorMessage);
 
@@ -3494,9 +3509,13 @@ var ContentTypeDetail = function () {
       this.view.setIsRestricted(contentType.restricted);
 
       // Check if api version is supported
-      if (this.apiVersion) {
-        this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
+      var apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion;
+
+      // If not installed and unsupported version - let view know
+      if (!contentType.installed && !apiVersionSupported) {
+        this.view.apiVersionUnsupported();
       }
+
       // update carousel
       this.view.removeAllImagesInCarousel();
       contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
@@ -3550,6 +3569,10 @@ var _contentTypePlaceholder2 = _interopRequireDefault(_contentTypePlaceholder);
 var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
+
+var _dictionary = __webpack_require__(6);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3680,18 +3703,14 @@ var ContentTypeListView = function () {
   }, {
     key: "createContentTypeRow",
     value: function createContentTypeRow(contentType, scope) {
-      var labels = {
-        icon: 'Icon'
-      };
-
       // create ids
       var index = this.rootElement.querySelectorAll('li').length;
       var contentTypeRowTitleId = "content-type-row-title-" + index;
       var contentTypeRowDescriptionId = "content-type-row-description-" + index;
 
       // field configuration
-      var useButtonConfig = { text: 'Use', cls: 'button-primary', icon: '' };
-      var installButtonConfig = { text: 'Get', cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
+      var useButtonConfig = { text: _dictionary2.default.get('contentTypeUseButtonLabel'), cls: 'button-primary', icon: '' };
+      var installButtonConfig = { text: _dictionary2.default.get('contentTypeGetButtonLabel'), cls: 'button-inverse-primary button-install', icon: 'icon-arrow-thick' };
       var button = contentType.installed ? useButtonConfig : installButtonConfig;
       var title = contentType.title || contentType.machineName;
       var description = contentType.summary || '';
@@ -3706,7 +3725,7 @@ var ContentTypeListView = function () {
       element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
       // create html
-      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + labels.icon + "\" />\n      \n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n      \n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
+      element.innerHTML = "\n      <img class=\"img-responsive\" src=\"" + image + "\" alt=\"" + title + " " + _dictionary2.default.get('contentTypeIconAltText') + "\" />\n\n      <div class=\"content-type-row-info\">\n        <h4 id=\"" + contentTypeRowTitleId + "\">" + title + "</h4>\n        <div id=\"" + contentTypeRowDescriptionId + "\" class=\"description\">" + description + "</div>\n      </div>\n\n      <div class=\"content-type-row-button\">\n        <button aria-describedby=\"" + contentTypeRowTitleId + "\" class=\"button " + button.cls + "\" data-id=\"" + contentType.machineName + "\" tabindex=\"0\" " + disabled + ">\n          <span class=\"" + button.icon + "\"></span>\n          " + button.text + "\n        </button>\n      </div>\n   ";
 
       // handle use button
       var useButton = element.querySelector('.button-primary');
@@ -3787,6 +3806,7 @@ var ContentTypeList = function () {
     // add the view
     this.view = new _contentTypeListView2.default(state);
     this.propagate(['row-selected', 'select'], this.view);
+    this.currentContentTypes = [];
   }
 
   /**
@@ -3827,6 +3847,26 @@ var ContentTypeList = function () {
       this.view.removeAllRows();
       contentTypes.forEach(this.view.addRow, this.view);
       this.trigger('update-content-type-list', {});
+      this.currentContentTypes = contentTypes;
+    }
+
+    /**
+     * Refreshes the currently displayed content types with updated data
+     *
+     * @param {ContentType[]} contentTypes New content type data
+     */
+
+  }, {
+    key: 'refreshContentTypes',
+    value: function refreshContentTypes(contentTypes) {
+      var _this = this;
+
+      var displayedContentTypes = contentTypes.filter(function (contentType) {
+        return _this.currentContentTypes.find(function (currentContentType) {
+          return currentContentType.machineName === contentType.machineName;
+        });
+      });
+      this.update(displayedContentTypes);
     }
 
     /**
@@ -3882,6 +3922,10 @@ var _dictionary = __webpack_require__(6);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
+var _contentTypeSection = __webpack_require__(20);
+
+var _contentTypeSection2 = _interopRequireDefault(_contentTypeSection);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3917,6 +3961,7 @@ var ContentBrowserView = function () {
 
     // general configuration
     this.typeAheadEnabled = true;
+    this.currentlySelected = {};
 
     // create elements
     this.rootElement = this.createElement(state);
@@ -3927,19 +3972,14 @@ var ContentBrowserView = function () {
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
     var inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
+    var searchBar = this.rootElement.querySelector('#hub-search-bar');
 
-    // input field
-    this.inputField.addEventListener('keyup', function (event) {
-      if (event.keyCode != KEY_CODE_TAB) {
-        var searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-
-        // Only searching if the enter key is pressed
-        if (_this.typeAheadEnabled || event.which == 13 || event.keyCode == 13) {
-          _this.trigger('search', {
-            element: searchbar,
-            query: searchbar.value
-          });
-        }
+    this.inputField.addEventListener('input', function (event) {
+      if (_this.typeAheadEnabled || event.which === 13) {
+        _this.trigger('search', {
+          element: searchBar,
+          query: searchBar.value
+        });
       }
     });
 
@@ -3968,14 +4008,13 @@ var ContentBrowserView = function () {
   _createClass(ContentBrowserView, [{
     key: "createElement",
     value: function createElement(state) {
-      var menutitle = 'Browse content types';
       var menuId = 'content-type-filter';
-      var searchText = 'Search for Content Types';
+      var searchText = _dictionary2.default.get('contentTypeSearchFieldPlaceholder');
 
       // create element
       var element = document.createElement('div');
       element.className = 'content-type-section-view';
-      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + menutitle + "</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
+      element.innerHTML = "\n      <div class=\"menu-group\">\n        <nav  role=\"menubar\" class=\"navbar\">\n          <div class=\"navbar-header\">\n             <button class=\"navbar-toggler navbar-toggler-right\" tabindex=\"0\" aria-haspopup=\"true\" aria-controls=\"" + menuId + "\" aria-expanded=\"false\">\n               <span class=\"icon-accordion-arrow\"></span>\n             </button>\n            <span class=\"navbar-toggler-selected\"></span>\n            <span class=\"navbar-brand\">" + _dictionary2.default.get("contentTypeSectionTitle") + "</span>\n          </div>\n\n          <ul id=\"" + menuId + "\" class=\"navbar-nav\"></ul>\n        </nav>\n\n        <div class=\"input-group\" role=\"search\">\n          <input id=\"hub-search-bar\" class=\"form-control form-control-rounded\" type=\"text\" aria-label=\"" + searchText + "\" placeholder=\"" + searchText + "\" />\n          <div class=\"input-group-addon icon-search\"></div>\n        </div>\n      </div>";
 
       return element;
     }
@@ -3984,7 +4023,6 @@ var ContentBrowserView = function () {
     value: function displayMessage(config) {
       var self = this;
       // Set the action
-      // TODO - should be translatable
       config.action = _dictionary2.default.get('reloadButtonLabel');
 
       var messageView = new _messageView2.default(config);
@@ -4005,7 +4043,6 @@ var ContentBrowserView = function () {
      *
      * @param {string} title
      * @param {string} id
-     * @param {boolean} selected Determines if tab is already selected
      * @param {string} eventName Name of event that tab will fire off
      *
      * @return {HTMLElement}
@@ -4014,32 +4051,32 @@ var ContentBrowserView = function () {
   }, {
     key: "addMenuItem",
     value: function addMenuItem(_ref) {
-      var _this2 = this;
-
       var title = _ref.title,
           id = _ref.id,
-          selected = _ref.selected,
           eventName = _ref.eventName;
 
+      var self = this;
       var element = document.createElement('li');
       element.setAttribute('role', 'menuitem');
       element.setAttribute('data-id', id);
       element.innerText = title;
 
-      // sets if this menuitem should be selected
-      if (selected) {
-        element.setAttribute('aria-selected', 'true');
-        this.displaySelected.innerText = title;
-        this.trigger('menu-selected', {
-          element: element,
-          choice: eventName
-        });
-      }
+      element.addEventListener('click', function () {
+        self.selectMenuItem({ id: id, eventName: eventName });
+      });
 
-      element.addEventListener('click', function (event) {
-        _this2.trigger('menu-selected', {
-          element: event.target,
-          choice: eventName
+      element.addEventListener('keyup', function (event) {
+        if (event.which === 13 || event.which === 32) {
+          self.selectMenuItem({ id: id, eventName: eventName });
+          event.stopPropagation();
+        }
+      });
+
+      this.on('menu-selected', function (event) {
+        self.currentlySelected = Object.keys(_contentTypeSection2.default.Tabs).map(function (menuItemName) {
+          return _contentTypeSection2.default.Tabs[menuItemName];
+        }).find(function (menu) {
+          return menu.eventName === event.choice;
         });
       });
 
@@ -4059,6 +4096,16 @@ var ContentBrowserView = function () {
     }
 
     /**
+     * Clears menu item selection
+     */
+
+  }, {
+    key: "clearSelection",
+    value: function clearSelection() {
+      this.currentlySelected = {};
+    }
+
+    /**
      * Sets the name of the currently selected filter
      *
      * @param {string} selectedName
@@ -4071,14 +4118,23 @@ var ContentBrowserView = function () {
     }
 
     /**
-     * Selects a menu item by id
+     * Selects a menu item
      *
-     * @param {string} id
+     * @param {string} id Id of menu
+     * @param {string} eventName Event name of menu
      */
 
   }, {
-    key: "selectMenuItemById",
-    value: function selectMenuItemById(id) {
+    key: "selectMenuItem",
+    value: function selectMenuItem(_ref2) {
+      var id = _ref2.id,
+          eventName = _ref2.eventName;
+
+      // Skip if already selected
+      if (this.currentlySelected.eventName === eventName) {
+        return;
+      }
+
       var menuItems = this.menubar.querySelectorAll('[role="menuitem"]');
       var selectedMenuItem = this.menubar.querySelector("[role=\"menuitem\"][data-id=\"" + id + "\"]");
 
@@ -4088,7 +4144,8 @@ var ContentBrowserView = function () {
 
         this.trigger('menu-selected', {
           element: selectedMenuItem,
-          id: selectedMenuItem.getAttribute('data-id')
+          id: id,
+          choice: eventName
         });
       }
     }
@@ -4174,31 +4231,17 @@ var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
 var _eventful = __webpack_require__(2);
 
+var _dictionary = __webpack_require__(6);
+
+var _dictionary2 = _interopRequireDefault(_dictionary);
+
+var _messageView = __webpack_require__(7);
+
+var _messageView2 = _interopRequireDefault(_messageView);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Tab section constants
- */
-var ContentTypeSectionTabs = {
-  ALL: {
-    id: 'filter-all',
-    title: 'All',
-    eventName: 'all'
-  },
-  MY_CONTENT_TYPES: {
-    id: 'filter-my-content-types',
-    title: 'My Content Types',
-    eventName: 'my-content-types',
-    selected: true
-  },
-  MOST_POPULAR: {
-    id: 'filter-most-popular',
-    title: 'Most Popular',
-    eventName: 'most-popular'
-  }
-};
 
 /**
  * @class ContentTypeSection
@@ -4206,8 +4249,8 @@ var ContentTypeSectionTabs = {
  *
  * @fires Hub#select
  */
-
 var ContentTypeSection = function () {
+
   /**
    * @param {object} state
    * @param {HubServices} services
@@ -4217,8 +4260,31 @@ var ContentTypeSection = function () {
 
     _classCallCheck(this, ContentTypeSection);
 
+    var self = this;
+
     // add event system
     _extends(this, (0, _eventful.Eventful)());
+
+    /*
+     * Tab section constants
+     */
+    ContentTypeSection.Tabs = {
+      ALL: {
+        id: 'filter-all',
+        title: _dictionary2.default.get('contentTypeSectionAll'),
+        eventName: 'all'
+      },
+      MY_CONTENT_TYPES: {
+        id: 'filter-my-content-types',
+        title: _dictionary2.default.get('contentTypeSectionMine'),
+        eventName: 'my-content-types'
+      },
+      MOST_POPULAR: {
+        id: 'filter-most-popular',
+        title: _dictionary2.default.get('contentTypeSectionPopular'),
+        eventName: 'most-popular'
+      }
+    };
 
     // add view
     this.view = new _contentTypeSectionView2.default(state);
@@ -4245,21 +4311,37 @@ var ContentTypeSection = function () {
 
     // register listeners
     this.view.on('search', this.search, this);
-    this.view.on('search', this.view.selectMenuItemById.bind(this.view, ContentTypeSectionTabs.ALL.id));
-    // this.view.on('search', this.resetMenuOnEnter, this);
     this.view.on('menu-selected', this.closeDetailView, this);
     this.view.on('menu-selected', this.applySearchFilter, this);
     this.view.on('menu-selected', this.clearInputField, this);
     this.view.on('menu-selected', this.updateDisplaySelected, this);
+    this.view.on('menu-selected', this.removeMessages, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
+    this.contentTypeList.on('row-selected', this.view.clearSelection, this.view);
     this.contentTypeDetail.on('close', this.closeDetailView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
+    this.contentTypeDetail.on('installed-content-type', function () {
+      services.setup();
+      services.contentTypes().then(function (contentTypes) {
+        _this.contentTypeList.refreshContentTypes(contentTypes);
+      });
+    });
 
     // add menu items
-    Object.keys(ContentTypeSectionTabs).forEach(function (tab) {
-      return _this.view.addMenuItem(ContentTypeSectionTabs[tab]);
+    Object.keys(ContentTypeSection.Tabs).forEach(function (tab) {
+      return _this.view.addMenuItem(ContentTypeSection.Tabs[tab]);
     });
     this.view.initMenu();
+
+    // Determine which browsing category to show initially
+    services.contentTypes().then(function (contentTypes) {
+      // Show my content types if any is installed
+      var installed = contentTypes.filter(function (contentType) {
+        return contentType.installed;
+      });
+
+      self.view.selectMenuItem(installed.length ? ContentTypeSection.Tabs.MY_CONTENT_TYPES : ContentTypeSection.Tabs.ALL);
+    });
   }
 
   /**
@@ -4273,8 +4355,8 @@ var ContentTypeSection = function () {
       // TODO - use translation system:
       this.view.displayMessage({
         type: 'error',
-        title: 'Not able to communicate with hub.',
-        content: 'Error occured. Please try again.'
+        title: _dictionary2.default.get('errorCommunicatingHubTitle'),
+        content: _dictionary2.default.get('errorCommunicatingHubContent')
       });
     }
 
@@ -4292,6 +4374,8 @@ var ContentTypeSection = function () {
       var query = _ref.query,
           keyCode = _ref.keyCode;
 
+      // Always browse ALL when searching
+      this.view.selectMenuItem(ContentTypeSection.Tabs.ALL);
       this.searchService.search(query).then(function (contentTypes) {
         return _this2.contentTypeList.update(contentTypes);
       });
@@ -4322,19 +4406,26 @@ var ContentTypeSection = function () {
       var _this3 = this;
 
       switch (e.choice) {
-        case ContentTypeSectionTabs.ALL.eventName:
+        case ContentTypeSection.Tabs.ALL.eventName:
           this.searchService.sortOn('restricted').then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
           });
           break;
 
-        case ContentTypeSectionTabs.MY_CONTENT_TYPES.eventName:
-          this.searchService.sortOnRecent().then(function (filteredContentTypes) {
-            return _this3.contentTypeList.update(filteredContentTypes);
+        case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
+          this.searchService.applyFilters(['restricted', 'installed']).then(function (filteredContentTypes) {
+            return _this3.searchService.sortOnRecent(filteredContentTypes);
+          }).then(function (sortedContentTypes) {
+            _this3.contentTypeList.update(sortedContentTypes);
+
+            // Show warning if no local libraries
+            if (!sortedContentTypes.length) {
+              _this3.displayNoLibrariesWarning();
+            }
           });
           break;
 
-        case ContentTypeSectionTabs.MOST_POPULAR.eventName:
+        case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
           var sortOrder = ['restricted', 'popularity'];
           this.searchService.sortOn(sortOrder).then(function (sortedContentTypes) {
             return _this3.contentTypeList.update(sortedContentTypes);
@@ -4354,8 +4445,41 @@ var ContentTypeSection = function () {
     value: function clearInputField(_ref2) {
       var id = _ref2.id;
 
-      if (id !== ContentTypeSectionTabs.ALL.id) {
+      if (id !== ContentTypeSection.Tabs.ALL.id) {
         this.view.clearInputField();
+      }
+    }
+
+    /**
+     * Display no libraries warning
+     */
+
+  }, {
+    key: "displayNoLibrariesWarning",
+    value: function displayNoLibrariesWarning() {
+      if (!this.noLibrariesMessage) {
+        var messageView = new _messageView2.default({
+          type: 'warning',
+          title: _dictionary2.default.get('warningNoContentTypesInstalled'),
+          content: _dictionary2.default.get('warningChangeBrowsingToSeeResults')
+        });
+        var message = messageView.getElement();
+        message.classList.add('content-type-section-no-libraries-warning');
+        this.noLibrariesMessage = message;
+      }
+
+      this.rootElement.appendChild(this.noLibrariesMessage);
+    }
+
+    /**
+     * Remove messages if found
+     */
+
+  }, {
+    key: "removeMessages",
+    value: function removeMessages() {
+      if (this.noLibrariesMessage && this.noLibrariesMessage.parentNode) {
+        this.noLibrariesMessage.parentNode.removeChild(this.noLibrariesMessage);
       }
     }
 
@@ -4368,6 +4492,8 @@ var ContentTypeSection = function () {
   }, {
     key: "showDetailView",
     value: function showDetailView(_ref3) {
+      var _this4 = this;
+
       var id = _ref3.id;
 
       this.contentTypeList.hide();
@@ -4375,7 +4501,13 @@ var ContentTypeSection = function () {
       this.contentTypeDetail.show();
       this.view.typeAheadEnabled = false;
       this.view.removeDeactivatedStyleFromMenu();
-      this.contentTypeDetail.focus();
+
+      // Wait for transition before focusing since focusing an element will force the browser to
+      // put that element into view. Doing so before the element is in the correct position will
+      // skew all elements on the page.
+      setTimeout(function () {
+        _this4.contentTypeDetail.focus();
+      }, 300);
     }
 
     /**
@@ -4938,7 +5070,7 @@ exports.default = HubView;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(Promise) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -5015,31 +5147,73 @@ var SearchService = function () {
 
   }, {
     key: 'sortOnRecent',
-    value: function sortOnRecent() {
-      return Promise.all([this.services.contentTypes(), this.services.recentlyUsed()]).then(function (cacheData) {
-        return sortContentTypesByMachineName(cacheData[0], cacheData[1]);
+    value: function sortOnRecent(contentTypes) {
+      return this.services.recentlyUsed().then(function (recentlyUsed) {
+        return sortContentTypesByMachineName(contentTypes, recentlyUsed);
       });
     }
 
     /**
      * Filter out restricted if it is defined and false
      *
+     * @param {string[]} filters Filters that should be applied
+     *
      * @return {Promise.<ContentType[]>}
      */
 
   }, {
-    key: 'filterOutRestricted',
-    value: function filterOutRestricted() {
+    key: 'applyFilters',
+    value: function applyFilters(filters) {
       return this.services.contentTypes().then(function (contentTypes) {
-        return contentTypes.filter(function (contentType) {
-          return !contentType.restricted;
-        });
+        return multiFilter(contentTypes, filters);
       });
     }
   }]);
 
   return SearchService;
 }();
+
+/**
+ * Apply multiple filters to content types
+ *
+ * @param {ContentType[]} contentTypes Content types that should be filtered
+ * @param {string[]} filters Filters that should be applied
+ *
+ * @return {ContentType[]} Remaining content types after filtering
+ */
+
+
+exports.default = SearchService;
+var multiFilter = function multiFilter(contentTypes, filters) {
+  // Finished filtering
+  if (!filters.length) {
+    return contentTypes;
+  }
+
+  // Apply filter
+  return multiFilter(handleFilter(contentTypes, filters.shift()), filters);
+};
+
+/**
+ * Applies a single filter to content types
+ *
+ * @param {ContentType[]} contentTypes Content types that should be filtered
+ * @param {string} filter Filter that should be applied
+ *
+ * @return {ContentType[]} Content types remaining after applying filter
+ */
+var handleFilter = function handleFilter(contentTypes, filter) {
+  switch (filter) {
+    case 'restricted':
+      return contentTypes.filter(function (contentType) {
+        return !contentType.restricted;
+      });
+    case 'installed':
+      return contentTypes.filter(function (contentType) {
+        return contentType.installed;
+      });
+  }
+};
 
 /**
  * Sort on multiple properties
@@ -5049,9 +5223,6 @@ var SearchService = function () {
  *
  * @return {Array.<ContentType>} Content types sorted
  */
-
-
-exports.default = SearchService;
 var multiSort = function multiSort(contentTypes, sortOrder) {
   // Make sure all sorted instances are mixed content type
   var mixedContentTypes = contentTypes.map(function (contentType) {
@@ -5289,21 +5460,26 @@ var arrayHasSubString = function arrayHasSubString(subString, arr) {
  * @return {ContentType[]}              filtered content types
  */
 var sortContentTypesByMachineName = function sortContentTypesByMachineName(contentTypes, machineNames) {
-  var result = [];
+  return contentTypes.sort(function (a, b) {
 
-  machineNames.forEach(function (machineName) {
-    var found = false;
-    contentTypes.forEach(function (contentType) {
-      if (!found && contentType.machineName == machineName) {
-        result.push(contentType);
-        found = true;
-      }
-    });
+    var aIndex = machineNames.indexOf(a.machineName.toString());
+    var bIndex = machineNames.indexOf(b.machineName.toString());
+
+    if (aIndex === -1 && bIndex === -1) {
+      // neither are recently used
+      return 0;
+    } else if (aIndex !== -1 && bIndex === -1) {
+      // b is not recently used
+      return -1;
+    } else if (aIndex === -1 && bIndex !== -1) {
+      // a is not recently used
+      return 1;
+    } else if (aIndex !== -1 && bIndex !== -1) {
+      // both are recently used
+      return aIndex < bIndex ? -1 : 1;
+    }
   });
-
-  return result;
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 24 */
@@ -5373,13 +5549,41 @@ var UploadSection = function () {
     key: 'renderUploadForm',
     value: function renderUploadForm() {
       // Create the html
-      // TODO get use button text from dictionary
-      // TODO create variables for links to h5p.org so they can be changed easily
-      // useButton.textContent = Dictionary.get('useButtonLabel');
       var uploadForm = document.createElement('div');
-      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input readonly class="upload-path" placeholder="No file chosen"/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">Upload a file</button>\n          </div>\n        </div>\n        <div class="upload-instructions">\n          <h3>Upload a H5P file.</h3>\n          <h4>You may start with examples from <a href="https://h5p.org/content-types-and-applications" target="blank">H5P.org</a>.</h4>\n        </div>\n      </div>\n    ';
+      uploadForm.innerHTML = '\n      <div class="upload-wrapper">\n        <div class="upload-form">\n          <input class="upload-path" placeholder="' + _dictionary2.default.get("uploadPlaceholder") + '" disabled/>\n          <button class="button use-button">Use</button>\n          <div class="input-wrapper">\n            <input type="file" />\n            <button class="button upload-button" tabindex="0">' + _dictionary2.default.get('uploadFileButtonLabel') + '</button>\n          </div>\n        </div>\n      </div>\n    ';
+
+      // Create the html for the upload instructions separately as it needs to be styled
+      var uploadInstructions = document.createElement('div');
+      uploadInstructions.className = 'upload-instructions';
+      this.renderUploadInstructions(uploadInstructions, _dictionary2.default.get('uploadInstructions'));
+      uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
 
       return uploadForm;
+    }
+
+    /**
+     * Creates html for the upload instructions and appends them to a wrapping div.
+     * Splits the input text into sentences and styles the first sentence differently.
+     *
+     * @param  {HTMLElement} container
+     * @param  {string} text
+     */
+
+  }, {
+    key: 'renderUploadInstructions',
+    value: function renderUploadInstructions(container, text) {
+      var textElements = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g); // match on sentences
+
+      var header = document.createElement('p');
+      header.className = 'upload-instruction-header';
+      header.innerHTML = textElements.shift(); // grab the first sentence
+
+      var description = document.createElement('p');
+      description.className = 'upload-instruction-description';
+      description.innerHTML = textElements.join(''); // join the rest
+
+      container.appendChild(header);
+      container.appendChild(description);
     }
 
     /**
@@ -5397,33 +5601,30 @@ var UploadSection = function () {
       var uploadButton = uploadForm.querySelector('.upload-button');
       var uploadPath = uploadForm.querySelector('.upload-path');
       var useButton = uploadForm.querySelector('.use-button');
-      var firstInput = uploadPath;
-      var lastInput = uploadForm.querySelector('a');
 
       // Handle errors and update styles when a file is selected
       uploadInput.onchange = function () {
 
-        if (this.value == '') {
+        if (this.value === '') {
           return;
         }
 
         // Reset styles
         self.clearUserMessages();
-        uploadPath.value = '';
 
         // Replace the placeholder text with the selected filepath
         uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
         // Update the upload button
-        uploadButton.innerHTML = 'Change file';
+        uploadButton.textContent = _dictionary2.default.get('uploadFileButtonChangeLabel');
 
         // Check that it's a h5p file
         var fileExtension = self.getFileExtension(this.value);
         if (fileExtension !== 'h5p') {
           self.renderMessage({
             type: 'error',
-            title: '.h5p file not found',
-            content: 'You need to upload a file that ends in .h5p'
+            title: _dictionary2.default.get('h5pFileWrongExtensionTitle'),
+            content: _dictionary2.default.get('h5pFileWrongExtensionContent')
           });
 
           // Hide the 'use' button for non-h5p files
@@ -5460,7 +5661,7 @@ var UploadSection = function () {
         }
       };
 
-      // Reuse the upload input logic to upload a file 
+      // Reuse the upload input logic to upload a file
       uploadButton.onclick = function () {
         uploadInput.click();
       };
@@ -5472,16 +5673,26 @@ var UploadSection = function () {
         }
       };
 
-      // Cycle tabbing back to the first input
-      lastInput.onkeydown = function (e) {
-        if (e.which === 9 && !e.shiftKey) {
-          e.preventDefault();
-          firstInput.focus();
-        }
-      };
+      this.uploadInput = uploadInput;
+      this.uploadPath = uploadPath;
+      this.uploadButton = uploadButton;
+      this.useButton = useButton;
     }
 
-    /*
+    /**
+     * Clear input of file upload form
+     */
+
+  }, {
+    key: 'clearUploadForm',
+    value: function clearUploadForm() {
+      this.uploadInput.value = '';
+      this.uploadPath.value = _dictionary2.default.get("uploadPlaceholder");
+      this.uploadButton.textContent = _dictionary2.default.get('uploadFileButtonLabel');
+      this.useButton.style.display = 'none';
+    }
+
+    /**
      * Empties the message wrapper
      */
 
@@ -6475,6 +6686,391 @@ __webpack_require__(12);
 // Load library
 H5P = H5P || {};
 H5P.HubClient = __webpack_require__(11).default;
+
+/***/ }),
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */,
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.default = init;
+
+var _elements = __webpack_require__(0);
+
+var _functional = __webpack_require__(1);
+
+var _keyboard = __webpack_require__(4);
+
+var _keyboard2 = _interopRequireDefault(_keyboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * @constant
+ */
+var ATTRIBUTE_SHOW = 'data-show';
+
+/**
+ * @constant
+ * @type Object.<string, number>
+ */
+var KEY = {
+  TAB: 9,
+  ENTER: 13,
+  SHIFT: 16,
+  SPACE: 32
+};
+
+/**
+ * @constant
+ * @type Object.<string, number>
+ */
+var TAB_DIRECTION = {
+  FORWARD: 0,
+  BACKWARD: 1
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var show = function show(element) {
+  return element.classList.add('active');
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var hide = function hide(element) {
+  element.classList.remove('active');
+  element.removeAttribute('aria-live');
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var live = (0, _elements.setAttribute)('aria-live', 'polite');
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var enable = function enable(element) {
+  element.tabIndex = 0;
+  element.removeAttribute('aria-disabled');
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var disable = function disable(element) {
+  element.tabIndex = -1;
+  element.setAttribute('aria-disabled', 'true');
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var isDisabled = (0, _elements.hasAttribute)('aria-disabled');
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ * @param {boolean} force
+ */
+var toggleDisabled = function toggleDisabled(element, force) {
+  return (force ? disable : enable)(element);
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ * @param {boolean} force
+ */
+var toggleHidden = function toggleHidden(element, force) {
+  return (force ? hide : show)(element);
+};
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ * @param {number} imageIndex
+ */
+var showImageLightbox = (0, _functional.curry)(function (element, imageIndex) {
+  return (0, _elements.setAttribute)('data-show', imageIndex, element);
+});
+
+/**
+ * @function
+ * @param {HTMLElement} element
+ */
+var hideLightbox = (0, _elements.removeAttribute)(ATTRIBUTE_SHOW);
+
+/**
+ * Focus first element with tabindex from arguments
+ *
+ * @function
+ * @param {...HTMLElement} elements
+ */
+var focus = function focus() {
+  for (var _len = arguments.length, elements = Array(_len), _key = 0; _key < _len; _key++) {
+    elements[_key] = arguments[_key];
+  }
+
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i].tabIndex !== -1) {
+      return elements[i].focus();
+    }
+  }
+};
+
+/**
+ * Will toggle the siblings of the element visible or not.
+ *
+ * @function
+ * @param {HTMLElement} element
+ * @param {boolean} show
+ */
+var toggleSiblings = function toggleSiblings(element, show) {
+  var siblings = element.parentNode.children;
+
+  for (var i = 0; i < siblings.length; i++) {
+    var sibling = siblings[i];
+
+    if (sibling === element) {
+      continue; // Not this element
+    }
+
+    if (show) {
+      sibling.removeAttribute('aria-hidden');
+    } else {
+      sibling.setAttribute('aria-hidden', true);
+    }
+  }
+};
+
+/**
+ * @type string
+ */
+var progressTemplateText = void 0;
+
+/**
+ * Update the view
+ *
+ * @function
+ * @param {HTMLElement} element
+ * @param {ImageScrollerState} state
+ * @param {boolean} setDialogFocus
+ */
+var updateView = function updateView(element, state) {
+
+  var images = element.querySelectorAll('.imagelightbox-image');
+  var progress = element.querySelector('.imagelightbox-progress');
+  var prevButton = element.querySelector('.previous');
+  var nextButton = element.querySelector('.next');
+
+  // Hide all images
+  images.forEach(function (image) {
+    return hide(image);
+  });
+  if (state.currentImage !== null) {
+    // Show selected image
+    var image = element.querySelector('.imagelightbox-image:nth-child(' + (state.currentImage + 1) + ')');
+
+    show(image);
+    live(image);
+  }
+
+  // Update progress text
+  if (!progressTemplateText) {
+    // Keep template for future updates
+    progressTemplateText = progress.innerText;
+  }
+  progress.innerText = progressTemplateText.replace(':num', state.currentImage + 1).replace(':total', images.length);
+
+  // Determine if buttons should be shown or hidden
+  toggleHidden(prevButton, !images.length);
+  toggleHidden(nextButton, !images.length);
+
+  // Determine if buttons should be enabled or disabled
+  toggleDisabled(prevButton, state.currentImage === 0);
+  toggleDisabled(nextButton, state.currentImage === images.length - 1);
+
+  // Determine if lightbox should be shown or hidden
+  toggleHidden(element, state.currentImage === null);
+  toggleSiblings(element, state.currentImage === null);
+};
+
+/**
+ * Handles button clicked
+ *
+ * @function
+ * @param {HTMLElement} element
+ * @param {HTMLElement} button
+ * @param {number} imageIndex
+ */
+var onNavigationButtonClick = function onNavigationButtonClick(element, button, imageIndex) {
+  if (!isDisabled(button)) {
+    showImageLightbox(element, imageIndex);
+  }
+};
+
+/**
+ * @function
+ */
+var onButtonPress = function onButtonPress(button, handler) {
+  button.addEventListener('click', handler);
+  button.addEventListener('keypress', function (event) {
+    if (event.which === KEY.ENTER || event.which === KEY.SPACE) {
+      // Enter or space key pressed
+      handler();
+      event.preventDefault();
+    }
+  });
+};
+
+/**
+ * Keep track of which keys are currently pressed.
+ *
+ * @type Object.<number, boolean>
+ */
+var keysDown = {};
+
+/**
+ * Binds key listeners that traps focus when the lightbox is open.
+ *
+ * @function
+ */
+var onButtonTab = function onButtonTab(button, direction, handler) {
+  button.addEventListener('keydown', function (event) {
+    // Keep track of which keys are currently pressed
+    keysDown[event.which] = true;
+
+    if (event.which === KEY.TAB) {
+      // Tab key press
+
+      if (keysDown[KEY.SHIFT]) {
+        if (direction === TAB_DIRECTION.BACKWARD) {
+          // Shift is down, tab backward
+          handler();
+          event.preventDefault();
+        }
+      } else {
+        if (direction === TAB_DIRECTION.FORWARD) {
+          // Tab forward
+          handler();
+          event.preventDefault();
+        }
+      }
+    }
+  });
+  button.addEventListener('keyup', function (event) {
+    delete keysDown[event.which];
+  });
+};
+
+/**
+ * Callback for when the dom is updated
+ *
+ * @function
+ * @param {HTMLElement} element
+ * @param {ImageLightboxState} state
+ * @param {Keyboard} keyboard
+ * @param {MutationRecord} record
+ */
+var handleDomUpdate = (0, _functional.curry)(function (element, state, keyboard, record) {
+
+  if (record.type === 'attributes' && record.attributeName === ATTRIBUTE_SHOW) {
+
+    var showImage = parseInt(record.target.getAttribute(ATTRIBUTE_SHOW));
+
+    // update the view
+    updateView(element, _extends(state, {
+      currentImage: isNaN(showImage) ? null : showImage
+    }));
+  }
+});
+
+/**
+ * Initializes a panel
+ *
+ * @function
+ * @param {HTMLElement} element
+ * @return {HTMLElement}
+ */
+function init(element) {
+  // get button html elements
+  var nextButton = element.querySelector('.next');
+  var prevButton = element.querySelector('.previous');
+  var closeButton = element.querySelector('.close');
+  var keyboard = new _keyboard2.default();
+
+  /**
+   * @typedef {object} ImageLightboxState
+   * @property {number} currentImage Index of image to display
+   */
+  var state = {
+    currentImage: false
+  };
+
+  // initialize buttons
+  onButtonPress(nextButton, function () {
+    return onNavigationButtonClick(element, nextButton, state.currentImage + 1);
+  });
+  onButtonTab(nextButton, TAB_DIRECTION.BACKWARD, function () {
+    return focus(closeButton);
+  });
+
+  onButtonPress(prevButton, function () {
+    return onNavigationButtonClick(element, prevButton, state.currentImage - 1);
+  });
+  onButtonTab(prevButton, TAB_DIRECTION.BACKWARD, function () {
+    return focus(nextButton, closeButton);
+  });
+
+  onButtonPress(closeButton, function () {
+    return hideLightbox(element);
+  });
+  onButtonTab(closeButton, TAB_DIRECTION.FORWARD, function () {
+    return focus(nextButton, prevButton);
+  });
+
+  // listen for updates to data-size
+  var observer = new MutationObserver((0, _functional.forEach)(handleDomUpdate(element, state, keyboard)));
+
+  observer.observe(element, {
+    subtree: false,
+    childList: false,
+    attributes: true,
+    attributeOldValue: true,
+    attributeFilter: [ATTRIBUTE_SHOW]
+  });
+
+  return element;
+}
 
 /***/ })
 /******/ ]);
