@@ -5551,7 +5551,7 @@ var UploadSection = function () {
       // Create the html for the upload instructions separately as it needs to be styled
       var uploadInstructions = document.createElement('div');
       uploadInstructions.className = 'upload-instructions';
-      this.renderUploadInstructions(uploadInstructions, _dictionary2.default.get('uploadInstructions'));
+      this.renderUploadInstructions(uploadInstructions, _dictionary2.default.get('uploadInstructionsTitle'), _dictionary2.default.get('uploadInstructionsContent'));
       uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
 
       return uploadForm;
@@ -5567,16 +5567,15 @@ var UploadSection = function () {
 
   }, {
     key: 'renderUploadInstructions',
-    value: function renderUploadInstructions(container, text) {
-      var textElements = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g); // match on sentences
+    value: function renderUploadInstructions(container, title, content) {
 
       var header = document.createElement('p');
       header.className = 'upload-instruction-header';
-      header.innerHTML = textElements.shift(); // grab the first sentence
+      header.innerHTML = title;
 
       var description = document.createElement('p');
       description.className = 'upload-instruction-description';
-      description.innerHTML = textElements.join(''); // join the rest
+      description.innerHTML = content;
 
       container.appendChild(header);
       container.appendChild(description);

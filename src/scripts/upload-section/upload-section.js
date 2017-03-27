@@ -53,7 +53,7 @@ export default class UploadSection {
     // Create the html for the upload instructions separately as it needs to be styled
     const uploadInstructions = document.createElement('div');
     uploadInstructions.className = 'upload-instructions';
-    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructions'));
+    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructionsTitle'), Dictionary.get('uploadInstructionsContent'));
     uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
 
     return uploadForm;
@@ -66,16 +66,15 @@ export default class UploadSection {
    * @param  {HTMLElement} container
    * @param  {string} text
    */
-  renderUploadInstructions(container, text) {
-    const textElements = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g); // match on sentences
+  renderUploadInstructions(container, title, content) {
 
     const header = document.createElement('p');
     header.className = 'upload-instruction-header';
-    header.innerHTML = textElements.shift(); // grab the first sentence
+    header.innerHTML = title;
 
     const description = document.createElement('p');
     description.className = 'upload-instruction-description';
-    description.innerHTML = textElements.join(''); // join the rest
+    description.innerHTML = content;
 
     container.appendChild(header);
     container.appendChild(description);
