@@ -117,10 +117,11 @@ export default class ContentTypeDetail {
     this.view.setIsRestricted(contentType.restricted);
 
     // Check if api version is supported
-    this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||
-      (this.apiVersion.major == contentType.h5pMajorVersion &&
-       this.apiVersion.minor >= contentType.h5pMinorVersion));
-
+    if(this.apiVersion) {
+      this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion ||
+        (this.apiVersion.major == contentType.h5pMajorVersion &&
+        this.apiVersion.minor >= contentType.h5pMinorVersion));
+    }
     // update carousel
     this.view.removeAllImagesInCarousel();
     contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 30);
+/******/ 	return __webpack_require__(__webpack_require__.s = 31);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -76,249 +76,9 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-/**
- * Returns a curried version of a function
- *
- * @param {function} fn
- *
- * @public
- *
- * @return {function}
- */
-var curry = exports.curry = function curry(fn) {
-  var arity = fn.length;
-
-  return function f1() {
-    var args = Array.prototype.slice.call(arguments, 0);
-    if (args.length >= arity) {
-      return fn.apply(null, args);
-    } else {
-      return function f2() {
-        var args2 = Array.prototype.slice.call(arguments, 0);
-        return f1.apply(null, args.concat(args2));
-      };
-    }
-  };
-};
-
-/**
- * Compose functions together, executing from right to left
- *
- * @param {function...} fns
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var compose = exports.compose = function compose() {
-  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
-    fns[_key] = arguments[_key];
-  }
-
-  return fns.reduce(function (f, g) {
-    return function () {
-      return f(g.apply(undefined, arguments));
-    };
-  });
-};
-
-/**
- * Applies a function to each element in an array
- *
- * @param {function} fn
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var forEach = exports.forEach = curry(function (fn, arr) {
-  arr.forEach(fn);
-});
-
-/**
- * Maps a function to an array
- *
- * @param {function} fn
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var map = exports.map = curry(function (fn, arr) {
-  return arr.map(fn);
-});
-
-/**
- * Applies a filter to an array
- *
- * @param {function} fn
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var filter = exports.filter = curry(function (fn, arr) {
-  return arr.filter(fn);
-});
-
-/**
- * Applies a some to an array
- *
- * @param {function} fn
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var some = exports.some = curry(function (fn, arr) {
-  return arr.some(fn);
-});
-
-/**
- * Returns true if an array contains a value
- *
- * @param {*} value
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var contains = exports.contains = curry(function (value, arr) {
-  return arr.indexOf(value) != -1;
-});
-
-/**
- * Returns an array without the supplied values
- *
- * @param {Array} values
- * @param {Array} arr
- *
- * @function
- * @public
- *
- * @return {function}
- */
-var without = exports.without = curry(function (values, arr) {
-  return filter(function (value) {
-    return !contains(value, values);
-  }, arr);
-});
-
-/**
- * Takes a string that is either 'true' or 'false' and returns the opposite
- *
- * @param {string} bool
- *
- * @public
- * @return {string}
- */
-var inverseBooleanString = exports.inverseBooleanString = function inverseBooleanString(bool) {
-  return (bool !== 'true').toString();
-};
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-/**
- * @mixin
- */
-var Eventful = exports.Eventful = function Eventful() {
-  return {
-    listeners: {},
-
-    /**
-     * Listen to event
-     *
-     * @param {string} type
-     * @param {function} listener
-     * @param {object} [scope]
-     *
-     * @function
-     * @return {Eventful}
-     */
-    on: function on(type, listener, scope) {
-      /**
-       * @typedef {object} Trigger
-       * @property {function} listener
-       * @property {object} scope
-       */
-      var trigger = {
-        'listener': listener,
-        'scope': scope
-      };
-
-      this.listeners[type] = this.listeners[type] || [];
-      this.listeners[type].push(trigger);
-
-      return this;
-    },
-
-    /**
-     * Triggers event. If any of the listeners returns false, return false
-     *
-     * @param {string} type
-     * @param {object} [event]
-     *
-     * @function
-     * @return {boolean}
-     */
-    trigger: function trigger(type, event) {
-      var triggers = this.listeners[type] || [];
-
-      return triggers.every(function (trigger) {
-        return trigger.listener.call(trigger.scope || this, event) !== false;
-      });
-    },
-
-    /**
-     * Listens for events on another Eventful, and propagate it trough this Eventful
-     *
-     * @param {string[]} types
-     * @param {Eventful} eventful
-     * @param {String} [eventName] the name of the event when propogated
-     */
-    propagate: function propagate(types, eventful, newType) {
-      var self = this;
-      types.forEach(function (type) {
-        return eventful.on(type, function (event) {
-          return self.trigger(newType || type, event);
-        });
-      });
-    }
-  };
-};
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 exports.toggleClass = exports.toggleVisibility = exports.show = exports.hide = exports.classListContains = exports.removeChild = exports.querySelectorAll = exports.nodeListToArray = exports.querySelector = exports.appendChild = exports.toggleAttribute = exports.attributeEquals = exports.hasAttribute = exports.removeAttribute = exports.setAttribute = exports.getAttribute = undefined;
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 /**
  * Get an attribute value from element
@@ -510,6 +270,246 @@ var toggleClass = exports.toggleClass = (0, _functional.curry)(function (cls, ad
 });
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * Returns a curried version of a function
+ *
+ * @param {function} fn
+ *
+ * @public
+ *
+ * @return {function}
+ */
+var curry = exports.curry = function curry(fn) {
+  var arity = fn.length;
+
+  return function f1() {
+    var args = Array.prototype.slice.call(arguments, 0);
+    if (args.length >= arity) {
+      return fn.apply(null, args);
+    } else {
+      return function f2() {
+        var args2 = Array.prototype.slice.call(arguments, 0);
+        return f1.apply(null, args.concat(args2));
+      };
+    }
+  };
+};
+
+/**
+ * Compose functions together, executing from right to left
+ *
+ * @param {function...} fns
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var compose = exports.compose = function compose() {
+  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+    fns[_key] = arguments[_key];
+  }
+
+  return fns.reduce(function (f, g) {
+    return function () {
+      return f(g.apply(undefined, arguments));
+    };
+  });
+};
+
+/**
+ * Applies a function to each element in an array
+ *
+ * @param {function} fn
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var forEach = exports.forEach = curry(function (fn, arr) {
+  arr.forEach(fn);
+});
+
+/**
+ * Maps a function to an array
+ *
+ * @param {function} fn
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var map = exports.map = curry(function (fn, arr) {
+  return arr.map(fn);
+});
+
+/**
+ * Applies a filter to an array
+ *
+ * @param {function} fn
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var filter = exports.filter = curry(function (fn, arr) {
+  return arr.filter(fn);
+});
+
+/**
+ * Applies a some to an array
+ *
+ * @param {function} fn
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var some = exports.some = curry(function (fn, arr) {
+  return arr.some(fn);
+});
+
+/**
+ * Returns true if an array contains a value
+ *
+ * @param {*} value
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var contains = exports.contains = curry(function (value, arr) {
+  return arr.indexOf(value) != -1;
+});
+
+/**
+ * Returns an array without the supplied values
+ *
+ * @param {Array} values
+ * @param {Array} arr
+ *
+ * @function
+ * @public
+ *
+ * @return {function}
+ */
+var without = exports.without = curry(function (values, arr) {
+  return filter(function (value) {
+    return !contains(value, values);
+  }, arr);
+});
+
+/**
+ * Takes a string that is either 'true' or 'false' and returns the opposite
+ *
+ * @param {string} bool
+ *
+ * @public
+ * @return {string}
+ */
+var inverseBooleanString = exports.inverseBooleanString = function inverseBooleanString(bool) {
+  return (bool !== 'true').toString();
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/**
+ * @mixin
+ */
+var Eventful = exports.Eventful = function Eventful() {
+  return {
+    listeners: {},
+
+    /**
+     * Listen to event
+     *
+     * @param {string} type
+     * @param {function} listener
+     * @param {object} [scope]
+     *
+     * @function
+     * @return {Eventful}
+     */
+    on: function on(type, listener, scope) {
+      /**
+       * @typedef {object} Trigger
+       * @property {function} listener
+       * @property {object} scope
+       */
+      var trigger = {
+        'listener': listener,
+        'scope': scope
+      };
+
+      this.listeners[type] = this.listeners[type] || [];
+      this.listeners[type].push(trigger);
+
+      return this;
+    },
+
+    /**
+     * Triggers event. If any of the listeners returns false, return false
+     *
+     * @param {string} type
+     * @param {object} [event]
+     *
+     * @function
+     * @return {boolean}
+     */
+    trigger: function trigger(type, event) {
+      var triggers = this.listeners[type] || [];
+
+      return triggers.every(function (trigger) {
+        return trigger.listener.call(trigger.scope || this, event) !== false;
+      });
+    },
+
+    /**
+     * Listens for events on another Eventful, and propagate it trough this Eventful
+     *
+     * @param {string[]} types
+     * @param {Eventful} eventful
+     * @param {String} [eventName] the name of the event when propogated
+     */
+    propagate: function propagate(types, eventful, newType) {
+      var self = this;
+      types.forEach(function (type) {
+        return eventful.on(type, function (event) {
+          return self.trigger(newType || type, event);
+        });
+      });
+    }
+  };
+};
+
+/***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -521,7 +521,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.relayClickEventAs = undefined;
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 /**
  *  Transforms a DOM click event into an Eventful's event
@@ -559,9 +559,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -945,7 +945,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
   function attemptVertx() {
     try {
       var r = require;
-      var vertx = __webpack_require__(29);
+      var vertx = __webpack_require__(30);
       vertxNext = vertx.runOnLoop || vertx.runOnContext;
       return useVertxTimer();
     } catch (e) {
@@ -2053,7 +2053,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _events = __webpack_require__(3);
 
@@ -2156,7 +2156,7 @@ var _keyboard = __webpack_require__(4);
 
 var _keyboard2 = _interopRequireDefault(_keyboard);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2196,7 +2196,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.initCollapsible = undefined;
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
 /**
  * Returns true if aria-expanded=true on element
@@ -2287,7 +2287,7 @@ var _dictionary = __webpack_require__(6);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2707,15 +2707,19 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _panel = __webpack_require__(8);
 
 var _panel2 = _interopRequireDefault(_panel);
+
+var _modal = __webpack_require__(27);
+
+var _modal2 = _interopRequireDefault(_modal);
 
 var _imageScroller = __webpack_require__(26);
 
@@ -2748,16 +2752,6 @@ var ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
  * @constant {number}
  */
 var MAX_TEXT_SIZE_DESCRIPTION = 285;
-
-/**
- * Toggles the visibility if an element
- *
- * @param {HTMLElement} element
- * @param {boolean} visible
- */
-var toggleVisibility = function toggleVisibility(element, visible) {
-  return (visible ? _elements.show : _elements.hide)(element);
-};
 
 /**
  * Checks if a string is empty
@@ -2805,6 +2799,16 @@ var enable = (0, _elements.removeAttribute)('disabled');
  * @function
  */
 var _isHidden = (0, _elements.attributeEquals)('aria-hidden', 'true');
+
+var LICENCE_DATA = {
+  "MIT": {
+    title: 'MIT License',
+    short: "\n    <ul class=\"ul\">\n      <li>Can use comercially</li>\n      <li>Can modify</li>\n      <li>Can distribute</li>\n      <li>Can sublicense</li>\n      <li>Cannot hold liable</li>\n      <li>Must include copyright</li>\n      <li>Must include license</li>\n    </ul>",
+    full: function full(owner) {
+      return "<p>Copyright " + new Date().getFullYear() + " " + owner + "</p>\n    \n      <p>Permission is hereby granted, free of charge, to any person obtaining a copy\n      of this software and associated documentation files (the \"Software\"), to deal\n      in the Software without restriction, including without limitation the rights\n      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n      copies of the Software, and to permit persons to whom the Software is\n      furnished to do so, subject to the following conditions:</p>\n    \n      <p>The above copyright notice and this permission notice shall be included in\n      all copies or substantial portions of the Software.</p>\n    \n      <p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE\n      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\n      THE SOFTWARE.</p>";
+    }
+  }
+};
 
 /**
  * @class
@@ -3112,28 +3116,30 @@ var ContentTypeDetailView = function () {
   }, {
     key: "setLicence",
     value: function setLicence(type, owner) {
-      if (type) {
-        if (type === 'MIT') {
-          /*this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-          <p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-           <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-          of this software and associated documentation files (the "Software"), to deal
-          in the Software without restriction, including without limitation the rights
-          to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-          copies of the Software, and to permit persons to whom the Software is
-          furnished to do so, subject to the following conditions:</p>
-           <p>The above copyright notice and this permission notice shall be included in
-          all copies or substantial portions of the Software.</p>
-           <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-          IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-          FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-          AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-          LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-          OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-          THE SOFTWARE.</p>
-          `;*/
+      var details = LICENCE_DATA[type];
 
-          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n          <dl class=\"dl-horizontal\">\n            <dt>Can</dt>\n            <dd>Use commercially</dd>\n            <dd>Modify</dd>\n            <dd>Distribute</dd>\n            <dd>Sublicense</dd>\n            <dd>Private use</dd>\n            \n            <dt>Cannot</dt>\n            <dd>Hold liable</dd>\n            \n            <dt>Must</dt>\n            <dd>Include copyright</dd>\n            <dd>Include license</dd>\n          </dl>\n        ";
+      if (type && details) {
+
+        if (type === 'MIT') {
+          this.licencePanelBody.querySelector('.panel-body').innerHTML = "\n          <button class=\"read-more\">Read more</button>\n        ";
+
+          var shortLicence = document.createElement('div');
+          shortLicence.innerHTML = details.short;
+
+          this.licencePanelBody.appendChild(shortLicence);
+
+          var modal = this.createModal({
+            title: 'Content License info',
+            subtitle: 'Click on a specific license to get info about proper usage',
+            licences: [{
+              title: details.title,
+              body: details.full(owner)
+            }]
+          });
+
+          this.licencePanelBody.querySelector('.read-more').addEventListener('click', function () {
+            return (0, _elements.show)(modal);
+          });
         } else {
           this.licencePanelBody.querySelector('.panel-body').innerText = type;
         }
@@ -3143,6 +3149,43 @@ var ContentTypeDetailView = function () {
 
       // Close licence panel body by default
       (0, _elements.hide)(this.licencePanelBody);
+    }
+  }, {
+    key: "createModal",
+    value: function createModal(_ref2) {
+      var title = _ref2.title,
+          subtitle = _ref2.subtitle,
+          licences = _ref2.licences;
+
+      this.modal = document.createElement('div');
+      this.modal.innerHTML = "\n      <div class=\"modal fade show\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"dialog-title\">\n        <div class=\"modal-dialog\" role=\"document\">\n          <div class=\"modal-content\">\n            <div class=\"modal-header\">\n              <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                <span>&#10006;</span>\n              </button>\n              <h5 class=\"modal-title\" id=\"dialog-title\">" + title + "</h5>\n              <h5 class=\"modal-subtitle\">" + subtitle + "</h5>\n            </div>\n            <div class=\"modal-body\">\n              <dl class=\"panel\"></dl>\n            </div>\n          </div>\n        </div>\n      </div>";
+
+      var panels = this.modal.querySelector('.panel');
+
+      licences.forEach(function (licence, index) {
+        var id = "content-type-detail-licence-" + index;
+
+        var title = document.createElement('dt');
+        title.setAttribute('role', 'heading');
+        title.setAttribute('aria-level', '2');
+        title.innerHTML = "<a href=\"#\" role=\"button\" aria-expanded=\"false\" aria-controls=\"" + id + "\">" + licence.title + "</a>";
+
+        var body = document.createElement('dd');
+        body.id = id;
+        body.setAttribute('role', 'region');
+        body.setAttribute('aria-hidden', 'true');
+        body.innerHTML = "<div class=\"panel-body\">" + licence.body + "</div>";
+
+        panels.appendChild(title);
+        panels.appendChild(body);
+      });
+
+      (0, _modal2.default)(this.modal);
+      (0, _panel2.default)(panels);
+
+      this.rootElement.appendChild(this.modal);
+
+      return this.modal;
     }
 
     /**
@@ -3171,7 +3214,7 @@ var ContentTypeDetailView = function () {
     key: "setExample",
     value: function setExample(url) {
       this.demoButton.setAttribute('href', url || '#');
-      toggleVisibility(this.demoButton, !isEmpty(url));
+      (0, _elements.toggleVisibility)(!isEmpty(url), this.demoButton);
     }
 
     /**
@@ -3303,7 +3346,7 @@ var _contentTypeDetailView = __webpack_require__(15);
 
 var _contentTypeDetailView2 = _interopRequireDefault(_contentTypeDetailView);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3451,8 +3494,9 @@ var ContentTypeDetail = function () {
       this.view.setIsRestricted(contentType.restricted);
 
       // Check if api version is supported
-      this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
-
+      if (this.apiVersion) {
+        this.view.setApiVersionSupported(this.apiVersion.major > contentType.h5pMajorVersion || this.apiVersion.major == contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion);
+      }
       // update carousel
       this.view.removeAllImagesInCarousel();
       contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
@@ -3491,11 +3535,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _events = __webpack_require__(3);
 
@@ -3710,7 +3754,7 @@ var _contentTypeListView = __webpack_require__(17);
 
 var _contentTypeListView2 = _interopRequireDefault(_contentTypeListView);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3822,17 +3866,17 @@ var _messageView = __webpack_require__(7);
 
 var _messageView2 = _interopRequireDefault(_messageView);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 var _events = __webpack_require__(3);
 
-var _navbar = __webpack_require__(27);
+var _navbar = __webpack_require__(28);
 
 var _navbar2 = _interopRequireDefault(_navbar);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _dictionary = __webpack_require__(6);
 
@@ -4128,7 +4172,7 @@ var _contentTypeDetail = __webpack_require__(16);
 
 var _contentTypeDetail2 = _interopRequireDefault(_contentTypeDetail);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -4603,15 +4647,15 @@ var _panel = __webpack_require__(8);
 
 var _panel2 = _interopRequireDefault(_panel);
 
-var _tabPanel = __webpack_require__(28);
+var _tabPanel = __webpack_require__(29);
 
 var _tabPanel2 = _interopRequireDefault(_tabPanel);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _events = __webpack_require__(3);
 
@@ -4811,6 +4855,53 @@ var HubView = function () {
     }
 
     /**
+     *
+     * @param {string} title
+     * @param {string} subtitle
+     * @param {HTMLElement} body
+     */
+
+  }, {
+    key: "updateModal",
+    value: function updateModal(_ref3) {
+      var title = _ref3.title,
+          subtitle = _ref3.subtitle,
+          body = _ref3.body;
+
+      if (!this.modal) {
+        this.modal = this.createModal();
+      }
+
+      this.modal.querySelector('.modal-title').innerText = title;
+      this.modal.querySelector('.modal-subtitle').innerText = subtitle;
+      this.modal.querySelector('.modal-body').appendChild(body);
+
+      (0, _elements.show)(this.modal);
+    }
+
+    /**
+     * Creates a element for displaying a modal dialog
+     *
+     * @return {Element}
+     */
+
+  }, {
+    key: "createModal",
+    value: function createModal() {
+      var dialogTitleId = 'dialog-title';
+
+      var modal = document.createElement('div');
+      modal.className = "modal";
+      modal.setAttribute('tabindex', '-1');
+      modal.setAttribute('role', 'dialog');
+      modal.setAttribute('aria-labelledby', dialogTitleId);
+
+      modal.innerHTML = "\n      <div class=\"modal-dialog\" role=\"document\">\n        <div class=\"modal-content\">\n          <div class=\"modal-header\">\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n              <span>&#10006;</span>\n            </button>\n            <h5 class=\"modal-title\" id=\"" + dialogTitleId + "\"></h5>\n            <h6 class=\"modal-subtitle\"></h6>\n          </div>\n          <div class=\"modal-body\"></div>\n        </div>\n      </div>";
+
+      return modal;
+    }
+
+    /**
      * Sets the section
      *
      * @param {string} id
@@ -4818,8 +4909,8 @@ var HubView = function () {
 
   }, {
     key: "setSectionType",
-    value: function setSectionType(_ref3) {
-      var id = _ref3.id;
+    value: function setSectionType(_ref4) {
+      var id = _ref4.id;
 
       this.panel.className = "h5p-section-" + id + " panel";
     }
@@ -4855,7 +4946,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5233,7 +5324,7 @@ var _dictionary = __webpack_require__(6);
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
-var _eventful = __webpack_require__(1);
+var _eventful = __webpack_require__(2);
 
 var _messageView = __webpack_require__(7);
 
@@ -5943,9 +6034,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.default = init;
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 var _keyboard = __webpack_require__(4);
 
@@ -5988,6 +6079,13 @@ var toggleVisibility = (0, _functional.curry)(function (hidden, element) {
  * @type {function}
  */
 var isDisabled = (0, _elements.hasAttribute)('disabled');
+
+/**
+ * @type {function}
+ */
+var showImageLightbox = (0, _functional.curry)(function (lightbox, imageIndex) {
+  return (0, _elements.setAttribute)('data-show', imageIndex, lightbox);
+});
 
 /**
  * Update the view
@@ -6044,15 +6142,12 @@ var onNavigationButtonClick = function onNavigationButtonClick(element, state, b
  * @function
  * @return {HTMLElement}
  */
-var initImage = (0, _functional.curry)(function (element, keyboard, image) {
+var initImage = (0, _functional.curry)(function (element, keyboard, image, imageIndex) {
   var targetId = image.getAttribute('aria-controls');
-  var lightBox = element.querySelector('#' + targetId);
+  var lightBox = document.querySelector('#' + targetId);
 
-  lightBox.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'true');
-  });
   image.addEventListener('click', function (event) {
-    return lightBox.setAttribute('aria-hidden', 'false');
+    return showImageLightbox(lightBox, imageIndex);
   });
 
   keyboard.addElement(image);
@@ -6149,9 +6244,38 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = init;
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+/**
+ * Initiates a modal window
+ *
+ * @param {HTMLElement} element
+ */
+function init(element) {
+  var dismissButtons = element.querySelectorAll('[data-dismiss="modal"]');
+  (0, _elements.hide)(element);
+  dismissButtons.forEach(function (button) {
+    return button.addEventListener('click', function () {
+      return (0, _elements.hide)(element);
+    });
+  });
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = init;
+
+var _elements = __webpack_require__(0);
+
+var _functional = __webpack_require__(1);
 
 var _collapsible = __webpack_require__(9);
 
@@ -6227,7 +6351,7 @@ function init(element) {
 }
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6238,9 +6362,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = init;
 
-var _elements = __webpack_require__(2);
+var _elements = __webpack_require__(0);
 
-var _functional = __webpack_require__(0);
+var _functional = __webpack_require__(1);
 
 var _keyboard = __webpack_require__(4);
 
@@ -6334,13 +6458,13 @@ function init(element) {
 }
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
