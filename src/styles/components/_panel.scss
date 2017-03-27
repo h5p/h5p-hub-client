@@ -13,5 +13,20 @@
         transform: rotate(90deg);
       }
     }
+
+    #panel-body-content-types {
+      display: inherit;
+    }
+  }
+
+  .panel.h5p-section-content-types.open {
+    max-height: 58.65em;
+  }
+
+  .panel.h5p-section-content-types {
+    max-height: 2.5em;
+    height: 58.65em;
+    transition: max-height 0.1s;
+    overflow: hidden;
   }
 }

@@ -20,11 +20,6 @@ import { relayClickEventAs } from './utils/events';
 const ATTRIBUTE_DATA_ID = 'data-id';
 
 /**
- * @function
- */
-const isOpen = hasAttribute('open');
-
-/**
  * @class
  * @mixes Eventful
  * @fires HubView#tab-change
@@ -85,9 +80,10 @@ export default class HubView {
     };
     const element = document.createElement('section');
     element.className += `h5p-hub h5p-sdk`;
+    const panelClasses = `panel${expanded ? ' open' : ''}`;
 
     element.innerHTML = `
-      <div class="panel">
+      <div class="${panelClasses}">
         <div aria-level="1" role="heading">
           <span role="button" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">
           <span class="h5p-hub-description">${labels.h5pHub}</span>
@@ -111,11 +107,11 @@ export default class HubView {
    */
   togglePanelOpen() {
     let panel = this.panel;
-    if(isOpen(panel)) {
-      panel.removeAttribute('open');
+    if(!panel.classList.contains('open')) {
+      panel.classList.add('open');
     }
     else {
-      panel.setAttribute('open', '');
+      panel.classList.remove('open');
       setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
     }
   }
@@ -228,7 +224,7 @@ export default class HubView {
    * @param {string} id
    */
   setSectionType({id}) {
-    this.panel.className = `h5p-section-${id} panel`;
+    this.panel.classList.add('h5p-section-' + id, 'panel');
   }
 
   /**
