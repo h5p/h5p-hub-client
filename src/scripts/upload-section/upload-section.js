@@ -98,7 +98,7 @@ export default class UploadSection {
     this.initUploadButton();
   }
 
-  /*
+  /**
    * Handle the main logic for the upload form.
    */
   initUploadInput() {
@@ -132,7 +132,7 @@ export default class UploadSection {
     };
   }
 
-  /*
+  /**
    * Add logic to pass data from the upload input to the plugin
    */
   initUseButton() {
@@ -193,7 +193,7 @@ export default class UploadSection {
     return fileName.replace(/^.*\./, '');
   }
 
-  /*
+  /**
    * Renders a message notifying the user that an incorrect filetype was uploaded
    */
   renderWrongExtensionMessage() {
@@ -230,6 +230,11 @@ export default class UploadSection {
     }
   }
 
+  /**
+   * Gets the upload section wrapper
+   *
+   * @return {HTMLElement} Wrapper for upload section
+   */
   getElement() {
     return this.rootElement;
   }
