@@ -339,10 +339,17 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${text}<button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}
+                                    ${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
+                                    <button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
+
+      this.description.querySelector('.part-two').focus();
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}
+                                    <button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
+
+      this.description.querySelector('.part-one').focus();
     }
 
     this.description
@@ -357,7 +364,17 @@ export default class ContentTypeDetailView {
    * @param {string} text
    */
   ellipsis(size, text) {
-    return `${text.substr(0, size)}...`;
+    return `<span class="part-one" tabindex="-1">${text.substr(0, size)}...</span>`;
+  }
+
+  /**
+   * Gets the text cut off by ellipsis
+   *
+   * @param {number} size
+   * @param {string} text
+   */
+  ellipsisRest(size, text) {
+    return `<span class="part-two" tabindex="-1">${text.substr(size)}...</span>`;
   }
 
   /**
