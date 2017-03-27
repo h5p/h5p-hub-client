@@ -4,6 +4,14 @@
 
   .upload-wrapper {
     padding: 2em;
+
+    [aria-hidden="true"] {
+      display: none;
+    }
+
+    [aria-hidden="false"] {
+      display: inline-block;
+    }
   }
 
   .upload-path {
