@@ -106,10 +106,16 @@ export default class ContentTypeSection {
   }
 
   /**
+   * Data has been loaded
+   */
+  loaded() {
+    this.view.loaded();
+  }
+
+  /**
    * Handle errors communicating with HUB
    */
   handleError(error) {
-    // TODO - use translation system:
     this.view.displayMessage({
       type: 'error',
       title: Dictionary.get('errorCommunicatingHubTitle'),
@@ -171,7 +177,6 @@ export default class ContentTypeSection {
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
     }
-
   }
 
   /**
