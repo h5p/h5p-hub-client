@@ -155,11 +155,9 @@
   .content-type-section-no-libraries-warning {
     position: absolute;
     top: 0;
-    left: 2em;
-    width: calc(100% - 4em);
+    width: calc(100% - #{$gutter * 2});
     padding: 1em 2em;
     box-sizing: border-box;
     font-size: 0.9em;
-    margin: 2em 0;
   }
 }
