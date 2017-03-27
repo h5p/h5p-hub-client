@@ -123,10 +123,12 @@ export default class UploadSection {
 
         // Hide the 'use' button for non-h5p files
         self.useButton.setAttribute('aria-hidden', 'true');
+        self.useButton.classList.remove('visible');
       }
       else {
         // Only show the 'use' button once a h5p file has been selected
-        self.useButton.setAttribute('aria-hidden', 'false');
+        self.useButton.removeAttribute('aria-hidden', 'true');
+        self.useButton.classList.add('visible');
       }
     };
   }

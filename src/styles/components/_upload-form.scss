@@ -9,7 +9,7 @@
       display: none;
     }
 
-    [aria-hidden="false"] {
+    .visible {
       display: inline-block;
     }
   }
