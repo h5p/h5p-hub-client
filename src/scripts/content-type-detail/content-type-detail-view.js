@@ -160,7 +160,6 @@ export default class ContentTypeDetailView {
     element.setAttribute('role', 'region');
     element.setAttribute('tabindex', '-1');
     element.setAttribute('aria-labelledby', titleId);
-    element.setAttribute('aria-hidden', 'true');
 
     element.innerHTML = `
       <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
@@ -170,47 +169,45 @@ export default class ContentTypeDetailView {
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
+          <a class="button demo-button" target="_blank" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <button class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
-        <button class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button previous" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button next" disabled><span class="icon-arrow-thick"></span></button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
       <div class="button-bar">
-        <button 
-          class="button button-inverse-primary button-update hide" 
-          aria-hidden="false" 
-          data-id=""
-        >
+        <button class="button button-primary button-use active">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install"><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-inverse-primary button-update">
           ${Dictionary.get("contentTypeUpdateButtonLabel")}
         </button>
-        <button 
-          class="button button-inverse-primary button-updating hide" 
-          aria-hidden="true"
-        >
+        <button class="button button-inverse-primary button-updating">
           <span class="icon-loading-search icon-spin"></span>
           ${Dictionary.get("contentTypeUpdatingButtonLabel")}
         </button>
-        <button class="button button-primary button-use hide" aria-hidden="false" data-id="">
-${Dictionary.get("contentTypeUseButtonLabel")}</button>
-        <button class="button button-inverse-primary button-install hide" aria-hidden="true" 
-        data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
-
-        <button class="button button-inverse-primary button-installing hide" 
-        aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-primary button-use">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install">
+          <span class="icon-arrow-thick"></span>
+          ${Dictionary.get('contentTypeInstallButtonLabel')}
+        </button>
+        <button class="button button-inverse-primary button-installing">
+          <span class="icon-loading-search icon-spin"></span>
+          ${Dictionary.get("contentTypeInstallingButtonLabel")}
+        </button>
       </div>
-      <dl class="panel">
+      <dl class="panel licence-panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
             <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
           </a>
         </dt>
-        <dl id="licence-panel" role="region" aria-hidden="true">
+        <dl id="licence-panel" role="region">
           <div class="panel-body"></div>
         </dl>
       </dl>
@@ -243,10 +240,7 @@ ${Dictionary.get("contentTypeUseButtonLabel")}</button>
   }
 
   /**
-   * Sets a message on install
-   *
-   * @param {boolean} success
-   * @param {string} message
+   * Removes the install message
    */
   removeInstallMessage(){
     if (this.installMessage) {
@@ -270,7 +264,7 @@ ${Dictionary.get("contentTypeUseButtonLabel")}</button>
    */
   addImageToCarousel(image) {
     // add lightbox
-    var item = document.createElement('li');
+    const item = document.createElement('li');
     item.classList.add(`${IMAGELIGHTBOX}-image`);
     item.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
     this.imageLightboxList.appendChild(item);
@@ -420,53 +414,70 @@ ${Dictionary.get("contentTypeUseButtonLabel")}</button>
    * @param {string} owner
    */
   setLicence(type, owner) {
-    const details = LICENCE_DATA[type];
+    const l10n = {
+      readMore: 'Read more'
+    };
+    const licenseDetails = LICENCE_DATA[type];
 
-    if(type && details){
+    // removes all children
+    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
+    panelContainer.querySelectorAll('dt,dl')
+      .forEach(removeChild(panelContainer));
 
-      if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-          <button class="read-more">Read more</button>
-        `;
+    if(type && licenseDetails){
+      const shortLicenceInfo = document.createElement('div');
+      shortLicenceInfo.className = 'short-license-info';
 
-        const shortLicence = document.createElement('div');
-        shortLicence.innerHTML = details.short;
+      shortLicenceInfo.innerHTML = `
+        <h3>${licenseDetails.title}</h3>
+        <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
+        ${licenseDetails.short}
+      `;
 
-        this.licencePanelBody.appendChild(shortLicence);
+      // add short version of licence
+      panelContainer.innerText = '';
+      panelContainer.appendChild(shortLicenceInfo);
 
-        const modal = this.createModal({
-          title: 'Content License info',
-          subtitle: 'Click on a specific license to get info about proper usage',
-          licences: [{
-            title: details.title,
-            body: details.full(owner)
-          }]
-        });
+      const modal = this.createModal({
+        title: 'Content License info',
+        subtitle: 'Click on a specific license to get info about proper usage',
+        licences: [{
+          title: licenseDetails.title,
+          body: licenseDetails.full(owner)
+        }]
+      });
 
-        this.licencePanelBody.querySelector('.read-more').addEventListener('click', () => show(modal))
-      }
-      else {
-        this.licencePanelBody.querySelector('.panel-body').innerText = type;
-      }
+      this.rootElement.appendChild(modal);
+
+      // handle clicking read more
+      const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
+      readMoreButton.addEventListener('click', () => {
+        console.log('show licence', modal);
+        show(modal);
+        modal.querySelector('.modal-dialog').focus();
+        //modal.querySelector('.modal-dialog .close').focus();
+      });
 
       show(this.licencePanelHeading);
     }
-
-    // Close licence panel body by default
-    hide(this.licencePanelBody);
+    else if(type) {
+      panelContainer.innerText = type;
+    }
+    else {
+      panelContainer.innerText = 'Unspecified';
+    }
   }
 
   createModal({title, subtitle, licences}) {
-    this.modal = document.createElement('div');
-    this.modal.innerHTML = `
-      <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="dialog-title">
-        <div class="modal-dialog" role="document">
+    const titleId = 'license-dialog-title';
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+      <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span>&#10006;</span>
-              </button>
-              <h5 class="modal-title" id="dialog-title">${title}</h5>
+              <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
+              <h5 class="modal-title" id="${titleId}">${title}</h5>
               <h5 class="modal-subtitle">${subtitle}</h5>
             </div>
             <div class="modal-body">
@@ -476,7 +487,7 @@ ${Dictionary.get("contentTypeUseButtonLabel")}</button>
         </div>
       </div>`;
 
-    let panels = this.modal.querySelector('.panel');
+    let panels = modal.querySelector('.panel');
 
     licences.forEach((licence, index) => {
       let id = `content-type-detail-licence-${index}`;
@@ -484,24 +495,25 @@ ${Dictionary.get("contentTypeUseButtonLabel")}</button>
       let title = document.createElement('dt');
       title.setAttribute('role', 'heading');
       title.setAttribute('aria-level', '2');
-      title.innerHTML = `<a href="#" role="button" aria-expanded="false" aria-controls="${id}">${licence.title}</a>`
+      title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
+          <span class="icon-accordion-arrow"></span> 
+          ${licence.title}
+        </a>`;
 
       let body = document.createElement('dd');
       body.id = id;
+      body.className = 'hidden';
       body.setAttribute('role', 'region');
-      body.setAttribute('aria-hidden', 'true');
       body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
 
       panels.appendChild(title);
       panels.appendChild(body);
     });
 
-    initModal(this.modal);
+    initModal(modal);
     initPanel(panels);
 
-    this.rootElement.appendChild(this.modal);
-
-    return this.modal;
+    return modal;
   }
 
   /**

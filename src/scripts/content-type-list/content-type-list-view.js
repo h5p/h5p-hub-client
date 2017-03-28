@@ -10,12 +10,12 @@ import Dictionary from '../utils/dictionary';
 /**
  * @function
  */
-const hide = setAttribute('aria-hidden', 'true');
+const hide = (element) => element.classList.remove('active');
 
 /**
  * @function
  */
-const show = setAttribute('aria-hidden', 'false');
+const show = (element) => element.classList.add('active');
 
 /**
  * @function
@@ -44,13 +44,13 @@ export default class ContentTypeListView {
       this.trigger('row-selected', {
         element: element,
         id: getRowId(element)
-      })
+      });
     };
 
     // create root element
     this.rootElement = document.createElement('ul');
     this.rootElement.setAttribute('role', 'list');
-    this.rootElement.className = 'content-type-list';
+    this.rootElement.className = 'content-type-list active';
   }
 
   /**

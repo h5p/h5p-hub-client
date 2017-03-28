@@ -5,10 +5,6 @@
 
 .h5p-hub {
 
-  [aria-hidden="true"] {
-    display: none;
-  }
-
   .content-type-detail {
     padding: $gutter;
     display: inherit;
@@ -29,15 +25,11 @@
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
-    &[aria-hidden="false"] {
+    &.active {
       opacity: 1;
       transform: translateX(0);
       visibility: visible;
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
-    }
-
-    .panel[aria-hidden="false"] {
-      display: none;
     }
 
     // layout
@@ -71,10 +63,10 @@
       text-align: right;
 
       .button {
-        display: inline-block;
+        display: none;
 
-        &.hide {
-          display: none;
+        &.active {
+          display: inline-block;
         }
       }
 
@@ -101,6 +93,18 @@
       }
 
       &.icon-arrow-thick:before {
+        cursor: pointer;
+      }
+    }
+
+    .short-license-info {
+      h3 {
+        display: inline-block;
+      }
+
+      .short-license-read-more {
+        border: 0;
+        background-color: transparent;
         cursor: pointer;
       }
     }

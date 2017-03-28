@@ -81,7 +81,6 @@ export default class HubView {
     const element = document.createElement('section');
     element.className += `h5p-hub h5p-sdk`;
     const panelClasses = `panel${expanded ? ' open' : ''}`;
-
     element.innerHTML = `
       <div class="${panelClasses}">
         <div aria-level="1" role="heading">
@@ -90,7 +89,7 @@ export default class HubView {
           <span class="h5p-hub-selected"></span>
         </span>
         </div>
-        <div id="panel-body-${sectionId}" role="region" aria-hidden="${!expanded}">
+        <div id="panel-body-${sectionId}" role="region" class="${expanded ? 'active' : ''}">
           <div class="tab-panel">
             <nav>
               <ul role="tablist"></ul>
@@ -142,7 +141,7 @@ export default class HubView {
     tabPanel.id = tabPanelId;
     tabPanel.className += 'tabpanel';
     tabPanel.setAttribute('aria-labelledby', tabId);
-    tabPanel.setAttribute('aria-hidden', (!selected).toString());
+    tabPanel.classList.toggle('active', selected);
     tabPanel.setAttribute('role', 'tabpanel');
     tabPanel.appendChild(content);
 
