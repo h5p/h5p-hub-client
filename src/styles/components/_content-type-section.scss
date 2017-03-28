@@ -142,7 +142,8 @@
       float: right;
 
       &.collapsed {
-        display: block ! important;
+        display: block;
+        overflow: hidden;
       }
     }
   }

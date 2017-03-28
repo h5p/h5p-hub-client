@@ -5,7 +5,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 @mixin h5p-hub-icon($char) {
-  font-family: 'h5p-hub' !important;
+  font-family: 'h5p-hub';
   content: $char;
   display: inline-block;
   speak: none;
