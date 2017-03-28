@@ -209,7 +209,7 @@ export default class ContentTypeDetailView {
         <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
         <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
       </div>
-      <dl class="panel">
+      <dl class="panel licence-panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
             <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
@@ -412,33 +412,45 @@ export default class ContentTypeDetailView {
    * @param {string} owner
    */
   setLicence(type, owner) {
-    const details = LICENCE_DATA[type];
+    const l10n = {
+      readMore: 'Read more'
+    };
+    const licenseDetails = LICENCE_DATA[type];
 
-    if(type && details){
+    if(type && licenseDetails){
+      const panelContainer = this.licencePanelBody.querySelector('.panel-body');
 
       if(type === 'MIT') {
-        this.licencePanelBody.querySelector('.panel-body').innerHTML = `
-          <button class="read-more">Read more</button>
+        const shortLicenceInfo = document.createElement('div');
+        shortLicenceInfo.className = 'short-license-info';
+
+        shortLicenceInfo.innerHTML = `
+          <h3>${licenseDetails.title}</h3>
+          <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
+          ${licenseDetails.short}
         `;
 
-        const shortLicence = document.createElement('div');
-        shortLicence.innerHTML = details.short;
-
-        this.licencePanelBody.appendChild(shortLicence);
+        // add short version of licence
+        panelContainer.appendChild(shortLicenceInfo);
 
         const modal = this.createModal({
           title: 'Content License info',
           subtitle: 'Click on a specific license to get info about proper usage',
           licences: [{
-            title: details.title,
-            body: details.full(owner)
+            title: licenseDetails.title,
+            body: licenseDetails.full(owner)
           }]
         });
 
-        this.licencePanelBody.querySelector('.read-more').addEventListener('click', () => show(modal))
+        // handle clicking read more
+        const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
+        readMoreButton.addEventListener('click', () => {
+          show(modal);
+          modal.querySelector('.modal-dialog').focus();
+        });
       }
       else {
-        this.licencePanelBody.querySelector('.panel-body').innerText = type;
+        panelContainer.innerText = type;
       }
 
       show(this.licencePanelHeading);
@@ -451,13 +463,11 @@ export default class ContentTypeDetailView {
   createModal({title, subtitle, licences}) {
     this.modal = document.createElement('div');
     this.modal.innerHTML = `
-      <div class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="dialog-title">
-        <div class="modal-dialog" role="document">
+      <div class="modal fade show" role="dialog" aria-labelledby="dialog-title">
+        <div class="modal-dialog" tabindex="-1" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span>&#10006;</span>
-              </button>
+              <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
               <h5 class="modal-title" id="dialog-title">${title}</h5>
               <h5 class="modal-subtitle">${subtitle}</h5>
             </div>
@@ -476,12 +486,12 @@ export default class ContentTypeDetailView {
       let title = document.createElement('dt');
       title.setAttribute('role', 'heading');
       title.setAttribute('aria-level', '2');
-      title.innerHTML = `<a href="#" role="button" aria-expanded="false" aria-controls="${id}">${licence.title}</a>`
+      title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">${licence.title}</a>`;
 
       let body = document.createElement('dd');
       body.id = id;
       body.setAttribute('role', 'region');
-      body.setAttribute('aria-hidden', 'true');
+      body.setAttribute('aria-hidden', 'false');
       body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
 
       panels.appendChild(title);
