@@ -83,7 +83,14 @@ export default class Hub {
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
-    this.view.on('panel-change', this.view.togglePanelOpen.bind(this.view), this.view);
+    this.view.on('panel-change', () => {
+      this.view.togglePanelOpen();
+
+      // Tell listeners that hub has been resized
+      setTimeout(() => {
+        self.trigger('resized');
+      }, 150);
+    });
     this.contentTypeSection.on('reload', this.setupServices, this);
 
     this.on('clear-upload-form', function () {
