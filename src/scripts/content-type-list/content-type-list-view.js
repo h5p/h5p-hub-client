@@ -44,7 +44,7 @@ export default class ContentTypeListView {
       this.trigger('row-selected', {
         element: element,
         id: getRowId(element)
-      })
+      });
     };
 
     // create root element

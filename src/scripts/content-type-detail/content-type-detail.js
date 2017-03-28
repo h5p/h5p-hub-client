@@ -130,7 +130,9 @@ export default class ContentTypeDetail {
 
     // update carousel
     this.view.removeAllImagesInCarousel();
-    contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
+    if(contentType.screenshots) {
+      contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
+    }
   }
 
   /**

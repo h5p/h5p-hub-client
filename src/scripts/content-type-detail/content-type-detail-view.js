@@ -239,7 +239,6 @@ export default class ContentTypeDetailView {
   setInstallMessage({ success = true, message }){
     show(this.installMessage);
     this.installMessage.querySelector('.title').innerText = message;
-    this.installMessage.querySelector('.title').innerText = message;
     this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
   }
 
@@ -412,63 +411,73 @@ export default class ContentTypeDetailView {
    * @param {string} owner
    */
   setLicence(type, owner) {
+    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
+
+    // removes all children
+    panelContainer.querySelectorAll('dt,dl')
+      .forEach(removeChild(panelContainer));
+
     const l10n = {
       readMore: 'Read more'
     };
     const licenseDetails = LICENCE_DATA[type];
 
     if(type && licenseDetails){
-      const panelContainer = this.licencePanelBody.querySelector('.panel-body');
+      const shortLicenceInfo = document.createElement('div');
+      shortLicenceInfo.className = 'short-license-info';
 
-      if(type === 'MIT') {
-        const shortLicenceInfo = document.createElement('div');
-        shortLicenceInfo.className = 'short-license-info';
+      shortLicenceInfo.innerHTML = `
+        <h3>${licenseDetails.title}</h3>
+        <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
+        ${licenseDetails.short}
+      `;
 
-        shortLicenceInfo.innerHTML = `
-          <h3>${licenseDetails.title}</h3>
-          <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
-          ${licenseDetails.short}
-        `;
+      // add short version of licence
+      panelContainer.appendChild(shortLicenceInfo);
 
-        // add short version of licence
-        panelContainer.appendChild(shortLicenceInfo);
+      const modal = this.createModal({
+        title: 'Content License info',
+        subtitle: 'Click on a specific license to get info about proper usage',
+        licences: [{
+          title: licenseDetails.title,
+          body: licenseDetails.full(owner)
+        }]
+      });
 
-        const modal = this.createModal({
-          title: 'Content License info',
-          subtitle: 'Click on a specific license to get info about proper usage',
-          licences: [{
-            title: licenseDetails.title,
-            body: licenseDetails.full(owner)
-          }]
-        });
+      this.rootElement.appendChild(modal);
 
-        // handle clicking read more
-        const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
-        readMoreButton.addEventListener('click', () => {
-          show(modal);
-          modal.querySelector('.modal-dialog').focus();
-        });
-      }
-      else {
-        panelContainer.innerText = type;
-      }
+      // handle clicking read more
+      const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
+      readMoreButton.addEventListener('click', () => {
+        show(modal);
+        modal.querySelector('.modal-dialog').focus();
+        //modal.querySelector('.modal-dialog .close').focus();
+      });
 
       show(this.licencePanelHeading);
     }
+    else if(type) {
+      panelContainer.innerText = type;
+    }
+    else {
+      panelContainer.innerText = 'Unspecified';
+    }
 
-    // Close licence panel body by default
-    hide(this.licencePanelBody);
+    // Collapse licence panels by default
+    this.panel.querySelectorAll('[role="heading"]')
+      .forEach(heading => heading.setAttribute('aria-expanded', 'false'));
   }
 
   createModal({title, subtitle, licences}) {
-    this.modal = document.createElement('div');
-    this.modal.innerHTML = `
-      <div class="modal fade show" role="dialog" aria-labelledby="dialog-title">
-        <div class="modal-dialog" tabindex="-1" role="document">
+    const titleId = 'license-dialog-title';
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+      <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
-              <h5 class="modal-title" id="dialog-title">${title}</h5>
+              <h5 class="modal-title" id="${titleId}">${title}</h5>
               <h5 class="modal-subtitle">${subtitle}</h5>
             </div>
             <div class="modal-body">
@@ -478,9 +487,11 @@ export default class ContentTypeDetailView {
         </div>
       </div>`;
 
-    let panels = this.modal.querySelector('.panel');
+    let panels = modal.querySelector('.panel');
 
     licences.forEach((licence, index) => {
+      console.log('licence', licence, index);
+
       let id = `content-type-detail-licence-${index}`;
 
       let title = document.createElement('dt');
@@ -498,12 +509,10 @@ export default class ContentTypeDetailView {
       panels.appendChild(body);
     });
 
-    initModal(this.modal);
+    initModal(modal);
     initPanel(panels);
 
-    this.rootElement.appendChild(this.modal);
-
-    return this.modal;
+    return modal;
   }
 
   /**
