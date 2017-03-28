@@ -237,10 +237,7 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Sets a message on install
-   *
-   * @param {boolean} success
-   * @param {string} message
+   * Removes the install message
    */
   removeInstallMessage(){
     if (this.installMessage) {
@@ -264,7 +261,7 @@ export default class ContentTypeDetailView {
    */
   addImageToCarousel(image) {
     // add lightbox
-    var item = document.createElement('li');
+    const item = document.createElement('li');
     item.classList.add(`${IMAGELIGHTBOX}-image`);
     item.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
     this.imageLightboxList.appendChild(item);
@@ -407,16 +404,15 @@ export default class ContentTypeDetailView {
    * @param {string} owner
    */
   setLicence(type, owner) {
-    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
-
-    // removes all children
-    panelContainer.querySelectorAll('dt,dl')
-      .forEach(removeChild(panelContainer));
-
     const l10n = {
       readMore: 'Read more'
     };
     const licenseDetails = LICENCE_DATA[type];
+
+    // removes all children
+    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
+    panelContainer.querySelectorAll('dt,dl')
+      .forEach(removeChild(panelContainer));
 
     if(type && licenseDetails){
       const shortLicenceInfo = document.createElement('div');
@@ -429,6 +425,7 @@ export default class ContentTypeDetailView {
       `;
 
       // add short version of licence
+      panelContainer.innerText = '';
       panelContainer.appendChild(shortLicenceInfo);
 
       const modal = this.createModal({
@@ -458,10 +455,6 @@ export default class ContentTypeDetailView {
     else {
       panelContainer.innerText = 'Unspecified';
     }
-
-    // Collapse licence panels by default
-    this.panel.querySelectorAll('[role="heading"]')
-      .forEach(heading => heading.setAttribute('aria-expanded', 'false'));
   }
 
   createModal({title, subtitle, licences}) {
