@@ -442,6 +442,7 @@ export default class ContentTypeDetailView {
       // handle clicking read more
       const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
       readMoreButton.addEventListener('click', () => {
+        console.log('show licence', modal);
         show(modal);
         modal.querySelector('.modal-dialog').focus();
         //modal.querySelector('.modal-dialog .close').focus();
@@ -484,12 +485,15 @@ export default class ContentTypeDetailView {
       let title = document.createElement('dt');
       title.setAttribute('role', 'heading');
       title.setAttribute('aria-level', '2');
-      title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">${licence.title}</a>`;
+      title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
+          <span class="icon-accordion-arrow"></span> 
+          ${licence.title}
+        </a>`;
 
       let body = document.createElement('dd');
       body.id = id;
+      body.className = 'hidden';
       body.setAttribute('role', 'region');
-      body.setAttribute('aria-hidden', 'false');
       body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
 
       panels.appendChild(title);
