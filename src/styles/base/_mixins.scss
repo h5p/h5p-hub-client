@@ -36,14 +36,6 @@ $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
     @content
   }
 
-  @-moz-keyframes #{$name} {
-    @content
-  }
-
-  @-ms-keyframes #{$name} {
-    @content
-  }
-
   @keyframes #{$name} {
     @content
   }
@@ -61,7 +53,5 @@ $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
     }
   }
   -webkit-animation: $animations;
-  -moz-animation:    $animations;
-  -o-animation:      $animations;
   animation:         $animations;
 }
