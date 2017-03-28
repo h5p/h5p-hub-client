@@ -10,12 +10,12 @@ import Dictionary from '../utils/dictionary';
 /**
  * @function
  */
-const hide = (element) => element.classList.remove('active');
+const hide = setAttribute('aria-hidden', 'true');
 
 /**
  * @function
  */
-const show = (element) => element.classList.add('active');
+const show = setAttribute('aria-hidden', 'false');
 
 /**
  * @function
@@ -50,7 +50,7 @@ export default class ContentTypeListView {
     // create root element
     this.rootElement = document.createElement('ul');
     this.rootElement.setAttribute('role', 'list');
-    this.rootElement.className = 'content-type-list active';
+    this.rootElement.className = 'content-type-list';
   }
 
   /**
