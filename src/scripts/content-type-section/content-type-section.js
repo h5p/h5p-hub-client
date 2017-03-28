@@ -197,6 +197,7 @@ export default class ContentTypeSection {
     if (!this.noLibrariesMessage) {
       const messageView = new MessageView({
         type: 'warning',
+        dismissible: true,
         title: Dictionary.get('warningNoContentTypesInstalled'),
         content: Dictionary.get('warningChangeBrowsingToSeeResults')
       });

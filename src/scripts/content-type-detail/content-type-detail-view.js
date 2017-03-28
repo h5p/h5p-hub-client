@@ -84,17 +84,17 @@ const LICENCE_DATA = {
       <li>Must include license</li>
     </ul>`,
     full: owner => `<p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-    
+
       <p>Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
       in the Software without restriction, including without limitation the rights
       to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
       copies of the Software, and to permit persons to whom the Software is
       furnished to do so, subject to the following conditions:</p>
-    
+
       <p>The above copyright notice and this permission notice shall be included in
       all copies or substantial portions of the Software.</p>
-    
+
       <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
       IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
       FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -135,12 +135,7 @@ export default class ContentTypeDetailView {
     this.panel = this.rootElement.querySelector('.panel');
     this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
     this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
-    this.installMessage = this.rootElement.querySelector('.install-message');
     this.container = this.rootElement.querySelector('.container');
-
-    // hide message on close button click
-    let installMessageClose = this.installMessage.querySelector('.message-close');
-    installMessageClose.addEventListener('click', () => this.resetInstallMessage());
 
     // init interactive elements
     initPanel(this.panel);
@@ -200,10 +195,6 @@ export default class ContentTypeDetailView {
         </nav>
       </div>
       <hr />
-      <div role="alert" class="install-message message dismissible simple info" aria-hidden="true">
-        <button aria-label="${Dictionary.get("contentTypeCloseButtonLabel")}" class="message-close icon-close"></button>
-        <h3 class="title"></h3>
-      </div>
       <div class="button-bar">
         <button class="button button-primary button-use" aria-hidden="false" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
         <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
@@ -237,10 +228,14 @@ export default class ContentTypeDetailView {
    * @param {string} message
    */
   setInstallMessage({ success = true, message }){
-    show(this.installMessage);
-    this.installMessage.querySelector('.title').innerText = message;
-    this.installMessage.querySelector('.title').innerText = message;
-    this.installMessage.className = `install-message dismissible message simple ${success ? 'info' : 'error'}`;
+    this.installMessage = new MessageView({
+      dismissible: true,
+      type: success ? 'info' : 'error',
+      name: 'install-message',
+      title: message
+    }).on('close', this.removeInstallMessage, this);
+
+    this.rootElement.insertBefore(this.installMessage.getElement(), this.buttonBar);
   }
 
   /**
@@ -249,9 +244,11 @@ export default class ContentTypeDetailView {
    * @param {boolean} success
    * @param {string} message
    */
-  resetInstallMessage(){
-    hide(this.installMessage);
-    this.installMessage.querySelector('.title').innerText = '';
+  removeInstallMessage(){
+    if (this.installMessage) {
+      this.rootElement.removeChild(this.installMessage.getElement());
+      delete this.installMessage;
+    }
   }
 
   /**
@@ -290,7 +287,7 @@ export default class ContentTypeDetailView {
       this.container.removeChild(this.messageViewElement);
       delete this.messageViewElement;
     }
-    hide(this.installMessage);
+    this.removeInstallMessage();
   }
 
   /**
