@@ -81,7 +81,7 @@ export default class ContentBrowserView {
 
     // create element
     const element = document.createElement('div');
-    element.className = 'content-type-section-view';
+    element.className = 'content-type-section-view loading';
     element.innerHTML = `
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
@@ -105,6 +105,11 @@ export default class ContentBrowserView {
     return element;
   }
 
+  /**
+   * Display a message
+   *
+   * @param {object} config - parameters sent to MessageView constructor
+   */
   displayMessage(config) {
     const self = this;
     // Set the action
@@ -115,12 +120,22 @@ export default class ContentBrowserView {
 
     messageView.on('action-clicked', function () {
       self.rootElement.classList.remove('error');
+      self.rootElement.classList.add('loading');
       element.parentNode.removeChild(element);
       self.trigger('reload');
     });
 
+    this.rootElement.classList.remove('loading');
     this.rootElement.classList.add('error');
     this.rootElement.appendChild(messageView.getElement());
+  }
+
+  /**
+   * Inform view data is loaded
+   */
+  loaded() {
+    this.rootElement.classList.remove('loading');
+    this.rootElement.classList.add('loaded');
   }
 
   /**

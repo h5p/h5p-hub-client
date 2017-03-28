@@ -29,7 +29,6 @@ export default class HubServices {
    */
   constructor({ apiRootUrl }) {
     this.apiRootUrl = apiRootUrl;
-    this.setup();
   }
 
   /**
@@ -42,6 +41,8 @@ export default class HubServices {
     })
     .then(result => result.json())
     .then(this.isValid);
+
+    return this.cachedContentTypes;
   }
 
   /**

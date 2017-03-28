@@ -4,10 +4,19 @@
 
   .upload-wrapper {
     padding: 2em;
+
+    [aria-hidden="true"] {
+      display: none;
+    }
+
+    .visible {
+      display: inline-block;
+    }
   }
 
   .upload-path {
     margin-bottom: 1em;
+    cursor: default;
   }
 
   p.upload-instruction-header {

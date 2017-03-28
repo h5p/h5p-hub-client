@@ -41,7 +41,7 @@ export default class UploadSection {
       <div class="upload-wrapper">
         <div class="upload-form">
           <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" disabled/>
-          <button class="button use-button">Use</button>
+          <button class="button use-button" aria-hidden="true">Use</button>
           <div class="input-wrapper">
             <input type="file" />
             <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
@@ -53,12 +53,11 @@ export default class UploadSection {
     // Create the html for the upload instructions separately as it needs to be styled
     const uploadInstructions = document.createElement('div');
     uploadInstructions.className = 'upload-instructions';
-    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructions'));
+    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructionsTitle'), Dictionary.get('uploadInstructionsContent'));
     uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
 
     return uploadForm;
   }
-
 
   /**
    * Creates html for the upload instructions and appends them to a wrapping div.
@@ -67,74 +66,85 @@ export default class UploadSection {
    * @param  {HTMLElement} container
    * @param  {string} text
    */
-  renderUploadInstructions(container, text) {
-    const textElements = text.match(/\(?[^\.\?\!]+[\.!\?]\)?/g); // match on sentences
+  renderUploadInstructions(container, title, content) {
 
     const header = document.createElement('p');
     header.className = 'upload-instruction-header';
-    header.innerHTML = textElements.shift(); // grab the first sentence
+    header.innerHTML = title;
 
     const description = document.createElement('p');
     description.className = 'upload-instruction-description';
-    description.innerHTML = textElements.join(''); // join the rest
+    description.innerHTML = content;
 
     container.appendChild(header);
     container.appendChild(description);
   }
 
   /**
-   * Adds logic to bind the buttons to the form
-   * and to bind the form to the plugin
+   * Attach upload form elements to the DOM and initializes
+   * logic that binds them together
    *
    * @param  {HTMLElement} uploadForm
    */
   initUploadForm(uploadForm) {
+    this.uploadInput =  uploadForm.querySelector('.upload-wrapper input[type="file"]');
+    this.uploadButton = uploadForm.querySelector('.upload-button');
+    this.uploadPath = uploadForm.querySelector('.upload-path');
+    this.useButton =  uploadForm.querySelector('.use-button');
+
+    this.initUploadInput();
+    this.initUseButton();
+    this.initUploadButton();
+  }
+
+  /**
+   * Handle the main logic for the upload form.
+   */
+  initUploadInput() {
     const self = this;
-    const uploadInput =  uploadForm.querySelector('.upload-wrapper input[type="file"]');
-    const uploadButton = uploadForm.querySelector('.upload-button');
-    const uploadPath = uploadForm.querySelector('.upload-path');
-    const useButton =  uploadForm.querySelector('.use-button');
-
     // Handle errors and update styles when a file is selected
-    uploadInput.onchange = function () {
-
+    this.uploadInput.onchange = function () {
       if (this.value === '') {
         return;
       }
-
-      // Reset styles
-      self.clearUserMessages();
+      // Clear messages
+      self.removeAllChildren(self.rootElement.querySelector('.message-wrapper'));
 
       // Replace the placeholder text with the selected filepath
-      uploadPath.value = this.value.replace('C:\\fakepath\\', '');
+      self.uploadPath.value = this.value.replace('C:\\fakepath\\', '');
 
       // Update the upload button
-      uploadButton.textContent = Dictionary.get('uploadFileButtonChangeLabel');
+      self.uploadButton.textContent = Dictionary.get('uploadFileButtonChangeLabel');
 
       // Check that it's a h5p file
-      const fileExtension = self.getFileExtension(this.value);
-      if (fileExtension !== 'h5p') {
-        self.renderMessage({
-          type: 'error',
-          title: Dictionary.get('h5pFileWrongExtensionTitle'),
-          content: Dictionary.get('h5pFileWrongExtensionContent')
-        });
+      if (self.getFileExtension(this.value) !== 'h5p') {
+
+        self.renderWrongExtensionMessage();
 
         // Hide the 'use' button for non-h5p files
-        useButton.style.display = 'none';
+        self.useButton.setAttribute('aria-hidden', 'true');
+        self.useButton.classList.remove('visible');
       }
       else {
         // Only show the 'use' button once a h5p file has been selected
-        useButton.style.display = 'inline-block';
+        self.useButton.removeAttribute('aria-hidden', 'true');
+        self.useButton.classList.add('visible');
       }
     };
+  }
+
+  /**
+   * Add logic to pass data from the upload input to the plugin
+   */
+  initUseButton() {
+    const self = this;
 
     // Send the file to the plugin
-    useButton.addEventListener('click', () => {
+    this.useButton.addEventListener('click', () => {
 
       // Add the H5P file to a form, ready for transportation
       const data = new FormData();
-      data.append('h5p', uploadInput.files[0]);
+      data.append('h5p', self.uploadInput.files[0]);
 
       // Upload content to the plugin
       self.services.uploadContent(data)
@@ -143,35 +153,25 @@ export default class UploadSection {
           self.trigger('upload', json);
         });
     });
+  }
 
-    // Allow users to upload a file by clicking on path field
-    uploadPath.onclick = function () {
-      uploadInput.click();
-    };
-
-    // Allow users to upload a file by pressing enter or spacebar
-    uploadPath.onkeydown = function (e) {
-      if (e.which === 13 || e.which === 32) {
-        uploadInput.click();
-      }
-    };
-
+  /**
+   * Initialize the upload button logic
+   * to be handled by the upload input element
+   */
+  initUploadButton() {
+    const self = this;
     // Reuse the upload input logic to upload a file
-    uploadButton.onclick = function () {
-      uploadInput.click();
+    this.uploadButton.onclick = function () {
+      self.uploadInput.click();
     };
 
     // Allow users to upload a file by pressing enter or spacebar
-    uploadButton.onkeydown = function (e) {
+    this.uploadButton.onkeydown = function (e) {
       if (e.which === 13 || e.which === 32) {
-        uploadInput.click();
+        self.uploadInput.click();
       }
     };
-
-    this.uploadInput = uploadInput;
-    this.uploadPath = uploadPath;
-    this.uploadButton = uploadButton;
-    this.useButton = useButton;
   }
 
   /**
@@ -185,13 +185,6 @@ export default class UploadSection {
   }
 
   /**
-   * Empties the message wrapper
-   */
-  clearUserMessages() {
-    this.removeAllChildren(this.rootElement.querySelector('.message-wrapper'));
-  }
-
-  /**
    * Helper function to get a file extension from a filename
    *
    * @param  {string} fileName
@@ -199,6 +192,17 @@ export default class UploadSection {
    */
   getFileExtension(fileName) {
     return fileName.replace(/^.*\./, '');
+  }
+
+  /**
+   * Renders a message notifying the user that an incorrect filetype was uploaded
+   */
+  renderWrongExtensionMessage() {
+    this.renderMessage({
+      type: 'error',
+      title: Dictionary.get('h5pFileWrongExtensionTitle'),
+      content: Dictionary.get('h5pFileWrongExtensionContent')
+    });
   }
 
   /**
@@ -227,6 +231,11 @@ export default class UploadSection {
     }
   }
 
+  /**
+   * Gets the upload section wrapper
+   *
+   * @return {HTMLElement} Wrapper for upload section
+   */
   getElement() {
     return this.rootElement;
   }
