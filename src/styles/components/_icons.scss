@@ -8,7 +8,7 @@
   }
 }
 
-/*.h5p-hub {
+.h5p-hub {
   .icon-spin {
     display: inline-block;
     @include animation(spin 2s linear infinite);
@@ -20,4 +20,77 @@
       display: inline-block;
     }
   }
-}*/
+
+  .icon-hub-icon:before {
+    font-family: 'h5p-hub';
+    content: "\e900";
+  }
+  .icon-quality-approved:before {
+    font-family: 'h5p-hub';
+    content: "\e90b";
+  }
+  .icon-arrow-thick:before {
+    font-family: 'h5p-hub';
+    content: "\e90c";
+  }
+  .icon-grid-view:before {
+    font-family: 'h5p-hub';
+    content: "\e90d";
+  }
+  .icon-list-view:before {
+    font-family: 'h5p-hub';
+    content: "\e90e";
+  }
+  .icon-filters:before {
+    font-family: 'h5p-hub';
+    content: "\e90f";
+  }
+  .icon-feedback-forum:before {
+    font-family: 'h5p-hub';
+    content: "\e910";
+  }
+  .icon-info-circle:before {
+    font-family: 'h5p-hub';
+    content: "\e918";
+  }
+  .icon-radio:before {
+    font-family: 'h5p-hub';
+    content: "\e91b";
+  }
+  .icon-check:before {
+    font-family: 'h5p-hub';
+    content: "\e91c";
+  }
+  .icon-radio-empty:before {
+    font-family: 'h5p-hub';
+    content: "\e91d";
+  }
+  .icon-check-empty:before {
+    font-family: 'h5p-hub';
+    content: "\e91e";
+  }
+  .icon-accordion-arrow:before {
+    font-family: 'h5p-hub';
+    content: "\e91f";
+  }
+  .icon-search:before {
+    font-family: 'h5p-hub';
+    content: "\e920";
+  }
+  .icon-scrollbar-bars-icon:before {
+    font-family: 'h5p-hub';
+    content: "\e921";
+  }
+  .icon-loading-search:before {
+    font-family: 'h5p-hub';
+    content: "\e923";
+  }
+  .icon-arrow-line:before {
+    font-family: 'h5p-hub';
+    content: "\e924";
+  }
+  .icon-close:before {
+    font-family: 'h5p-hub';
+    content: "\e901";
+  }
+}
