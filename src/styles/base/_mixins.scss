@@ -3,6 +3,8 @@ $icon-arrow-up:   url('../../images/arrow-line-up.svg');
 $icon-arrow-down: url('../../images/arrow-line-down.svg');
 $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
 
+$icon-close: '\e901';
+
 @mixin scroll-bar($background-color, $button-color) {
   &::-webkit-scrollbar {
     background-color: $background-color;
@@ -36,14 +38,6 @@ $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
     @content
   }
 
-  @-moz-keyframes #{$name} {
-    @content
-  }
-
-  @-ms-keyframes #{$name} {
-    @content
-  }
-
   @keyframes #{$name} {
     @content
   }
@@ -61,7 +55,10 @@ $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
     }
   }
   -webkit-animation: $animations;
-  -moz-animation:    $animations;
-  -o-animation:      $animations;
   animation:         $animations;
+}
+
+@mixin icon($icon) {
+  font-family: 'h5p-hub';
+  content: $icon;
 }
