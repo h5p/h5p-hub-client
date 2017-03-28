@@ -43,7 +43,7 @@ export default class UploadSection {
           <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" disabled/>
           <button class="button use-button" aria-hidden="true">Use</button>
           <div class="input-wrapper">
-            <input type="file" />
+            <input type="file" aria-hidden="true"/>
             <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
@@ -129,6 +129,7 @@ export default class UploadSection {
         // Only show the 'use' button once a h5p file has been selected
         self.useButton.removeAttribute('aria-hidden', 'true');
         self.useButton.classList.add('visible');
+        self.uploadPath.removeAttribute('placeholder');
       }
     };
   }
