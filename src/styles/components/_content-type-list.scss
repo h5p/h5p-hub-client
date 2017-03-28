@@ -67,18 +67,43 @@
         color: $c6;
       }
     }
+  }
 
-    .content-type-row-button {
-      white-space: nowrap;
-      text-align: right;
-      padding: 0;
-      @include span(last 3 of 12);
+  .content-type-update-info {
+    display: inline-block;
+    margin-right: 2em;
+    color: $color-section-content-types;
+    font-size: $text-body-small;
+    font-style: italic;
+
+    &.hide {
+      display: none;
     }
 
-    @media (min-width: $screen-small) {
-      .content-type-row-button {
-        padding: $gutter;
-      }
+    &:before {
+      font-family: 'h5p-hub';
+      font-style: normal;
+      content: "\e902";
+      margin-right: 0.5em;
+    }
+  }
+
+  .content-type-actions-info {
+    display: inline-block;
+    float: right;
+    padding: 0.75em 0.2em 0.75em 2em;
+  }
+
+  .content-type-row-button {
+    display: inline-block;
+    white-space: nowrap;
+    text-align: right;
+    padding: 0;
+  }
+
+  @media (min-width: $screen-small) {
+    .content-type-row-button {
+      padding: $gutter;
     }
   }
 }

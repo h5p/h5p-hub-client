@@ -24,8 +24,8 @@
     transform: translateX(100%);
     transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
 
-    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
-        0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79, 87, 99, 0.2) inset,
+    0 -0.4em 0.4em -0.2em rgba(79, 87, 99, 0.2) inset;
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
@@ -69,6 +69,25 @@
     .button-bar {
       margin: ($gutter * 2) 0;
       text-align: right;
+
+      .button {
+        display: inline-block;
+
+        &.hide {
+          display: none;
+        }
+      }
+
+      .button-update,
+      .button-updating {
+        margin-right: 1em;
+      }
+
+      .button-update:before {
+        font-family: 'h5p-hub';
+        content: "\e902";
+        margin-right: 0.5em;
+      }
     }
 
     .back-button {

@@ -21,6 +21,7 @@ import './utils/fetch';
  * @property {string[]} keywords
  * @property {string} owner
  * @property {boolean} installed
+ * @property {boolean} isUpToDate
  * @property {boolean} restricted
  */
 export default class HubServices {
