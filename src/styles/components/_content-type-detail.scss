@@ -5,10 +5,6 @@
 
 .h5p-hub {
 
-  [aria-hidden="true"] {
-    display: none;
-  }
-
   .content-type-detail {
     padding: $gutter;
     display: inherit;
@@ -29,15 +25,11 @@
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
-    &[aria-hidden="false"] {
+    &.active {
       opacity: 1;
       transform: translateX(0);
       visibility: visible;
       transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
-    }
-
-    .panel[aria-hidden="false"] {
-      display: none;
     }
 
     // layout
@@ -69,6 +61,14 @@
     .button-bar {
       margin: ($gutter * 2) 0;
       text-align: right;
+
+      .button {
+        display: none;
+
+        &.active {
+          display: inline-block;
+        }
+      }
     }
 
     .back-button {
@@ -100,6 +100,14 @@
 
     .part-one, .part-two {
       outline: none;
+    }
+
+    .message {
+      display: none;
+
+      &.active {
+        display: inline-block;
+      }
     }
   }
 }
