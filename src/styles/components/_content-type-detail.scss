@@ -101,13 +101,5 @@
     .part-one, .part-two {
       outline: none;
     }
-
-    .message {
-      display: none;
-
-      &.active {
-        display: inline-block;
-      }
-    }
   }
 }
