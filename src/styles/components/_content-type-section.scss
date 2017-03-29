@@ -17,7 +17,8 @@
 
   .menu-group {
     background-color: $c1;
-    padding: 1.04em 1.125em 1.125em;
+    padding: 0.5em 1.125em 1.125em;
+    margin-bottom: -0.5em;
 
     .input-group {
       padding: 0.4em;
@@ -25,16 +26,30 @@
       background-color: white;
       border-radius: 2em;
 
+      .form-control {
+        border: 1px solid #b4b8c1;
+        font-weight: 600;
+      }
+
       input {
         padding-left: 1.5em;
         font-style: italic;
+        font-weight: 400;
+        font-size: 1.15em;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
+        color: #000000;
+      }
+
+      input:focus {
+        border-color: #3ba0f2;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
       }
     }
 
     .icon-search {
-      font-size: 1.4em;
-      top: 0.7em;
-      right: 1em;
+      font-size: 1.3em;
+      top: 0.95em;
+      right: 1.3em;
       cursor: pointer;
     }
   }
@@ -76,10 +91,10 @@
 
   .navbar {
     background-color: transparent;
-    color: $c2;
+    color: #ffffff;
     border: 0;
     font-size: $text-list-title;
-    border-bottom: solid 1px $c2;
+    padding-bottom: 0;
 
     [role="menuitem"] {
       outline-color: lighten($ac1, 30%);
@@ -106,21 +121,27 @@
     display: none;
   }
 
-  // just for the menu nav bar
+  /* Large */
   @media (min-width: 820px) {
     .navbar{
       .navbar-brand {
         font-style: italic;
-        font-size: $text-title-small;
-        padding: 0.4em 0 0;
+        font-weight: 600;
+        font-size: 1.15em;
+        padding-left: 1.5em;
+        padding-top: 0.5em;
+        margin-bottom: -0.5em;
         display: inline-block;
+        color: $c2;
       }
     }
   }
 
+  /* Medium */
   @media (min-width: 652px) {
     .navbar {
       padding: 0;
+      border-bottom: solid 1px rgba(206, 214, 227, 0.34);
     }
     .navbar-header {
       display: inline-block;
