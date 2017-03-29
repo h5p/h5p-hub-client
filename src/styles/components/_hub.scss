@@ -29,6 +29,12 @@
   font-family: 'Open Sans', sans-serif;
   margin-bottom: $gutter;
 
+  &.h5p-sdk {
+    .hidden {
+      display: none;
+    }
+  }
+
   &>.panel {
     border: 1px solid $c1;
 

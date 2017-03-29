@@ -1,21 +1,10 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector, hide, show } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Keyboard from 'utils/keyboard';
 import Dictionary from '../utils/dictionary';
-
-
-/**
- * @function
- */
-const hide = (element) => element.classList.remove('active');
-
-/**
- * @function
- */
-const show = (element) => element.classList.add('active');
 
 /**
  * @function
@@ -50,7 +39,7 @@ export default class ContentTypeListView {
     // create root element
     this.rootElement = document.createElement('ul');
     this.rootElement.setAttribute('role', 'list');
-    this.rootElement.className = 'content-type-list active';
+    this.rootElement.className = 'content-type-list';
   }
 
   /**
@@ -138,12 +127,12 @@ export default class ContentTypeListView {
       <img class="img-responsive" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
 
       <div class="content-type-row-info">
-        <h4 id="${contentTypeRowTitleId}">${title}</h4>
+        <div id="${contentTypeRowTitleId}" class="h4">${title}</div>
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
       
       <div class="content-type-actions-info">
-        <div class="content-type-update-info${updateAvailable ? '' : ' hide'}">
+        <div class="content-type-update-info${updateAvailable ? '' : ' hidden'}">
           ${Dictionary.get('contentTypeUpdateAvailable')}
         </div>
         <div class="content-type-row-button">

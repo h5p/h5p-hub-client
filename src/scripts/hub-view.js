@@ -1,7 +1,7 @@
 import initPanel from "components/panel"
 import initTabPanel from "components/tab-panel"
 import { curry } from "utils/functional";
-import { attributeEquals, getAttribute, hasAttribute, show } from "utils/elements";
+import { attributeEquals, getAttribute, hasAttribute, show, toggleClass } from "utils/elements";
 import { Eventful } from './mixins/eventful';
 import { relayClickEventAs } from './utils/events';
 /**
@@ -81,6 +81,7 @@ export default class HubView {
     const element = document.createElement('section');
     element.className += `h5p-hub h5p-sdk`;
     const panelClasses = `panel${expanded ? ' open' : ''}`;
+
     element.innerHTML = `
       <div class="${panelClasses}">
         <div aria-level="1" role="heading">
@@ -89,7 +90,7 @@ export default class HubView {
           <span class="h5p-hub-selected"></span>
         </span>
         </div>
-        <div id="panel-body-${sectionId}" role="region" class="${expanded ? 'active' : ''}">
+        <div id="panel-body-${sectionId}" role="region" class="${expanded ? '' : 'hidden'}">
           <div class="tab-panel">
             <nav>
               <ul role="tablist"></ul>
@@ -141,9 +142,9 @@ export default class HubView {
     tabPanel.id = tabPanelId;
     tabPanel.className += 'tabpanel';
     tabPanel.setAttribute('aria-labelledby', tabId);
-    tabPanel.classList.toggle('active', selected);
     tabPanel.setAttribute('role', 'tabpanel');
     tabPanel.appendChild(content);
+    toggleClass('hidden', !selected, tabPanel);
 
     this.tablist.appendChild(tab);
     this.tabContainerElement.appendChild(tabPanel);
