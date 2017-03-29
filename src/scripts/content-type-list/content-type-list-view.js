@@ -113,6 +113,7 @@ export default class ContentTypeListView {
     const description = contentType.summary || '';
     const image = contentType.icon || noIcon;
     const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+    const updateAvailable = !contentType.isUpToDate && contentType.installed && !contentType.restricted;
 
     // row item
     const element = document.createElement('li');
@@ -129,12 +130,17 @@ export default class ContentTypeListView {
         <div id="${contentTypeRowTitleId}" class="h4">${title}</div>
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
-
-      <div class="content-type-row-button">
-        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
-          <span class="${button.icon}"></span>
-          ${button.text}
-        </button>
+      
+      <div class="content-type-actions-info">
+        <div class="content-type-update-info${updateAvailable ? '' : ' hidden'}">
+          ${Dictionary.get('contentTypeUpdateAvailable')}
+        </div>
+        <div class="content-type-row-button">
+          <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
+            <span class="${button.icon}"></span>
+            ${button.text}
+          </button>
+        </div>
       </div>
    `;
 

@@ -8,6 +8,8 @@ import Dictionary from '../utils/dictionary';
  */
 export default class ContentTypeDetail {
   constructor(state, services) {
+    const self = this;
+
     // add event system
     Object.assign(this, Eventful());
 
@@ -18,7 +20,20 @@ export default class ContentTypeDetail {
 
     // views
     this.view = new ContetTypeDetailView(state);
-    this.view.on('install', this.install, this);
+    this.view.on('install', event => {
+      // Determine content type
+      this.services.contentTypes()
+        .then(contentTypes => {
+          const install = contentTypes.find(contentType => {
+            return contentType.machineName === event.id;
+          });
+
+          return self.install({
+            id: install.machineName,
+            installed: install.installed
+          });
+        });
+    });
 
     // propagate events
     this.propagate(['close', 'select', 'modal'], this.view);
@@ -70,23 +85,29 @@ export default class ContentTypeDetail {
    * Loads a Content Type description
    *
    * @param {string} id
+   * @param {boolean} installed Whether the content type is already installed
    *
    * @return {Promise.<ContentType>}
    */
-  install({id}) {
+  install({id, installed}) {
     // set spinner
-    this.view.showButtonBySelector('.button-installing');
+    this.view.toggleSpinner(true);
 
     return this.services.installContentType(id).then(response => {
       this.trigger('installed-content-type');
+      this.view.toggleSpinner(false);
       this.view.setIsInstalled(true);
-      this.view.showButtonBySelector('.button-get');
+      this.view.setIsUpdatePossible(false);
+
+      const installMessageKey = installed ? 'contentTypeUpdateSuccess'
+        : 'contentTypeInstallSuccess';
+
       this.view.setInstallMessage({
-        message: Dictionary.get('contentTypeInstallSuccess', {':contentType': id}),
+        message: Dictionary.get(installMessageKey, {':contentType': id}),
       });
     })
       .catch(error => {
-        this.view.showButtonBySelector('.button-install');
+        this.view.toggleSpinner(false);
 
         // print error message
         let errorMessage = (error.errorCode) ? error : {
@@ -117,6 +138,10 @@ export default class ContentTypeDetail {
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicence(contentType.license, contentType.owner);
     this.view.setIsRestricted(contentType.restricted);
+    this.view.setIsUpdatePossible(contentType.installed
+      && !contentType.isUpToDate
+      && !contentType.restricted
+    );
 
     // Check if api version is supported
     const apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion ||
