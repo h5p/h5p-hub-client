@@ -104,7 +104,7 @@ export default class Hub {
    * Does a resize after 150ms
    */
   postponedResize () {
-    setTimeout(() => self.trigger('resized'), 150);
+    setTimeout(() => this.trigger('resized'), 150);
   }
 
   /**

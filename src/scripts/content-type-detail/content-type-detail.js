@@ -7,7 +7,7 @@ const LICENCE_DATA = {
     title: 'MIT License',
     short: `
     <ul class="ul">
-      <li>Can use comercially</li>
+      <li>Can use commercially</li>
       <li>Can modify</li>
       <li>Can distribute</li>
       <li>Can sublicense</li>
@@ -43,15 +43,14 @@ const LICENCE_DATA = {
  */
 export default class ContentTypeDetail {
   constructor(state, services) {
-    const self = this;
-
     // add event system
     Object.assign(this, Eventful());
 
+    // set member variables
+    this.apiVersion = state.apiVersion;
+
     // services
     this.services = services;
-
-    this.apiVersion = state.apiVersion;
 
     // views
     this.view = new ContetTypeDetailView(state);
