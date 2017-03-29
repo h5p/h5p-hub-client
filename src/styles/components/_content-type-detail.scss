@@ -64,6 +64,17 @@
     .button-bar {
       margin: ($gutter * 2) 0;
       text-align: right;
+
+      .button-update,
+      .button-updating {
+        margin-right: 1em;
+      }
+
+      .button-update:before {
+        font-family: 'h5p-hub';
+        content: "\e902";
+        margin-right: 0.5em;
+      }
     }
 
     .back-button {
