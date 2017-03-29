@@ -46,25 +46,23 @@ export default class ContentBrowserView {
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
     const searchBar = this.rootElement.querySelector('#hub-search-bar');
 
-    this.inputField.addEventListener('input', event => {
+    this.inputField.addEventListener('keydown', event => {
       if (this.typeAheadEnabled || event.which === 13) {
         this.trigger('search', {
           element: searchBar,
           query: searchBar.value
         });
+        searchBar.focus();
       }
     });
 
-    // input button
+    // Search button 
     inputButton.addEventListener('click', event => {
-       let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-
        this.trigger('search', {
          element: searchbar,
          query: searchbar.value
        });
-
-       searchbar.focus();
+       searchBar.focus();
     })
   }
 
@@ -122,7 +120,7 @@ export default class ContentBrowserView {
       self.rootElement.classList.remove('error');
       self.rootElement.classList.add('loading');
       element.parentNode.removeChild(element);
-      // Give the user a chance to see that it's reloading 
+      // Give the user a chance to see that it's reloading
       setTimeout(() => self.trigger('reload'), 1000);
     });
 
