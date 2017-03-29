@@ -320,7 +320,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -341,14 +341,13 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}
-                                    ${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
                                     <button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
 
       this.description.querySelector('.part-two').focus();
     }
     else {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}
                                     <button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
 
       this.description.querySelector('.part-one').focus();
@@ -365,8 +364,11 @@ export default class ContentTypeDetailView {
    * @param {number} size
    * @param {string} text
    */
-  ellipsis(size, text) {
-    return `<span class="part-one" tabindex="-1">${text.substr(0, size)}...</span>`;
+  ellipsis(size, text, addEllipses) {
+    if (addEllipses) {
+      return `<span class="part-one" tabindex="-1">${text.substr(0, size)}...</span>`;
+    }
+    return `<span class="part-one" tabindex="-1">${text.substr(0, size)}</span>`;
   }
 
   /**
@@ -457,7 +459,7 @@ export default class ContentTypeDetailView {
       title.setAttribute('role', 'heading');
       title.setAttribute('aria-level', '2');
       title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
-          <span class="icon-accordion-arrow"></span> 
+          <span class="icon-accordion-arrow"></span>
           ${licence.title}
         </a>`;
 
