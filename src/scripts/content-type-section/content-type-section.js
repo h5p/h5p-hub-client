@@ -77,7 +77,7 @@ export default class ContentTypeSection {
     this.view.on('menu-selected', this.removeMessages, this);
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeList.on('row-selected', this.view.clearSelection, this.view);
-    this.contentTypeDetail.on('close', this.closeDetailView, this);
+    this.contentTypeDetail.on('close', this.goBackToListView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
     this.contentTypeDetail.on('installed-content-type', () => {
       services.setup();
@@ -238,7 +238,7 @@ export default class ContentTypeSection {
   }
 
   /**
-   * Close detail view
+   * Closes the detail view
    */
   closeDetailView() {
     if (!this.contentTypeDetail.isHidden()) {
@@ -246,8 +246,20 @@ export default class ContentTypeSection {
       this.contentTypeList.show();
       this.view.typeAheadEnabled = true;
       this.view.addDeactivatedStyleToMenu();
-      this.contentTypeList.focus();
     }
+  }
+
+  /**
+   * Closes the detail view then sets focus on the content type list
+   */
+  goBackToListView() {
+    this.closeDetailView();
+    // Wait for transition before focusing since focusing an element will force the browser to
+    // put that element into view. Doing so before the element is in the correct position will
+    // skew all elements on the page.
+    setTimeout(() => {
+      this.contentTypeList.focus();
+    }, 300);
   }
 
   /**

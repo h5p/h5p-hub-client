@@ -46,8 +46,9 @@ export default class ContentBrowserView {
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
     const searchBar = this.rootElement.querySelector('#hub-search-bar');
 
-    this.inputField.addEventListener('keydown', event => {
-      if (this.typeAheadEnabled || event.which === 13) {
+    // Listen to input changes
+    this.inputField.addEventListener('input', event => {
+      if (this.typeAheadEnabled) {
         this.trigger('search', {
           element: searchBar,
           query: searchBar.value
@@ -56,7 +57,18 @@ export default class ContentBrowserView {
       }
     });
 
-    // Search button 
+    // Allow searching with 'enter' key
+    this.inputField.addEventListener('keydown', event => {
+      if (event.which === 13) {
+        this.trigger('search', {
+          element: searchBar,
+          query: searchBar.value
+        });
+        searchBar.focus();
+      }
+    });
+
+    // Search button
     inputButton.addEventListener('click', event => {
        this.trigger('search', {
          element: searchbar,
