@@ -18,7 +18,6 @@
   .menu-group {
     background-color: $c1;
     padding: 0.5em 1.125em 1.125em;
-    margin-bottom: -0.5em;
 
     .input-group {
       padding: 0.4em;
@@ -142,6 +141,10 @@
     .navbar {
       padding: 0;
       border-bottom: solid 1px rgba(206, 214, 227, 0.34);
+
+      [role="menuitem"] {
+        border-bottom: none;
+      }
     }
     .navbar-header {
       display: inline-block;
