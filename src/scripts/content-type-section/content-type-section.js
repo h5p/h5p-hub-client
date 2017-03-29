@@ -224,7 +224,6 @@ export default class ContentTypeSection {
    * @param {string} id
    */
   showDetailView({id}) {
-    this.contentTypeList.hide();
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
     this.view.typeAheadEnabled = false;

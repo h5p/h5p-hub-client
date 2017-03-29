@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -35,15 +35,6 @@ const IMAGELIGHTBOX = 'imagelightbox';
 const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
 
 /**
- * Hides all elements in an array
- *
- * @param {HTMLElement[]} elements
- *
- * @function
- */
-const hideAll = forEach(hide);
-
-/**
  * Disables an HTMLElement
  *
  * @param {HTMLElement} element
@@ -61,14 +52,6 @@ const disable = setAttribute('disabled', '');
  */
 const enable = removeAttribute('disabled');
 
-/**
- * Returns true if element isn't visible
- *
- * @function
- * @param {HTMLElement} element
- */
-const isHidden = (element) => !element.classList.contains('active');
-
 const LICENCE_DATA = {
   "MIT": {
     title: 'MIT License',
@@ -83,17 +66,17 @@ const LICENCE_DATA = {
       <li>Must include license</li>
     </ul>`,
     full: owner => `<p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-
+    
       <p>Permission is hereby granted, free of charge, to any person obtaining a copy
       of this software and associated documentation files (the "Software"), to deal
       in the Software without restriction, including without limitation the rights
       to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
       copies of the Software, and to permit persons to whom the Software is
       furnished to do so, subject to the following conditions:</p>
-
+    
       <p>The above copyright notice and this permission notice shall be included in
       all copies or substantial portions of the Software.</p>
-
+    
       <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
       IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
       FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -119,7 +102,10 @@ export default class ContentTypeDetailView {
     // grab references
     this.buttonBar = this.rootElement.querySelector('.button-bar');
     this.useButton = this.buttonBar.querySelector('.button-use');
+    this.updateButton = this.buttonBar.querySelector('.button-update');
+    this.updatingButton = this.buttonBar.querySelector('.button-updating');
     this.installButton = this.buttonBar.querySelector('.button-install');
+    this.installingButton = this.buttonBar.querySelector('.button-installing');
     this.buttons = this.buttonBar.querySelectorAll('.button');
 
     this.image = this.rootElement.querySelector('.content-type-image');
@@ -144,6 +130,7 @@ export default class ContentTypeDetailView {
     // fire events on button click
     relayClickEventAs('close', this, this.rootElement.querySelector('.back-button'));
     relayClickEventAs('select', this, this.useButton);
+    relayClickEventAs('install', this, this.updateButton);
     relayClickEventAs('install', this, this.installButton);
   }
 
@@ -186,17 +173,32 @@ export default class ContentTypeDetailView {
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <button class="carousel-button previous" disabled><span class="icon-arrow-thick"></span></button>
-        <button class="carousel-button next" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button previous hidden" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button next hidden" disabled><span class="icon-arrow-thick"></span></button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
       <div class="button-bar">
-        <button class="button button-primary button-use active">${Dictionary.get("contentTypeUseButtonLabel")}</button>
-        <button class="button button-inverse-primary button-install"><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
-        <button class="button button-inverse-primary button-installing"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" class="hidden" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" class="hidden"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-inverse-primary button-update">
+          ${Dictionary.get("contentTypeUpdateButtonLabel")}
+        </button>
+        <button class="button button-inverse-primary button-updating">
+          <span class="icon-loading-search icon-spin"></span>
+          ${Dictionary.get("contentTypeUpdatingButtonLabel")}
+        </button>
+        <button class="button button-primary button-use" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" class="hidden" data-id="">
+          <span class="icon-arrow-thick"></span>
+          ${Dictionary.get('contentTypeInstallButtonLabel')}
+        </button>
+        <button class="button button-inverse-primary button-installing" class="hidden">
+          <span class="icon-loading-search icon-spin"></span>
+          ${Dictionary.get("contentTypeInstallingButtonLabel")}
+        </button>
       </div>
       <dl class="panel licence-panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
@@ -204,7 +206,7 @@ export default class ContentTypeDetailView {
             <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
           </a>
         </dt>
-        <dl id="licence-panel" role="region">
+        <dl id="licence-panel" role="region" class="hidden">
           <div class="panel-body"></div>
         </dl>
       </dl>
@@ -282,6 +284,12 @@ export default class ContentTypeDetailView {
       this.container.removeChild(this.messageViewElement);
       delete this.messageViewElement;
     }
+
+    // Hide all buttons
+    this.buttons.forEach(button => {
+      button.classList.add('hidden');
+    });
+
     this.removeInstallMessage();
   }
 
@@ -320,6 +328,7 @@ export default class ContentTypeDetailView {
   setId(id) {
     this.installButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
     this.useButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
+    this.updateButton.setAttribute(ATTRIBUTE_CONTENT_TYPE_ID, id);
   }
 
   /**
@@ -495,6 +504,7 @@ export default class ContentTypeDetailView {
       body.className = 'hidden';
       body.setAttribute('role', 'region');
       body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
+      hide(body);
 
       panels.appendChild(title);
       panels.appendChild(body);
@@ -536,7 +546,17 @@ export default class ContentTypeDetailView {
    * @param {boolean} installed
    */
   setIsInstalled(installed) {
-    this.showButtonBySelector(installed ? '.button-use' : '.button-install');
+    this.useButton.classList.toggle('hidden', !installed);
+    this.installButton.classList.toggle('hidden', installed);
+  }
+
+  /**
+   * Shows the update button if it is possible to update the content type
+   *
+   * @param {boolean} isUpdatePossible
+   */
+  setIsUpdatePossible(isUpdatePossible) {
+    this.updateButton.classList.toggle('hidden', !isUpdatePossible);
   }
 
   /**
@@ -556,16 +576,20 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Hides all buttons and shows the button on the selector again
+   * Toggle spinner visibility for the currently showing install or update button
    *
-   * @param {string}selector
+   * @param {boolean} enable Set spinner state
    */
-  showButtonBySelector(selector) {
-    const button = this.buttonBar.querySelector(selector);
-
-    if(button) {
-      hideAll(this.buttons);
-      show(button);
+  toggleSpinner(enable) {
+    const buttonToCheck = enable ? 'updateButton' : 'updatingButton';
+    const isShowingInstallButton = this[buttonToCheck].classList.contains('hidden');
+    if (isShowingInstallButton) {
+      this.installButton.classList.toggle('hidden', enable);
+      this.installingButton.classList.toggle('hidden', !enable);
+    }
+    else {
+      this.updateButton.classList.toggle('hidden', enable);
+      this.updatingButton.classList.toggle('hidden', !enable);
     }
   }
 
@@ -573,14 +597,14 @@ export default class ContentTypeDetailView {
    * Hides the root element
    */
   hide() {
-    hide(this.rootElement);
+    this.rootElement.classList.remove('show');
   }
 
   /**
    * Shows the root element
    */
   show() {
-    show(this.rootElement);
+    this.rootElement.classList.add('show');
   }
 
   /**
@@ -596,7 +620,7 @@ export default class ContentTypeDetailView {
    * @return {boolean}
    */
   isHidden() {
-    return isHidden(this.rootElement);
+    return this.rootElement.classList.contains('hidden');
   }
 
   /**

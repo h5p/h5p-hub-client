@@ -1,21 +1,10 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector, hide, show } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Keyboard from 'utils/keyboard';
 import Dictionary from '../utils/dictionary';
-
-
-/**
- * @function
- */
-const hide = (element) => element.classList.remove('active');
-
-/**
- * @function
- */
-const show = (element) => element.classList.add('active');
 
 /**
  * @function
@@ -50,7 +39,7 @@ export default class ContentTypeListView {
     // create root element
     this.rootElement = document.createElement('ul');
     this.rootElement.setAttribute('role', 'list');
-    this.rootElement.className = 'content-type-list active';
+    this.rootElement.className = 'content-type-list';
   }
 
   /**
@@ -124,6 +113,7 @@ export default class ContentTypeListView {
     const description = contentType.summary || '';
     const image = contentType.icon || noIcon;
     const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+    const updateAvailable = !contentType.isUpToDate && contentType.installed && !contentType.restricted;
 
     // row item
     const element = document.createElement('li');
@@ -137,15 +127,20 @@ export default class ContentTypeListView {
       <img class="img-responsive" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
 
       <div class="content-type-row-info">
-        <h4 id="${contentTypeRowTitleId}">${title}</h4>
+        <div id="${contentTypeRowTitleId}" class="h4">${title}</div>
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
-
-      <div class="content-type-row-button">
-        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
-          <span class="${button.icon}"></span>
-          ${button.text}
-        </button>
+      
+      <div class="content-type-actions-info">
+        <div class="content-type-update-info${updateAvailable ? '' : ' hidden'}">
+          ${Dictionary.get('contentTypeUpdateAvailable')}
+        </div>
+        <div class="content-type-row-button">
+          <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
+            <span class="${button.icon}"></span>
+            ${button.text}
+          </button>
+        </div>
       </div>
    `;
 
