@@ -33,14 +33,14 @@ export default class ContentTypeList {
    * Hide this element
    */
   hide() {
-    this.view.hide();
+    this.view.hideFromKeyboard();
   }
 
   /**
    * Show this element
    */
   show() {
-    this.view.show();
+    this.view.showToKeyboard();
   }
 
   focus() {

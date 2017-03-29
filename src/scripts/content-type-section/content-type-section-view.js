@@ -46,25 +46,23 @@ export default class ContentBrowserView {
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
     const searchBar = this.rootElement.querySelector('#hub-search-bar');
 
-    this.inputField.addEventListener('input', event => {
+    this.inputField.addEventListener('keydown', event => {
       if (this.typeAheadEnabled || event.which === 13) {
         this.trigger('search', {
           element: searchBar,
           query: searchBar.value
         });
+        searchBar.focus();
       }
     });
 
-    // input button
+    // Search button 
     inputButton.addEventListener('click', event => {
-       let searchbar = event.target.parentElement.querySelector('#hub-search-bar');
-
        this.trigger('search', {
          element: searchbar,
          query: searchbar.value
        });
-
-       searchbar.focus();
+       searchBar.focus();
     })
   }
 

@@ -226,6 +226,7 @@ export default class ContentTypeSection {
   showDetailView({id}) {
     this.contentTypeDetail.loadById(id);
     this.contentTypeDetail.show();
+    this.contentTypeList.hide();
     this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
 
