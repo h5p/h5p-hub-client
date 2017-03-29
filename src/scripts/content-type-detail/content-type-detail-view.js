@@ -363,6 +363,7 @@ export default class ContentTypeDetailView {
    *
    * @param {number} size
    * @param {string} text
+   * @param {boolean} addEllipses whether ellipses should be added 
    */
   ellipsis(size, text, addEllipses) {
     if (addEllipses) {
