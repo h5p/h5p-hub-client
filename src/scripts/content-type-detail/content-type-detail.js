@@ -119,9 +119,13 @@ export default class ContentTypeDetail {
       }]
     });
 
+    // triggers the modal event
     this.trigger('modal', {
       element: licenseDialog
     });
+
+    // set focus on the modal dialog
+    setTimeout(() => licenseDialog.querySelector('.modal-dialog').focus(), 10);
   }
 
   /**

@@ -110,7 +110,7 @@ export default class Hub {
   /**
    * Appends a modal to the root element and shows it
    *
-   * @param {Element} element
+   * @param {HTMLElement} element
    */
   showModal({element}) {
     this.view.appendChild(element);
