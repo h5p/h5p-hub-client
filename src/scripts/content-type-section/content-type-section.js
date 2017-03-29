@@ -65,7 +65,7 @@ export default class ContentTypeSection {
 
     // propagate events
     this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
-    this.propagate(['select'], this.contentTypeDetail);
+    this.propagate(['select', 'modal'], this.contentTypeDetail);
     this.propagate(['reload'], this.view);
 
     // register listeners

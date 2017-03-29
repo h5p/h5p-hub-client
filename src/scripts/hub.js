@@ -44,6 +44,12 @@ import { Eventful } from './mixins/eventful';
  * @type {Object}
  */
 /**
+ * Attach modal event
+ * @event Hub#attachModal
+ * @type {object}
+ * @property {Element} element
+ */
+/**
  * @class
  * @mixes Eventful
  * @fires Hub#select
@@ -53,11 +59,11 @@ import { Eventful } from './mixins/eventful';
 export default class Hub {
   /**
    * @param {HubState} state
+   * @param {object} dictionary
    */
   constructor(state, dictionary) {
     // add event system
     Object.assign(this, Eventful());
-    var self = this;
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
@@ -83,21 +89,32 @@ export default class Hub {
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
-    this.view.on('panel-change', () => {
-      this.view.togglePanelOpen();
-
-      // Tell listeners that hub has been resized
-      setTimeout(() => {
-        self.trigger('resized');
-      }, 150);
-    });
+    this.view.on('panel-change', this.view.togglePanelOpen, this.view);
     this.contentTypeSection.on('reload', this.setupServices, this);
-
-    this.on('clear-upload-form', function () {
-      self.uploadSection.clearUploadForm();
+    this.contentTypeSection.on('modal', this.showModal, this);
+    this.on('clear-upload-form', () => {
+      this.uploadSection.clearUploadForm();
+      this.postponedResize();
     });
 
     this.initTabPanel(state)
+  }
+
+  /**
+   * Does a resize after 150ms
+   */
+  postponedResize () {
+    setTimeout(() => self.trigger('resized'), 150);
+  }
+
+  /**
+   * Appends a modal to the root element and shows it
+   *
+   * @param {Element} element
+   */
+  showModal({element}) {
+    this.view.appendChild(element);
+    element.classList.remove('hidden');
   }
 
   /**

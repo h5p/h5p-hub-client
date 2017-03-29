@@ -36,7 +36,7 @@ export default class ContentTypeDetail {
     });
 
     // propagate events
-    this.propagate(['close', 'select'], this.view);
+    this.propagate(['close', 'select', 'modal'], this.view);
   }
 
   /**
