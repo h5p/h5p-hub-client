@@ -108,6 +108,7 @@ export default class ContentTypeDetailView {
     this.installingButton = this.buttonBar.querySelector('.button-installing');
     this.buttons = this.buttonBar.querySelectorAll('.button');
 
+    this.contentContainer = this.rootElement.querySelector('.container');
     this.image = this.rootElement.querySelector('.content-type-image');
     this.title = this.rootElement.querySelector('.text-details .title');
     this.owner = this.rootElement.querySelector('.owner');
@@ -560,9 +561,30 @@ export default class ContentTypeDetailView {
    * Shows the update button if it is possible to update the content type
    *
    * @param {boolean} isUpdatePossible
+   * @param {string} [title] Used to display update message. Only required if
+   * update is possible
    */
-  setIsUpdatePossible(isUpdatePossible) {
+  setIsUpdatePossible(isUpdatePossible, title) {
     this.updateButton.classList.toggle('hidden', !isUpdatePossible);
+
+    // Remove old warning message if in DOM
+    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
+      this.updateMessage.getElement().parentNode
+        .removeChild(this.updateMessage.getElement());
+    }
+
+    // Set warning message
+    if (isUpdatePossible) {
+      this.updateMessage = new MessageView({
+        type: 'warning',
+        title: Dictionary.get(
+          'warningUpdateAvailableTitle',
+          {':contentType': title || 'the content type'}
+        ),
+        content: Dictionary.get('warningUpdateAvailableBody')
+      });
+      this.rootElement.insertBefore(this.updateMessage.getElement(), this.contentContainer);
+    }
   }
 
   /**
