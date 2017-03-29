@@ -208,18 +208,18 @@ export default class ContentTypeDetail {
     switch(type){
       case "MIT":
         return {
-          title: 'MIT License',
+          title: Dictionary.get('MITLicenseTitle'),
           short: `
-          <ul class="ul">
-            <li>${Dictionary.get("licenseCanUseCommercially")}</li>
-            <li>${Dictionary.get("licenseCanModify")}</li>
-            <li>${Dictionary.get("licenseCanDistribute")}</li>
-            <li>${Dictionary.get("licenseCanSublicense")}</li>
-            <li>${Dictionary.get("licenseCannotHoldLiable")}</li>
-            <li>${Dictionary.get("licenseMustIncludeCopyright")}</li>
-            <li>${Dictionary.get("licenseMustIncludeLicense")}</li>
-          </ul>`,
-          full: Dictionary.get("MITLicense", {
+            <ul class="ul">
+              <li>${Dictionary.get("licenseCanUseCommercially")}</li>
+              <li>${Dictionary.get("licenseCanModify")}</li>
+              <li>${Dictionary.get("licenseCanDistribute")}</li>
+              <li>${Dictionary.get("licenseCanSublicense")}</li>
+              <li>${Dictionary.get("licenseCannotHoldLiable")}</li>
+              <li>${Dictionary.get("licenseMustIncludeCopyright")}</li>
+              <li>${Dictionary.get("licenseMustIncludeLicense")}</li>
+            </ul>`,
+          full: Dictionary.get("MITLicenseFull", {
             ':year': new Date().getFullYear(),
             ':owner': owner
           })
