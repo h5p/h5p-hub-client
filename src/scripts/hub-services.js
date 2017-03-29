@@ -7,6 +7,7 @@ import './utils/fetch';
  * @property {string} patchVersion
  * @property {string} h5pMajorVersion
  * @property {string} h5pMinorVersion
+ * @property {string} title
  * @property {string} summary
  * @property {string} description
  * @property {string} icon
