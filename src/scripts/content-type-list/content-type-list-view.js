@@ -1,21 +1,10 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector, hide, show } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Keyboard from 'utils/keyboard';
 import Dictionary from '../utils/dictionary';
-
-
-/**
- * @function
- */
-const hide = setAttribute('aria-hidden', 'true');
-
-/**
- * @function
- */
-const show = setAttribute('aria-hidden', 'false');
 
 /**
  * @function
@@ -137,7 +126,7 @@ export default class ContentTypeListView {
       <img class="img-responsive" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
 
       <div class="content-type-row-info">
-        <h4 id="${contentTypeRowTitleId}">${title}</h4>
+        <div id="${contentTypeRowTitleId}" class="h4">${title}</div>
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
 

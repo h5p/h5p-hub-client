@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -62,13 +62,13 @@ const disable = setAttribute('disabled', '');
 const enable = removeAttribute('disabled');
 
 /**
- * Returns true if attribute aria-hidden = 'true' on an element
+ * Returns true if element has class 'hidden'
  *
  * @param {HTMLElement} element
  *
  * @function
  */
-const isHidden = attributeEquals('aria-hidden', 'true');
+const isHidden = classListContains('hidden');
 
 const LICENCE_DATA = {
   "MIT": {
@@ -174,7 +174,6 @@ export default class ContentTypeDetailView {
     element.setAttribute('role', 'region');
     element.setAttribute('tabindex', '-1');
     element.setAttribute('aria-labelledby', titleId);
-    element.setAttribute('aria-hidden', 'true');
 
     element.innerHTML = `
       <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
@@ -184,21 +183,21 @@ export default class ContentTypeDetailView {
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" aria-hidden="false" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
+          <a class="button demo-button" target="_blank" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <button class="carousel-button previous" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
-        <button class="carousel-button next" aria-hidden="true" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button previous hidden" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button next hidden" disabled><span class="icon-arrow-thick"></span></button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
       <div class="button-bar">
-        <button class="button button-primary button-use" aria-hidden="false" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
-        <button class="button button-inverse-primary button-install" aria-hidden="true" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
-        <button class="button button-inverse-primary button-installing" aria-hidden="true"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-primary button-use" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" class="hidden" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
+        <button class="button button-inverse-primary button-installing" class="hidden"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
       </div>
       <dl class="panel licence-panel">
         <dt aria-level="2" role="heading" class="licence-panel-heading">
@@ -206,7 +205,7 @@ export default class ContentTypeDetailView {
             <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
           </a>
         </dt>
-        <dl id="licence-panel" role="region" aria-hidden="true">
+        <dl id="licence-panel" role="region" class="hidden">
           <div class="panel-body"></div>
         </dl>
       </dl>
@@ -496,8 +495,8 @@ export default class ContentTypeDetailView {
       body.id = id;
       body.className = 'hidden';
       body.setAttribute('role', 'region');
-      body.setAttribute('aria-hidden', 'true');
       body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
+      hide(body);
 
       panels.appendChild(title);
       panels.appendChild(body);
@@ -576,14 +575,14 @@ export default class ContentTypeDetailView {
    * Hides the root element
    */
   hide() {
-    hide(this.rootElement);
+    this.rootElement.classList.remove('show');
   }
 
   /**
    * Shows the root element
    */
   show() {
-    show(this.rootElement);
+    this.rootElement.classList.add('show');
   }
 
   /**

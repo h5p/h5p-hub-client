@@ -1,6 +1,7 @@
 import Dictionary from '../utils/dictionary';
 import { Eventful } from '../mixins/eventful';
 import MessageView from "../message-view/message-view";
+import { hide, show } from "utils/elements";
 
 /**
  * @class
@@ -122,12 +123,12 @@ export default class UploadSection {
         self.renderWrongExtensionMessage();
 
         // Hide the 'use' button for non-h5p files
-        self.useButton.setAttribute('aria-hidden', 'true');
+        hide(self.useButton);
         self.useButton.classList.remove('visible');
       }
       else {
         // Only show the 'use' button once a h5p file has been selected
-        self.useButton.removeAttribute('aria-hidden', 'true');
+        show(self.useButton);
         self.useButton.classList.add('visible');
         self.uploadPath.removeAttribute('placeholder');
       }
