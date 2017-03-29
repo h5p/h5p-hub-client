@@ -2,41 +2,6 @@ import ContetTypeDetailView from "./content-type-detail-view";
 import {Eventful} from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
 
-const LICENCE_DATA = {
-  "MIT": owner => ({
-    title: 'MIT License',
-    short: `
-    <ul class="ul">
-      <li>Can use commercially</li>
-      <li>Can modify</li>
-      <li>Can distribute</li>
-      <li>Can sublicense</li>
-      <li>Cannot hold liable</li>
-      <li>Must include copyright</li>
-      <li>Must include license</li>
-    </ul>`,
-    full: `<p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-    
-      <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-      of this software and associated documentation files (the "Software"), to deal
-      in the Software without restriction, including without limitation the rights
-      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-      copies of the Software, and to permit persons to whom the Software is
-      furnished to do so, subject to the following conditions:</p>
-    
-      <p>The above copyright notice and this permission notice shall be included in
-      all copies or substantial portions of the Software.</p>
-    
-      <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-      THE SOFTWARE.</p>`
-  })
-};
-
 /**
  * @class
  * @mixes Eventful
@@ -201,7 +166,7 @@ export default class ContentTypeDetail {
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicence(LICENCE_DATA[contentType.license](contentType.owner));
+    this.view.setLicence(this.getLicenseDetails(contentType.license, contentType.owner));
     this.view.setIsRestricted(contentType.restricted);
     const isUpdatePossible = contentType.installed
       && !contentType.isUpToDate
@@ -232,5 +197,33 @@ export default class ContentTypeDetail {
    */
   getElement() {
     return this.view.getElement();
+  }
+
+  /**
+   * Returns the license details
+   *
+   * @return {object}
+   */
+  getLicenseDetails(type, owner) {
+    switch(type){
+      case "MIT":
+        return {
+          title: 'MIT License',
+          short: `
+          <ul class="ul">
+            <li>${Dictionary.get("licenseCanUseCommercially")}</li>
+            <li>${Dictionary.get("licenseCanModify")}</li>
+            <li>${Dictionary.get("licenseCanDistribute")}</li>
+            <li>${Dictionary.get("licenseCanSublicense")}</li>
+            <li>${Dictionary.get("licenseCannotHoldLiable")}</li>
+            <li>${Dictionary.get("licenseMustIncludeCopyright")}</li>
+            <li>${Dictionary.get("licenseMustIncludeLicense")}</li>
+          </ul>`,
+          full: Dictionary.get("MITLicense", {
+            ':year': new Date().getFullYear(),
+            ':owner': owner
+          })
+        }
+    }
   }
 }
