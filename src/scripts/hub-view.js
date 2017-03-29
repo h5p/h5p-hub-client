@@ -55,7 +55,7 @@ export default class HubView {
    * Closes the panel
    */
   closePanel() {
-    this.toggler.setAttribute('aria-expanded', 'false')
+    this.panel.classList.remove('open');
   }
 
   /**
@@ -84,7 +84,7 @@ export default class HubView {
 
     element.innerHTML = `
       <div class="${panelClasses}">
-        <div aria-level="1" role="heading">
+        <div class="h5p-hub-client-drop-down" aria-level="1" role="heading">
           <span role="button" class="icon-hub-icon" aria-expanded="${expanded}" aria-controls="panel-body-${sectionId}">
           <span class="h5p-hub-description">${labels.h5pHub}</span>
           <span class="h5p-hub-selected"></span>
@@ -106,13 +106,13 @@ export default class HubView {
    * Set if panel is open, this is used for outer border color
    */
   togglePanelOpen() {
-    let panel = this.panel;
+    const panel = this.panel;
     if(!panel.classList.contains('open')) {
       panel.classList.add('open');
+      setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
     }
     else {
       panel.classList.remove('open');
-      setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
     }
   }
 
