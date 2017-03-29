@@ -92,7 +92,7 @@
     background-color: transparent;
     color: #ffffff;
     border: 0;
-    font-size: $text-list-title;
+    font-size: 1em;
     padding-bottom: 0;
 
     [role="menuitem"] {
@@ -118,6 +118,7 @@
 
   .navbar-brand {
     display: none;
+    overflow: hidden;
   }
 
   /* Large */
