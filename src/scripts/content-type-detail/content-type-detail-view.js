@@ -429,24 +429,22 @@ export default class ContentTypeDetailView {
       panelContainer.innerText = '';
       panelContainer.appendChild(shortLicenceInfo);
 
-      const modal = this.createModal({
-        title: 'Content License info',
-        subtitle: 'Click on a specific license to get info about proper usage',
-        licences: [{
-          title: licenseDetails.title,
-          body: licenseDetails.full(owner)
-        }]
-      });
-
-      this.rootElement.appendChild(modal);
-
       // handle clicking read more
       const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
+
       readMoreButton.addEventListener('click', () => {
-        console.log('show licence', modal);
-        show(modal);
-        modal.querySelector('.modal-dialog').focus();
-        //modal.querySelector('.modal-dialog .close').focus();
+        const licenseDialog = this.createLicenseDialog({
+          title: 'Content License info',
+          subtitle: 'Click on a specific license to get info about proper usage',
+          licences: [{
+            title: licenseDetails.title,
+            body: licenseDetails.full(owner)
+          }]
+        });
+
+        this.trigger('modal', {
+          element: licenseDialog
+        });
       });
 
       show(this.licencePanelHeading);
@@ -459,7 +457,15 @@ export default class ContentTypeDetailView {
     }
   }
 
-  createModal({title, subtitle, licences}) {
+  /**
+   * Creates a modal window for license details
+   *
+   * @param title
+   * @param subtitle
+   * @param licences
+   * @return {Element}
+   */
+  createLicenseDialog({title, subtitle, licences}) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `

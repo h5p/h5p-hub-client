@@ -21,7 +21,7 @@ export default class ContentTypeDetail {
     this.view.on('install', this.install, this);
 
     // propagate events
-    this.propagate(['close', 'select'], this.view);
+    this.propagate(['close', 'select', 'modal'], this.view);
   }
 
   /**
