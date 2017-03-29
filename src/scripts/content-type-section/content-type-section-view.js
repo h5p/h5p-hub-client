@@ -96,10 +96,7 @@ export default class ContentBrowserView {
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
           <div class="navbar-header">
-             <button class="navbar-toggler navbar-toggler-right" tabindex="0" aria-haspopup="true" aria-controls="${menuId}" aria-expanded="false">
-               <span class="icon-accordion-arrow"></span>
-             </button>
-            <span class="navbar-toggler-selected"></span>
+            <span class="navbar-toggler-selected" tabindex="0" aria-haspopup="true" role="button" aria-controls="${menuId}" aria-expanded="false"></span>
             <span class="navbar-brand">${Dictionary.get("contentTypeSectionTitle")}</span>
           </div>
 
@@ -169,10 +166,10 @@ export default class ContentBrowserView {
       self.selectMenuItem({id, eventName});
     });
 
-    element.addEventListener('keyup', event => {
+    element.addEventListener('keydown', event => {
       if (event.which === 13 || event.which === 32) {
         self.selectMenuItem({id, eventName});
-        event.stopPropagation();
+        event.preventDefault();
       }
     });
 

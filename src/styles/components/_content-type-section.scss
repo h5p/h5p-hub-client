@@ -99,20 +99,33 @@
       outline-color: lighten($ac1, 30%);
     }
 
-    .navbar-toggler {
-      color: inherit;
+    #content-type-filter {
+      clear: right;
+    }
+
+    .navbar-header {
+      min-height: 1.5em;
     }
 
     .navbar-toggler-selected {
+      cursor: pointer;
       float: right;
+      padding-right: $gutter * 2;
+      position: relative;
+      line-height: 1;
     }
 
-    .icon-accordion-arrow {
+    .navbar-toggler-selected:after {
+      @include icon($icon-accordion-arrow);
+      display: block;
+      position: absolute;
+      right: 0;
+      top: 0;
       transition: transform 0.1s ease-out;
+    }
 
-      &[aria-expanded="true"] {
-        transform: rotate(90deg);
-      }
+    .navbar-toggler-selected[aria-expanded="true"]:after {
+      transform: rotate(90deg);
     }
   }
 

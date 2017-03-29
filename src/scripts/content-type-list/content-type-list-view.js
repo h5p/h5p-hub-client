@@ -43,17 +43,17 @@ export default class ContentTypeListView {
   }
 
   /**
-   * Hides the root element
+   * Hides the root element from keyboard input
    */
-  hide() {
-    hide(this.rootElement);
+  hideFromKeyboard() {
+    this.rootElement.setAttribute('aria-hidden', 'true');
   }
 
   /**
-   * Shows the root element
+   * Shows the root element to keyboard input
    */
-  show() {
-    show(this.rootElement);
+  showToKeyboard() {
+    this.rootElement.removeAttribute('aria-hidden');
   }
 
   /**

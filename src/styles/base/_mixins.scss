@@ -4,6 +4,7 @@ $icon-arrow-down: url('../../images/arrow-line-down.svg');
 $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
 
 $icon-close: '\e901';
+$icon-accordion-arrow: '\e91f';
 
 @mixin scroll-bar($background-color, $button-color) {
   &::-webkit-scrollbar {
