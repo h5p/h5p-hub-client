@@ -56,7 +56,7 @@ export default class ContentBrowserView {
       }
     });
 
-    // Search button 
+    // Search button
     inputButton.addEventListener('click', event => {
        this.trigger('search', {
          element: searchbar,
