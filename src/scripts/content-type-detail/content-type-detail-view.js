@@ -11,6 +11,12 @@ import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 
 /**
+ * @event {ContentTypeDetailView#show-licence-dialog}
+ * @type {object}
+ * @property {string[]} types
+ */
+
+/**
  * @constant {string}
  */
 const ATTRIBUTE_CONTENT_TYPE_ID = 'data-id';
@@ -51,41 +57,6 @@ const disable = setAttribute('disabled', '');
  * @function
  */
 const enable = removeAttribute('disabled');
-
-const LICENCE_DATA = {
-  "MIT": {
-    title: 'MIT License',
-    short: `
-    <ul class="ul">
-      <li>Can use comercially</li>
-      <li>Can modify</li>
-      <li>Can distribute</li>
-      <li>Can sublicense</li>
-      <li>Cannot hold liable</li>
-      <li>Must include copyright</li>
-      <li>Must include license</li>
-    </ul>`,
-    full: owner => `<p>Copyright ${(new Date()).getFullYear()} ${owner}</p>
-    
-      <p>Permission is hereby granted, free of charge, to any person obtaining a copy
-      of this software and associated documentation files (the "Software"), to deal
-      in the Software without restriction, including without limitation the rights
-      to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-      copies of the Software, and to permit persons to whom the Software is
-      furnished to do so, subject to the following conditions:</p>
-    
-      <p>The above copyright notice and this permission notice shall be included in
-      all copies or substantial portions of the Software.</p>
-    
-      <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-      IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-      FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-      AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-      LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-      OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-      THE SOFTWARE.</p>`
-  }
-};
 
 /**
  * @class
@@ -291,6 +262,7 @@ export default class ContentTypeDetailView {
     });
 
     this.removeInstallMessage();
+    this.resetLicenses();
   }
 
   /**
@@ -407,31 +379,32 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Removes the licences that are listed
+   */
+  resetLicenses() {
+    const container = this.licencePanelBody.querySelector('.panel-body');
+    container.querySelectorAll('dt,dl').forEach(removeChild(container));
+  }
+
+  /**
    * Sets the licence
    *
-   * @param {string} type
-   * @param {string} owner
+   * @param {object} license
    */
-  setLicence(type, owner) {
+  setLicence(license) {
+    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
     const l10n = {
       readMore: 'Read more'
     };
-    const licenseDetails = LICENCE_DATA[type];
 
-    // removes all children
-    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
-    panelContainer.querySelectorAll('dt,dl')
-      .forEach(removeChild(panelContainer));
-
-    if(type && licenseDetails){
+    if(license){
+      // Create short version for detail page
       const shortLicenceInfo = document.createElement('div');
       shortLicenceInfo.className = 'short-license-info';
-
       shortLicenceInfo.innerHTML = `
-        <h3>${licenseDetails.title}</h3>
+        <h3>${license.title}</h3>
         <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
-        ${licenseDetails.short}
-      `;
+        ${license.short}`;
 
       // add short version of licence
       panelContainer.innerText = '';
@@ -439,26 +412,7 @@ export default class ContentTypeDetailView {
 
       // handle clicking read more
       const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
-
-      readMoreButton.addEventListener('click', () => {
-        const licenseDialog = this.createLicenseDialog({
-          title: 'Content License info',
-          subtitle: 'Click on a specific license to get info about proper usage',
-          licences: [{
-            title: licenseDetails.title,
-            body: licenseDetails.full(owner)
-          }]
-        });
-
-        this.trigger('modal', {
-          element: licenseDialog
-        });
-      });
-
-      show(this.licencePanelHeading);
-    }
-    else if(type) {
-      panelContainer.innerText = type;
+      readMoreButton.addEventListener('click', () => this.trigger('show-licence-dialog', { license }));
     }
     else {
       panelContainer.innerText = 'Unspecified';
@@ -471,6 +425,7 @@ export default class ContentTypeDetailView {
    * @param title
    * @param subtitle
    * @param licences
+   *
    * @return {Element}
    */
   createLicenseDialog({title, subtitle, licences}) {
