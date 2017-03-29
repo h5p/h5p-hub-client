@@ -59,6 +59,7 @@ import { Eventful } from './mixins/eventful';
 export default class Hub {
   /**
    * @param {HubState} state
+   * @param {object} dictionary
    */
   constructor(state, dictionary) {
     // add event system
