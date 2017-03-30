@@ -3,10 +3,12 @@
 @import "~h5p-sdk/src/styles/base/variables";
 @import "~susy/sass/susy";
 
+$color-back-button: #474f5a;
+
 .h5p-hub {
   .content-type-detail {
     background-color: white;
-    padding: $gutter;
+    padding: 1.3em;
     display: inherit;
     opacity: 0;
     position: absolute;
@@ -48,6 +50,10 @@
 
     .text-details {
       @include span(1 of 1);
+
+      h2 {
+        margin-top: 0;
+      }
     }
 
     // larger then mobile
@@ -78,13 +84,14 @@
     }
 
     .back-button {
-      color: $text-dark;
+      color: $color-back-button;
+      font-size: 1.3em;
       display: inline-block;
       background: transparent;
       border: none;
 
       &:hover {
-        color: lighten($text-dark, 20%);
+        color: lighten($color-back-button, 20%);
       }
 
       &.icon-arrow-thick:before {

@@ -136,25 +136,39 @@ export default class ContentTypeDetailView {
     element.innerHTML = `
       <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
       <div class="container">
-        <div class="image-wrapper"><img class="img-responsive content-type-image" src="${noIcon}"></div>
+        <div class="image-wrapper">
+          <img class="img-responsive content-type-image" src="${noIcon}">
+        </div>
         <div class="text-details">
           <h2 id="${titleId}" class="title"></h2>
           <div class="owner"></div>
           <p class="small"></p>
-          <a class="button demo-button" target="_blank" href="#">${Dictionary.get("contentTypeDemoButtonLabel")}</a>
+          <a class="button demo-button" target="_blank" href="#">
+            ${Dictionary.get("contentTypeDemoButtonLabel")}
+          </a>
         </div>
       </div>
       <div class="carousel" role="region" data-size="5">
-        <button class="carousel-button previous hidden" disabled><span class="icon-arrow-thick"></span></button>
-        <button class="carousel-button next hidden" disabled><span class="icon-arrow-thick"></span></button>
+        <button class="carousel-button previous hidden" disabled>
+          <span class="icon-arrow-thick"></span>
+        </button>
+        <button class="carousel-button next hidden" disabled>
+          <span class="icon-arrow-thick"></span>
+        </button>
         <nav class="scroller">
           <ul></ul>
         </nav>
       </div>
       <hr />
       <div class="button-bar">
-        <button class="button button-inverse-primary button-install" class="hidden" data-id=""><span class="icon-arrow-thick"></span>${Dictionary.get('contentTypeInstallButtonLabel')}</button>
-        <button class="button button-inverse-primary button-installing" class="hidden"><span class="icon-loading-search icon-spin"></span>${Dictionary.get("contentTypeInstallingButtonLabel")}</button>
+        <button class="button button-inverse-primary button-install" class="hidden" data-id="">
+          <span class="icon-arrow-thick"></span>
+          ${Dictionary.get('contentTypeInstallButtonLabel')}
+        </button>
+        <button class="button button-inverse-primary button-installing" class="hidden">
+          <span class="icon-loading-search icon-spin"></span>
+          ${Dictionary.get("contentTypeInstallingButtonLabel")}
+        </button>
         <button class="button button-inverse-primary button-update">
           ${Dictionary.get("contentTypeUpdateButtonLabel")}
         </button>
@@ -162,7 +176,9 @@ export default class ContentTypeDetailView {
           <span class="icon-loading-search icon-spin"></span>
           ${Dictionary.get("contentTypeUpdatingButtonLabel")}
         </button>
-        <button class="button button-primary button-use" data-id="">${Dictionary.get("contentTypeUseButtonLabel")}</button>
+        <button class="button button-primary button-use" data-id="">
+          ${Dictionary.get("contentTypeUseButtonLabel")}
+        </button>
         <button class="button button-inverse-primary button-install" class="hidden" data-id="">
           <span class="icon-arrow-thick"></span>
           ${Dictionary.get('contentTypeInstallButtonLabel')}
@@ -172,10 +188,11 @@ export default class ContentTypeDetailView {
           ${Dictionary.get("contentTypeInstallingButtonLabel")}
         </button>
       </div>
-      <dl class="panel license-panel">
+      <dl class="panel panel-default license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="license-panel">
-            <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
+            <span class="icon-accordion-arrow"></span>
+            <span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
           </a>
         </dt>
         <dl id="license-panel" role="region" class="hidden">
@@ -363,7 +380,7 @@ export default class ContentTypeDetailView {
    *
    * @param {number} size
    * @param {string} text
-   * @param {boolean} addEllipses whether ellipses should be added 
+   * @param {boolean} addEllipses whether ellipses should be added
    */
   ellipsis(size, text, addEllipses) {
     if (addEllipses) {
@@ -426,13 +443,11 @@ export default class ContentTypeDetailView {
   /**
    * Creates a modal window for license details
    *
-   * @param title
-   * @param subtitle
    * @param licenses
    *
    * @return {Element}
    */
-  createLicenseDialog({title, subtitle, licenses}) {
+  createLicenseDialog(licenses) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `
@@ -441,11 +456,11 @@ export default class ContentTypeDetailView {
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
-              <h5 class="modal-title" id="${titleId}">${title}</h5>
-              <h5 class="modal-subtitle">${subtitle}</h5>
+              <h5 class="modal-title" id="${titleId}">${Dictionary.get('contentTypeLicenseModalTitle')}</h5>
+              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalDescription')}</h5>
             </div>
             <div class="modal-body">
-              <dl class="panel"></dl>
+              <dl class="panel panel-simple panel"></dl>
             </div>
           </div>
         </div>
@@ -461,7 +476,7 @@ export default class ContentTypeDetailView {
       title.setAttribute('aria-level', '2');
       title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
           <span class="icon-accordion-arrow"></span>
-          ${license.title}
+          <span class="h3">${license.title}</span>
         </a>`;
 
       let body = document.createElement('dd');
@@ -470,8 +485,7 @@ export default class ContentTypeDetailView {
       body.setAttribute('role', 'region');
       body.innerHTML = `
         <div class="panel-body">
-          <h3>${license.title}</h3>
-          ${license.body}
+          <div class="small">${license.full}</div>
         </div>`;
       hide(body);
 

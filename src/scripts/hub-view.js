@@ -104,16 +104,21 @@ export default class HubView {
 
   /**
    * Set if panel is open, this is used for outer border color
+   *
+   * @return {boolean} if the panel has the open class now
    */
   togglePanelOpen() {
     const panel = this.panel;
-    if(!panel.classList.contains('open')) {
-      panel.classList.add('open');
-      setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
-    }
-    else {
+    const isOpen = panel.classList.contains('open');
+
+    if(isOpen) {
       panel.classList.remove('open');
     }
+    else {
+      panel.classList.add('open');
+    }
+
+    return !isOpen;
   }
 
   /**

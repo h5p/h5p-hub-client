@@ -74,14 +74,7 @@ export default class ContentTypeDetail {
    * @param {object} license
    */
   showLicenseDialog({ license }) {
-    const licenseDialog = this.view.createLicenseDialog({
-      title: 'Content License info',
-      subtitle: 'Click on a specific license to get info about proper usage',
-      licenses: [{
-        title: license.title,
-        body: license.full
-      }]
-    });
+    const licenseDialog = this.view.createLicenseDialog([license]);
 
     // triggers the modal event
     this.trigger('modal', {
