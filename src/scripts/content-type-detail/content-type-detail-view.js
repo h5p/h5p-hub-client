@@ -279,6 +279,11 @@ export default class ContentTypeDetailView {
       button.classList.add('hidden');
     });
 
+    // Remove old warning message if in DOM
+    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
+      this.updateMessage.getElement().parentNode.removeChild(this.updateMessage.getElement());
+    }
+
     this.removeInstallMessage();
     this.resetLicenses();
   }
@@ -543,19 +548,13 @@ export default class ContentTypeDetailView {
   setIsUpdatePossible(isUpdatePossible, title) {
     this.updateButton.classList.toggle('hidden', !isUpdatePossible);
 
-    // Remove old warning message if in DOM
-    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
-      this.updateMessage.getElement().parentNode
-        .removeChild(this.updateMessage.getElement());
-    }
-
     // Set warning message
     if (isUpdatePossible) {
       this.updateMessage = new MessageView({
         type: 'warning',
         title: Dictionary.get(
           'warningUpdateAvailableTitle',
-          {':contentType': title || 'the content type'}
+          {':contentType': title || Dictionary.get('theContentType')}
         ),
         content: Dictionary.get('warningUpdateAvailableBody')
       });
