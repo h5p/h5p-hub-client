@@ -153,6 +153,13 @@ export default class UploadSection {
           self.trigger('upload', json);
         });
     });
+
+    // Allow users to upload a file by pressing enter or spacebar
+    this.useButton.onkeydown = function (e) {
+      if (e.which === 13 || e.which === 32) {
+        this.click();
+      }
+    };
   }
 
   /**
@@ -181,7 +188,7 @@ export default class UploadSection {
     this.uploadInput.value = '';
     this.uploadPath.value = Dictionary.get("uploadPlaceholder");
     this.uploadButton.textContent = Dictionary.get('uploadFileButtonLabel');
-    this.useButton.style.display = 'none';
+    this.useButton.classList.remove('visible');
   }
 
   /**
