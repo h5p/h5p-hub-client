@@ -89,12 +89,14 @@ export default class Hub {
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.closePanel, this.view);
     this.view.on('tab-change', this.view.setSectionType, this.view);
-    this.view.on('panel-change', this.view.togglePanelOpen, this.view);
+    this.view.on('panel-change', () => {
+      this.view.togglePanelOpen();
+      this.postponedResize();
+    }, this);
     this.contentTypeSection.on('reload', this.setupServices, this);
     this.contentTypeSection.on('modal', this.showModal, this);
     this.on('clear-upload-form', () => {
       this.uploadSection.clearUploadForm();
-      this.postponedResize();
     });
 
     this.initTabPanel(state)
