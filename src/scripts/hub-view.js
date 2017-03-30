@@ -168,13 +168,9 @@ export default class HubView {
     return this.rootElement.appendChild(element);
   }
 
-  /**
-   * Adds an animated border to the bottom of the tab
+  /*
+   * Initialize the tab panel from the controller
    */
-  addBottomBorder() {
-    this.tablist.appendChild(document.createElement('span'));
-  }
-
   initTabPanel() {
     initTabPanel(this.tabContainerElement);
   }
@@ -185,6 +181,7 @@ export default class HubView {
    * @param {string} id
    */
   setSectionType({id}) {
+    this.panel.className = 'panel open'; // TODO reset the panel classes in a less brittle way
     this.panel.classList.add('h5p-section-' + id, 'panel');
   }
 
