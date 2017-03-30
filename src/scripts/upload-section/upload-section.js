@@ -105,7 +105,8 @@ export default class UploadSection {
     const self = this;
     // Handle errors and update styles when a file is selected
     this.uploadInput.onchange = function () {
-      if (this.value === '') {
+      if (this.value.length === 0) {
+        self.clearUploadForm();
         return;
       }
       // Clear messages
