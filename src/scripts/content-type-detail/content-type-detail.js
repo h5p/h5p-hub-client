@@ -20,7 +20,7 @@ export default class ContentTypeDetail {
     // views
     this.view = new ContetTypeDetailView(state);
     this.view.on('install', this.install, this);
-    this.view.on('show-licence-dialog', this.showLicenceDialog, this);
+    this.view.on('show-license-dialog', this.showLicenseDialog, this);
 
     // propagate events
     this.propagate(['close', 'select', 'modal'], this.view);
@@ -73,11 +73,11 @@ export default class ContentTypeDetail {
    *
    * @param {object} license
    */
-  showLicenceDialog({ license }) {
+  showLicenseDialog({ license }) {
     const licenseDialog = this.view.createLicenseDialog({
       title: 'Content License info',
       subtitle: 'Click on a specific license to get info about proper usage',
-      licences: [{
+      licenses: [{
         title: license.title,
         body: license.full
       }]
@@ -166,7 +166,7 @@ export default class ContentTypeDetail {
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicence(this.getLicenseDetails(contentType.license, contentType.owner));
+    this.view.setLicense(this.getLicenseDetails(contentType.license, contentType.owner));
     this.view.setIsRestricted(contentType.restricted);
     const isUpdatePossible = contentType.installed
       && !contentType.isUpToDate
@@ -210,7 +210,7 @@ export default class ContentTypeDetail {
         return {
           title: Dictionary.get('MITLicenseTitle'),
           short: `
-            <ul class="ul">
+            <ul class="ul small">
               <li>${Dictionary.get("licenseCanUseCommercially")}</li>
               <li>${Dictionary.get("licenseCanModify")}</li>
               <li>${Dictionary.get("licenseCanDistribute")}</li>
