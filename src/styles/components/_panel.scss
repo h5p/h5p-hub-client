@@ -1,10 +1,12 @@
 .h5p-hub {
   .panel {
     .icon-accordion-arrow {
+      margin-top: -4px;
       font-size: 0.7em;
       margin-right: $gutter;
       margin-left: $gutter;
       display: inline-block;
+      vertical-align: middle;
       transition: transform 0.1s ease-out;
     }
 

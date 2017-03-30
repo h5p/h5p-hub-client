@@ -175,7 +175,7 @@ export default class ContentTypeDetailView {
       <dl class="panel license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="license-panel">
-            <span class="icon-accordion-arrow"></span> ${Dictionary.get('contentTypeLicensePanelTitle')}
+            <span class="icon-accordion-arrow"></span><span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
           </a>
         </dt>
         <dl id="license-panel" role="region" class="hidden">
@@ -471,7 +471,7 @@ export default class ContentTypeDetailView {
       body.innerHTML = `
         <div class="panel-body">
           <h3>${license.title}</h3>
-          ${license.body}
+          <div class="small">${license.body}</div>
         </div>`;
       hide(body);
 
