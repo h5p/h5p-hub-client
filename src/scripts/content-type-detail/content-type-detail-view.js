@@ -426,13 +426,11 @@ export default class ContentTypeDetailView {
   /**
    * Creates a modal window for license details
    *
-   * @param title
-   * @param subtitle
    * @param licenses
    *
    * @return {Element}
    */
-  createLicenseDialog({title, subtitle, licenses}) {
+  createLicenseDialog(licenses) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `
@@ -441,8 +439,8 @@ export default class ContentTypeDetailView {
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
-              <h5 class="modal-title" id="${titleId}">${title}</h5>
-              <h5 class="modal-subtitle">${subtitle}</h5>
+              <h5 class="modal-title" id="${titleId}">${Dictionary.get('contentTypeLicenseModalTitle')}</h5>
+              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalDescription')}</h5>
             </div>
             <div class="modal-body">
               <dl class="panel panel-simple panel"></dl>
@@ -470,7 +468,7 @@ export default class ContentTypeDetailView {
       body.setAttribute('role', 'region');
       body.innerHTML = `
         <div class="panel-body">
-          <div class="small">${license.body}</div>
+          <div class="small">${license.full}</div>
         </div>`;
       hide(body);
 
