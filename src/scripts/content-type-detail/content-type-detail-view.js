@@ -172,7 +172,7 @@ export default class ContentTypeDetailView {
           ${Dictionary.get("contentTypeInstallingButtonLabel")}
         </button>
       </div>
-      <dl class="panel license-panel">
+      <dl class="panel panel-default license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
           <a href="#" role="button" aria-expanded="false" aria-controls="license-panel">
             <span class="icon-accordion-arrow"></span><span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
@@ -445,7 +445,7 @@ export default class ContentTypeDetailView {
               <h5 class="modal-subtitle">${subtitle}</h5>
             </div>
             <div class="modal-body">
-              <dl class="panel"></dl>
+              <dl class="panel panel-simple panel"></dl>
             </div>
           </div>
         </div>
@@ -461,7 +461,7 @@ export default class ContentTypeDetailView {
       title.setAttribute('aria-level', '2');
       title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
           <span class="icon-accordion-arrow"></span>
-          ${license.title}
+          <span class="h3">${license.title}</span>
         </a>`;
 
       let body = document.createElement('dd');
@@ -470,7 +470,6 @@ export default class ContentTypeDetailView {
       body.setAttribute('role', 'region');
       body.innerHTML = `
         <div class="panel-body">
-          <h3>${license.title}</h3>
           <div class="small">${license.body}</div>
         </div>`;
       hide(body);

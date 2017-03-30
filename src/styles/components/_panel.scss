@@ -30,4 +30,10 @@
     transition: max-height 0.1s;
     overflow: hidden;
   }
+
+  &.panel-simple {
+    [role="heading"] {
+
+    }
+  }
 }
