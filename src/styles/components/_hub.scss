@@ -4,11 +4,19 @@
 @import "~h5p-sdk/src/styles/base/mixins";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
+// General color scheme for each section 
 @mixin section($color) {
   border: 1px solid $color;
 
-  [role="tab"][aria-selected="true"] ~ span{
-    background: $color;
+  [role="tab"] {
+    padding-bottom: 0.8em;
+    border-bottom: $height-menuitem-underline solid transparent;
+    transition: border-bottom 1s;
+
+    &[aria-selected="true"] {
+      border-bottom: $height-menuitem-underline solid $color;
+      transition: border-bottom 1s;
+    }
   }
 
   .button.button-primary {
@@ -103,19 +111,6 @@
           &:before {
             @include h5p-hub-icon("\e91b");
           }
-        }
-
-        // Hardcoded transitions
-        &:nth-child(1) ~ span,
-        &:nth-child(1)[aria-selected="true"] ~ span {
-          width: 150px;
-          right: 0;
-        }
-
-        &:nth-child(2) ~ span,
-        &:nth-child(2)[aria-selected="true"] ~ span {
-          width: 120px;
-          right: -150px;
         }
       }
     }

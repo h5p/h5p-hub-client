@@ -234,12 +234,10 @@ export default class ContentBrowserView {
     }
   }
 
+  /*
+   * Initialize the menu from the controller 
+   */
   initMenu() {
-    // create the underline
-    const underline = document.createElement('span');
-    underline.className = 'menuitem-underline';
-    this.menubar.appendChild(underline);
-
     // call init menu from sdk
     initNavbar(this.menu);
   }
