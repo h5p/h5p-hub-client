@@ -118,29 +118,30 @@ export default class ContentTypeListView {
     // row item
     const element = document.createElement('li');
     element.id = `content-type-${contentType.machineName}`;
+    element.classList.add('media');
     element.setAttribute('data-id', contentType.machineName);
     element.setAttribute('aria-labelledby', contentTypeRowTitleId);
     element.setAttribute('aria-describedby', contentTypeRowDescriptionId);
 
     // create html
     element.innerHTML = `
-      <img class="img-responsive" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
-
-      <div class="content-type-row-info">
-        <div id="${contentTypeRowTitleId}" class="h4">${title}</div>
-        <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
+      <div class="media-left">
+        <img class="media-object" src="${image}" alt="${title} ${Dictionary.get('contentTypeIconAltText')}" />
       </div>
+
+      <div class="media-body">
+        <div id="${contentTypeRowTitleId}" class="h4 media-heading">${title}</div>
       
-      <div class="content-type-actions-info">
+        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
+          <span class="${button.icon}"></span>
+          ${button.text}
+        </button>
+        
         <div class="content-type-update-info${updateAvailable ? '' : ' hidden'}">
           ${Dictionary.get('contentTypeUpdateAvailable')}
         </div>
-        <div class="content-type-row-button">
-          <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
-            <span class="${button.icon}"></span>
-            ${button.text}
-          </button>
-        </div>
+        
+        <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
    `;
 
