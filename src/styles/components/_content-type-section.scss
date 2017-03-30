@@ -97,7 +97,6 @@
 
     [role="menuitem"] {
       outline-color: lighten($ac1, 30%);
-      margin-left: 2.0em;
     }
 
     #content-type-filter {
@@ -164,7 +163,8 @@
        [role="menuitem"] {
          border-bottom: 0.1em solid transparent;
          transition: border-bottom 0.3s;
-         margin-right: 2.0em;
+         margin-left: 1em;
+         margin-right: 1em;
 
          &[aria-selected="true"] {
            border-bottom: 0.1em solid #1a93f4;
