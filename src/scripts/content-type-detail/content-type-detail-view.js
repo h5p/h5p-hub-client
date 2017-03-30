@@ -11,7 +11,7 @@ import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 
 /**
- * @event {ContentTypeDetailView#show-licence-dialog}
+ * @event {ContentTypeDetailView#show-license-dialog}
  * @type {object}
  * @property {string[]} types
  */
@@ -90,8 +90,8 @@ export default class ContentTypeDetailView {
     const imageLightbox = this.rootElement.querySelector(`#${IMAGELIGHTBOX}-detail`);
     this.imageLightboxList = imageLightbox.querySelector(`.${IMAGELIGHTBOX}-list`);
     this.panel = this.rootElement.querySelector('.panel');
-    this.licencePanelHeading = this.rootElement.querySelector('.licence-panel-heading');
-    this.licencePanelBody = this.rootElement.querySelector('#licence-panel');
+    this.licensePanelHeading = this.rootElement.querySelector('.license-panel-heading');
+    this.licensePanelBody = this.rootElement.querySelector('#license-panel');
     this.container = this.rootElement.querySelector('.container');
 
     // init interactive elements
@@ -188,14 +188,14 @@ export default class ContentTypeDetailView {
           ${Dictionary.get("contentTypeInstallingButtonLabel")}
         </button>
       </div>
-      <dl class="panel licence-panel">
-        <dt aria-level="2" role="heading" class="licence-panel-heading">
-          <a href="#" role="button" aria-expanded="false" aria-controls="licence-panel">
+      <dl class="panel license-panel">
+        <dt aria-level="2" role="heading" class="license-panel-heading">
+          <a href="#" role="button" aria-expanded="false" aria-controls="license-panel">
             <span class="icon-accordion-arrow"></span>
-            ${Dictionary.get('contentTypeLicensePanelTitle')}
+            <span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
           </a>
         </dt>
-        <dl id="licence-panel" role="region" class="hidden">
+        <dl id="license-panel" role="region" class="hidden">
           <div class="panel-body"></div>
         </dl>
       </dl>
@@ -400,40 +400,40 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Removes the licences that are listed
+   * Removes the licenses that are listed
    */
   resetLicenses() {
-    const container = this.licencePanelBody.querySelector('.panel-body');
+    const container = this.licensePanelBody.querySelector('.panel-body');
     container.querySelectorAll('dt,dl').forEach(removeChild(container));
   }
 
   /**
-   * Sets the licence
+   * Sets the lisence
    *
    * @param {object} license
    */
-  setLicence(license) {
-    const panelContainer = this.licencePanelBody.querySelector('.panel-body');
+  setLicense(license) {
+    const panelContainer = this.licensePanelBody.querySelector('.panel-body');
     const l10n = {
       readMore: 'Read more'
     };
 
     if(license){
       // Create short version for detail page
-      const shortLicenceInfo = document.createElement('div');
-      shortLicenceInfo.className = 'short-license-info';
-      shortLicenceInfo.innerHTML = `
+      const shortLicenseInfo = document.createElement('div');
+      shortLicenseInfo.className = 'short-license-info';
+      shortLicenseInfo.innerHTML = `
         <h3>${license.title}</h3>
         <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
         ${license.short}`;
 
-      // add short version of licence
+      // add short version of lisence
       panelContainer.innerText = '';
-      panelContainer.appendChild(shortLicenceInfo);
+      panelContainer.appendChild(shortLicenseInfo);
 
       // handle clicking read more
-      const readMoreButton = this.licencePanelBody.querySelector('.short-license-read-more');
-      readMoreButton.addEventListener('click', () => this.trigger('show-licence-dialog', { license }));
+      const readMoreButton = this.licensePanelBody.querySelector('.short-license-read-more');
+      readMoreButton.addEventListener('click', () => this.trigger('show-license-dialog', { license }));
     }
     else {
       panelContainer.innerText = 'Unspecified';
@@ -445,11 +445,11 @@ export default class ContentTypeDetailView {
    *
    * @param title
    * @param subtitle
-   * @param licences
+   * @param licenses
    *
    * @return {Element}
    */
-  createLicenseDialog({title, subtitle, licences}) {
+  createLicenseDialog({title, subtitle, licenses}) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `
@@ -470,22 +470,26 @@ export default class ContentTypeDetailView {
 
     let panels = modal.querySelector('.panel');
 
-    licences.forEach((licence, index) => {
-      let id = `content-type-detail-licence-${index}`;
+    licenses.forEach((license, index) => {
+      let id = `content-type-detail-license-${index}`;
 
       let title = document.createElement('dt');
       title.setAttribute('role', 'heading');
       title.setAttribute('aria-level', '2');
       title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
           <span class="icon-accordion-arrow"></span>
-          ${licence.title}
+          ${license.title}
         </a>`;
 
       let body = document.createElement('dd');
       body.id = id;
       body.className = 'hidden';
       body.setAttribute('role', 'region');
-      body.innerHTML = `<div class="panel-body">${licence.body}</div>`;
+      body.innerHTML = `
+        <div class="panel-body">
+          <h3>${license.title}</h3>
+          <div class="small">${license.body}</div>
+        </div>`;
       hide(body);
 
       panels.appendChild(title);
