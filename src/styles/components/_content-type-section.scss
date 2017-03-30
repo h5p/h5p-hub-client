@@ -98,7 +98,6 @@
     [role="menuitem"] {
       outline-color: lighten($ac1, 30%);
       margin-left: 2.0em;
-      margin-right: 2.0em;
     }
 
     #content-type-filter {
@@ -115,6 +114,7 @@
       padding-right: $gutter * 2;
       position: relative;
       line-height: 1;
+      font-weight: bold;
     }
 
     .navbar-toggler-selected:after {
@@ -162,12 +162,13 @@
        border-bottom: solid 1px rgba(206, 214, 227, 0.34);
 
        [role="menuitem"] {
-           border-bottom: $height-menuitem-underline solid transparent;
-           transition: border-bottom 1s;
+         border-bottom: 0.1em solid transparent;
+         transition: border-bottom 0.3s;
+         margin-right: 2.0em;
 
          &[aria-selected="true"] {
-           border-bottom: $height-menuitem-underline solid $ac1;
-           transition: border-bottom 1s;
+           border-bottom: 0.1em solid #1a93f4;
+           transition: border-bottom 0.3s;
          }
        }
      }
@@ -227,8 +228,6 @@
       [role="menuitem"] {
         padding-left: 1.5em;
         padding-right: 1.5em;
-        margin-left: 2.5em;
-        margin-right: 2.5em;
       }
     }
   }
