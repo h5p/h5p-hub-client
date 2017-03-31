@@ -48,6 +48,10 @@ $color-back-button: #474f5a;
       @include span(1 of 1);
     }
 
+    .title {
+      outline: 0;
+    }
+
     .text-details {
       @include span(1 of 1);
 

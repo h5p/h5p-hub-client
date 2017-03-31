@@ -385,7 +385,7 @@ export default class ContentTypeDetailView {
    *
    * @param {number} size
    * @param {string} text
-   * @param {boolean} addEllipses whether ellipses should be added
+   * @param {boolean} [addEllipses] whether ellipses should be added
    */
   ellipsis(size, text, addEllipses) {
     if (addEllipses) {
@@ -614,7 +614,7 @@ export default class ContentTypeDetailView {
    * Focuses on the title
    */
   focus() {
-    setTimeout(() => this.title.focus(), 10);
+    setTimeout(() => this.title.focus(), 200);
   }
 
   /**
