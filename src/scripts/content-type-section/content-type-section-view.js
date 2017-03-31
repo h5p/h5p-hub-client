@@ -167,9 +167,15 @@ export default class ContentBrowserView {
     });
 
     this.on('menu-selected', event => {
-      self.currentlySelected = Object.keys(ContentTypeSection.Tabs)
-        .map(menuItemName => ContentTypeSection.Tabs[menuItemName])
-        .find(menu => menu.eventName === event.choice);
+      const myArray =  Object.keys(ContentTypeSection.Tabs)
+        .map(menuItemName => ContentTypeSection.Tabs[menuItemName]);
+
+      for (let i = 0; i < myArray.length; i++) {
+        if (myArray[i].eventName === event.choice) {
+          self.currentlySelected = myArray[i];
+          return;
+        }
+      }
     });
 
     // add to menu bar

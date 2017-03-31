@@ -162,11 +162,11 @@ export default class ContentTypeDetailView {
       </div>
       <hr />
       <div class="button-bar">
-        <button class="button button-inverse-primary button-install" class="hidden" data-id="">
+        <button class="button button-inverse-primary button-install hidden" data-id="">
           <span class="icon-arrow-thick"></span>
           ${Dictionary.get('contentTypeInstallButtonLabel')}
         </button>
-        <button class="button button-inverse-primary button-installing" class="hidden">
+        <button class="button button-inverse-primary button-installing hidden">
           <span class="icon-loading-search icon-spin"></span>
           ${Dictionary.get("contentTypeInstallingButtonLabel")}
         </button>
@@ -526,8 +526,8 @@ export default class ContentTypeDetailView {
    * @param {boolean} installed
    */
   setIsInstalled(installed) {
-    this.useButton.classList.toggle('hidden', !installed);
-    this.installButton.classList.toggle('hidden', installed);
+    this.useButton.classList[installed ? 'remove' : 'add']('hidden');
+    this.installButton.classList[installed ? 'add' : 'remove']('hidden');
   }
 
   /**
@@ -538,7 +538,7 @@ export default class ContentTypeDetailView {
    * update is possible
    */
   setIsUpdatePossible(isUpdatePossible, title) {
-    this.updateButton.classList.toggle('hidden', !isUpdatePossible);
+    this.updateButton.classList[isUpdatePossible ? 'remove' : 'add']('hidden');
 
     // Set warning message
     if (isUpdatePossible) {
@@ -579,12 +579,12 @@ export default class ContentTypeDetailView {
     const buttonToCheck = enable ? 'updateButton' : 'updatingButton';
     const isShowingInstallButton = this[buttonToCheck].classList.contains('hidden');
     if (isShowingInstallButton) {
-      this.installButton.classList.toggle('hidden', enable);
-      this.installingButton.classList.toggle('hidden', !enable);
+      this.installButton.classList[enable ? 'add' : 'remove']('hidden');
+      this.installingButton.classList[enable ? 'remove' : 'add']('hidden');
     }
     else {
-      this.updateButton.classList.toggle('hidden', enable);
-      this.updatingButton.classList.toggle('hidden', !enable);
+      this.updateButton.classList[enable ? 'add' : 'remove']('hidden');
+      this.updatingButton.classList[enable ? 'remove' : 'add']('hidden');
     }
   }
 

@@ -66,9 +66,11 @@ export default class ContentTypeList {
    */
   refreshContentTypes(contentTypes) {
     const displayedContentTypes = contentTypes.filter(contentType => {
-      return this.currentContentTypes.find(currentContentType => {
-        return currentContentType.machineName === contentType.machineName
-      });
+      for (let i = 0; i < this.currentContentTypes.length; i++) {
+        if (this.currentContentTypes[i].machineName === contentType.machineName) {
+          return true;
+        }
+      }
     });
     this.update(displayedContentTypes);
   }
