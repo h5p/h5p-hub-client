@@ -55,7 +55,8 @@ export default class HubView {
    * Closes the panel
    */
   closePanel() {
-    this.panel.classList.remove('open');
+    this.panel.querySelector('[aria-expanded="true"]').setAttribute('aria-expanded', false);
+    this.trigger('panel-change');
   }
 
   /**
