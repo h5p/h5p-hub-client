@@ -216,6 +216,9 @@ export default class ContentBrowserView {
     const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
 
     if(selectedMenuItem) {
+      // Manually set the classes and aria attributes for the default menu
+      selectedMenuItem.classList.add('selected');
+      selectedMenuItem.setAttribute('aria-describedby', 'a11y-desc-current');
       this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: id,
