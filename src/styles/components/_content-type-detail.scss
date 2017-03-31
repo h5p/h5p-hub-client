@@ -121,15 +121,19 @@ $color-back-button: #474f5a;
   }
 
   .imagelightbox-button {
+    &.next:before,
+    &.previous:before {
+      display: block;
+      line-height: 2em;
+      height: 100%;
+    }
     &.next:before {
       @include icon($icon-arrow-thick);
-      display: block;
       transform: rotate(180deg);
-      height: 1.2em;
+
     }
     &.previous:before {
       @include icon($icon-arrow-thick);
-      height: 1.2em;
     }
     &.close:before {
       @include icon($icon-close);
