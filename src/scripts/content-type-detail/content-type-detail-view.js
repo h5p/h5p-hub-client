@@ -363,7 +363,7 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(text)}
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
                                     <button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
 
       this.description.querySelector('.part-two').focus();
@@ -397,10 +397,11 @@ export default class ContentTypeDetailView {
   /**
    * Gets the text cut off by ellipsis
    *
+   * @param {number} size
    * @param {string} text
    */
-  ellipsisRest(text) {
-    return `<span class="part-two" tabindex="-1">${text}</span>`;
+  ellipsisRest(size, text) {
+    return `<span class="part-two" tabindex="-1">${text.substr(size)}</span>`;
   }
 
   /**
