@@ -140,7 +140,7 @@ export default class ContentTypeDetailView {
           <img class="img-responsive content-type-image" src="${noIcon}">
         </div>
         <div class="text-details">
-          <h2 id="${titleId}" class="title"></h2>
+          <h2 id="${titleId}" class="title" tabindex="-1"></h2>
           <div class="owner"></div>
           <p class="small"></p>
           <a class="button demo-button" target="_blank" href="#">
@@ -358,7 +358,7 @@ export default class ContentTypeDetailView {
     this.descriptionExpanded = !this.descriptionExpanded;
 
     if(this.descriptionExpanded) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(text)}
                                     <button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
 
       this.description.querySelector('.part-two').focus();
@@ -392,11 +392,10 @@ export default class ContentTypeDetailView {
   /**
    * Gets the text cut off by ellipsis
    *
-   * @param {number} size
    * @param {string} text
    */
-  ellipsisRest(size, text) {
-    return `<span class="part-two" tabindex="-1">${text.substr(size)}...</span>`;
+  ellipsisRest(text) {
+    return `<span class="part-two" tabindex="-1">${text}</span>`;
   }
 
   /**
@@ -615,7 +614,7 @@ export default class ContentTypeDetailView {
    * Focuses on the title
    */
   focus() {
-    setTimeout(() => this.rootElement.focus(), 10);
+    setTimeout(() => this.title.focus(), 10);
   }
 
   /**
