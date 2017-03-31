@@ -66,7 +66,7 @@ $content-type-list-image-size: 100px;
     }
 
     .content-type-update-info {
-      margin-right: 2em;
+      margin-right: 0;
       color: $color-section-content-types;
       font-size: $text-body-small;
       font-style: italic;
@@ -100,8 +100,12 @@ $content-type-list-image-size: 100px;
       .media-object {
         width: $content-type-list-image-size;
       }
+    }
 
+    @media (min-width: $screen-medium) {
       .content-type-update-info {
+        margin-right: 2em;
+        margin-top: 7px;
         float: right;
       }
     }

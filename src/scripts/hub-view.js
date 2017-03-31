@@ -186,7 +186,7 @@ export default class HubView {
    * @param {string} id
    */
   setSectionType({id}) {
-    this.panel.className = 'panel open'; // TODO reset the panel classes in a less brittle way
+    this.panel.className = 'panel'; // TODO reset the panel classes in a less brittle way
     this.panel.classList.add('h5p-section-' + id, 'panel');
   }
 

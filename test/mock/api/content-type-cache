@@ -1084,7 +1084,7 @@
       ],
       "license": "MIT",
       "owner": "Joubel",
-      "installed": false,
+      "installed": true,
       "isUpToDate": false,
       "restricted": false,
       "categories": [

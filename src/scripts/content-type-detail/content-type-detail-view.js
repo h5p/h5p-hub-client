@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains, querySelectorAll } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -77,7 +77,7 @@ export default class ContentTypeDetailView {
     this.updatingButton = this.buttonBar.querySelector('.button-updating');
     this.installButton = this.buttonBar.querySelector('.button-install');
     this.installingButton = this.buttonBar.querySelector('.button-installing');
-    this.buttons = this.buttonBar.querySelectorAll('.button');
+    this.buttons = querySelectorAll('.button', this.buttonBar);
 
     this.contentContainer = this.rootElement.querySelector('.container');
     this.image = this.rootElement.querySelector('.content-type-image');
@@ -241,7 +241,7 @@ export default class ContentTypeDetailView {
    * Removes all images from the carousel
    */
   removeAllImagesInCarousel() {
-    this.carouselList.querySelectorAll('li').forEach(removeChild(this.carouselList));
+    querySelectorAll('li', this.carouselList).forEach(removeChild(this.carouselList));
     this.imageLightboxList.innerHTML = '';
   }
 
@@ -278,6 +278,11 @@ export default class ContentTypeDetailView {
     this.buttons.forEach(button => {
       button.classList.add('hidden');
     });
+
+    // Remove old warning message if in DOM
+    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
+      this.updateMessage.getElement().parentNode.removeChild(this.updateMessage.getElement());
+    }
 
     this.removeInstallMessage();
     this.resetLicenses();
@@ -403,7 +408,7 @@ export default class ContentTypeDetailView {
    */
   resetLicenses() {
     const container = this.licensePanelBody.querySelector('.panel-body');
-    container.querySelectorAll('dt,dl').forEach(removeChild(container));
+    querySelectorAll('dt,dl', container).forEach(removeChild(container));
   }
 
   /**
@@ -542,19 +547,13 @@ export default class ContentTypeDetailView {
   setIsUpdatePossible(isUpdatePossible, title) {
     this.updateButton.classList.toggle('hidden', !isUpdatePossible);
 
-    // Remove old warning message if in DOM
-    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
-      this.updateMessage.getElement().parentNode
-        .removeChild(this.updateMessage.getElement());
-    }
-
     // Set warning message
     if (isUpdatePossible) {
       this.updateMessage = new MessageView({
         type: 'warning',
         title: Dictionary.get(
           'warningUpdateAvailableTitle',
-          {':contentType': title || 'the content type'}
+          {':contentType': title || Dictionary.get('theContentType')}
         ),
         content: Dictionary.get('warningUpdateAvailableBody')
       });
