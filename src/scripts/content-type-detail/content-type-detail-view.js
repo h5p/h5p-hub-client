@@ -180,14 +180,6 @@ export default class ContentTypeDetailView {
         <button class="button button-primary button-use" data-id="">
           ${Dictionary.get("contentTypeUseButtonLabel")}
         </button>
-        <button class="button button-inverse-primary button-install" class="hidden" data-id="">
-          <span class="icon-arrow-thick"></span>
-          ${Dictionary.get('contentTypeInstallButtonLabel')}
-        </button>
-        <button class="button button-inverse-primary button-installing" class="hidden">
-          <span class="icon-loading-search icon-spin"></span>
-          ${Dictionary.get("contentTypeInstallingButtonLabel")}
-        </button>
       </div>
       <dl class="panel panel-default license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
