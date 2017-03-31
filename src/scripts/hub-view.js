@@ -90,7 +90,7 @@ export default class HubView {
           <span class="h5p-hub-selected"></span>
         </span>
         </div>
-        <div id="panel-body-${sectionId}" role="region">
+        <div id="panel-body-${sectionId}" role="region" class="${expanded ? '' : 'hidden'}">
           <div class="tab-panel">
             <nav>
               <ul role="tablist"></ul>
