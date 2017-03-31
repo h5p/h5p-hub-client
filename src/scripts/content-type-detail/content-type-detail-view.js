@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains } from "utils/elements";
+import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains, querySelectorAll } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -78,7 +78,7 @@ export default class ContentTypeDetailView {
     this.updatingButton = this.buttonBar.querySelector('.button-updating');
     this.installButton = this.buttonBar.querySelector('.button-install');
     this.installingButton = this.buttonBar.querySelector('.button-installing');
-    this.buttons = this.buttonBar.querySelectorAll('.button');
+    this.buttons = querySelectorAll('.button', this.buttonBar);
 
     this.imageLightbox = new ImageLightbox();
 
@@ -141,7 +141,7 @@ export default class ContentTypeDetailView {
           <img class="img-responsive content-type-image" src="${noIcon}">
         </div>
         <div class="text-details">
-          <h2 id="${titleId}" class="title"></h2>
+          <h2 id="${titleId}" class="title" tabindex="-1"></h2>
           <div class="owner"></div>
           <p class="small"></p>
           <a class="button demo-button" target="_blank" href="#">
@@ -235,7 +235,7 @@ export default class ContentTypeDetailView {
    * Removes all images from the carousel
    */
   removeAllImagesInCarousel() {
-    this.carouselList.querySelectorAll('li').forEach(removeChild(this.carouselList));
+    querySelectorAll('li', this.carouselList).forEach(removeChild(this.carouselList));
     this.imageLightbox.reset();
   }
 
@@ -278,6 +278,11 @@ export default class ContentTypeDetailView {
     this.buttons.forEach(button => {
       button.classList.add('hidden');
     });
+
+    // Remove old warning message if in DOM
+    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
+      this.updateMessage.getElement().parentNode.removeChild(this.updateMessage.getElement());
+    }
 
     this.removeInstallMessage();
     this.resetLicenses();
@@ -396,7 +401,7 @@ export default class ContentTypeDetailView {
    * @param {string} text
    */
   ellipsisRest(size, text) {
-    return `<span class="part-two" tabindex="-1">${text.substr(size)}...</span>`;
+    return `<span class="part-two" tabindex="-1">${text.substr(size)}</span>`;
   }
 
   /**
@@ -404,7 +409,7 @@ export default class ContentTypeDetailView {
    */
   resetLicenses() {
     const container = this.licensePanelBody.querySelector('.panel-body');
-    container.querySelectorAll('dt,dl').forEach(removeChild(container));
+    querySelectorAll('dt,dl', container).forEach(removeChild(container));
   }
 
   /**
@@ -443,13 +448,11 @@ export default class ContentTypeDetailView {
   /**
    * Creates a modal window for license details
    *
-   * @param title
-   * @param subtitle
    * @param licenses
    *
    * @return {Element}
    */
-  createLicenseDialog({title, subtitle, licenses}) {
+  createLicenseDialog(licenses) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `
@@ -458,8 +461,8 @@ export default class ContentTypeDetailView {
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
-              <h5 class="modal-title" id="${titleId}">${title}</h5>
-              <h5 class="modal-subtitle">${subtitle}</h5>
+              <h5 class="modal-title" id="${titleId}">${Dictionary.get('contentTypeLicenseModalTitle')}</h5>
+              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalDescription')}</h5>
             </div>
             <div class="modal-body">
               <dl class="panel panel-simple panel"></dl>
@@ -487,7 +490,7 @@ export default class ContentTypeDetailView {
       body.setAttribute('role', 'region');
       body.innerHTML = `
         <div class="panel-body">
-          <div class="small">${license.body}</div>
+          <div class="small">${license.full}</div>
         </div>`;
       hide(body);
 
@@ -545,19 +548,13 @@ export default class ContentTypeDetailView {
   setIsUpdatePossible(isUpdatePossible, title) {
     this.updateButton.classList.toggle('hidden', !isUpdatePossible);
 
-    // Remove old warning message if in DOM
-    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
-      this.updateMessage.getElement().parentNode
-        .removeChild(this.updateMessage.getElement());
-    }
-
     // Set warning message
     if (isUpdatePossible) {
       this.updateMessage = new MessageView({
         type: 'warning',
         title: Dictionary.get(
           'warningUpdateAvailableTitle',
-          {':contentType': title || 'the content type'}
+          {':contentType': title || Dictionary.get('theContentType')}
         ),
         content: Dictionary.get('warningUpdateAvailableBody')
       });
@@ -617,7 +614,7 @@ export default class ContentTypeDetailView {
    * Focuses on the title
    */
   focus() {
-    setTimeout(() => this.rootElement.focus(), 10);
+    setTimeout(() => this.title.focus(), 10);
   }
 
   /**

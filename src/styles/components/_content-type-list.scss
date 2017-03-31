@@ -5,16 +5,15 @@
 @import "~h5p-sdk/src/styles/base/mixins";
 @import "~susy/sass/susy";
 
+$content-type-list-image-size: 100px;
+
 .h5p-hub {
   ul.content-type-list {
-    list-style: none;
     padding: 1.25em 0;
-    margin: 0;
-    height: 40em;
     overflow: auto;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
-                0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
-
+    0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+    height: 40em;
     opacity: 1;
     transition: opacity 0.2s, visibility 0s linear 0s;
 
@@ -27,6 +26,7 @@
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
+
     li {
       width: 100%;
       padding: $gutter;
@@ -34,8 +34,7 @@
       cursor: pointer;
       overflow: auto;
       outline-color: lighten($ac1, 10%);
-
-      @include container;
+      margin-top: 0;
 
       &:hover {
         background-color: lighten($ac1, 55%);
@@ -46,59 +45,69 @@
       }
     }
 
+    .media-object {
+      width: $content-type-list-image-size / 2;
+    }
+
     .button {
       min-width: 5.8em;
+      float: right;
     }
 
-    img {
-      @include span(first 3 of 12);
-      max-width: 100px;
+    .media-heading {
+      float: left;
+      margin-right: $gutter;
     }
 
-    .content-type-row-info {
-      @include  span(6 of 12);
+    .description {
+      color: $c6;
+      float: left;
+      clear: left;
+    }
 
-      h4 {
-        line-height: 2em;
-        margin: 0;
+    .content-type-update-info {
+      margin-right: 0;
+      color: $color-section-content-types;
+      font-size: $text-body-small;
+      font-style: italic;
+      float: left;
+
+      &:before {
+        font-family: 'h5p-hub';
+        font-style: normal;
+        content: "\e902";
+        margin-right: 0.5em;
       }
-
-      .description {
-        color: $c6;
-      }
     }
-  }
 
-  .content-type-update-info {
-    display: inline-block;
-    margin-right: 2em;
-    color: $color-section-content-types;
-    font-size: $text-body-small;
-    font-style: italic;
-
-    &:before {
-      font-family: 'h5p-hub';
-      font-style: normal;
-      content: "\e902";
-      margin-right: 0.5em;
+    .content-type-actions-info {
+      display: inline-block;
+      float: right;
     }
-  }
 
-  .content-type-actions-info {
-    display: inline-block;
-    float: right;
-  }
-
-  .content-type-row-button {
-    display: inline-block;
-    white-space: nowrap;
-    text-align: right;
-    padding: 0;
-  }
-
-  @media (min-width: $screen-small) {
     .content-type-row-button {
-      padding: $gutter;
+      display: inline-block;
+      white-space: nowrap;
+      text-align: right;
+      padding: 0;
+    }
+
+    @media (min-width: $screen-small) {
+      .content-type-row-button {
+        padding: $gutter;
+      }
+
+      .media-object {
+        width: $content-type-list-image-size;
+      }
+    }
+
+    @media (min-width: $screen-medium) {
+      .content-type-update-info {
+        margin-right: 2em;
+        margin-top: 7px;
+        float: right;
+      }
     }
   }
 }

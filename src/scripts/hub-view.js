@@ -55,7 +55,8 @@ export default class HubView {
    * Closes the panel
    */
   closePanel() {
-    this.panel.classList.remove('open');
+    this.panel.querySelector('[aria-expanded="true"]').setAttribute('aria-expanded', false);
+    this.trigger('panel-change');
   }
 
   /**
@@ -104,16 +105,21 @@ export default class HubView {
 
   /**
    * Set if panel is open, this is used for outer border color
+   *
+   * @return {boolean} if the panel has the open class now
    */
   togglePanelOpen() {
     const panel = this.panel;
-    if(!panel.classList.contains('open')) {
-      panel.classList.add('open');
-      setTimeout(function(){panel.querySelector('#hub-search-bar').focus()},20);
-    }
-    else {
+    const isOpen = panel.classList.contains('open');
+
+    if(isOpen) {
       panel.classList.remove('open');
     }
+    else {
+      panel.classList.add('open');
+    }
+
+    return !isOpen;
   }
 
   /**
@@ -168,13 +174,9 @@ export default class HubView {
     return this.rootElement.appendChild(element);
   }
 
-  /**
-   * Adds an animated border to the bottom of the tab
+  /*
+   * Initialize the tab panel from the controller
    */
-  addBottomBorder() {
-    this.tablist.appendChild(document.createElement('span'));
-  }
-
   initTabPanel() {
     initTabPanel(this.tabContainerElement);
   }
@@ -185,7 +187,24 @@ export default class HubView {
    * @param {string} id
    */
   setSectionType({id}) {
-    this.panel.classList.add('h5p-section-' + id, 'panel');
+    const SECTION_PREFIX = 'h5p-section-';
+    this.panel.className = this.removeWordByPrefix(SECTION_PREFIX, this.panel.className);;
+    this.panel.classList.add(SECTION_PREFIX + id, 'panel');
+
+  }
+
+  /**
+   * Takes a string and removes words that start with prefix
+   *
+   * @param {string} prefix
+   * @param {string} classes
+   *
+   * @return {string}
+   */
+  removeWordByPrefix(prefix, classes) {
+    return classes.split(/ +/)
+      .filter(cls => cls.indexOf(prefix) !== 0)
+      .join(' ');
   }
 
   /**

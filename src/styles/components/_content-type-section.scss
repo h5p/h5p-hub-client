@@ -113,6 +113,7 @@
       padding-right: $gutter * 2;
       position: relative;
       line-height: 1;
+      font-weight: bold;
     }
 
     .navbar-toggler-selected:after {
@@ -134,58 +135,6 @@
     overflow: hidden;
   }
 
-  /* Large */
-  @media (min-width: 820px) {
-    .navbar{
-      .navbar-brand {
-        font-style: italic;
-        font-weight: 600;
-        font-size: 1.15em;
-        padding-left: 1.5em;
-        padding-top: 0.5em;
-        margin-bottom: -0.5em;
-        display: inline-block;
-        color: $c2;
-      }
-    }
-  }
-
-  /* Medium */
-  @media (min-width: 652px) {
-    .navbar {
-      padding: 0;
-      border-bottom: solid 1px rgba(206, 214, 227, 0.34);
-
-      [role="menuitem"] {
-        border-bottom: none;
-      }
-    }
-    .navbar-header {
-      display: inline-block;
-    }
-
-    .navbar-brand {
-      padding: $gutter;
-    }
-
-    .navbar-toggler {
-      display: none;
-    }
-    .navbar-toggler-selected {
-      display: none;
-    }
-
-    .navbar-nav {
-      display: inline-block;
-      float: right;
-
-      &.collapsed {
-        display: block;
-        overflow: hidden;
-      }
-    }
-  }
-
   .content-type-section {
     position: relative;
     overflow: hidden;
@@ -198,5 +147,88 @@
     padding: 1em 2em;
     box-sizing: border-box;
     font-size: 0.9em;
+  }
+
+  /*
+   * The following are custom media queries for the nav bar
+   */
+
+   /* Small */
+   @media (min-width: 600px) {
+     .navbar {
+       display: flex;
+       padding: 0;
+       border-bottom: solid 1px rgba(206, 214, 227, 0.34);
+
+       [role="menuitem"] {
+         border-bottom: 0.1em solid transparent;
+         transition: border-bottom 0.3s;
+         margin-left: 1em;
+         margin-right: 1em;
+
+         &[aria-selected="true"] {
+           border-bottom: 0.1em solid #1a93f4;
+           transition: border-bottom 0.3s;
+         }
+       }
+     }
+     .navbar-header {
+       display: inline-block;
+     }
+
+     .navbar-brand {
+       padding: $gutter;
+     }
+
+     .navbar-toggler {
+       display: none;
+     }
+     .navbar-toggler-selected {
+       display: none;
+     }
+
+     .navbar-nav {
+       display: inline-block;
+       float: right;
+
+       &.collapsed {
+         display: flex;
+         flex: 1;
+         justify-content: center;
+         overflow: hidden;
+       }
+     }
+   }
+
+   /* Medium */
+   @media (min-width: 789px) {
+     .navbar{
+       .navbar-brand {
+         font-style: italic;
+         font-weight: 600;
+         font-size: 1.15em;
+         padding-left: 1.5em;
+         padding-top: 0.5em;
+         margin-bottom: -0.5em;
+         display: inline-block;
+         color: $c2;
+       }
+
+       .navbar-nav {
+         &.collapsed {
+           justify-content: flex-end;
+         }
+       }
+     }
+   }
+
+  /* Full size */
+  @media (min-width: 850px) {
+    .navbar{
+      [role="menuitem"] {
+        padding-left: 1.5em;
+        padding-right: 1.5em;
+      }
+    }
   }
 }

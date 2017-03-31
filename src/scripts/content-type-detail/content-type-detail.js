@@ -19,7 +19,15 @@ export default class ContentTypeDetail {
 
     // views
     this.view = new ContetTypeDetailView(state);
-    this.view.on('install', this.install, this);
+    this.view.on('install', ({id}) => {
+      this.services.contentType(id)
+        .then(contentType => {
+          return this.install({
+            id: contentType.machineName,
+            installed: contentType.installed
+          });
+        });
+    }, this);
     this.view.on('show-license-dialog', this.showLicenseDialog, this);
 
     // propagate events
@@ -74,14 +82,7 @@ export default class ContentTypeDetail {
    * @param {object} license
    */
   showLicenseDialog({ license }) {
-    const licenseDialog = this.view.createLicenseDialog({
-      title: 'Content License info',
-      subtitle: 'Click on a specific license to get info about proper usage',
-      licenses: [{
-        title: license.title,
-        body: license.full
-      }]
-    });
+    const licenseDialog = this.view.createLicenseDialog([license]);
 
     // triggers the modal event
     this.trigger('modal', {
@@ -93,25 +94,6 @@ export default class ContentTypeDetail {
   }
 
   /**
-   * Handle the install
-   *
-   * @param {string} id
-   */
-  install({ id }){
-    return this.services.contentTypes()
-      .then(contentTypes => {
-        const install = contentTypes.find(contentType => {
-          return contentType.machineName === id;
-        });
-
-        return this.doInstall({
-          id: install.machineName,
-          installed: install.installed
-        });
-      });
-  }
-
-  /**
    * Loads a Content Type description
    *
    * @param {string} id
@@ -119,7 +101,7 @@ export default class ContentTypeDetail {
    *
    * @return {Promise.<ContentType>}
    */
-  doInstall({id, installed}) {
+  install({id, installed}) {
     // set spinner
     this.view.toggleSpinner(true);
 
@@ -133,23 +115,22 @@ export default class ContentTypeDetail {
         : 'contentTypeInstallSuccess';
 
       this.view.setInstallMessage({
-        message: Dictionary.get(installMessageKey, {':contentType': id}),
+        message: Dictionary.get(installMessageKey, {':contentType': id})
       });
-    })
-      .catch(error => {
-        this.view.toggleSpinner(false);
+    }).catch(error => {
+      this.view.toggleSpinner(false);
 
-        // print error message
-        let errorMessage = (error.errorCode) ? error : {
-          success: false,
-          errorCode: 'RESPONSE_FAILED',
-          message: Dictionary.get('contentTypeInstallError', {':contentType': id})
-        };
-        this.view.setInstallMessage(errorMessage);
+      // print error message
+      let errorMessage = (error.errorCode) ? error : {
+        success: false,
+        errorCode: 'RESPONSE_FAILED',
+        message: Dictionary.get('contentTypeInstallError', {':contentType': id})
+      };
+      this.view.setInstallMessage(errorMessage);
 
-        // log whole error message to console
-        console.error('Installation error', error);
-      });
+      // log whole error message to console
+      console.error('Installation error', error);
+    });
   }
 
   /**
@@ -168,9 +149,9 @@ export default class ContentTypeDetail {
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicense(this.getLicenseDetails(contentType.license, contentType.owner));
     this.view.setIsRestricted(contentType.restricted);
-    const isUpdatePossible = contentType.installed
-      && !contentType.isUpToDate
-      && !contentType.restricted;
+    const isUpdatePossible = contentType.installed &&
+      !contentType.isUpToDate &&
+      !contentType.restricted;
     this.view.setIsUpdatePossible(isUpdatePossible, contentType.title || contentType.machineName);
 
     // Check if api version is supported
