@@ -1,17 +1,10 @@
 import MessageView from "../message-view/message-view";
 import { setAttribute, getAttribute, hasAttribute, removeAttribute, querySelectorAll } from "utils/elements";
-import { forEach } from "utils/functional";
 import { relayClickEventAs } from '../utils/events';
 import initNavbar from 'components/navbar';
 import { Eventful } from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
 import ContentTypeSection from './content-type-section';
-
-/**
- * @param {HTMLElement[]} elements
- * @function
- */
-const unselectAll = forEach(removeAttribute('aria-selected'));
 
 /**
  * @constant {number}
@@ -223,9 +216,6 @@ export default class ContentBrowserView {
     const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
 
     if(selectedMenuItem) {
-      unselectAll(menuItems);
-      selectedMenuItem.setAttribute('aria-selected', 'true');
-
       this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: id,
@@ -235,7 +225,7 @@ export default class ContentBrowserView {
   }
 
   /*
-   * Initialize the menu from the controller 
+   * Initialize the menu from the controller
    */
   initMenu() {
     // call init menu from sdk
