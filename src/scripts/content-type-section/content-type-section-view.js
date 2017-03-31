@@ -219,7 +219,7 @@ export default class ContentBrowserView {
       return;
     }
 
-    const menuItems = this.menubar.querySelectorAll('[role="menuitem"]');
+    const menuItems = querySelectorAll('[role="menuitem"]', this.menubar);
     const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
 
     if(selectedMenuItem) {
