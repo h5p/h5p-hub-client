@@ -115,4 +115,20 @@ $color-back-button: #474f5a;
       outline: none;
     }
   }
+
+  .imagelightbox-button {
+    &.next:before {
+      @include icon($icon-arrow-thick);
+      display: block;
+      transform: rotate(180deg);
+      height: 1.2em;
+    }
+    &.previous:before {
+      @include icon($icon-arrow-thick);
+      height: 1.2em;
+    }
+    &.close:before {
+      @include icon($icon-close);
+    }
+  }
 }
