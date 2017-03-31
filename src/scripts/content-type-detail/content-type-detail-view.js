@@ -9,6 +9,7 @@ import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
+import ImageLightbox from '../image-lightbox/image-lightbox';
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -79,6 +80,8 @@ export default class ContentTypeDetailView {
     this.installingButton = this.buttonBar.querySelector('.button-installing');
     this.buttons = this.buttonBar.querySelectorAll('.button');
 
+    this.imageLightbox = new ImageLightbox();
+
     this.contentContainer = this.rootElement.querySelector('.container');
     this.image = this.rootElement.querySelector('.content-type-image');
     this.title = this.rootElement.querySelector('.text-details .title');
@@ -87,8 +90,7 @@ export default class ContentTypeDetailView {
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
-    const imageLightbox = this.rootElement.querySelector(`#${IMAGELIGHTBOX}-detail`);
-    this.imageLightboxList = imageLightbox.querySelector(`.${IMAGELIGHTBOX}-list`);
+
     this.panel = this.rootElement.querySelector('.panel');
     this.licensePanelHeading = this.rootElement.querySelector('.license-panel-heading');
     this.licensePanelBody = this.rootElement.querySelector('#license-panel');
@@ -97,7 +99,6 @@ export default class ContentTypeDetailView {
     // init interactive elements
     initPanel(this.panel);
     initImageScroller(this.carousel);
-    initImageLightbox(imageLightbox);
 
     // fire events on button click
     relayClickEventAs('close', this, this.rootElement.querySelector('.back-button'));
@@ -198,14 +199,7 @@ export default class ContentTypeDetailView {
         <dl id="license-panel" role="region" class="hidden">
           <div class="panel-body"></div>
         </dl>
-      </dl>
-      <div id="${IMAGELIGHTBOX}-detail" class="${IMAGELIGHTBOX}" role="dialog" aria-label="${l10n.title}">
-        <ol class="${IMAGELIGHTBOX}-list"></ol>
-        <div class="${IMAGELIGHTBOX}-progress">${l10n.progress}</div>
-        <div class="${IMAGELIGHTBOX}-button next" role="button" aria-disabled="true" aria-label="${l10n.next}"></div>
-        <div class="${IMAGELIGHTBOX}-button previous" role="button" aria-disabled="true" aria-label="${l10n.prev}"></div>
-        <div class="${IMAGELIGHTBOX}-button close" role="button" tabindex="0" aria-label="${l10n.close}"></div>
-      </div>`;
+      </dl>`;
 
     return element;
   }
@@ -242,7 +236,7 @@ export default class ContentTypeDetailView {
    */
   removeAllImagesInCarousel() {
     this.carouselList.querySelectorAll('li').forEach(removeChild(this.carouselList));
-    this.imageLightboxList.innerHTML = '';
+    this.imageLightbox.reset();
   }
 
   /**
@@ -250,17 +244,23 @@ export default class ContentTypeDetailView {
    *
    * @param {object} image
    */
-  addImageToCarousel(image) {
+  addImageToCarousel(image, index) {
+    let self = this;
+
     // add lightbox
-    const item = document.createElement('li');
-    item.classList.add(`${IMAGELIGHTBOX}-image`);
-    item.innerHTML = `<img class="img-responsive" src="${image.url}" alt="${image.alt}">`;
-    this.imageLightboxList.appendChild(item);
+    this.imageLightbox.addImage(image);
 
     // add thumbnail
     const thumbnail = document.createElement('li');
     thumbnail.className = 'slide';
-    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
+    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
+
+    const img = thumbnail.querySelector('img');
+    img.addEventListener('click', () => {
+      self.imageLightbox.show(index);
+      self.trigger('modal', {element: self.imageLightbox.getElement()});
+    });
+
     this.carouselList.appendChild(thumbnail);
   }
 

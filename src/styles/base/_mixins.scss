@@ -5,6 +5,8 @@ $icon-scroll-bar: url('../../images/scrollbar-bars-icon.svg');
 
 $icon-close: '\e901';
 $icon-accordion-arrow: '\e91f';
+$icon-arrow-thick: '\e90c';
+$icon-arrow-line: '\e924';
 
 @mixin scroll-bar($background-color, $button-color) {
   &::-webkit-scrollbar {
