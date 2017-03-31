@@ -140,7 +140,7 @@ export default class ContentTypeDetailView {
           <img class="img-responsive content-type-image" src="${noIcon}">
         </div>
         <div class="text-details">
-          <h2 id="${titleId}" class="title"></h2>
+          <h2 id="${titleId}" class="title" tabindex="-1"></h2>
           <div class="owner"></div>
           <p class="small"></p>
           <a class="button demo-button" target="_blank" href="#">
@@ -401,7 +401,7 @@ export default class ContentTypeDetailView {
    * @param {string} text
    */
   ellipsisRest(size, text) {
-    return `<span class="part-two" tabindex="-1">${text.substr(size)}...</span>`;
+    return `<span class="part-two" tabindex="-1">${text.substr(size)}</span>`;
   }
 
   /**
@@ -614,7 +614,7 @@ export default class ContentTypeDetailView {
    * Focuses on the title
    */
   focus() {
-    setTimeout(() => this.rootElement.focus(), 10);
+    setTimeout(() => this.title.focus(), 10);
   }
 
   /**
