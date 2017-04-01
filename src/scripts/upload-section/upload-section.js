@@ -40,6 +40,7 @@ export default class UploadSection {
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
+        <h1 class="upload-instruction-header">${Dictionary.get('uploadInstructionsTitle')}</h1>
         <div class="upload-form">
           <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" disabled/>
           <button class="button use-button">Use</button>
@@ -48,37 +49,10 @@ export default class UploadSection {
             <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
+        <p class="upload-instruction-description">${Dictionary.get('uploadInstructionsContent')}</p>
       </div>
     `;
-
-    // Create the html for the upload instructions separately as it needs to be styled
-    const uploadInstructions = document.createElement('div');
-    uploadInstructions.className = 'upload-instructions';
-    this.renderUploadInstructions(uploadInstructions, Dictionary.get('uploadInstructionsTitle'), Dictionary.get('uploadInstructionsContent'));
-    uploadForm.querySelector('.upload-wrapper').appendChild(uploadInstructions);
-
     return uploadForm;
-  }
-
-  /**
-   * Creates html for the upload instructions and appends them to a wrapping div.
-   * Splits the input text into sentences and styles the first sentence differently.
-   *
-   * @param  {HTMLElement} container
-   * @param  {string} text
-   */
-  renderUploadInstructions(container, title, content) {
-
-    const header = document.createElement('p');
-    header.className = 'upload-instruction-header';
-    header.innerHTML = title;
-
-    const description = document.createElement('p');
-    description.className = 'upload-instruction-description';
-    description.innerHTML = content;
-
-    container.appendChild(header);
-    container.appendChild(description);
   }
 
   /**

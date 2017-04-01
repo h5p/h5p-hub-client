@@ -49,14 +49,18 @@ export default class HubView {
 
     // relay events
     relayClickEventAs('panel-change', this, this.toggler);
-  }
 
-  /**
-   * Closes the panel
-   */
-  closePanel() {
-    this.panel.querySelector('[aria-expanded="true"]').setAttribute('aria-expanded', false);
-    this.trigger('panel-change');
+    // relay keyboard events
+    this.toggler.addEventListener('keyup', event => {
+      if (event.which === 32 || event.which === 13) {
+        this.trigger('panel-change', {
+          element: this.toggler,
+          id: this.toggler.getAttribute('data-id')
+        }, false);
+
+        event.preventDefault();
+      }
+    });
   }
 
   /**
@@ -106,20 +110,22 @@ export default class HubView {
   /**
    * Set if panel is open, this is used for outer border color
    *
-   * @return {boolean} if the panel has the open class now
+   * @param {boolean} [forceOpen] Forces the state of the panel
+   *
+   * @return {boolean} if the panel is open now
    */
-  togglePanelOpen() {
-    const panel = this.panel;
-    const isOpen = panel.classList.contains('open');
+  togglePanelOpen(forceOpen) {
 
-    if(isOpen) {
-      panel.classList.remove('open');
-    }
-    else {
-      panel.classList.add('open');
+    // If no argument set forceOpen to opposite of what it is now
+    if (forceOpen === undefined) {
+      forceOpen = !this.panel.classList.contains('open');
     }
 
-    return !isOpen;
+    // Set open class and aria-expanded attribute
+    this.panel.classList[forceOpen ? 'add' : 'remove']('open');
+    this.toggler.setAttribute('aria-expanded', `${forceOpen}`);
+
+    return !forceOpen;
   }
 
   /**

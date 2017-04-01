@@ -3,7 +3,7 @@
 .h5p-hub {
 
   .upload-wrapper {
-    padding: 2em;
+    padding: 1em 2em 2em 2em;
 
     [aria-hidden="true"] {
       display: none;
@@ -19,8 +19,10 @@
     cursor: default;
   }
 
-  p.upload-instruction-header {
-    font-size: 1.250em;
+  h1.upload-instruction-header {
+    font-size: $text-title-small;
+    margin-top: $gutter;
+    margin-bottom: $gutter;
   }
 
   p.upload-instruction-description {

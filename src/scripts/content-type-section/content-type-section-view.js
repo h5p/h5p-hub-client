@@ -27,6 +27,8 @@ export default class ContentBrowserView {
     // general configuration
     this.typeAheadEnabled = true;
     this.currentlySelected = {};
+    this.menuId = 'content-type-filter';
+    this.currentMenuId = this.menuId + '-a11y-desc-current';
 
     // create elements
     this.rootElement = this.createElement(state);
@@ -62,10 +64,10 @@ export default class ContentBrowserView {
     });
 
     // Search button
-    inputButton.addEventListener('click', event => {
+    inputButton.addEventListener('click', () => {
        this.trigger('search', {
-         element: searchbar,
-         query: searchbar.value
+         element: searchBar,
+         query: searchBar.value
        });
        searchBar.focus();
     })
@@ -79,7 +81,6 @@ export default class ContentBrowserView {
    * @return {HTMLElement}
    */
   createElement(state) {
-    let menuId = 'content-type-filter';
     let searchText = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
     // create element
@@ -89,11 +90,13 @@ export default class ContentBrowserView {
       <div class="menu-group">
         <nav  role="menubar" class="navbar">
           <div class="navbar-header">
-            <span class="navbar-toggler-selected" tabindex="0" aria-haspopup="true" role="button" aria-controls="${menuId}" aria-expanded="false"></span>
+            <span class="navbar-toggler-selected" tabindex="0" aria-haspopup="true" role="button" aria-controls="${this.menuId}" aria-expanded="false"></span>
             <span class="navbar-brand">${Dictionary.get("contentTypeSectionTitle")}</span>
           </div>
 
-          <ul id="${menuId}" class="navbar-nav"></ul>
+          <ul id="${this.menuId}" class="navbar-nav">
+            <span id="${this.currentMenuId}" style="display: none">${Dictionary.get("currentMenuSelected")}</span>
+          </ul>
         </nav>
 
         <div class="input-group" role="search">
@@ -170,6 +173,7 @@ export default class ContentBrowserView {
       const myArray =  Object.keys(ContentTypeSection.Tabs)
         .map(menuItemName => ContentTypeSection.Tabs[menuItemName]);
 
+      // Get the currently selected menu item
       for (let i = 0; i < myArray.length; i++) {
         if (myArray[i].eventName === event.choice) {
           self.currentlySelected = myArray[i];
@@ -222,9 +226,17 @@ export default class ContentBrowserView {
     const selectedMenuItem = this.menubar.querySelector(`[role="menuitem"][data-id="${id}"]`);
 
     if(selectedMenuItem) {
-      // Manually set the classes and aria attributes for the default menu
+      // Manually set the classes and aria attributes upon initialisation - toggling logic is handled in the h5p-sdk
+
+      // Set readspeaker information for the current menu item
+      menuItems.forEach(menuitem => {
+        menuitem.classList.remove('selected');
+        menuitem.removeAttribute('aria-describedby');
+      });
+
       selectedMenuItem.classList.add('selected');
-      selectedMenuItem.setAttribute('aria-describedby', 'a11y-desc-current');
+      selectedMenuItem.setAttribute('aria-describedby', this.currentMenuId);
+
       this.trigger('menu-selected', {
         element: selectedMenuItem,
         id: id,
