@@ -64,10 +64,10 @@ export default class ContentBrowserView {
     });
 
     // Search button
-    inputButton.addEventListener('click', event => {
+    inputButton.addEventListener('click', () => {
        this.trigger('search', {
-         element: searchbar,
-         query: searchbar.value
+         element: searchBar,
+         query: searchBar.value
        });
        searchBar.focus();
     })
@@ -227,12 +227,14 @@ export default class ContentBrowserView {
 
     if(selectedMenuItem) {
       // Manually set the classes and aria attributes upon initialisation - toggling logic is handled in the h5p-sdk
-      selectedMenuItem.classList.add('selected');
 
       // Set readspeaker information for the current menu item
       menuItems.forEach(menuitem => {
+        menuitem.classList.remove('selected');
         menuitem.removeAttribute('aria-describedby');
-      })
+      });
+
+      selectedMenuItem.classList.add('selected');
       selectedMenuItem.setAttribute('aria-describedby', this.currentMenuId);
 
       this.trigger('menu-selected', {
