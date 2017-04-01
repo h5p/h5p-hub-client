@@ -82,6 +82,14 @@ export default class ContentTypeDetailView {
 
     this.imageLightbox = new ImageLightbox();
 
+    // Restore focus to image when lightbox is hidden
+    this.imageLightbox.on('lightbox-hidden', () => {
+      if (this.focusedImage) {
+        this.focusedImage.focus();
+        delete this.focusedImage;
+      }
+    });
+
     this.contentContainer = this.rootElement.querySelector('.container');
     this.image = this.rootElement.querySelector('.content-type-image');
     this.title = this.rootElement.querySelector('.text-details .title');
@@ -251,6 +259,16 @@ export default class ContentTypeDetailView {
     img.addEventListener('click', () => {
       self.imageLightbox.show(index);
       self.trigger('modal', {element: self.imageLightbox.getElement()});
+      self.focusedImage = img;
+    });
+
+    img.addEventListener('keydown', event => {
+      if (event.which === 32 || event.which === 13) {
+        self.imageLightbox.show(index);
+        self.trigger('modal', {element: self.imageLightbox.getElement()});
+        self.focusedImage = img;
+        event.preventDefault();
+      }
     });
 
     this.carouselList.appendChild(thumbnail);
