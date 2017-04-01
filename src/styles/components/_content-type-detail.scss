@@ -120,6 +120,16 @@ $color-back-button: #474f5a;
     }
   }
 
+  .license-dialog .loading .panel {
+    display: none;
+  }
+
+  .license-dialog .loading:after {
+    @include throbber(3em);
+    width: 1em;
+    margin: 0 auto;
+  }
+
   .imagelightbox-button {
     &.next:before,
     &.previous:before {

@@ -1,4 +1,4 @@
-import { setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains, querySelectorAll } from "utils/elements";
+import { addClass, removeClass, setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains, querySelectorAll } from "utils/elements";
 import { curry, forEach } from "utils/functional";
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
@@ -85,7 +85,7 @@ export default class ContentTypeDetailView {
     this.contentContainer = this.rootElement.querySelector('.container');
     this.image = this.rootElement.querySelector('.content-type-image');
     this.title = this.rootElement.querySelector('.text-details .title');
-    this.owner = this.rootElement.querySelector('.owner');
+    this.ownerElement = this.rootElement.querySelector('.owner');
     this.description = this.rootElement.querySelector('.text-details .small');
     this.demoButton = this.rootElement.querySelector('.demo-button');
     this.carousel = this.rootElement.querySelector('.carousel');
@@ -408,21 +408,30 @@ export default class ContentTypeDetailView {
    * Sets the lisence
    *
    * @param {object} license
+   * @param {string} license.id
+   * @param {object} license.attributes
    */
   setLicense(license) {
-    const panelContainer = this.licensePanelBody.querySelector('.panel-body');
-    const l10n = {
-      readMore: 'Read more'
-    };
+    this.license = license;
 
-    if(license){
+    const panelContainer = this.licensePanelBody.querySelector('.panel-body');
+
+    if (license) {
       // Create short version for detail page
       const shortLicenseInfo = document.createElement('div');
       shortLicenseInfo.className = 'short-license-info';
       shortLicenseInfo.innerHTML = `
-        <h3>${license.title}</h3>
-        <button class="short-license-read-more icon-info-circle" aria-label="${l10n.readMore}"></button>
-        ${license.short}`;
+        <h3>${license.id}</h3>
+        <button class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('contentTypeReadMore')}"></button>
+        <ul class="small">
+          <li>${Dictionary.get(license.attributes.useCommercially ? "licenseCanUseCommercially" : "licenseCannotUseCommercially")}</li>
+          <li>${Dictionary.get(license.attributes.modifiable ? "licenseCanModify" : "licenseCannotModify")}</li>
+          <li>${Dictionary.get(license.attributes.distributable ? "licenseCanDistribute" : "licenseCannotDistribute")}</li>
+          <li>${Dictionary.get(license.attributes.sublicensable ? "licenseCanSublicense" : "licenseCannotSublicense")}</li>
+          <li>${Dictionary.get(license.attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}</li>
+          <li>${Dictionary.get(license.attributes.mustIncludeCopyright ? "licenseMustIncludeCopyright" : "licenseMustNotIncludeCopyright")}</li>
+          <li>${Dictionary.get(license.attributes.mustIncludeLicense ? "licenseMustIncludeLicense" : "licenseMustNotIncludeLicense")}</li>
+        </ul>`;
 
       // add short version of lisence
       panelContainer.innerText = '';
@@ -430,68 +439,79 @@ export default class ContentTypeDetailView {
 
       // handle clicking read more
       const readMoreButton = this.licensePanelBody.querySelector('.short-license-read-more');
-      readMoreButton.addEventListener('click', () => this.trigger('show-license-dialog', { license }));
+      readMoreButton.addEventListener('click', () => this.trigger('show-license-dialog', { licenseId: license.id }));
     }
     else {
-      panelContainer.innerText = 'Unspecified';
+      panelContainer.innerText = Dictionary.get('licenseUnspecified');
     }
   }
 
   /**
    * Creates a modal window for license details
    *
-   * @param licenses
+   * @param {Promise} licenseDetails
    *
    * @return {Element}
    */
-  createLicenseDialog(licenses) {
+  createLicenseDialog(licenseDetails) {
     const titleId = 'license-dialog-title';
     const modal = document.createElement('div');
     modal.innerHTML = `
       <div class="modal fade show" role="dialog">
-        <div class="modal-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
+        <div class="modal-dialog license-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
               <h5 class="modal-title" id="${titleId}">${Dictionary.get('contentTypeLicenseModalTitle')}</h5>
-              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalDescription')}</h5>
+              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalSubtitle')}</h5>
             </div>
-            <div class="modal-body">
-              <dl class="panel panel-simple panel"></dl>
+            <div class="modal-body loading">
+              <dl class="panel panel-simple"></dl>
             </div>
           </div>
         </div>
       </div>`;
 
-    let panels = modal.querySelector('.panel');
+    let modalBody = modal.querySelector('.modal-body');
+    let panel = modalBody.querySelector('.panel');
+    let id = `content-type-detail-license`;
 
-    licenses.forEach((license, index) => {
-      let id = `content-type-detail-license-${index}`;
+    let header = document.createElement('dt');
+    header.setAttribute('role', 'heading');
+    header.setAttribute('aria-level', '2');
+    header.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
+        <span class="icon-accordion-arrow"></span>
+        <span class="license-title">${this.license.id}</span>
+      </a>`;
 
-      let title = document.createElement('dt');
-      title.setAttribute('role', 'heading');
-      title.setAttribute('aria-level', '2');
-      title.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
-          <span class="icon-accordion-arrow"></span>
-          <span class="h3">${license.title}</span>
-        </a>`;
+    let body = document.createElement('dd');
+    body.id = id;
+    body.className = 'hidden';
+    body.setAttribute('role', 'region');
+    body.innerHTML = `
+      <div class="panel-body">
+        <div class="license-description">${Dictionary.get("MITLicenseFull", {
+          ':year': new Date().getFullYear(),
+          ':owner': this.owner
+        })}</div>
+      </div>`;
+    hide(body);
 
-      let body = document.createElement('dd');
-      body.id = id;
-      body.className = 'hidden';
-      body.setAttribute('role', 'region');
-      body.innerHTML = `
-        <div class="panel-body">
-          <div class="small">${license.full}</div>
-        </div>`;
-      hide(body);
+    let title = header.querySelector('.license-title');
+    let description = body.querySelector('.license-description');
 
-      panels.appendChild(title);
-      panels.appendChild(body);
-    });
+    panel.appendChild(header);
+    panel.appendChild(body);
+
+    licenseDetails.then(details => {
+      title.innerHTML = details.id;
+      description.innerHTML = details.description;
+    }).catch(error => {
+      modalBody.innerHTML = Dictionary.get('fetchingLicenseDetailsFailed');
+    }).then(() => removeClass('loading', modalBody));
 
     initModal(modal);
-    initPanel(panels);
+    initPanel(panel);
 
     return modal;
   }
@@ -502,11 +522,13 @@ export default class ContentTypeDetailView {
    * @param {string} owner
    */
   setOwner(owner) {
+    this.owner = owner;
+
     if(owner) {
-      this.owner.innerHTML = Dictionary.get('contentTypeOwner', {':owner': owner});
+      this.ownerElement.innerHTML = Dictionary.get('contentTypeOwner', {':owner': owner});
     }
     else {
-      this.owner.innerHTML = '';
+      this.ownerElement.innerHTML = '';
     }
   }
 

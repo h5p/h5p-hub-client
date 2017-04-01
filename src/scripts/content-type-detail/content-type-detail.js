@@ -79,10 +79,11 @@ export default class ContentTypeDetail {
   /**
    * Displays the license dialog
    *
-   * @param {object} license
+   * @param {string} licenseId
    */
-  showLicenseDialog({ license }) {
-    const licenseDialog = this.view.createLicenseDialog([license]);
+  showLicenseDialog({ licenseId }) {
+
+    const licenseDialog = this.view.createLicenseDialog(this.services.getLicenseDetails(licenseId));
 
     // triggers the modal event
     this.trigger('modal', {
@@ -147,7 +148,7 @@ export default class ContentTypeDetail {
     this.view.setExample(contentType.example);
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicense(this.getLicenseDetails(contentType.license, contentType.owner));
+    this.view.setLicense(contentType.license);
     this.view.setIsRestricted(contentType.restricted);
     const isUpdatePossible = contentType.installed &&
       !contentType.isUpToDate &&
@@ -178,33 +179,5 @@ export default class ContentTypeDetail {
    */
   getElement() {
     return this.view.getElement();
-  }
-
-  /**
-   * Returns the license details
-   *
-   * @return {object}
-   */
-  getLicenseDetails(type, owner) {
-    switch(type){
-      case "MIT":
-        return {
-          title: Dictionary.get('MITLicenseTitle'),
-          short: `
-            <ul class="ul small">
-              <li>${Dictionary.get("licenseCanUseCommercially")}</li>
-              <li>${Dictionary.get("licenseCanModify")}</li>
-              <li>${Dictionary.get("licenseCanDistribute")}</li>
-              <li>${Dictionary.get("licenseCanSublicense")}</li>
-              <li>${Dictionary.get("licenseCannotHoldLiable")}</li>
-              <li>${Dictionary.get("licenseMustIncludeCopyright")}</li>
-              <li>${Dictionary.get("licenseMustIncludeLicense")}</li>
-            </ul>`,
-          full: Dictionary.get("MITLicenseFull", {
-            ':year': new Date().getFullYear(),
-            ':owner': owner
-          })
-        }
-    }
   }
 }

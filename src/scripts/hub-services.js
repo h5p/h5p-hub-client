@@ -1,4 +1,5 @@
 import './utils/fetch';
+import BrowserStorage from './utils/browser-storage';
 /**
  * @typedef {object} ContentType
  * @property {string} machineName
@@ -31,6 +32,7 @@ export default class HubServices {
    */
   constructor({ apiRootUrl }) {
     this.apiRootUrl = apiRootUrl;
+    this.browserStorage = new BrowserStorage('h5p-hub-services');
   }
 
   /**
@@ -132,6 +134,26 @@ export default class HubServices {
       credentials: 'include',
       body: formData
     }).then(result => result.json());
+  }
+
+  /**
+   * Get license info from h5p.org. Cache it, so that it is only fetched once.
+   *
+   * @param {string} licenseId
+   * @return {Promise}
+   */
+  getLicenseDetails(licenseId) {
+    // Check if already cached:
+    const cacheKey = `license-details-${licenseId}`;
+    const cachedLicense = this.browserStorage.getObj(cacheKey);
+
+    if (cachedLicense) {
+      return Promise.resolve(cachedLicense);
+    }
+
+    return fetch(`https://api.h5p.org/v1/licenses/${licenseId}`)
+      .then(result => result.json())
+      .then(result => this.browserStorage.setObj(cacheKey, result));
   }
 
   /**

@@ -230,6 +230,7 @@ export default class ContentTypeSection {
     this.view.typeAheadEnabled = false;
     this.view.removeDeactivatedStyleFromMenu();
 
+
     // Wait for transition before focusing since focusing an element will force the browser to
     // put that element into view. Doing so before the element is in the correct position will
     // skew all elements on the page.
