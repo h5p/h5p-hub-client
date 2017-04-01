@@ -87,7 +87,7 @@ export default class Hub {
 
     // handle events
     this.on('select', this.setPanelTitle, this);
-    this.on('select', this.view.closePanel, this.view);
+    this.on('select', this.view.togglePanelOpen.bind(this.view, false));
     this.view.on('tab-change', this.view.setSectionType, this.view);
     this.view.on('panel-change', () => {
       this.view.togglePanelOpen();
