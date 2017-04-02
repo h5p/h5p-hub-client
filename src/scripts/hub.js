@@ -115,7 +115,9 @@ export default class Hub {
    * @param {HTMLElement} element
    */
   showModal({element}) {
-    this.view.appendChild(element);
+    // Prepend to catch and trap focus
+    const parent = this.view.getElement();
+    parent.insertBefore(element, parent.firstChild);
     element.classList.remove('hidden');
   }
 
