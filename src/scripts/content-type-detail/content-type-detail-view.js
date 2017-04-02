@@ -113,16 +113,6 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
-
-    // Localized text strings
-    const l10n = { // TODO: Translate
-      title: 'Images',
-      progress: ':num of :total',
-      next: 'Next image',
-      prev: 'Previous image',
-      close: 'Close dialog'
-    };
-
     // ids
     const titleId = 'content-type-detail-view-title';
 
@@ -334,7 +324,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}<button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}<button class="read-more link">${Dictionary.get('readMore')}</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -356,13 +346,13 @@ export default class ContentTypeDetailView {
 
     if(this.descriptionExpanded) {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
-                                    <button class="read-less link">${Dictionary.get('contentTypeReadLess')}</button>`;
+                                    <button class="read-less link">${Dictionary.get('readLess')}</button>`;
 
       this.description.querySelector('.part-two').focus();
     }
     else {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}
-                                    <button class="read-more link">${Dictionary.get('contentTypeReadMore')}</button>`;
+                                    <button class="read-more link">${Dictionary.get('readMore')}</button>`;
 
       this.description.querySelector('.part-one').focus();
     }
@@ -422,8 +412,8 @@ export default class ContentTypeDetailView {
       shortLicenseInfo.className = 'short-license-info';
       shortLicenseInfo.innerHTML = `
         <h3>${license.id}</h3>
-        <button class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('contentTypeReadMore')}"></button>
-        <ul class="small">
+        <button class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('readMore')}"></button>
+        <ul class="ul small">
           <li>${Dictionary.get(license.attributes.useCommercially ? "licenseCanUseCommercially" : "licenseCannotUseCommercially")}</li>
           <li>${Dictionary.get(license.attributes.modifiable ? "licenseCanModify" : "licenseCannotModify")}</li>
           <li>${Dictionary.get(license.attributes.distributable ? "licenseCanDistribute" : "licenseCannotDistribute")}</li>
@@ -461,9 +451,9 @@ export default class ContentTypeDetailView {
         <div class="modal-dialog license-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
           <div class="modal-content">
             <div class="modal-header">
-              <button type="button" class="close icon-close" data-dismiss="modal" aria-label="Close"></button>
-              <h5 class="modal-title" id="${titleId}">${Dictionary.get('contentTypeLicenseModalTitle')}</h5>
-              <h5 class="modal-subtitle">${Dictionary.get('contentTypeLicenseModalSubtitle')}</h5>
+              <button type="button" class="close icon-close" data-dismiss="modal" aria-label="${Dictionary.get('close')}"></button>
+              <h5 class="modal-title" id="${titleId}">${Dictionary.get('licenseModalTitle')}</h5>
+              <h5 class="modal-subtitle">${Dictionary.get('licenseModalSubtitle')}</h5>
             </div>
             <div class="modal-body loading">
               <dl class="panel panel-simple"></dl>
@@ -490,10 +480,7 @@ export default class ContentTypeDetailView {
     body.setAttribute('role', 'region');
     body.innerHTML = `
       <div class="panel-body">
-        <div class="license-description">${Dictionary.get("MITLicenseFull", {
-          ':year': new Date().getFullYear(),
-          ':owner': this.owner
-        })}</div>
+        <div class="license-description"></div>
       </div>`;
     hide(body);
 
@@ -507,7 +494,7 @@ export default class ContentTypeDetailView {
       title.innerHTML = details.id;
       description.innerHTML = details.description;
     }).catch(error => {
-      modalBody.innerHTML = Dictionary.get('fetchingLicenseDetailsFailed');
+      modalBody.innerHTML = Dictionary.get('licenseFetchDetailsFailed');
     }).then(() => removeClass('loading', modalBody));
 
     initModal(modal);
