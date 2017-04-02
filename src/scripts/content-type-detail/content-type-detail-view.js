@@ -510,7 +510,9 @@ export default class ContentTypeDetailView {
 
     licenseDetails.then(details => {
       title.innerHTML = details.id;
-      description.innerHTML = details.description;
+      description.innerHTML = details.description
+        .replace(':year', new Date().getFullYear())
+        .replace(':owner', this.owner);
     }).catch(error => {
       modalBody.innerHTML = Dictionary.get('licenseFetchDetailsFailed');
     }).then(() => removeClass('loading', modalBody));
