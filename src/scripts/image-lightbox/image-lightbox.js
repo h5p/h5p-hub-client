@@ -48,7 +48,7 @@ export default class ImageLightBox {
       <div class="${IMAGELIGHTBOX}-inner">
         <div class="${IMAGELIGHTBOX}-button close" role="button" tabindex="0" aria-label="${Dictionary.get('close')}"></div>
         <ol class="${IMAGELIGHTBOX}-list"></ol>
-        <div class="${IMAGELIGHTBOX}-progress">${Dictionary.get('imageLightboxTitle')}</div>
+        <div class="${IMAGELIGHTBOX}-progress">${Dictionary.get('imageLightBoxProgress')}</div>
         <div class="${IMAGELIGHTBOX}-button next" role="button" aria-disabled="true" aria-label="${Dictionary.get('nextImage')}"></div>
         <div class="${IMAGELIGHTBOX}-button previous" role="button" aria-disabled="true" aria-label="${Dictionary.get('previousImage')}"></div>
       </div>`;
