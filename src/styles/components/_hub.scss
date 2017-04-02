@@ -68,14 +68,13 @@
         }
 
         &:after {
-          @include h5p-hub-icon("\e924");
+          @include h5p-hub-icon($icon-arrow-line, $gutter * 1.1);
           display: block;
           font-size: 0.9em;
           line-height: 3.5em;
           position: absolute;
           right: 0;
           top: 0;
-          margin-right: $gutter * 1.1;
         }
       }
     }
@@ -105,13 +104,11 @@
         outline-color: lighten($ac1, 10%);
 
         &:before {
-          @include h5p-hub-icon("\e91d");
+          @include h5p-hub-icon($icon-radio-unselected, $gutter);
         }
 
-        &[aria-selected='true'] {
-          &:before {
-            @include h5p-hub-icon("\e91b");
-          }
+        &[aria-selected='true']:before {
+          content: $icon-radio-selected;
         }
       }
     }

@@ -73,9 +73,8 @@ $content-type-list-image-size: 100px;
       float: left;
 
       &:before {
-        font-family: 'h5p-hub';
+        @include icon($icon-update);
         font-style: normal;
-        content: "\e902";
         margin-right: 0.5em;
       }
     }

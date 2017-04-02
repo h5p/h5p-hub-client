@@ -81,8 +81,7 @@ $color-back-button: #474f5a;
       }
 
       .button-update:before {
-        font-family: 'h5p-hub';
-        content: "\e902";
+        @include icon($icon-update);
         margin-right: 0.5em;
       }
     }
