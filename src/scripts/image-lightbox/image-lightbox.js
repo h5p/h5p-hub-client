@@ -21,6 +21,10 @@ export default class ImageLightBox {
     this.imageLightboxList = this.rootElement.querySelector(`.${IMAGELIGHTBOX}-list`);
 
     initImageLightbox(this.rootElement);
+
+    this.rootElement.addEventListener('lightbox-hidden', () => {
+      this.trigger('lightbox-hidden');
+    });
   }
 
   /**
