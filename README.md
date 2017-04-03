@@ -2,7 +2,7 @@
 H5P Content Hub and H5P Content Type Hub
 
 We are testing this using [browserstack.com](https://browserstack.com), to make sure it works in all supported browsers.
-![Browserstack](https://raw.githubusercontent.com/h5p/h5p-hub-client/master/browserstack-logo.svg)
+![Browserstack](https://raw.githubusercontent.com/h5p/h5p-hub-client/master/browserstack-logo.png)
 
 ## Building
 
