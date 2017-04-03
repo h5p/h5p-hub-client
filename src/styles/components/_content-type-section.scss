@@ -206,6 +206,7 @@
        }
 
        .navbar-nav {
+         justify-content: flex-end;
          &.collapsed {
            justify-content: flex-end;
          }
