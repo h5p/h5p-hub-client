@@ -38,17 +38,17 @@ export default class ContentBrowserView {
     this.menubar = this.rootElement.querySelector('.navbar-nav');
     this.inputField = this.rootElement.querySelector('[role="search"] input');
     this.displaySelected = this.rootElement.querySelector('.navbar-toggler-selected');
+    this.searchBar = this.rootElement.querySelector('#hub-search-bar');
     const inputButton = this.rootElement.querySelector('[role="search"] .input-group-addon');
-    const searchBar = this.rootElement.querySelector('#hub-search-bar');
 
     // Listen to input changes
     this.inputField.addEventListener('input', event => {
       if (this.typeAheadEnabled) {
         this.trigger('search', {
-          element: searchBar,
-          query: searchBar.value
+          element: this.searchBar,
+          query: this.searchBar.value
         });
-        searchBar.focus();
+        this.searchBar.focus();
       }
     });
 
@@ -56,20 +56,20 @@ export default class ContentBrowserView {
     this.inputField.addEventListener('keydown', event => {
       if (event.which === 13) {
         this.trigger('search', {
-          element: searchBar,
-          query: searchBar.value
+          element: this.searchBar,
+          query: this.searchBar.value
         });
-        searchBar.focus();
+        this.searchBar.focus();
       }
     });
 
     // Search button
     inputButton.addEventListener('click', () => {
        this.trigger('search', {
-         element: searchBar,
-         query: searchBar.value
+         element: this.searchBar,
+         query: this.searchBar.value
        });
-       searchBar.focus();
+       this.searchBar.focus();
     })
   }
 
@@ -125,8 +125,6 @@ export default class ContentBrowserView {
       self.rootElement.classList.remove('error');
       self.rootElement.classList.add('loading');
       element.parentNode.removeChild(element);
-      // Give the user a chance to see that it's reloading
-      setTimeout(() => self.trigger('reload'), 1000);
     });
 
     this.rootElement.classList.remove('loading');
@@ -264,6 +262,14 @@ export default class ContentBrowserView {
    */
   removeDeactivatedStyleFromMenu() {
     this.menu.classList.add("deactivated");
+  }
+
+
+  /**
+   * Focus on the search bar after opening main panel
+   */
+  focusSearchBar() {
+    this.searchBar.focus();
   }
 
   /**
