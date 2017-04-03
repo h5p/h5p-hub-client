@@ -125,6 +125,8 @@ export default class ContentBrowserView {
       self.rootElement.classList.remove('error');
       self.rootElement.classList.add('loading');
       element.parentNode.removeChild(element);
+      // Give the user a chance to see that it's reloading
+      setTimeout(() => self.trigger('reload'), 500);
     });
 
     this.rootElement.classList.remove('loading');
