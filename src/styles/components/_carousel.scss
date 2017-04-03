@@ -1,8 +1,15 @@
 .h5p-hub {
   .carousel {
+    .carousel-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .icon-arrow-thick {
+      line-height: 1em;
+      height: 1em;
       display: block;
-      text-align: center;
     }
 
     .next {
