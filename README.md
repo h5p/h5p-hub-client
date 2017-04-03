@@ -1,6 +1,9 @@
 # H5P Hub Client
 H5P Content Hub and H5P Content Type Hub
 
+We are testing this using [browserstack.com](https://browserstack.com), to make sure it works in all supported browsers.
+![Browserstack](https://raw.githubusercontent.com/h5p/h5p-hub-client/master/browserstack-logo.svg)
+
 ## Building
 
 Get the [h5p-sdk](https://github.com/h5p/h5p-sdk), and link it to this project.
