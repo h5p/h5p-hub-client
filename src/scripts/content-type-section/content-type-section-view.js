@@ -271,7 +271,7 @@ export default class ContentBrowserView {
    * Focus on the search bar after opening main panel
    */
   focusSearchBar() {
-    this.searchBar.focus();
+    setTimeout(() => this.searchBar.focus(), 200);
   }
 
   /**
