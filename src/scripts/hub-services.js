@@ -78,11 +78,6 @@ export default class HubServices {
       .then(contentTypes => {
         return contentTypes.filter(contentType => contentType.machineName === machineName)[0];
       });
-
-    /*return fetch(`${this.apiRootUrl}content_type_cache/${id}`, {
-      method: 'GET',
-      credentials: 'include'
-    }).then(result => result.json());*/
   }
 
   /**
@@ -101,24 +96,6 @@ export default class HubServices {
      .then(result => result.json())
      .then(this.rejectIfNotSuccess);
   }
-
-
-  // for testing with error
-  /*installContentType(id) {
-    return fetch(`${this.apiRootUrl}library-install`, {
-      method: 'GET',
-      credentials: 'include'
-    })
-      .then(result => result.json())
-      .then(this.rejectIfNotSuccess)
-      .then(result => {
-        return new Promise(function(resolve, reject) {
-          setTimeout(function() {
-            return resolve(result);
-          }, 1000);
-        });
-      });
-  }*/
 
   /**
    * Uploads a content type to the server for validation

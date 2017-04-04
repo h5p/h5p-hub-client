@@ -61,7 +61,7 @@ export default class Hub {
    * @param {HubState} state
    * @param {object} dictionary
    */
-  constructor(state, dictionary) {
+  constructor(state, services, dictionary) {
     // add event system
     Object.assign(this, Eventful());
 
@@ -69,9 +69,7 @@ export default class Hub {
     Dictionary.init(dictionary);
 
     // services
-    this.services = new HubServices({
-      apiRootUrl: state.apiRootUrl
-    });
+    this.services = services;
     this.setupServices();
 
     // controllers
@@ -92,7 +90,7 @@ export default class Hub {
     this.view.on('panel-change', ({element}) => {
       this.view.togglePanelOpen();
       this.postponedResize();
-      if (element.getAttribute('aria-expanded') === 'true') { 
+      if (element.getAttribute('aria-expanded') === 'true') {
         this.contentTypeSection.focusSearchBar();
       }
     }, this);
