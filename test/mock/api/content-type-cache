@@ -1,7 +1,7 @@
 {
   "libraries": [
     {
-      "id": 225,
+      "id": 253,
       "machineName": "H5P.Accordion",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -26,7 +26,18 @@
           "alt": "The view screenshot"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -42,7 +53,7 @@
       "localPatchVersion": 10
     },
     {
-      "id": 226,
+      "id": 254,
       "machineName": "H5P.AppearIn",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -71,7 +82,18 @@
           "alt": "The view screenshot"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "griffen",
       "installed": true,
       "isUpToDate": true,
@@ -91,7 +113,7 @@
       "localPatchVersion": 7
     },
     {
-      "id": 227,
+      "id": 255,
       "machineName": "H5P.ArithmeticQuiz",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -105,7 +127,7 @@
       "createdAt": 1488283418,
       "updatedAt": 1490366169,
       "isRecommended": false,
-      "popularity": 22,
+      "popularity": 23,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/arithmetic-quiz-01.jpg?itok=15RTTcja",
@@ -120,7 +142,18 @@
           "alt": "Arithmetic quiz end screen"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -140,7 +173,7 @@
       "localPatchVersion": 6
     },
     {
-      "id": 228,
+      "id": 256,
       "machineName": "H5P.Chart",
       "majorVersion": 1,
       "minorVersion": 2,
@@ -165,7 +198,18 @@
           "alt": "Bar chart view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -185,7 +229,7 @@
       "localPatchVersion": 0
     },
     {
-      "id": 229,
+      "id": 257,
       "machineName": "H5P.Collage",
       "majorVersion": 0,
       "minorVersion": 3,
@@ -199,7 +243,7 @@
       "createdAt": 1488374773,
       "updatedAt": 1490366452,
       "isRecommended": false,
-      "popularity": 23,
+      "popularity": 22,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/collage-03.jpg?itok=DYmG8QtP",
@@ -218,7 +262,18 @@
           "alt": "The result view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -236,7 +291,7 @@
       "localPatchVersion": 0
     },
     {
-      "id": 230,
+      "id": 258,
       "machineName": "H5P.Column",
       "majorVersion": 1,
       "minorVersion": 4,
@@ -265,7 +320,18 @@
           "alt": "The view screenshot"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -285,7 +351,7 @@
       "localPatchVersion": 0
     },
     {
-      "id": 231,
+      "id": 259,
       "machineName": "H5P.CoursePresentation",
       "majorVersion": 1,
       "minorVersion": 16,
@@ -299,7 +365,7 @@
       "createdAt": 1488375267,
       "updatedAt": 1489402100,
       "isRecommended": true,
-      "popularity": 2,
+      "popularity": 0,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-01_0.jpg?itok=BL-zE21l",
@@ -326,7 +392,18 @@
           "alt": "View summary screen"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -347,7 +424,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 232,
+      "id": 260,
       "machineName": "H5P.Dialogcards",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -361,7 +438,7 @@
       "createdAt": 1488375538,
       "updatedAt": 1489402452,
       "isRecommended": true,
-      "popularity": 11,
+      "popularity": 13,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/dialog-cards-01.jpg?itok=oMkJ_foX",
@@ -372,7 +449,18 @@
           "alt": "The student's view - card turned"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -391,7 +479,7 @@
       "localPatchVersion": 2
     },
     {
-      "id": 233,
+      "id": 261,
       "machineName": "H5P.DocumentationTool",
       "majorVersion": 1,
       "minorVersion": 4,
@@ -420,7 +508,18 @@
           "alt": "User's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -439,7 +538,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 234,
+      "id": 262,
       "machineName": "H5P.DragQuestion",
       "majorVersion": 1,
       "minorVersion": 9,
@@ -472,7 +571,18 @@
           "alt": "Editor"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -491,7 +601,7 @@
       "localPatchVersion": 2
     },
     {
-      "id": 235,
+      "id": 263,
       "machineName": "H5P.DragText",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -516,7 +626,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": false,
@@ -536,7 +657,7 @@
       "localPatchVersion": 3
     },
     {
-      "id": 236,
+      "id": 264,
       "machineName": "H5P.Blanks",
       "majorVersion": 1,
       "minorVersion": 7,
@@ -550,7 +671,7 @@
       "createdAt": 1488376747,
       "updatedAt": 1489394301,
       "isRecommended": false,
-      "popularity": 1,
+      "popularity": 2,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/fill-in-the-blanks-01_0.jpg?itok=XkdYm3Ff",
@@ -569,7 +690,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -590,7 +722,7 @@
       "localPatchVersion": 4
     },
     {
-      "id": 237,
+      "id": 265,
       "machineName": "H5P.ImageHotspotQuestion",
       "majorVersion": 1,
       "minorVersion": 5,
@@ -615,7 +747,18 @@
           "alt": "Authoring experience - adding hotspots"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -635,7 +778,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 238,
+      "id": 266,
       "machineName": "H5P.GuessTheAnswer",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -660,7 +803,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -680,7 +834,7 @@
       "localPatchVersion": 4
     },
     {
-      "id": 239,
+      "id": 267,
       "machineName": "H5P.IFrameEmbed",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -705,7 +859,18 @@
           "alt": "End user's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -724,52 +889,7 @@
       "localPatchVersion": 13
     },
     {
-      "id": 240,
-      "machineName": "H5P.ImpressPresentation",
-      "majorVersion": 1,
-      "minorVersion": 0,
-      "patchVersion": 2,
-      "h5pMajorVersion": 1,
-      "h5pMinorVersion": 0,
-      "title": "Impressive Presentation (ALPHA)",
-      "summary": "Create a slideshow with parallax effects",
-      "description": "Unfold your creativity on an infinite 3D canvas. Images, text and other H5Ps can be combined to create presentations with 3D transitions between steps. This content type is experimental, creating Impressive Presentations might be very difficult, and impossible for people not familiar with 3D creation tools. The authoring tool is only tested in Google Chrome, does not work in Firefox.",
-      "icon": "https:\/\/h5p.org\/sites\/default\/files\/impressive-presentation.svg",
-      "createdAt": 1488378663,
-      "updatedAt": 1489395195,
-      "isRecommended": false,
-      "popularity": 35,
-      "screenshots": [
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-01_0.jpg?itok=PLV1izYb",
-          "alt": "Authoring experience"
-        },
-        {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/impressive-presentation-02_0.jpg?itok=kjQRi6Q7",
-          "alt": "Student's view"
-        }
-      ],
-      "license": null,
-      "owner": "Joubel",
-      "installed": true,
-      "isUpToDate": true,
-      "restricted": false,
-      "categories": [
-        "Multimedia",
-        "Questions"
-      ],
-      "keywords": [
-        "3d",
-        "presentation"
-      ],
-      "tutorial": "https:\/\/h5p.org\/tutorial-impressive-presentation",
-      "example": "https:\/\/h5p.org\/impressive-presentation",
-      "localMajorVersion": 1,
-      "localMinorVersion": 3,
-      "localPatchVersion": 0
-    },
-    {
-      "id": 241,
+      "id": 268,
       "machineName": "H5P.InteractiveVideo",
       "majorVersion": 1,
       "minorVersion": 15,
@@ -802,7 +922,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -822,7 +953,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 242,
+      "id": 269,
       "machineName": "H5P.MarkTheWords",
       "majorVersion": 1,
       "minorVersion": 6,
@@ -847,7 +978,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -867,7 +1009,7 @@
       "localPatchVersion": 8
     },
     {
-      "id": 243,
+      "id": 270,
       "machineName": "H5P.MemoryGame",
       "majorVersion": 1,
       "minorVersion": 2,
@@ -892,7 +1034,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -913,7 +1066,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 244,
+      "id": 271,
       "machineName": "H5P.MultiChoice",
       "majorVersion": 1,
       "minorVersion": 9,
@@ -927,7 +1080,7 @@
       "createdAt": 1488379865,
       "updatedAt": 1489396538,
       "isRecommended": false,
-      "popularity": 0,
+      "popularity": 1,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/multiple-choice-01_0.jpg?itok=LbIxD9Ao",
@@ -938,7 +1091,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": false,
@@ -959,7 +1123,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 245,
+      "id": 272,
       "machineName": "H5P.PersonalityQuiz",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -996,7 +1160,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Lumenia",
       "installed": true,
       "isUpToDate": true,
@@ -1015,7 +1190,7 @@
       "localPatchVersion": 8
     },
     {
-      "id": 246,
+      "id": 273,
       "machineName": "H5P.Questionnaire",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -1048,7 +1223,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1066,7 +1252,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 247,
+      "id": 274,
       "machineName": "H5P.QuestionSet",
       "majorVersion": 1,
       "minorVersion": 12,
@@ -1099,7 +1285,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1120,7 +1317,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 248,
+      "id": 275,
       "machineName": "H5P.SingleChoiceSet",
       "majorVersion": 1,
       "minorVersion": 8,
@@ -1134,7 +1331,7 @@
       "createdAt": 1488380512,
       "updatedAt": 1490364978,
       "isRecommended": false,
-      "popularity": 12,
+      "popularity": 11,
       "screenshots": [
         {
           "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/single-choice-set-03_0.jpg?itok=E6cQhPlW",
@@ -1145,7 +1342,18 @@
           "alt": "Student's view displaying results"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1166,7 +1374,7 @@
       "localPatchVersion": 0
     },
     {
-      "id": 249,
+      "id": 276,
       "machineName": "H5P.Summary",
       "majorVersion": 1,
       "minorVersion": 7,
@@ -1199,7 +1407,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1218,7 +1437,7 @@
       "localPatchVersion": 1
     },
     {
-      "id": 250,
+      "id": 277,
       "machineName": "H5P.Timeline",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -1247,7 +1466,18 @@
           "alt": "Student's view - full screen preview"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1267,7 +1497,7 @@
       "localPatchVersion": 4
     },
     {
-      "id": 251,
+      "id": 278,
       "machineName": "H5P.TrueFalse",
       "majorVersion": 1,
       "minorVersion": 1,
@@ -1300,7 +1530,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": true,
@@ -1319,7 +1560,7 @@
       "localPatchVersion": 2
     },
     {
-      "id": 252,
+      "id": 279,
       "machineName": "H5P.TwitterUserFeed",
       "majorVersion": 1,
       "minorVersion": 0,
@@ -1344,7 +1585,18 @@
           "alt": "Student's view"
         }
       ],
-      "license": null,
+      "license": {
+        "id": "MIT",
+        "attributes": {
+          "useCommercially": true,
+          "modifiable": true,
+          "distributable": true,
+          "sublicensable": true,
+          "canHoldLiable": true,
+          "mustIncludeCopyright": true,
+          "mustIncludeLicense": true
+        }
+      },
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": false,
@@ -1462,6 +1714,19 @@
       "localMajorVersion": 1,
       "localMinorVersion": 5,
       "localPatchVersion": 1,
+      "installed": true,
+      "isUpToDate": true,
+      "restricted": false
+    },
+    {
+      "id": 104,
+      "machineName": "H5P.ImpressPresentation",
+      "majorVersion": 1,
+      "minorVersion": 3,
+      "patchVersion": 0,
+      "localMajorVersion": 1,
+      "localMinorVersion": 3,
+      "localPatchVersion": 0,
       "installed": true,
       "isUpToDate": true,
       "restricted": false
