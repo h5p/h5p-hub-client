@@ -82,7 +82,6 @@ export default class ContentTypeDetail {
    * @param {string} licenseId
    */
   showLicenseDialog({ licenseId }) {
-
     const licenseDialog = this.view.createLicenseDialog(this.services.getLicenseDetails(licenseId));
 
     // triggers the modal event
@@ -91,7 +90,7 @@ export default class ContentTypeDetail {
     });
 
     // set focus on the modal dialog
-    setTimeout(() => licenseDialog.querySelector('.modal-dialog').focus(), 10);
+    setTimeout(() => licenseDialog.querySelector('.modal-header').focus(), 10);
   }
 
   /**

@@ -466,9 +466,9 @@ export default class ContentTypeDetailView {
     const modal = document.createElement('div');
     modal.innerHTML = `
       <div class="modal fade show" role="dialog">
-        <div class="modal-dialog license-dialog" tabindex="-1" role="document" aria-labelledby="${titleId}">
+        <div class="modal-dialog license-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" tabindex="-1"  aria-labelledby="${titleId}">
               <button type="button" class="close icon-close" data-dismiss="modal" aria-label="${Dictionary.get('close')}"></button>
               <h5 class="modal-title" id="${titleId}">${Dictionary.get('licenseModalTitle')}</h5>
               <h5 class="modal-subtitle">${Dictionary.get('licenseModalSubtitle')}</h5>
