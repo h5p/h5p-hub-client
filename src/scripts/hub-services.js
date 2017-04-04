@@ -1,5 +1,4 @@
 import './utils/fetch';
-import BrowserStorage from './utils/browser-storage';
 /**
  * @typedef {object} ContentType
  * @property {string} machineName
@@ -32,7 +31,7 @@ export default class HubServices {
    */
   constructor({ apiRootUrl }) {
     this.apiRootUrl = apiRootUrl;
-    this.browserStorage = new BrowserStorage('h5p-hub-services');
+    this.licenseCache = {};
   }
 
   /**
@@ -144,8 +143,7 @@ export default class HubServices {
    */
   getLicenseDetails(licenseId) {
     // Check if already cached:
-    const cacheKey = `license-details-${licenseId}`;
-    const cachedLicense = this.browserStorage.getObj(cacheKey);
+    const cachedLicense = this.licenseCache[licenseId]
 
     if (cachedLicense) {
       return Promise.resolve(cachedLicense);
@@ -153,7 +151,7 @@ export default class HubServices {
 
     return fetch(`https://api.h5p.org/v1/licenses/${licenseId}`)
       .then(result => result.json())
-      .then(result => this.browserStorage.setObj(cacheKey, result));
+      .then(result => this.licenseCache[licenseId] = result);
   }
 
   /**
