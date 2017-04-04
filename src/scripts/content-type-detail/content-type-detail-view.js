@@ -181,7 +181,7 @@ export default class ContentTypeDetailView {
       </div>
       <dl class="panel panel-default license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
-          <a href="#" role="button" aria-expanded="false" aria-controls="license-panel">
+          <a role="button" aria-expanded="false" aria-controls="license-panel">
             <span class="icon-accordion-arrow"></span>
             <span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
           </a>
@@ -487,7 +487,7 @@ export default class ContentTypeDetailView {
     let header = document.createElement('dt');
     header.setAttribute('role', 'heading');
     header.setAttribute('aria-level', '2');
-    header.innerHTML = `<a href="#" role="button" aria-expanded="true" aria-controls="${id}">
+    header.innerHTML = `<a role="button" aria-expanded="true" aria-controls="${id}">
         <span class="icon-accordion-arrow"></span>
         <span class="license-title">${this.license.id}</span>
       </a>`;
