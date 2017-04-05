@@ -8,7 +8,14 @@ class HubServicesFailInit extends HubServices {
   setup() {
     this.counter = (this.counter || 0) + 1;
 
-    if (this.counter == 1) {
+    if (this.counter === 1) {
+      this.cachedContentTypes = Promise.reject({
+        messageCode: 'SERVER_ERROR'
+      });
+      return this.cachedContentTypes;
+    }
+
+    if (this.counter === 2) {
       this.cachedContentTypes = Promise.reject('failed');
       return this.cachedContentTypes;
     }
