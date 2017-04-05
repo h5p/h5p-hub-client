@@ -95,6 +95,7 @@ export default class Hub {
       }
     }, this);
     this.contentTypeSection.on('reload', this.setupServices, this);
+    this.contentTypeSection.on('reload', this.contentTypeSection.selectDefaultMenuItem.bind(this.contentTypeSection, false));
     this.contentTypeSection.on('modal', this.showModal, this);
     this.on('clear-upload-form', () => {
       this.uploadSection.clearUploadForm();
