@@ -147,16 +147,16 @@ export default class ContentTypeDetailView {
           </a>
         </div>
       </div>
-      <div class="carousel" role="region" data-size="5">
-        <button class="carousel-button previous hidden" disabled>
-          <span class="icon-arrow-thick"></span>
-        </button>
-        <button class="carousel-button next hidden" disabled>
-          <span class="icon-arrow-thick"></span>
-        </button>
+      <div class="carousel" role="region" data-size="5" data-prevent-resize-loop="true" aria-label="${Dictionary.get('screenshots')}">
         <nav class="scroller">
           <ul></ul>
         </nav>
+        <button type="button" class="carousel-button next hidden" disabled aria-label="${Dictionary.get('nextImage')}">
+          <span class="icon-arrow-thick"></span>
+        </button>
+        <button type="button" class="carousel-button previous hidden" disabled aria-label="${Dictionary.get('previousImage')}">
+          <span class="icon-arrow-thick"></span>
+        </button>
       </div>
       <hr />
       <div class="button-bar">
