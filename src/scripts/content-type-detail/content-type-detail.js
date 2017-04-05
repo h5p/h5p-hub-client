@@ -29,6 +29,7 @@ export default class ContentTypeDetail {
         });
     }, this);
     this.view.on('show-license-dialog', this.showLicenseDialog, this);
+    this.view.on('hide-license-dialog', () => this.view.focusLicenseDetailsButton());
 
     // propagate events
     this.propagate(['close', 'select', 'modal'], this.view);

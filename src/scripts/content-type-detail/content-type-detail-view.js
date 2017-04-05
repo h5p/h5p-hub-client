@@ -60,6 +60,26 @@ const disable = setAttribute('disabled', '');
 const enable = removeAttribute('disabled');
 
 /**
+ * Focuses an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const focus = (element) => element.focus();
+
+/**
+ * Registers a click handler on an HTMLElement
+ *
+ * @param {HTMLElement} element
+ * @param {Function} handler
+ *
+ * @function
+ */
+const onClick = (element, handler) => element.addEventListener('click', handler);
+
+
+/**
  * @class
  * @mixes Eventful
  */
@@ -103,6 +123,20 @@ export default class ContentTypeDetailView {
     this.licensePanelHeading = this.rootElement.querySelector('.license-panel-heading');
     this.licensePanelBody = this.rootElement.querySelector('#license-panel');
     this.container = this.rootElement.querySelector('.container');
+
+    /**
+     * Finds the license button for us
+     *
+     * @return {HTMLElement}
+     */
+    this.licenseButton = () => this.licensePanelBody.querySelector('.short-license-read-more');
+
+    /**
+     * Generates an event handler for showing the license
+     *
+     * @function
+     */
+    this.showLicense = curry((licenseId, event) => this.trigger('show-license-dialog', { licenseId: licenseId }));
 
     // init interactive elements
     initPanel(this.panel);
@@ -446,8 +480,7 @@ export default class ContentTypeDetailView {
       panelContainer.appendChild(shortLicenseInfo);
 
       // handle clicking read more
-      const readMoreButton = this.licensePanelBody.querySelector('.short-license-read-more');
-      readMoreButton.addEventListener('click', () => this.trigger('show-license-dialog', { licenseId: license.id }));
+      onClick(this.licenseButton(), this.showLicense(license.id));
     }
     else {
       panelContainer.innerText = Dictionary.get('licenseUnspecified');
@@ -517,10 +550,17 @@ export default class ContentTypeDetailView {
       modalBody.innerHTML = Dictionary.get('licenseFetchDetailsFailed');
     }).then(() => removeClass('loading', modalBody));
 
-    initModal(modal);
+    initModal(modal, () => this.trigger('hide-license-dialog'));
     initPanel(panel);
 
     return modal;
+  }
+
+  /**
+   *
+   */
+  focusLicenseDetailsButton() {
+    focus(this.licenseButton());
   }
 
   /**
