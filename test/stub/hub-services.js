@@ -1,5 +1,19 @@
 import HubServices from '../../src/scripts/hub-services';
 
+function createDelayedPromise (rejectMe, data) {
+  data = data || 'no-data';
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (rejectMe) {
+        reject(data);
+      }
+      else {
+        resolve(data);
+      }
+    }, 3000);
+  });
+}
+
 class HubServicesFailInit extends HubServices {
   constructor(state) {
     super(state);
@@ -20,7 +34,7 @@ class HubServicesFailInit extends HubServices {
 class HubServicesFailInstalling extends HubServices {
   installContentType(id) {
     this.counter = (this.counter || 0) + 1;
-    return Promise[this.counter == 1 ? 'reject' : 'resolve']('result');
+    return createDelayedPromise(this.counter == 1);
   }
 }
 
@@ -28,7 +42,7 @@ class HubServicesFailFetchLicense extends HubServices {
   getLicenseDetails(licenseId) {
     this.counter = (this.counter || 0) + 1;
 
-    return Promise[this.counter == 1 ? 'reject' : 'resolve']({
+    return createDelayedPromise(this.counter == 1, {
       id: licenseId,
       description: 'Here comes the license'
     });
@@ -37,7 +51,7 @@ class HubServicesFailFetchLicense extends HubServices {
 
 class HubServicesFailUploading extends HubServices {
   uploadContent(formData) {
-    return Promise.reject('failed');
+    return createDelayedPromise(true, 'failed');
   }
 }
 
