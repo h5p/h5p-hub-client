@@ -35,9 +35,27 @@ class HubServicesFailFetchLicense extends HubServices {
   }
 }
 
+class HubServicesFailUploadingValidation extends HubServices {
+  uploadContent(formData) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        return resolve({
+          errorCode: "VALIDATION_FAILED",
+          message: "Validating h5p package failed.",
+          success: false
+        });
+      }, 5000);
+    });
+  }
+}
+
 class HubServicesFailUploading extends HubServices {
   uploadContent(formData) {
-    return Promise.reject('failed');
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        reject();
+      }, 5000);
+    });
   }
 }
 
@@ -53,6 +71,8 @@ export default class HubServicesFactory {
         return new HubServicesFailFetchLicense(state);
       case 'fail-uploading':
         return new HubServicesFailUploading(state);
+      case 'fail-uploading-validation':
+        return new HubServicesFailUploadingValidation(state);
     }
   }
 }

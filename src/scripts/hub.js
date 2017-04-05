@@ -62,6 +62,8 @@ export default class Hub {
    * @param {object} dictionary
    */
   constructor(state, services, dictionary) {
+    const self = this;
+
     // add event system
     Object.assign(this, Eventful());
 
@@ -86,7 +88,14 @@ export default class Hub {
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.togglePanelOpen.bind(this.view, false));
-    this.view.on('tab-change', this.view.setSectionType, this.view);
+    this.view.on('tab-change', event => {
+      if (event.id === 'upload' && !event.element.getAttribute('aria-selected')) {
+        // Clean up messages
+        self.uploadSection.clearMessages();
+      }
+
+      this.view.setSectionType(event);
+    });
     this.view.on('panel-change', ({element}) => {
       this.view.togglePanelOpen();
       this.postponedResize();
@@ -95,6 +104,7 @@ export default class Hub {
       }
     }, this);
     this.contentTypeSection.on('reload', this.setupServices, this);
+    this.contentTypeSection.on('reload', this.contentTypeSection.selectDefaultMenuItem.bind(this.contentTypeSection, false));
     this.contentTypeSection.on('modal', this.showModal, this);
     this.on('clear-upload-form', () => {
       this.uploadSection.clearUploadForm();

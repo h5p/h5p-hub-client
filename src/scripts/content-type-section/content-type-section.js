@@ -20,6 +20,7 @@ export default class ContentTypeSection {
    */
   constructor(state, services) {
     const self = this;
+    this.services = services;
 
     // add event system
     Object.assign(this, Eventful());
@@ -49,9 +50,9 @@ export default class ContentTypeSection {
     this.view = new ContentTypeSectionView(state);
 
     // controller
-    this.searchService = new SearchService(services);
+    this.searchService = new SearchService(this.services);
     this.contentTypeList = new ContentTypeList();
-    this.contentTypeDetail = new ContentTypeDetail(state, services);
+    this.contentTypeDetail = new ContentTypeDetail(state, this.services);
 
     // Element for holding list and details views
     const section = document.createElement('div');
@@ -80,8 +81,8 @@ export default class ContentTypeSection {
     this.contentTypeDetail.on('close', this.goBackToListView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
     this.contentTypeDetail.on('installed-content-type', () => {
-      services.setup();
-      services.contentTypes()
+      this.services.setup();
+      this.services.contentTypes()
         .then(contentTypes => {
           this.contentTypeList.refreshContentTypes(contentTypes);
         })
@@ -91,18 +92,7 @@ export default class ContentTypeSection {
     Object.keys(ContentTypeSection.Tabs)
       .forEach(tab => this.view.addMenuItem(ContentTypeSection.Tabs[tab]));
     this.view.initMenu();
-
-    // Determine which browsing category to show initially
-    services.contentTypes().then(contentTypes => {
-      // Show my content types if any is installed
-      const installed = contentTypes.filter(contentType => {
-        return contentType.installed;
-      });
-
-      self.view.selectMenuItem(
-        installed.length ? ContentTypeSection.Tabs.MY_CONTENT_TYPES : ContentTypeSection.Tabs.ALL
-      );
-    })
+    this.selectDefaultMenuItem();
   }
 
   /**
@@ -121,6 +111,25 @@ export default class ContentTypeSection {
       title: Dictionary.get('errorCommunicatingHubTitle'),
       content: Dictionary.get('errorCommunicatingHubContent')
     });
+  }
+
+
+  /**
+   * Determine which browsing category to show initially
+   */
+  selectDefaultMenuItem() {
+    const self = this;
+
+    this.services.contentTypes().then(contentTypes => {
+      // Show my content types if any is installed
+      const installed = contentTypes.filter(contentType => {
+        return contentType.installed;
+      });
+
+      self.view.selectMenuItem(
+        installed.length ? ContentTypeSection.Tabs.MY_CONTENT_TYPES : ContentTypeSection.Tabs.ALL
+      );
+    })
   }
 
   /**
