@@ -194,9 +194,8 @@ export default class HubView {
    */
   setSectionType({id}) {
     const SECTION_PREFIX = 'h5p-section-';
-    this.panel.className = this.removeWordByPrefix(SECTION_PREFIX, this.panel.className);;
+    this.panel.className = this.removeWordByPrefix(SECTION_PREFIX, this.panel.className);
     this.panel.classList.add(SECTION_PREFIX + id, 'panel');
-
   }
 
   /**
