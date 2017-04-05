@@ -131,16 +131,16 @@ export default class ContentTypeListView {
 
       <div class="media-body">
         <div id="${contentTypeRowTitleId}" class="h4 media-heading">${title}</div>
-      
-        <button aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
+
+        <button type="button" aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
           <span class="${button.icon}"></span>
           ${button.text}
         </button>
-        
+
         <div class="content-type-update-info${updateAvailable ? '' : ' hidden'}">
           ${Dictionary.get('contentTypeUpdateAvailable')}
         </div>
-        
+
         <div id="${contentTypeRowDescriptionId}" class="description">${description}</div>
       </div>
    `;

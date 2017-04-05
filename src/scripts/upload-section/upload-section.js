@@ -44,10 +44,10 @@ export default class UploadSection {
         <h1 class="upload-instruction-header">${Dictionary.get('uploadInstructionsTitle')}</h1>
         <div class="upload-form">
           <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" tabindex="-1" readonly/>
-          <button class="button use-button">Use</button>
+          <button type="button" class="button use-button">Use</button>
           <div class="input-wrapper">
             <input type="file" accept=".h5p" aria-hidden="true"/>
-            <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
+            <button type="button" class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
         <p class="upload-instruction-description">${Dictionary.get('uploadInstructionsContent')}</p>
