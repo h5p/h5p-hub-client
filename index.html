@@ -43,6 +43,7 @@
       <option value="fail-updating">Fail updating</option>
       <option value="fail-fetch-license">Fail fetching license</option>
       <option value="fail-uploading">Fail uploading</option>
+      <option value="fail-uploading-validation">Fail uploading validation</option>
     </select>
   </div>
 
@@ -60,11 +61,11 @@
     H5PEditor.language = {};
 
     var language = 'en';
-    var mode = 'normal'
+    var mode = 'normal';
 
     var inputs = window.location.search.substr(1).split('&');
 
-    for(i=0; i<inputs.length; i++) {
+    for(var i=0; i<inputs.length; i++) {
       var k = inputs[i].split('=');
       if (k[0] == 'language') {
         language = k[1];

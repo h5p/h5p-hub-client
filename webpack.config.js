@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
+var isDist = JSON.parse(process.env.DIST_ENTRY || 0) == 1;
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
@@ -12,7 +13,7 @@ const polyfillPromise = new webpack.ProvidePlugin({
 });
 
 const config = {
-  entry: "./src/entries/" + (isDevMode ? 'dev' : 'dist') + '.js',
+  entry: "./src/entries/" + (isDevMode ? (isDist ? 'dist' : 'dev') : 'dist') + '.js',
   devtool: 'cheap-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
