@@ -368,27 +368,27 @@
       "popularity": 0,
       "screenshots": [
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-01_0.jpg?itok=BL-zE21l",
+          "url": "https://h5p.org/sites/default/files/image-juxtaposition-01.png",
           "alt": "Editor"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-02_0.jpg?itok=KRRMIqTX",
+          "url": "https://h5p.org/sites/default/files/image-hotspots-01.jpg",
           "alt": "Editor"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-03_0.jpg?itok=8TCTitjU",
+          "url": "https://h5p.org/sites/default/files/image-shotspots-01.jpg",
           "alt": "Editor"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-04_0.jpg?itok=UGkWykWd",
+          "url": "https://h5p.org/sites/default/files/image-shotspots-01.jpg",
           "alt": "Editor"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-05_0.jpg?itok=PRndkhd1",
+          "url": "https://h5p.org/sites/default/files/image-shotspots-01.jpg",
           "alt": "View"
         },
         {
-          "url": "https:\/\/h5p.org\/sites\/default\/files\/styles\/h5p-content-type-hub-screenshot\/public\/course-presentation-06_0.jpg?itok=GkRWeCQ6",
+          "url": "https://h5p.org/sites/default/files/image-hotspots-01.jpg",
           "alt": "View summary screen"
         }
       ],
@@ -1467,7 +1467,7 @@
         }
       ],
       "license": {
-        "id": "MIT",
+        "id": "MPL2",
         "attributes": {
           "useCommercially": true,
           "modifiable": true,

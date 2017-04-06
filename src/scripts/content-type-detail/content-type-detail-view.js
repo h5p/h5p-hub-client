@@ -10,7 +10,7 @@ import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 import ImageLightbox from '../image-lightbox/image-lightbox';
-import { checkImageExists } from '../utils/input-checking'
+import { preloadImages } from '../utils/media'
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -257,23 +257,14 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Removes all images from the carousel
-   */
-  removeAllImagesInCarousel() {
-    querySelectorAll('li', this.carouselList).forEach(removeChild(this.carouselList));
-    this.imageLightbox.reset();
-  }
-
-  /**
-   * Add image to the carousel
+   * Set screenshots
    *
-   * @param {{url: string, alt:string}} image
+   * @param {{url: string, alt:string}[]} screenshots
    */
-  addImageToCarousel(image, index) {
-    let self = this;
-
-    checkImageExists(image.url, (imageExists) => {
-      if(imageExists) {
+  setScreenshots(screenshots) {
+    var self = this;
+    preloadImages(screenshots).then(screenshots => {
+      screenshots.filter(image => image.valid === true).forEach((image, index) => {
         // add lightbox
         this.imageLightbox.addImage(image);
 
@@ -299,7 +290,7 @@ export default class ContentTypeDetailView {
         });
 
         this.carouselList.appendChild(thumbnail);
-      }
+      });
     });
   }
 
@@ -325,6 +316,10 @@ export default class ContentTypeDetailView {
 
     this.removeInstallMessage();
     this.resetLicenses();
+
+    // Remove images:
+    querySelectorAll('li', this.carouselList).forEach(removeChild(this.carouselList));
+    this.imageLightbox.reset();
   }
 
   /**

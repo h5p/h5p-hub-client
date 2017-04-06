@@ -141,6 +141,7 @@ export default class ContentTypeDetail {
    */
   update(contentType) {
     this.view.reset();
+
     this.view.setId(contentType.machineName);
     this.view.setTitle(contentType.title || contentType.machineName);
     this.view.setDescription(contentType.description);
@@ -166,9 +167,8 @@ export default class ContentTypeDetail {
     }
 
     // update carousel
-    this.view.removeAllImagesInCarousel();
-    if(contentType.screenshots) {
-      contentType.screenshots.forEach(this.view.addImageToCarousel, this.view);
+    if (contentType.screenshots) {
+      this.view.setScreenshots(contentType.screenshots);
     }
   }
 
