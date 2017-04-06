@@ -1,5 +1,19 @@
 import HubServices from '../../src/scripts/hub-services';
 
+function createDelayedPromise (rejectMe, data) {
+  data = data || 'no-data';
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (rejectMe) {
+        reject(data);
+      }
+      else {
+        resolve(data);
+      }
+    }, 3000);
+  });
+}
+
 class HubServicesFailInit extends HubServices {
   constructor(state) {
     super(state);
@@ -8,7 +22,14 @@ class HubServicesFailInit extends HubServices {
   setup() {
     this.counter = (this.counter || 0) + 1;
 
-    if (this.counter == 1) {
+    if (this.counter === 1) {
+      this.cachedContentTypes = Promise.reject({
+        messageCode: 'SERVER_ERROR'
+      });
+      return this.cachedContentTypes;
+    }
+
+    if (this.counter === 2) {
       this.cachedContentTypes = Promise.reject('failed');
       return this.cachedContentTypes;
     }
@@ -20,7 +41,7 @@ class HubServicesFailInit extends HubServices {
 class HubServicesFailInstalling extends HubServices {
   installContentType(id) {
     this.counter = (this.counter || 0) + 1;
-    return Promise[this.counter == 1 ? 'reject' : 'resolve']('result');
+    return createDelayedPromise(this.counter == 1);
   }
 }
 
@@ -28,7 +49,7 @@ class HubServicesFailFetchLicense extends HubServices {
   getLicenseDetails(licenseId) {
     this.counter = (this.counter || 0) + 1;
 
-    return Promise[this.counter == 1 ? 'reject' : 'resolve']({
+    return createDelayedPromise(this.counter == 1, {
       id: licenseId,
       description: 'Here comes the license'
     });
@@ -51,11 +72,7 @@ class HubServicesFailUploadingValidation extends HubServices {
 
 class HubServicesFailUploading extends HubServices {
   uploadContent(formData) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        reject();
-      }, 5000);
-    });
+    return createDelayedPromise(true, 'failed');
   }
 }
 

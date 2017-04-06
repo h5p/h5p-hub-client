@@ -41,9 +41,13 @@ export default class HubServices {
     this.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
       method: 'GET',
       credentials: 'include'
-    })
-    .then(result => result.json())
-    .then(this.isValid);
+    }).then(result => result.json())
+      .catch(err => ({
+        messageCode: 'SERVER_ERROR',
+        err: err,
+        success: false
+      }))
+      .then(this.isValid);
 
     return this.cachedContentTypes;
   }

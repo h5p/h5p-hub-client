@@ -60,6 +60,26 @@ const disable = setAttribute('disabled', '');
 const enable = removeAttribute('disabled');
 
 /**
+ * Focuses an HTMLElement
+ *
+ * @param {HTMLElement} element
+ *
+ * @function
+ */
+const focus = (element) => element.focus();
+
+/**
+ * Registers a click handler on an HTMLElement
+ *
+ * @param {HTMLElement} element
+ * @param {Function} handler
+ *
+ * @function
+ */
+const onClick = (element, handler) => element.addEventListener('click', handler);
+
+
+/**
  * @class
  * @mixes Eventful
  */
@@ -104,6 +124,20 @@ export default class ContentTypeDetailView {
     this.licensePanelBody = this.rootElement.querySelector('#license-panel');
     this.container = this.rootElement.querySelector('.container');
 
+    /**
+     * Finds the license button for us
+     *
+     * @return {HTMLElement}
+     */
+    this.licenseButton = () => this.licensePanelBody.querySelector('.short-license-read-more');
+
+    /**
+     * Generates an event handler for showing the license
+     *
+     * @function
+     */
+    this.showLicense = curry((licenseId, event) => this.trigger('show-license-dialog', { licenseId: licenseId }));
+
     // init interactive elements
     initPanel(this.panel);
     initImageScroller(this.carousel);
@@ -133,7 +167,7 @@ export default class ContentTypeDetailView {
     element.setAttribute('aria-labelledby', titleId);
 
     element.innerHTML = `
-      <button class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
+      <button type="button" class="back-button icon-arrow-thick" aria-label="${Dictionary.get("contentTypeBackButtonLabel")}" tabindex="0"></button>
       <div class="container">
         <div class="image-wrapper">
           <img class="img-responsive content-type-image" src="${noIcon}">
@@ -160,31 +194,31 @@ export default class ContentTypeDetailView {
       </div>
       <hr />
       <div class="button-bar">
-        <button class="button button-inverse-primary button-install hidden" data-id="">
+        <button type="button" class="button button-inverse-primary button-install hidden" data-id="">
           <span class="icon-arrow-thick"></span>
           ${Dictionary.get('contentTypeInstallButtonLabel')}
         </button>
-        <button class="button button-inverse-primary button-installing hidden">
+        <button type="button" class="button button-inverse-primary button-installing hidden">
           <span class="icon-loading-search icon-spin"></span>
           ${Dictionary.get("contentTypeInstallingButtonLabel")}
         </button>
-        <button class="button button-inverse-primary button-update">
+        <button type="button" class="button button-inverse-primary button-update">
           ${Dictionary.get("contentTypeUpdateButtonLabel")}
         </button>
-        <button class="button button-inverse-primary button-updating">
+        <button type="button" class="button button-inverse-primary button-updating">
           <span class="icon-loading-search icon-spin"></span>
           ${Dictionary.get("contentTypeUpdatingButtonLabel")}
         </button>
-        <button class="button button-primary button-use" data-id="">
+        <button type="button" class="button button-primary button-use" data-id="">
           ${Dictionary.get("contentTypeUseButtonLabel")}
         </button>
       </div>
       <dl class="panel panel-default license-panel">
         <dt aria-level="2" role="heading" class="license-panel-heading">
-          <a role="button" aria-expanded="false" aria-controls="license-panel">
+          <div role="button" aria-expanded="false" aria-controls="license-panel">
             <span class="icon-accordion-arrow"></span>
             <span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
-          </a>
+          </div>
         </dt>
         <dl id="license-panel" role="region" class="hidden">
           <div class="panel-body"></div>
@@ -342,7 +376,7 @@ export default class ContentTypeDetailView {
    */
   setDescription(text = '') {
     if(text && text.length > MAX_TEXT_SIZE_DESCRIPTION) {
-      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}<button class="read-more link">${Dictionary.get('readMore')}</button>`;
+      this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}<button type="button" class="read-more link">${Dictionary.get('readMore')}</button>`;
       this.description
         .querySelector('.read-more, .read-less')
         .addEventListener('click', () => this.toggleDescriptionExpanded(text));
@@ -364,13 +398,13 @@ export default class ContentTypeDetailView {
 
     if(this.descriptionExpanded) {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text)}${this.ellipsisRest(MAX_TEXT_SIZE_DESCRIPTION, text)}
-                                    <button class="read-less link">${Dictionary.get('readLess')}</button>`;
+                                    <button type="button" class="read-less link">${Dictionary.get('readLess')}</button>`;
 
       this.description.querySelector('.part-two').focus();
     }
     else {
       this.description.innerHTML = `${this.ellipsis(MAX_TEXT_SIZE_DESCRIPTION, text, true)}
-                                    <button class="read-more link">${Dictionary.get('readMore')}</button>`;
+                                    <button type="button" class="read-more link">${Dictionary.get('readMore')}</button>`;
 
       this.description.querySelector('.part-one').focus();
     }
@@ -430,7 +464,7 @@ export default class ContentTypeDetailView {
       shortLicenseInfo.className = 'short-license-info';
       shortLicenseInfo.innerHTML = `
         <h3>${license.id}</h3>
-        <button class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('readMore')}"></button>
+        <button type="button" class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('readMore')}"></button>
         <ul class="ul small">
           <li>${Dictionary.get(license.attributes.useCommercially ? "licenseCanUseCommercially" : "licenseCannotUseCommercially")}</li>
           <li>${Dictionary.get(license.attributes.modifiable ? "licenseCanModify" : "licenseCannotModify")}</li>
@@ -446,8 +480,7 @@ export default class ContentTypeDetailView {
       panelContainer.appendChild(shortLicenseInfo);
 
       // handle clicking read more
-      const readMoreButton = this.licensePanelBody.querySelector('.short-license-read-more');
-      readMoreButton.addEventListener('click', () => this.trigger('show-license-dialog', { licenseId: license.id }));
+      onClick(this.licenseButton(), this.showLicense(license.id));
     }
     else {
       panelContainer.innerText = Dictionary.get('licenseUnspecified');
@@ -487,10 +520,10 @@ export default class ContentTypeDetailView {
     let header = document.createElement('dt');
     header.setAttribute('role', 'heading');
     header.setAttribute('aria-level', '2');
-    header.innerHTML = `<a role="button" aria-expanded="true" aria-controls="${id}">
+    header.innerHTML = `<div role="button" aria-expanded="true" aria-controls="${id}">
         <span class="icon-accordion-arrow"></span>
         <span class="license-title">${this.license.id}</span>
-      </a>`;
+      </div>`;
 
     let body = document.createElement('dd');
     body.id = id;
@@ -517,10 +550,17 @@ export default class ContentTypeDetailView {
       modalBody.innerHTML = Dictionary.get('licenseFetchDetailsFailed');
     }).then(() => removeClass('loading', modalBody));
 
-    initModal(modal);
+    initModal(modal, () => this.trigger('hide-license-dialog'));
     initPanel(panel);
 
     return modal;
+  }
+
+  /**
+   *
+   */
+  focusLicenseDetailsButton() {
+    focus(this.licenseButton());
   }
 
   /**

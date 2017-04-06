@@ -136,5 +136,6 @@ H5PEditor.language.core = {
   imageLightboxTitle: 'Images',
   imageLightBoxProgress: ':num of :total',
   nextImage: 'Next image',
-  previousImage: 'Previous image'
+  previousImage: 'Previous image',
+  reloadButtonLabel: 'Reload'
 };
