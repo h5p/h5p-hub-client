@@ -48,7 +48,6 @@ export default class ContentBrowserView {
           element: this.searchBar,
           query: this.searchBar.value
         });
-        this.searchBar.focus();
       }
     });
 
@@ -59,7 +58,6 @@ export default class ContentBrowserView {
           element: this.searchBar,
           query: this.searchBar.value
         });
-        this.searchBar.focus();
       }
     });
 
@@ -69,7 +67,6 @@ export default class ContentBrowserView {
          element: this.searchBar,
          query: this.searchBar.value
        });
-       this.searchBar.focus();
     })
   }
 
