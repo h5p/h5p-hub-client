@@ -12,11 +12,39 @@
     .visible {
       display: inline-block;
     }
+
+    .upload-throbber {
+      outline: 0;
+      height: 10em;
+
+      &.hidden {
+        display: none;
+      }
+
+      &:before {
+        @include throbber(4em);
+        margin: auto;
+      }
+    }
+
+    button[disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  .message {
+    margin-left: 2em;
+    margin-right: 2em;
   }
 
   .upload-path {
     margin-bottom: 1em;
-    cursor: default;
+    cursor: pointer;
+    outline: 0;
+
+    &[disabled] {
+      cursor: default;
+    }
   }
 
   h1.upload-instruction-header {

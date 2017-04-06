@@ -40,13 +40,14 @@ export default class UploadSection {
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
+        <div class="upload-throbber hidden" aria-label="${Dictionary.get('uploadingThrobber')}" tabindex="-1"></div>
         <h1 class="upload-instruction-header">${Dictionary.get('uploadInstructionsTitle')}</h1>
         <div class="upload-form">
-          <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" disabled/>
-          <button class="button use-button">Use</button>
+          <input class="upload-path" placeholder="${Dictionary.get("uploadPlaceholder")}" tabindex="-1" readonly/>
+          <button type="button" class="button use-button">Use</button>
           <div class="input-wrapper">
-            <input type="file" aria-hidden="true"/>
-            <button class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
+            <input type="file" accept=".h5p" aria-hidden="true"/>
+            <button type="button" class="button upload-button" tabindex="0">${Dictionary.get('uploadFileButtonLabel')}</button>
           </div>
         </div>
         <p class="upload-instruction-description">${Dictionary.get('uploadInstructionsContent')}</p>
@@ -66,6 +67,7 @@ export default class UploadSection {
     this.uploadButton = uploadForm.querySelector('.upload-button');
     this.uploadPath = uploadForm.querySelector('.upload-path');
     this.useButton =  uploadForm.querySelector('.use-button');
+    this.uploadThrobber = uploadForm.querySelector('.upload-throbber');
 
     this.initUploadInput();
     this.initUseButton();
@@ -78,13 +80,13 @@ export default class UploadSection {
   initUploadInput() {
     const self = this;
     // Handle errors and update styles when a file is selected
-    this.uploadInput.onchange = function () {
+    this.uploadInput.onchange = function (event) {
       if (this.value.length === 0) {
         self.clearUploadForm();
         return;
       }
       // Clear messages
-      self.removeAllChildren(self.rootElement.querySelector('.message-wrapper'));
+      self.clearMessages();
 
       // Replace the placeholder text with the selected filepath
       self.uploadPath.value = this.value.replace('C:\\fakepath\\', '');
@@ -104,8 +106,16 @@ export default class UploadSection {
         // Only show the 'use' button once a h5p file has been selected
         self.useButton.classList.add('visible');
         self.uploadPath.removeAttribute('placeholder');
+
+        // Focus use button
+        event.stopPropagation();
+        self.useButton.focus();
       }
     };
+
+    this.uploadPath.addEventListener('click', () => {
+      self.uploadInput.click();
+    });
   }
 
   /**
@@ -116,25 +126,50 @@ export default class UploadSection {
 
     // Send the file to the plugin
     this.useButton.addEventListener('click', () => {
-
-      // Add the H5P file to a form, ready for transportation
-      const data = new FormData();
-      data.append('h5p', self.uploadInput.files[0]);
-
-      // Upload content to the plugin
-      self.services.uploadContent(data)
-        .then(json => {
-          // Fire the received data to any listeners
-          self.trigger('upload', json);
-        });
+      self.uploadFile();
     });
 
     // Allow users to upload a file by pressing enter or spacebar
     this.useButton.onkeydown = function (e) {
       if (e.which === 13 || e.which === 32) {
-        this.click();
+        self.uploadFile();
       }
     };
+  }
+
+  /**
+   * Uploads chosen file input
+   */
+  uploadFile() {
+    this.setIsUploading(true);
+    const self = this;
+
+    // Add the H5P file to a form, ready for transportation
+    const data = new FormData();
+    data.append('h5p', self.uploadInput.files[0]);
+
+    // Upload content to the plugin
+    self.services.uploadContent(data)
+      .then(json => {
+        this.setIsUploading(false);
+
+        // Validation failed
+        if (!json.success) {
+          // Render fail message
+          self.renderUploadValidationFailedMessage();
+          self.clearUploadForm();
+          return;
+        }
+
+        // Fire the received data to any listeners
+        self.trigger('upload', json);
+      })
+      .catch(() => {
+        // Server side error message
+        self.renderServerErrorMessage();
+        self.clearUploadForm();
+        self.setIsUploading(false);
+      });
   }
 
   /**
@@ -167,6 +202,38 @@ export default class UploadSection {
   }
 
   /**
+   * Clears all messages
+   */
+  clearMessages() {
+    this.removeAllChildren(this.rootElement.querySelector('.message-wrapper'));
+  }
+
+  /**
+   * Adds throbber to upload view
+   *
+   * @param {boolean} enable If true the throbber will be shown
+   */
+  setIsUploading(enable) {
+    if (enable) {
+      this.uploadThrobber.classList.remove('hidden');
+
+      // disable buttons
+      this.useButton.setAttribute('disabled', 'true');
+      this.uploadButton.setAttribute('disabled', 'true');
+      this.uploadPath.setAttribute('disabled', 'true');
+      this.uploadThrobber.focus();
+    }
+    else {
+      this.uploadThrobber.classList.add('hidden');
+
+      // Enable buttons
+      this.useButton.removeAttribute('disabled');
+      this.uploadButton.removeAttribute('disabled');
+      this.uploadPath.removeAttribute('disabled');
+    }
+  }
+
+  /**
    * Helper function to get a file extension from a filename
    *
    * @param  {string} fileName
@@ -188,13 +255,40 @@ export default class UploadSection {
   }
 
   /**
+   * Renders a message notifying the user that the uploaded file failed to validate
+   */
+  renderUploadValidationFailedMessage() {
+    this.renderMessage({
+      type: 'error',
+      title: Dictionary.get('h5pFileValidationFailedTitle'),
+      content: Dictionary.get('h5pFileValidationFailedContent')
+    });
+  }
+
+  /**
+   * Renders a message notifying the user that the server responded with an error when attempting
+   * to upload the H5P file.
+   */
+  renderServerErrorMessage() {
+    this.renderMessage({
+      type: 'error',
+      title: Dictionary.get('h5pFileUploadServerErrorTitle'),
+      content: Dictionary.get('h5pFileUploadServerErrorContent')
+    })
+  }
+
+  /**
    * Creates a message based on a configuration and prepends it to the message wrapper
    *
    * @param  {Object} config
    */
   renderMessage(config) {
-    const messageView = new MessageView(config);
-    this.prepend(this.messageWrapper, messageView.getElement());
+    // Clean any previous message
+    if (this.messageView && this.messageView.getElement().parentNode) {
+      this.messageView.getElement().parentNode.removeChild(this.messageView.getElement());
+    }
+    this.messageView = new MessageView(config);
+    this.prepend(this.messageWrapper, this.messageView.getElement());
   }
 
   /**

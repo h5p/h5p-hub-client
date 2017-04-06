@@ -7,6 +7,7 @@
     "test": "karma start",
     "build": "webpack",
     "watch": "cross-env DEV_ENV=1 webpack --watch",
+    "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch",
     "dev": "lite-server"
   },
   "repository": {

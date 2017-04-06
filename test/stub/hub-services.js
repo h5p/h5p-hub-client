@@ -22,7 +22,14 @@ class HubServicesFailInit extends HubServices {
   setup() {
     this.counter = (this.counter || 0) + 1;
 
-    if (this.counter == 1) {
+    if (this.counter === 1) {
+      this.cachedContentTypes = Promise.reject({
+        messageCode: 'SERVER_ERROR'
+      });
+      return this.cachedContentTypes;
+    }
+
+    if (this.counter === 2) {
       this.cachedContentTypes = Promise.reject('failed');
       return this.cachedContentTypes;
     }
@@ -49,6 +56,20 @@ class HubServicesFailFetchLicense extends HubServices {
   }
 }
 
+class HubServicesFailUploadingValidation extends HubServices {
+  uploadContent(formData) {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        return resolve({
+          errorCode: "VALIDATION_FAILED",
+          message: "Validating h5p package failed.",
+          success: false
+        });
+      }, 5000);
+    });
+  }
+}
+
 class HubServicesFailUploading extends HubServices {
   uploadContent(formData) {
     return createDelayedPromise(true, 'failed');
@@ -67,6 +88,8 @@ export default class HubServicesFactory {
         return new HubServicesFailFetchLicense(state);
       case 'fail-uploading':
         return new HubServicesFailUploading(state);
+      case 'fail-uploading-validation':
+        return new HubServicesFailUploadingValidation(state);
     }
   }
 }
