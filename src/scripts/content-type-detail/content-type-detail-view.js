@@ -10,6 +10,7 @@ import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 import ImageLightbox from '../image-lightbox/image-lightbox';
+import { checkImageExists } from '../utils/input-checking'
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -266,36 +267,40 @@ export default class ContentTypeDetailView {
   /**
    * Add image to the carousel
    *
-   * @param {object} image
+   * @param {{url: string, alt:string}} image
    */
   addImageToCarousel(image, index) {
     let self = this;
 
-    // add lightbox
-    this.imageLightbox.addImage(image);
+    checkImageExists(image.url, (imageExists) => {
+      if(imageExists) {
+        // add lightbox
+        this.imageLightbox.addImage(image);
 
-    // add thumbnail
-    const thumbnail = document.createElement('li');
-    thumbnail.className = 'slide';
-    thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
+        // add thumbnail
+        const thumbnail = document.createElement('li');
+        thumbnail.className = 'slide';
+        thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
 
-    const img = thumbnail.querySelector('img');
-    img.addEventListener('click', () => {
-      self.imageLightbox.show(index);
-      self.trigger('modal', {element: self.imageLightbox.getElement()});
-      self.focusedImage = img;
-    });
+        const img = thumbnail.querySelector('img');
+        img.addEventListener('click', () => {
+          self.imageLightbox.show(index);
+          self.trigger('modal', {element: self.imageLightbox.getElement()});
+          self.focusedImage = img;
+        });
 
-    img.addEventListener('keydown', event => {
-      if (event.which === 32 || event.which === 13) {
-        self.imageLightbox.show(index);
-        self.trigger('modal', {element: self.imageLightbox.getElement()});
-        self.focusedImage = img;
-        event.preventDefault();
+        img.addEventListener('keydown', event => {
+          if (event.which === 32 || event.which === 13) {
+            self.imageLightbox.show(index);
+            self.trigger('modal', {element: self.imageLightbox.getElement()});
+            self.focusedImage = img;
+            event.preventDefault();
+          }
+        });
+
+        this.carouselList.appendChild(thumbnail);
       }
     });
-
-    this.carouselList.appendChild(thumbnail);
   }
 
   /**
