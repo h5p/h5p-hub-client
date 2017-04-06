@@ -28,8 +28,10 @@ import './utils/fetch';
 export default class HubServices {
   /**
    * @param {string} apiRootUrl
+   * @param {number} contentId
    */
-  constructor({ apiRootUrl }) {
+  constructor({ apiRootUrl, contentId }) {
+    this.contentId = contentId || 0;
     this.apiRootUrl = apiRootUrl;
     this.licenseCache = {};
   }
@@ -109,6 +111,8 @@ export default class HubServices {
    * @return {Promise} Returns the promise of a json containing the content json and the h5p json
    */
   uploadContent(formData) {
+    formData.append('contentId', this.contentId);
+
     return fetch(`${this.apiRootUrl}library-upload`, {
       method: 'POST',
       credentials: 'include',
