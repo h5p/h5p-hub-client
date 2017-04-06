@@ -8,9 +8,9 @@ export function preloadImage(image) {
   return new Promise((resolve, reject) => {
     var imageData = new Image();
     imageData.src = image.url;
+    image.valid = true;
 
     imageData.onload = () => {
-      image.valid = true;
       resolve(image);
     };
     imageData.onerror = () => {
@@ -19,7 +19,6 @@ export function preloadImage(image) {
     };
 
     if (imageData.complete) {
-      image.valid = true;
       resolve(image);
     }
   });
