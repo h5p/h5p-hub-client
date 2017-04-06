@@ -65,6 +65,7 @@
     }
     &.loading:after {
       @include throbber();
+      margin: 0 auto;
     }
 
     &.loaded {
