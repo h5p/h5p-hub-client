@@ -10,9 +10,7 @@ export function preloadImage(image) {
     imageData.src = image.url;
     image.valid = true;
 
-    imageData.onload = () => {
-      resolve(image);
-    };
+    imageData.onload = () => resolve(image);
     imageData.onerror = () => {
       image.valid = false;
       resolve(image);
