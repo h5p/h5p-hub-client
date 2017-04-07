@@ -1,5 +1,3 @@
-const IMAGE_LOAD_FAIL = null;
-
 /**
  * Check whether an image exists at a specified URL
  *
@@ -12,7 +10,6 @@ export function preloadImage(image) {
     imageData.src = image.url;
 
     imageData.onload = () => resolve(image);
-
     imageData.onerror = () => reject(image);
 
     if (imageData.complete) {
@@ -28,6 +25,8 @@ export function preloadImage(image) {
  * @return {Promise<HTMLImageElement[]>}
  */
 export function preloadImages(images) {
+  const IMAGE_LOAD_FAIL = null;
+
   const promises = images
     .map(preloadImage)
     .map(image => image.catch(err => IMAGE_LOAD_FAIL));
