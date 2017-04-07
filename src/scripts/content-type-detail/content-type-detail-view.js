@@ -10,7 +10,6 @@ import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 import ImageLightbox from '../image-lightbox/image-lightbox';
-import { preloadImages } from '../utils/media'
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -262,9 +261,7 @@ export default class ContentTypeDetailView {
    * @param {{url: string, alt:string}[]} screenshots
    */
   setScreenshots(screenshots) {
-    var self = this;
-    preloadImages(screenshots).then(screenshots => {
-      screenshots.filter(image => image.valid === true).forEach((image, index) => {
+      screenshots.forEach((image, index) => {
         // add lightbox
         this.imageLightbox.addImage(image);
 
@@ -275,23 +272,22 @@ export default class ContentTypeDetailView {
 
         const img = thumbnail.querySelector('img');
         img.addEventListener('click', () => {
-          self.imageLightbox.show(index);
-          self.trigger('modal', {element: self.imageLightbox.getElement()});
-          self.focusedImage = img;
+          this.imageLightbox.show(index);
+          this.trigger('modal', {element: this.imageLightbox.getElement()});
+          this.focusedImage = img;
         });
 
         img.addEventListener('keydown', event => {
           if (event.which === 32 || event.which === 13) {
-            self.imageLightbox.show(index);
-            self.trigger('modal', {element: self.imageLightbox.getElement()});
-            self.focusedImage = img;
+            this.imageLightbox.show(index);
+            this.trigger('modal', {element: this.imageLightbox.getElement()});
+            this.focusedImage = img;
             event.preventDefault();
           }
         });
 
         this.carouselList.appendChild(thumbnail);
       });
-    });
   }
 
   /**
