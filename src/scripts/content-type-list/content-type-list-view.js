@@ -1,5 +1,5 @@
 import { curry } from "utils/functional";
-import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector, hide, show } from "utils/elements";
+import { setAttribute, getAttribute, hasAttribute, removeChild, querySelector, hide, show, nodeListToArray } from "utils/elements";
 import { Eventful } from '../mixins/eventful';
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
@@ -86,7 +86,24 @@ export default class ContentTypeListView {
    */
   addRow(contentType) {
     const row = this.createContentTypeRow(contentType, this);
-    relayClickEventAs('row-selected', this, row);
+
+    row.addEventListener('click', event => {
+      this.trigger('row-selected', {
+        element: row,
+        id: row.getAttribute('data-id')
+      }, false);
+
+      // don't bubble
+      event.stopPropagation();
+
+      // Set tab index of on row
+      const rows = row.parentNode.childNodes;
+      nodeListToArray(rows).forEach(singleRow => {
+        singleRow.removeAttribute('tabindex');
+      });
+      row.setAttribute('tabindex', '0');
+    });
+
     this.rootElement.appendChild(row);
     this.keyboard.addElement(row);
   }

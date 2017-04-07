@@ -262,7 +262,7 @@ export default class ContentTypeDetailView {
    * @param {{url: string, alt:string}[]} screenshots
    */
   setScreenshots(screenshots) {
-    var self = this;
+    const self = this;
     preloadImages(screenshots).then(screenshots => {
       screenshots.filter(image => image.valid === true).forEach((image, index) => {
         // add lightbox
