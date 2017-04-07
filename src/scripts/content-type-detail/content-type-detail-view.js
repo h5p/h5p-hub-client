@@ -262,29 +262,29 @@ export default class ContentTypeDetailView {
    */
   setScreenshots(screenshots) {
     screenshots.forEach((image, index) => {
-      // add lightbox
-      this.imageLightbox.addImage(image);
+        // add lightbox
+        this.imageLightbox.addImage(image);
 
       // add thumbnail
       const thumbnail = document.createElement('li');
       thumbnail.className = 'slide';
       thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
 
-      const img = thumbnail.querySelector('img');
-      img.addEventListener('click', () => {
-        this.imageLightbox.show(index);
-        this.trigger('modal', {element: this.imageLightbox.getElement()});
-        this.focusedImage = img;
-      });
-
-      img.addEventListener('keydown', event => {
-        if (event.which === 32 || event.which === 13) {
+        const img = thumbnail.querySelector('img');
+        img.addEventListener('click', () => {
           this.imageLightbox.show(index);
           this.trigger('modal', {element: this.imageLightbox.getElement()});
           this.focusedImage = img;
-          event.preventDefault();
-        }
-      });
+        });
+
+        img.addEventListener('keydown', event => {
+          if (event.which === 32 || event.which === 13) {
+            this.imageLightbox.show(index);
+            this.trigger('modal', {element: this.imageLightbox.getElement()});
+            this.focusedImage = img;
+            event.preventDefault();
+          }
+        });
 
       this.carouselList.appendChild(thumbnail);
     });
