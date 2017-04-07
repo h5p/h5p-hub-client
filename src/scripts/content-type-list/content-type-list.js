@@ -43,8 +43,18 @@ export default class ContentTypeList {
     this.view.showToKeyboard();
   }
 
+  /**
+   * Focuses on the previously selected element
+   */
   focus() {
     this.view.focus();
+  }
+
+  /**
+   * Resets the content type list
+   */
+  resetList() {
+    this.view.scrollToTop();
   }
 
   /**

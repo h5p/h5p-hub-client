@@ -68,6 +68,13 @@ export default class ContentTypeListView {
   }
 
   /**
+   * Scrolls the root element to the top
+   */
+  scrollToTop() {
+    this.rootElement.scrollTop = 0;
+  }
+
+  /**
    * Removes all rows from root element
    */
   removeAllRows() {
