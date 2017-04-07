@@ -39,7 +39,7 @@
         }
       },
       "owner": "Joubel",
-      "installed": true,
+      "installed": false,
       "isUpToDate": true,
       "restricted": false,
       "categories": [],
@@ -96,7 +96,7 @@
       },
       "owner": "griffen",
       "installed": true,
-      "isUpToDate": true,
+      "isUpToDate": false,
       "restricted": false,
       "categories": [
         "Multimedia"

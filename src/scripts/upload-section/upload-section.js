@@ -19,13 +19,8 @@ export default class UploadSection {
     const uploadForm = this.renderUploadForm();
     this.initUploadForm(uploadForm);
 
-    // Create a wrapper to hold user messages
-    this.messageWrapper = document.createElement('div');
-    this.messageWrapper.className = 'message-wrapper';
-
     // Create the container and attach children
     const element = document.createElement('div');
-    element.appendChild(this.messageWrapper);
     element.appendChild(uploadForm);
     this.rootElement = element;
   }
@@ -40,6 +35,7 @@ export default class UploadSection {
     const uploadForm = document.createElement('div');
     uploadForm.innerHTML = `
       <div class="upload-wrapper">
+        <div class="message-wrapper"></div>
         <div class="upload-throbber hidden" aria-label="${Dictionary.get('uploadingThrobber')}" tabindex="-1"></div>
         <h1 class="upload-instruction-header">${Dictionary.get('uploadInstructionsTitle')}</h1>
         <div class="upload-form">
@@ -68,6 +64,7 @@ export default class UploadSection {
     this.uploadPath = uploadForm.querySelector('.upload-path');
     this.useButton =  uploadForm.querySelector('.use-button');
     this.uploadThrobber = uploadForm.querySelector('.upload-throbber');
+    this.messageWrapper = uploadForm.querySelector('.message-wrapper');
 
     this.initUploadInput();
     this.initUseButton();

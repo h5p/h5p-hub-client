@@ -41,6 +41,7 @@ $color-back-button: #474f5a;
     .container {
       @include container;
       margin-bottom: $gutter * 2;
+      padding-bottom: 1em;
     }
 
     // mobile first
@@ -83,6 +84,8 @@ $color-back-button: #474f5a;
       .button-update:before {
         @include icon($icon-update);
         margin-right: 0.5em;
+        font-weight: normal;
+        font-size: 0.9em;
       }
     }
 

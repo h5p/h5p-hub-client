@@ -46,7 +46,7 @@ export default class MessageView {
 
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
-    messageContent.innerHTML = '<h2>' + message.title + '</h2>' + (message.content ? ('<p>' + message.content + '</p>') : '');
+    messageContent.innerHTML = '<h2 class="message-header">' + message.title + '</h2>' + (message.content ? ('<p class="message-body">' + message.content + '</p>') : '');
     messageWrapper.appendChild(messageContent);
 
     if (message.action !== undefined) {

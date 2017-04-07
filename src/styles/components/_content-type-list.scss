@@ -35,6 +35,7 @@ $content-type-list-image-size: 100px;
       overflow: auto;
       outline-color: lighten($ac1, 10%);
       margin-top: 0;
+      padding-right: 1.5em;
 
       &:hover {
         background-color: lighten($ac1, 55%);
@@ -50,7 +51,8 @@ $content-type-list-image-size: 100px;
     }
 
     .button {
-      min-width: 5.8em;
+      min-width: 4em;
+      padding: 0.708em 1.5em;
       float: right;
     }
 

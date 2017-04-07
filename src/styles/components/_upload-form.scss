@@ -5,6 +5,10 @@
   .upload-wrapper {
     padding: 1em 2em 2em 2em;
 
+    .message {
+      margin-top: 0;
+    }
+
     [aria-hidden="true"] {
       display: none;
     }
@@ -32,15 +36,11 @@
     }
   }
 
-  .message {
-    margin-left: 2em;
-    margin-right: 2em;
-  }
-
   .upload-path {
     margin-bottom: 1em;
     cursor: pointer;
     outline: 0;
+    padding-left: 1.5em;
 
     &[disabled] {
       cursor: default;
