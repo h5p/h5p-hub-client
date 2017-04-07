@@ -4,6 +4,8 @@ import { curry } from "utils/functional";
 import { attributeEquals, getAttribute, hasAttribute, show, toggleClass } from "utils/elements";
 import { Eventful } from './mixins/eventful';
 import { relayClickEventAs } from './utils/events';
+import Dictionary from './utils/dictionary';
+
 /**
  * Tab change event
  * @event HubView#tab-change
@@ -46,6 +48,7 @@ export default class HubView {
 
     // initiates panel
     initPanel(this.panel);
+    this.setTitle(Dictionary.get("PanelDefaultLabel"));
 
     // relay events
     relayClickEventAs('panel-change', this, this.toggler);
