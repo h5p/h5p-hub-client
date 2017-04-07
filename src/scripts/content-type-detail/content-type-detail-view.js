@@ -10,7 +10,6 @@ import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 import ImageLightbox from '../image-lightbox/image-lightbox';
-import { preloadImages } from '../utils/media'
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -262,35 +261,32 @@ export default class ContentTypeDetailView {
    * @param {{url: string, alt:string}[]} screenshots
    */
   setScreenshots(screenshots) {
-    const self = this;
-    preloadImages(screenshots).then(screenshots => {
-      screenshots.filter(image => image.valid === true).forEach((image, index) => {
-        // add lightbox
-        this.imageLightbox.addImage(image);
+    screenshots.forEach((image, index) => {
+      // add lightbox
+      this.imageLightbox.addImage(image);
 
-        // add thumbnail
-        const thumbnail = document.createElement('li');
-        thumbnail.className = 'slide';
-        thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
+      // add thumbnail
+      const thumbnail = document.createElement('li');
+      thumbnail.className = 'slide';
+      thumbnail.innerHTML = `<img src="${image.url}" alt="${image.alt}" data-index="${index}" class="img-responsive" aria-controls="${IMAGELIGHTBOX}-detail" />`;
 
-        const img = thumbnail.querySelector('img');
-        img.addEventListener('click', () => {
-          self.imageLightbox.show(index);
-          self.trigger('modal', {element: self.imageLightbox.getElement()});
-          self.focusedImage = img;
-        });
-
-        img.addEventListener('keydown', event => {
-          if (event.which === 32 || event.which === 13) {
-            self.imageLightbox.show(index);
-            self.trigger('modal', {element: self.imageLightbox.getElement()});
-            self.focusedImage = img;
-            event.preventDefault();
-          }
-        });
-
-        this.carouselList.appendChild(thumbnail);
+      const img = thumbnail.querySelector('img');
+      img.addEventListener('click', () => {
+        this.imageLightbox.show(index);
+        this.trigger('modal', {element: this.imageLightbox.getElement()});
+        this.focusedImage = img;
       });
+
+      img.addEventListener('keydown', event => {
+        if (event.which === 32 || event.which === 13) {
+          this.imageLightbox.show(index);
+          this.trigger('modal', {element: this.imageLightbox.getElement()});
+          this.focusedImage = img;
+          event.preventDefault();
+        }
+      });
+
+      this.carouselList.appendChild(thumbnail);
     });
   }
 

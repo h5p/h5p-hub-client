@@ -1,6 +1,7 @@
 import ContetTypeDetailView from "./content-type-detail-view";
 import {Eventful} from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
+import { preloadImages } from '../utils/media'
 
 /**
  * @class
@@ -168,7 +169,9 @@ export default class ContentTypeDetail {
 
     // update carousel
     if (contentType.screenshots) {
-      this.view.setScreenshots(contentType.screenshots);
+      // Fetch screenshots if they exist
+      preloadImages(contentType.screenshots)
+        .then(screenshots => this.view.setScreenshots(screenshots))
     }
   }
 

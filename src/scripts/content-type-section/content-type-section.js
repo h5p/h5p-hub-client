@@ -137,7 +137,9 @@ export default class ContentTypeSection {
    *
    * @param {string} query
    */
-  search({query, keyCode}) {
+  search({query}) {
+    this.contentTypeList.resetList();
+
     // Always browse ALL when searching
     this.view.selectMenuItem(ContentTypeSection.Tabs.ALL);
     this.searchService.search(query)
