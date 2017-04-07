@@ -94,10 +94,11 @@
     };
 
     // Load language:
-    fetch('/test/language/' + language + '.js')
-      .then(result => result.text())
-      .then(js => eval(js))
-      .then(() => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        eval(this.responseText);
+
         var config = {
           apiRootUrl: '/test/mock/api/'
         };
@@ -115,9 +116,13 @@
           }
         }, services, H5PEditor.language.core);
 
-        document.getElementById('hub-client').appendChild(hubClient.getElement());
-      });
+        console.log('hub client', hubClient);
 
+        document.getElementById('hub-client').appendChild(hubClient.getElement());
+      }
+    };
+    xhttp.open("GET", '/test/language/' + language + '.js', true);
+    xhttp.send();
   </script>
 </body>
 </html>
