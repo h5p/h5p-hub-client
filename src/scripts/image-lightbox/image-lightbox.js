@@ -59,7 +59,6 @@ export default class ImageLightBox {
   /**
    * Add an image
    *
-   * @function
    * @param {string} url
    * @param {string} alt
    */
@@ -75,7 +74,6 @@ export default class ImageLightBox {
   /**
    * Show the lightbox
    *
-   * @function
    * @param {number} index - the image to show first
    */
   show(index) {
@@ -84,7 +82,6 @@ export default class ImageLightBox {
 
   /**
    * Remove all images
-   * @function
    */
   reset() {
     this.imageLightboxList.innerHTML = '';
