@@ -30,19 +30,14 @@ export default class ContentTypeSection {
      */
     ContentTypeSection.Tabs = {
       ALL: {
-        id: 'filter-all',
+        id: 'filter-most-popular',
         title: Dictionary.get('contentTypeSectionAll'),
-        eventName: 'all'
+        eventName: 'most-popular'
       },
       MY_CONTENT_TYPES: {
         id: 'filter-my-content-types',
         title: Dictionary.get('contentTypeSectionMine'),
         eventName: 'my-content-types'
-      },
-      MOST_POPULAR: {
-        id: 'filter-most-popular',
-        title: Dictionary.get('contentTypeSectionPopular'),
-        eventName: 'most-popular'
       }
     };
 
