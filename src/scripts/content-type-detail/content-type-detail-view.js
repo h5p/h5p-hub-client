@@ -623,6 +623,11 @@ export default class ContentTypeDetailView {
       });
       this.rootElement.insertBefore(this.updateMessage.getElement(), this.contentContainer);
     }
+    else if (this.updateMessage.getElement() && this.updateMessage.getElement().parentNode) {
+      // Remove message
+      this.updateMessage.getElement().parentNode
+        .removeChild(this.updateMessage.getElement());
+    }
   }
 
   /**
