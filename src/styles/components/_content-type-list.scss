@@ -41,7 +41,7 @@ $content-type-list-image-size: 100px;
       }
 
       &:not(:last-child) {
-        border-bottom: 1px solid #f5f5f5;
+        border-bottom: 1px solid $separator-color;
       }
     }
 
@@ -53,6 +53,12 @@ $content-type-list-image-size: 100px;
       min-width: 4em;
       padding: 0.708em 1.5em;
       float: right;
+    }
+
+    @media (min-width: $screen-medium) {
+      .button {
+        margin-top: 0.25em;
+      }
     }
 
     li:hover .media-heading {
@@ -85,6 +91,13 @@ $content-type-list-image-size: 100px;
         margin-right: 0.4em;
       }
     }
+    @media (min-width: $screen-medium) {
+      .content-type-update-info {
+        margin-right: 2em;
+        margin-top: 1em;
+        float: right;
+      }
+    }
 
     .content-type-actions-info {
       display: inline-block;
@@ -108,12 +121,6 @@ $content-type-list-image-size: 100px;
       }
     }
 
-    @media (min-width: $screen-medium) {
-      .content-type-update-info {
-        margin-right: 2em;
-        margin-top: 7px;
-        float: right;
-      }
-    }
+
   }
 }

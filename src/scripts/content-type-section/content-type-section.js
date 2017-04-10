@@ -159,13 +159,16 @@ export default class ContentTypeSection {
   applySearchFilter(e) {
     switch (e.choice) {
       case ContentTypeSection.Tabs.ALL.eventName:
-        this.searchService.sortOn('restricted')
+        const sortOrder = ['popularity'];
+        this.searchService
+          .sortOn(sortOrder)
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
-        break;
+          break;
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
         this.searchService.applyFilters(['restricted', 'installed'])
-          .then(filteredContentTypes => this.searchService.sortOnRecent(filteredContentTypes))
+          .then(filteredContentTypes => this.searchService.sortOn(['title']))
+          .then(sortedContentTypes => this.searchService.sortOnRecent(sortedContentTypes))
           .then(sortedContentTypes => {
             this.contentTypeList.update(sortedContentTypes);
 
@@ -174,13 +177,6 @@ export default class ContentTypeSection {
               this.displayNoLibrariesWarning();
             }
           });
-        break;
-
-      case ContentTypeSection.Tabs.MOST_POPULAR.eventName:
-        const sortOrder = ['restricted', 'popularity'];
-        this.searchService
-          .sortOn(sortOrder)
-          .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
         break;
     }
   }
