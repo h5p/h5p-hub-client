@@ -235,6 +235,10 @@ export default class ContentTypeDetailView {
    * @param {string} message
    */
   setInstallMessage({ success = true, message }){
+    if (this.installMessage) {
+      this.installMessage.remove();
+    }
+
     this.installMessage = new MessageView({
       dismissible: true,
       type: success ? 'info' : 'error',
@@ -618,7 +622,6 @@ export default class ContentTypeDetailView {
     if (this.updateMessage) {
       this.updateMessage.remove();
     }
-
     if (this.installMessage) {
       this.installMessage.remove();
     }

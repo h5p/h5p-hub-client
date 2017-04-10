@@ -41,7 +41,7 @@ class HubServicesFailInit extends HubServices {
 class HubServicesFailInstalling extends HubServices {
   installContentType(id) {
     this.counter = (this.counter || 0) + 1;
-    return createDelayedPromise(this.counter == 1);
+    return createDelayedPromise(this.counter < 3);
   }
 }
 
