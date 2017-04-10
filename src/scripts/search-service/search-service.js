@@ -43,7 +43,7 @@ export default class SearchService {
    */
   sortOn(sortOrder) {
     return this.services.contentTypes()
-      .then(contentTypes => multiSort(contentTypes, sortOrder));
+      .then(contentTypes => this.multiSort(contentTypes, sortOrder));
   }
 
   /**
@@ -75,6 +75,34 @@ export default class SearchService {
     return this.services.contentTypes()
       .then(contentTypes => multiFilter(contentTypes, filters));
   }
+
+  /**
+   * Sort on multiple properties
+   *
+   * @param {MixedContentType[]|ContentType[]} contentTypes Content types that should be sorted
+   * @param {string|string[]} sortOrder Order that sort properties should be applied
+   *
+   * @return {Array.<ContentType>} Content types sorted
+   */
+   multiSort(contentTypes, sortOrder) {
+    // Make sure all sorted instances are mixed content type
+    const mixedContentTypes = contentTypes.map(contentType => {
+      if (contentType.hasOwnProperty('score') && contentType.hasOwnProperty('contentType')) {
+        return contentType;
+      }
+
+      // Return a mixed content type with score 1 to survive filtering
+      return {
+        contentType: contentType,
+        score: 1
+      }
+    });
+
+    sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
+    return mixedContentTypes.sort((firstContentType, secondContentType) => {
+      return handleSortType(firstContentType, secondContentType, sortOrder);
+    }).map(mixedContentType => mixedContentType.contentType);
+  };
 }
 
 /**
@@ -110,34 +138,6 @@ const handleFilter = (contentTypes, filter) => {
     case 'installed':
       return contentTypes.filter(contentType => contentType.installed);
   }
-};
-
-/**
- * Sort on multiple properties
- *
- * @param {MixedContentType[]|ContentType[]} contentTypes Content types that should be sorted
- * @param {string|string[]} sortOrder Order that sort properties should be applied
- *
- * @return {Array.<ContentType>} Content types sorted
- */
-const multiSort = (contentTypes, sortOrder) => {
-  // Make sure all sorted instances are mixed content type
-  const mixedContentTypes = contentTypes.map(contentType => {
-    if (contentType.hasOwnProperty('score') && contentType.hasOwnProperty('contentType')) {
-      return contentType;
-    }
-
-    // Return a mixed content type with score 1 to survive filtering
-    return {
-      contentType: contentType,
-      score: 1
-    }
-  });
-
-  sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
-  return mixedContentTypes.sort((firstContentType, secondContentType) => {
-    return handleSortType(firstContentType, secondContentType, sortOrder);
-  }).map(mixedContentType => mixedContentType.contentType);
 };
 
 /**

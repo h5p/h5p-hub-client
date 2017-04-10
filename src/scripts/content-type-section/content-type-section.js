@@ -159,15 +159,15 @@ export default class ContentTypeSection {
   applySearchFilter(e) {
     switch (e.choice) {
       case ContentTypeSection.Tabs.ALL.eventName:
-        const sortOrder = ['popularity'];
+        const sortOrder = ['restricted', 'popularity'];
         this.searchService
           .sortOn(sortOrder)
           .then(sortedContentTypes => this.contentTypeList.update(sortedContentTypes));
-          break;
+        break;
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
         this.searchService.applyFilters(['restricted', 'installed'])
-          .then(filteredContentTypes => this.searchService.sortOn(['title']))
+        .then(filteredContentTypes => this.searchService.multiSort(filteredContentTypes, ['title']))
           .then(sortedContentTypes => this.searchService.sortOnRecent(sortedContentTypes))
           .then(sortedContentTypes => {
             this.contentTypeList.update(sortedContentTypes);
