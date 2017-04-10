@@ -1,5 +1,5 @@
 import ContentTypeSectionView from "./content-type-section-view";
-import SearchService from "../search-service/search-service";
+import { SearchService, multiSort } from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
 import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
@@ -167,7 +167,7 @@ export default class ContentTypeSection {
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
         this.searchService.applyFilters(['restricted', 'installed'])
-        .then(filteredContentTypes => this.searchService.multiSort(filteredContentTypes, ['title']))
+        .then(filteredContentTypes => multiSort(filteredContentTypes, ['title']))
           .then(sortedContentTypes => this.searchService.sortOnRecent(sortedContentTypes))
           .then(sortedContentTypes => {
             this.contentTypeList.update(sortedContentTypes);
