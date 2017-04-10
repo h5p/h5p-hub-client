@@ -28,6 +28,12 @@ export default class MessageView {
     this.rootElement = this.createElement(state);
   }
 
+  /**
+   * Create the DOM element
+   *
+   * @param {object} message
+   * @return {HTMLElement}
+   */
   createElement(message) {
     // Create wrapper:
     const messageWrapper = document.createElement('div');
@@ -41,7 +47,7 @@ export default class MessageView {
       closeButton.setAttribute('tabIndex', 0);
       closeButton.setAttribute('aria-label', Dictionary.get('closeButtonLabel'));
       messageWrapper.appendChild(closeButton);
-      relayClickEventAs('close', this, closeButton);
+      closeButton.addEventListener('click', () => this.remove());
     }
 
     const messageContent = document.createElement('div');
@@ -59,6 +65,16 @@ export default class MessageView {
     }
 
     return messageWrapper;
+  }
+
+  /**
+   * Remove element from parent DOM element
+   */
+  remove() {
+    const parent = this.rootElement.parentNode;
+    if (parent) {
+      parent.removeChild(this.rootElement);
+    }
   }
 
   /**

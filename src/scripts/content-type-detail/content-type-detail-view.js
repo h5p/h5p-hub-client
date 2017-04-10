@@ -240,19 +240,9 @@ export default class ContentTypeDetailView {
       type: success ? 'info' : 'error',
       name: 'install-message',
       title: message
-    }).on('close', this.removeInstallMessage, this);
+    });
 
     this.rootElement.insertBefore(this.installMessage.getElement(), this.buttonBar);
-  }
-
-  /**
-   * Removes the install message
-   */
-  removeInstallMessage(){
-    if (this.installMessage) {
-      this.rootElement.removeChild(this.installMessage.getElement());
-      delete this.installMessage;
-    }
   }
 
   /**
@@ -269,11 +259,11 @@ export default class ContentTypeDetailView {
       const thumbnail = document.createElement('li');
       thumbnail.className = 'slide';
       thumbnail.innerHTML =
-        `<img src="${image.url}" 
-              alt="${image.alt}" 
-              data-index="${index}" 
-              class="img-responsive" 
-              aria-controls="${IMAGELIGHTBOX}-detail" 
+        `<img src="${image.url}"
+              alt="${image.alt}"
+              data-index="${index}"
+              class="img-responsive"
+              aria-controls="${IMAGELIGHTBOX}-detail"
         />`;
 
       const img = thumbnail.querySelector('img');
@@ -311,12 +301,8 @@ export default class ContentTypeDetailView {
       button.classList.add('hidden');
     });
 
-    // Remove old warning message if in DOM
-    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
-      this.updateMessage.getElement().parentNode.removeChild(this.updateMessage.getElement());
-    }
-
-    this.removeInstallMessage();
+    // Remove messages
+    this.removeMessages();
     this.resetLicenses();
 
     // Remove images:
@@ -623,10 +609,18 @@ export default class ContentTypeDetailView {
       });
       this.rootElement.insertBefore(this.updateMessage.getElement(), this.contentContainer);
     }
-    else if (this.updateMessage.getElement() && this.updateMessage.getElement().parentNode) {
-      // Remove message
-      this.updateMessage.getElement().parentNode
-        .removeChild(this.updateMessage.getElement());
+  }
+
+  /**
+   * Removes all install/update messages
+   */
+  removeMessages() {
+    if (this.updateMessage) {
+      this.updateMessage.remove();
+    }
+
+    if (this.installMessage) {
+      this.installMessage.remove();
     }
   }
 
