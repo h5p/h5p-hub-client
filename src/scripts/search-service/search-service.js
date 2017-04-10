@@ -48,13 +48,20 @@ export default class SearchService {
 
   /**
    * Returns a list of content type objects sorted
-   * on most recently used
+   * on most recently used.
    *
    * @return {ContentType[]}  Content Types
    */
   sortOnRecent(contentTypes) {
     return this.services.recentlyUsed()
-      .then(recentlyUsed => sortContentTypesByMachineName(contentTypes, recentlyUsed));
+      .then(recentlyUsed => {
+        if (recentlyUsed.length !== 0) {
+          return sortContentTypesByMachineName(contentTypes, recentlyUsed);
+        }
+        else {
+          return contentTypes;
+        }
+      })
   }
 
   /**
@@ -151,6 +158,13 @@ const handleSortType = (firstContentType, secondContentType, sortOrder) => {
         sortOrder.slice(1)
       );
     case 'popularity':
+      return sortOnProperty(
+        firstContentType,
+        secondContentType,
+        sortOrder[0],
+        sortOrder.slice(1)
+      );
+    case 'title':
       return sortOnProperty(
         firstContentType,
         secondContentType,
@@ -352,15 +366,25 @@ const arrayHasSubString = function(subString, arr) {
 
 /**
  * Filters an array of content type objects based
- * on an order specified by a array of machine names
+ * on an order specified by an array of machine names
  *
  * @param  {ContentType[]} contentTypes
  * @param  {string[]}     machineNames
  * @return {ContentType[]}              filtered content types
  */
 const sortContentTypesByMachineName = function(contentTypes, machineNames) {
-  return contentTypes.sort((a,b) => {
+  const sortables = [];
 
+  // Find all the content types that need to be sorted move them to a new array
+  contentTypes.forEach(contentType => {
+    var index = machineNames.indexOf(contentType.machineName.toString());
+    if (index > -1) {
+      sortables.push(contentType)
+      contentTypes.splice(contentTypes.indexOf(contentType), 1)
+    }
+  });
+
+  sortables.sort((a,b) => {
     const aIndex = machineNames.indexOf(a.machineName.toString());
     const bIndex = machineNames.indexOf(b.machineName.toString());
 
@@ -377,4 +401,6 @@ const sortContentTypesByMachineName = function(contentTypes, machineNames) {
         return (aIndex < bIndex) ? -1 : 1;
     }
   });
+
+  return sortables.concat(contentTypes);
 };
