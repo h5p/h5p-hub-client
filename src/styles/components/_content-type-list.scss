@@ -55,6 +55,12 @@ $content-type-list-image-size: 100px;
       float: right;
     }
 
+    @media (min-width: $screen-medium) {
+      .button {
+        margin-top: 0.25em;
+      }
+    }
+
     li:hover .media-heading {
       // TODO - change color on hover!
     }
@@ -85,6 +91,13 @@ $content-type-list-image-size: 100px;
         margin-right: 0.4em;
       }
     }
+    @media (min-width: $screen-medium) {
+      .content-type-update-info {
+        margin-right: 2em;
+        margin-top: 1em;
+        float: right;
+      }
+    }
 
     .content-type-actions-info {
       display: inline-block;
@@ -108,12 +121,6 @@ $content-type-list-image-size: 100px;
       }
     }
 
-    @media (min-width: $screen-medium) {
-      .content-type-update-info {
-        margin-right: 2em;
-        margin-top: 7px;
-        float: right;
-      }
-    }
+
   }
 }
