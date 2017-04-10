@@ -15,11 +15,11 @@
 
   .menu-group {
     background-color: $c1;
-    padding: 0.5em 1.125em 1.125em;
+    padding: 0.5em 1.125em $gutter;
 
     .input-group {
       padding: 0.4em;
-      margin-top: 1.125em;
+      margin-top: $gutter;
       background-color: white;
       border-radius: 2em;
 
@@ -45,7 +45,7 @@
 
     .icon-search {
       font-size: 1.3em;
-      top: 0.95em;
+      top: 0.8em;
       right: 1.3em;
       cursor: pointer;
     }
@@ -78,7 +78,6 @@
     background-color: transparent;
     color: #ffffff;
     border: 0;
-    font-size: 1em;
     padding-bottom: 0;
 
     .navbar-nav li {
@@ -147,13 +146,13 @@
        border-bottom: solid 1px rgba(206, 214, 227, 0.34);
 
        .navbar-nav li {
-         border-bottom: 0.1em solid transparent;
+         border-bottom: 2px solid transparent;
          transition: border-bottom 0.3s;
-         margin-left: 1em;
+         margin-left: 1.5em;
          margin-right: 1em;
 
          &.selected {
-           border-bottom: 0.1em solid #1a93f4;
+           border-bottom-color: #1a93f4;
            transition: border-bottom 0.3s;
          }
        }

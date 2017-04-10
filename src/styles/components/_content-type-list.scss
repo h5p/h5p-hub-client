@@ -29,13 +29,12 @@ $content-type-list-image-size: 100px;
 
     li {
       width: 100%;
-      padding: $gutter;
+      padding: 0.5em 1.5em 0.5em 1em;
       box-sizing: border-box;
       cursor: pointer;
       overflow: auto;
       outline-color: lighten($ac1, 10%);
       margin-top: 0;
-      padding-right: 1.5em;
 
       &:hover {
         background-color: lighten($ac1, 55%);
@@ -56,6 +55,10 @@ $content-type-list-image-size: 100px;
       float: right;
     }
 
+    li:hover .media-heading {
+      // TODO - change color on hover!
+    }
+
     .media-heading {
       float: left;
       margin-right: $gutter;
@@ -63,6 +66,7 @@ $content-type-list-image-size: 100px;
 
     .description {
       color: $c6;
+      font-size: $text-body-small;
       float: left;
       clear: left;
     }
@@ -70,14 +74,15 @@ $content-type-list-image-size: 100px;
     .content-type-update-info {
       margin-right: 0;
       color: $color-section-content-types;
-      font-size: $text-body-small;
+      font-size: 0.8em;
       font-style: italic;
       float: left;
 
       &:before {
         @include icon($icon-update);
         font-style: normal;
-        margin-right: 0.5em;
+        font-size: 0.8em;
+        margin-right: 0.4em;
       }
     }
 
