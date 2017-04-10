@@ -25,6 +25,7 @@ export default class ContentTypeDetail {
         .then(contentType => {
           return this.install({
             id: contentType.machineName,
+            title: contentType.title,
             installed: contentType.installed
           });
         });
@@ -103,7 +104,7 @@ export default class ContentTypeDetail {
    *
    * @return {Promise.<ContentType>}
    */
-  install({id, installed}) {
+  install({id, installed, title}) {
     // set spinner
     this.view.toggleSpinner(true);
 
@@ -118,7 +119,7 @@ export default class ContentTypeDetail {
         : 'contentTypeInstallSuccess';
 
       this.view.setInstallMessage({
-        message: Dictionary.get(installMessageKey, {':contentType': id})
+        message: Dictionary.get(installMessageKey, {':contentType': title})
       });
     }).catch(error => {
       this.view.toggleSpinner(false);
@@ -127,7 +128,7 @@ export default class ContentTypeDetail {
       let errorMessage = (error.errorCode) ? error : {
         success: false,
         errorCode: 'RESPONSE_FAILED',
-        message: Dictionary.get('contentTypeInstallError', {':contentType': id})
+        message: Dictionary.get('contentTypeInstallError', {':contentType': title})
       };
       this.view.setInstallMessage(errorMessage);
 
