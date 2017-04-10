@@ -311,11 +311,8 @@ export default class ContentTypeDetailView {
       button.classList.add('hidden');
     });
 
-    // Remove old warning message if in DOM
-    if (this.updateMessage && this.updateMessage.getElement().parentNode) {
-      this.updateMessage.getElement().parentNode.removeChild(this.updateMessage.getElement());
-    }
-
+    // Remove messages
+    this.removeUpdateMessage();
     this.removeInstallMessage();
     this.resetLicenses();
 
@@ -623,10 +620,22 @@ export default class ContentTypeDetailView {
       });
       this.rootElement.insertBefore(this.updateMessage.getElement(), this.contentContainer);
     }
-    else if (this.updateMessage.getElement() && this.updateMessage.getElement().parentNode) {
-      // Remove message
-      this.updateMessage.getElement().parentNode
-        .removeChild(this.updateMessage.getElement());
+    else {
+      this.removeUpdateMessage();
+    }
+  }
+
+  /**
+   * Remove update message
+   */
+  removeUpdateMessage() {
+    if (!this.updateMessage) return;
+
+    // If inserted into DOM, remove it
+    const updateElement = this.updateMessage.getElement();
+    const parent = updateElement.parentNode;
+    if (parent) {
+      parent.removeChild(updateElement);
     }
   }
 
