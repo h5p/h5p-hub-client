@@ -260,7 +260,7 @@ const filterByQuery = curry(function(query, contentTypes) {
     score: getSearchScore(query, contentType)
   })).filter(result => result.score > 0);
 
-  return this.multiSort(filtered, ['restricted', 'default']);
+  return multiSort(filtered, ['restricted', 'default']);
 });
 
 /**
