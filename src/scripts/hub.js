@@ -88,6 +88,7 @@ export default class Hub {
     // handle events
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.view.togglePanelOpen.bind(this.view, false));
+    this.on('upload', this.view.togglePanelOpen.bind(this.view, false));
     this.view.on('tab-change', event => {
       if (event.id === 'upload' && !event.element.getAttribute('aria-selected')) {
         // Clean up messages
