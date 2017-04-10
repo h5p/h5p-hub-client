@@ -240,19 +240,9 @@ export default class ContentTypeDetailView {
       type: success ? 'info' : 'error',
       name: 'install-message',
       title: message
-    }).on('close', this.removeInstallMessage, this);
+    });
 
     this.rootElement.insertBefore(this.installMessage.getElement(), this.buttonBar);
-  }
-
-  /**
-   * Removes the install message
-   */
-  removeInstallMessage(){
-    if (this.installMessage) {
-      this.rootElement.removeChild(this.installMessage.getElement());
-      delete this.installMessage;
-    }
   }
 
   /**
@@ -269,11 +259,11 @@ export default class ContentTypeDetailView {
       const thumbnail = document.createElement('li');
       thumbnail.className = 'slide';
       thumbnail.innerHTML =
-        `<img src="${image.url}" 
-              alt="${image.alt}" 
-              data-index="${index}" 
-              class="img-responsive" 
-              aria-controls="${IMAGELIGHTBOX}-detail" 
+        `<img src="${image.url}"
+              alt="${image.alt}"
+              data-index="${index}"
+              class="img-responsive"
+              aria-controls="${IMAGELIGHTBOX}-detail"
         />`;
 
       const img = thumbnail.querySelector('img');
@@ -312,8 +302,7 @@ export default class ContentTypeDetailView {
     });
 
     // Remove messages
-    this.removeUpdateMessage();
-    this.removeInstallMessage();
+    this.removeMessages();
     this.resetLicenses();
 
     // Remove images:
@@ -620,22 +609,18 @@ export default class ContentTypeDetailView {
       });
       this.rootElement.insertBefore(this.updateMessage.getElement(), this.contentContainer);
     }
-    else {
-      this.removeUpdateMessage();
-    }
   }
 
   /**
-   * Remove update message
+   * Removes all install/update messages
    */
-  removeUpdateMessage() {
-    if (!this.updateMessage) return;
+  removeMessages() {
+    if (this.updateMessage) {
+      this.updateMessage.remove();
+    }
 
-    // If inserted into DOM, remove it
-    const updateElement = this.updateMessage.getElement();
-    const parent = updateElement.parentNode;
-    if (parent) {
-      parent.removeChild(updateElement);
+    if (this.installMessage) {
+      this.installMessage.remove();
     }
   }
 

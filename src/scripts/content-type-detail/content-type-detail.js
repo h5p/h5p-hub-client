@@ -109,6 +109,7 @@ export default class ContentTypeDetail {
 
     return this.services.installContentType(id).then(response => {
       this.trigger('installed-content-type');
+      this.view.removeMessages();
       this.view.toggleSpinner(false);
       this.view.setIsInstalled(true);
       this.view.setIsUpdatePossible(false);
