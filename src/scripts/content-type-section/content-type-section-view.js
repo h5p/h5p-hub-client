@@ -26,7 +26,7 @@ export default class ContentBrowserView {
 
     // general configuration
     this.typeAheadEnabled = true;
-    this.currentlySelected = {};
+    this.currentlySelected = '';
     this.menuId = 'content-type-filter';
     this.currentMenuId = this.menuId + '-a11y-desc-current';
 
@@ -166,19 +166,6 @@ export default class ContentBrowserView {
       }
     });
 
-    this.on('menu-selected', event => {
-      const myArray =  Object.keys(ContentTypeSection.Tabs)
-        .map(menuItemName => ContentTypeSection.Tabs[menuItemName]);
-
-      // Get the currently selected menu item
-      for (let i = 0; i < myArray.length; i++) {
-        if (myArray[i].eventName === event.choice) {
-          self.currentlySelected = myArray[i];
-          return;
-        }
-      }
-    });
-
     // add to menu bar
     this.menubar.appendChild(element);
     return element;
@@ -195,7 +182,7 @@ export default class ContentBrowserView {
    * Clears menu item selection
    */
   clearSelection() {
-    this.currentlySelected = {};
+    this.currentlySelected = '';
   }
 
   /**
@@ -215,7 +202,7 @@ export default class ContentBrowserView {
    */
   selectMenuItem({id, eventName}) {
     // Skip if already selected
-    if (this.currentlySelected.eventName === eventName) {
+    if (this.currentlySelected === eventName) {
       return;
     }
 
@@ -246,6 +233,15 @@ export default class ContentBrowserView {
    * Initialize the menu from the controller
    */
   initMenu() {
+    this.on('menu-selected', event => {
+      // Focus on search bar if in most popular tab (labeled All)
+      if (event.choice === 'most-popular') {
+        this.focusSearchBar();
+      }
+
+      this.currentlySelected = event.choice;
+    }, this);
+
     // call init menu from sdk
     initNavbar(this.menu);
   }
