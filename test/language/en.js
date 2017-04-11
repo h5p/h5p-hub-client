@@ -138,5 +138,6 @@ H5PEditor.language.core = {
   imageLightBoxProgress: ':num of :total',
   nextImage: 'Next image',
   previousImage: 'Previous image',
-  reloadButtonLabel: 'Reload'
+  reloadButtonLabel: 'Reload',
+  licenseDescription: 'Some of the features of this license are indicated below. Click the info icon above to read the original license text.'
 };

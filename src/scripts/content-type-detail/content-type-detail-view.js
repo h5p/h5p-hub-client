@@ -457,14 +457,15 @@ export default class ContentTypeDetailView {
       shortLicenseInfo.innerHTML = `
         <h3>${license.id}</h3>
         <button type="button" class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('readMore')}"></button>
+        <p>${Dictionary.get("licenseDescription")}</p>
         <ul class="ul small">
-          <li>${Dictionary.get(license.attributes.useCommercially ? "licenseCanUseCommercially" : "licenseCannotUseCommercially")}</li>
-          <li>${Dictionary.get(license.attributes.modifiable ? "licenseCanModify" : "licenseCannotModify")}</li>
-          <li>${Dictionary.get(license.attributes.distributable ? "licenseCanDistribute" : "licenseCannotDistribute")}</li>
-          <li>${Dictionary.get(license.attributes.sublicensable ? "licenseCanSublicense" : "licenseCannotSublicense")}</li>
-          <li>${Dictionary.get(license.attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}</li>
-          <li>${Dictionary.get(license.attributes.mustIncludeCopyright ? "licenseMustIncludeCopyright" : "licenseMustNotIncludeCopyright")}</li>
-          <li>${Dictionary.get(license.attributes.mustIncludeLicense ? "licenseMustIncludeLicense" : "licenseMustNotIncludeLicense")}</li>
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanUseCommercially") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanModify") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanDistribute") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanSublicense") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanHoldLiable") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseMustIncludeCopyright") + '</li>' : ''}
+          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseMustIncludeLicense") + '</li>' : ''}
         </ul>`;
 
       // add short version of lisence
