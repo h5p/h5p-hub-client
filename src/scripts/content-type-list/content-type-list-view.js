@@ -27,6 +27,8 @@ export default class ContentTypeListView {
     // add event system
     Object.assign(this, Eventful());
 
+    this.apiVersion = state.apiVersion;
+
     // setup keyboard
     this.keyboard = new Keyboard();
     this.keyboard.onSelect = element => {
@@ -136,7 +138,7 @@ export default class ContentTypeListView {
     const title = contentType.title || contentType.machineName;
     const description = contentType.summary || '';
     const image = contentType.icon || noIcon;
-    const disabled = contentType.restricted ? 'disabled="disabled"' : '';
+    const disabled = contentType.restricted || (!contentType.installed && !(this.apiVersion.major > contentType.h5pMajorVersion || (this.apiVersion.major === contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion))) ? 'disabled="disabled"' : '';
     const updateAvailable = !contentType.isUpToDate && contentType.installed && !contentType.restricted;
 
     // row item
