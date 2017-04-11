@@ -68,7 +68,7 @@ H5PEditor.language.core = {
   hideImportantInstructions: 'Hide important instructions',
   hide: 'Hide',
   example: 'Example',
-  PanelDefaultLabel: 'Select content type',
+  hubPanelLabel: 'Select content type',
   createContentTabLabel: 'Create Content',
   uploadTabLabel: 'Upload',
   uploadPlaceholder: 'No file chosen',
