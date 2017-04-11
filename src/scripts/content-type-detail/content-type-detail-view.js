@@ -453,12 +453,12 @@ export default class ContentTypeDetailView {
         <p>${Dictionary.get("licenseDescription")}</p>
         <ul class="ul small">
           ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanUseCommercially") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanModify") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanDistribute") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanSublicense") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanHoldLiable") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseMustIncludeCopyright") + '</li>' : ''}
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseMustIncludeLicense") + '</li>' : ''}
+          ${license.attributes.modifiable ? '<li>' + Dictionary.get("licenseCanModify") + '</li>' : ''}
+          ${license.attributes.distributable ? '<li>' + Dictionary.get("licenseCanDistribute") + '</li>' : ''}
+          ${license.attributes.sublicensable ? '<li>' + Dictionary.get("licenseCanSublicense") + '</li>' : ''}
+          ${license.attributes.canHoldLiable ? '<li>' + Dictionary.get("licenseCanHoldLiable") + '</li>' : ''}
+          ${license.attributes.mustIncludeCopyright ? '<li>' + Dictionary.get("licenseMustIncludeCopyright") + '</li>' : ''}
+          ${license.attributes.mustIncludeLicense ? '<li>' + Dictionary.get("licenseMustIncludeLicense") + '</li>' : ''}
         </ul>`;
 
       // add short version of lisence
