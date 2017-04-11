@@ -366,7 +366,7 @@ const arrayHasSubString = function(subString, arr) {
 
 /**
  * Filters an array of content type objects based
- * on an order specified by an array of machine names
+ * on an order specified by an array of machine names.
  *
  * @param  {ContentType[]} contentTypes
  * @param  {string[]}     machineNames
@@ -374,13 +374,17 @@ const arrayHasSubString = function(subString, arr) {
  */
 const sortContentTypesByMachineName = function(contentTypes, machineNames) {
   const sortables = [];
+  const unsortables = [];
 
   // Find all the content types that need to be sorted move them to a new array
+  // place the rest in a different array to be appended at the end
   contentTypes.forEach(contentType => {
     var index = machineNames.indexOf(contentType.machineName.toString());
     if (index > -1) {
-      sortables.push(contentType)
-      contentTypes.splice(contentTypes.indexOf(contentType), 1)
+      sortables.push(contentType);
+    }
+    else {
+      unsortables.push(contentType);
     }
   });
 
@@ -402,5 +406,5 @@ const sortContentTypesByMachineName = function(contentTypes, machineNames) {
     }
   });
 
-  return sortables.concat(contentTypes);
+  return sortables.concat(unsortables);
 };
