@@ -322,7 +322,7 @@ export default class ContentTypeDetailView {
     // Disable install button
     this.installButton.setAttribute('disabled', 'disabled');
 
-    this.setMessage('contentTypeUnsupportedApiVersionTitle', 'ontentTypeUnsupportedApiVersionContent');
+    this.setMessage('contentTypeUnsupportedApiVersionTitle', 'contentTypeUnsupportedApiVersionContent');
   }
 
   /**
