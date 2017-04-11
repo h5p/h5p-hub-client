@@ -1,5 +1,11 @@
 var webpackConfig = require('./webpack.config.js');
 
+// Enable loading of json
+webpackConfig.module.rules.push({
+  test: /\.json$/,
+  use: 'json-loader'
+});
+
 module.exports = function(config) {
   config.set({
 
@@ -15,7 +21,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'src/scripts/**/*.js',
-      'test/**/*.js'
+      'test/spec/**/*.js'
     ],
 
 
@@ -28,7 +34,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'src/scripts/**/*.js': ['webpack'],
-      'test/**/*spec.js': ['webpack'],
+      'test/spec/**/*spec.js': ['webpack'],
     },
     webpack: webpackConfig,
     reporters: ['mocha'],

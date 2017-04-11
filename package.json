@@ -4,7 +4,7 @@
   "description": "H5P Content Hub and H5P Content Type Hub",
   "main": "index.js",
   "scripts": {
-    "test": "karma start",
+    "test": "cross-env DEV_ENV=1 karma start",
     "build": "webpack",
     "watch": "cross-env DEV_ENV=1 webpack --watch",
     "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch",
@@ -33,6 +33,7 @@
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.10.1",
     "jasmine-core": "^2.5.2",
+    "json-loader": "^0.5.4",
     "karma": "^1.4.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-jasmine": "^1.1.0",

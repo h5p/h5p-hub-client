@@ -1,6 +1,6 @@
-import SearchService from '../src/scripts/search-service/search-service';
-import cacheMock from './mock/api/content-type-cache';
-import Hub from '../src/scripts/hub.js';
+// import SearchService from '../src/scripts/search-service/search-service';
+// import cacheMock from './mock/api/content-type-cache.json';
+// import Hub from '../src/scripts/hub.js';
 
 // describe('Search Service', () => {
 //   // Check that attach is called
@@ -20,17 +20,13 @@ import Hub from '../src/scripts/hub.js';
 //   });
 // });
 
-describe('Search service filtering', () => {
+// describe('Search service filtering', () => {
   /*const mockedService = {
     contentTypes: () => {
       return Promise.resolve(cacheMock.libraries);
     }
   };
   const search = new SearchService(mockedService);*/
-
-  stub
-
-  var Hub = new Hub();
 
   /*it('should filter the most popular content type first (H5P.MultiChoice)', (done) => {
     search.filter('popularity')
@@ -47,4 +43,4 @@ describe('Search service filtering', () => {
         done();
       });
   })*/
-});
+// });
