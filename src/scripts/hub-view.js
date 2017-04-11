@@ -48,7 +48,7 @@ export default class HubView {
 
     // initiates panel
     initPanel(this.panel);
-    this.setTitle(Dictionary.get("PanelDefaultLabel"));
+    this.setTitle(Dictionary.get("hubPanelLabel"));
 
     // relay events
     relayClickEventAs('panel-change', this, this.toggler);
