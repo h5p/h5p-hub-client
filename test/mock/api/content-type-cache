@@ -236,7 +236,7 @@
       "patchVersion": 0,
       "h5pMajorVersion": 1,
       "h5pMinorVersion": 7,
-      "title": "Collage",
+      "title": "Collage (restricted & not installed)",
       "summary": "Create a collage of multiple images",
       "description": "The Collage tool allows you to organize images into a soothing composition. ",
       "icon": "https:\/\/h5p.org\/sites\/default\/files\/college.svg",
@@ -275,9 +275,9 @@
         }
       },
       "owner": "Joubel",
-      "installed": true,
+      "installed": false,
       "isUpToDate": true,
-      "restricted": false,
+      "restricted": true,
       "categories": [
         "Multimedia"
       ],
