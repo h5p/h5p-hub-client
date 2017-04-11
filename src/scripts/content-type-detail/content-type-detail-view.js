@@ -322,14 +322,7 @@ export default class ContentTypeDetailView {
     // Disable install button
     this.installButton.setAttribute('disabled', 'disabled');
 
-    let messageView = new MessageView({
-      type: 'warning',
-      title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-      content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-    });
-
-    this.messageViewElement = messageView.getElement();
-    this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+    this.setMessage('contentTypeUnsupportedApiVersionTitle', 'ontentTypeUnsupportedApiVersionContent');
   }
 
   /**
@@ -628,14 +621,38 @@ export default class ContentTypeDetailView {
   }
 
   /**
+   * Makes it easy to set a message
+   *
+   * @param {string} title
+   * @param {string} description
+   */
+  setMessage(title, description) {
+    let messageView = new MessageView({
+      type: 'warning',
+      title: Dictionary.get(title),
+      content: Dictionary.get(description)
+    });
+
+    this.messageViewElement = messageView.getElement();
+    this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
+  }
+
+  /**
    * Marks content type as restricted, disabling installing and using the content type.
    *
    * @param {boolean} restricted True if content type is restricted
    */
-  setIsRestricted(restricted) {
+  setIsRestricted(restricted, installed) {
     if(restricted) {
       disable(this.useButton);
       disable(this.installButton);
+
+      if (installed) {
+        this.setMessage('contentTypeRestricted', 'contentTypeRestrictedDesc');
+      }
+      else {
+        this.setMessage('contentTypeNotInstalled', 'contentTypeNotInstalledDesc');
+      }
     }
     else {
       enable(this.useButton);
