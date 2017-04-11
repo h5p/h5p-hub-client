@@ -379,8 +379,9 @@ const sortContentTypesByMachineName = function(contentTypes, machineNames) {
   // Find all the content types that need to be sorted move them to a new array
   // place the rest in a different array to be appended at the end
   contentTypes.forEach(contentType => {
-    var index = machineNames.indexOf(contentType.machineName.toString());
-    if (index > -1) {
+    const hasSortableMachineName = machineNames.indexOf(contentType.machineName.toString()) > -1;
+
+    if (hasSortableMachineName) {
       sortables.push(contentType);
     }
     else {
