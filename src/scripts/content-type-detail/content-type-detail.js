@@ -153,7 +153,7 @@ export default class ContentTypeDetail {
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicense(contentType.license);
-    this.view.setIsRestricted(contentType.restricted);
+    this.view.setIsRestricted(contentType.restricted, contentType.installed);
     const isUpdatePossible = contentType.installed &&
       !contentType.isUpToDate &&
       !contentType.restricted;
