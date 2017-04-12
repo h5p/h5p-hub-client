@@ -1,5 +1,5 @@
-import SearchService from '../src/scripts/search-service/search-service';
-import cacheMock from './mock/api/content-type-cache.json';
+import { SearchService } from '../../src/scripts/search-service/search-service';
+import cacheMock from '../mock/api/content-type-cache.json';
 
 describe('Search service', () => {
   const mockedService = {
@@ -34,10 +34,10 @@ describe('Search service', () => {
 
   describe('sorting', () => {
 
-    it('should filter the most popular content type first (H5P.MultiChoice)', (done) => {
+    it('should filter the most popular content type first (H5P.CoursePresentation)', (done) => {
       search.sortOn('popularity')
         .then(cts => {
-          expect(cts[0].machineName).toEqual('H5P.MultiChoice');
+          expect(cts[0].machineName).toEqual('H5P.CoursePresentation');
           done();
         });
     });
@@ -51,24 +51,23 @@ describe('Search service', () => {
     });
 
     it('should sort most recently used content type first', (done) => {
-      search.sortOnRecent()
+      search.sortOnRecent(cacheMock.libraries)
         .then(cts => {
-          expect(cts[0]).toEqual('H5P.InteractiveVideo');
+          expect(cts[0].machineName).toEqual('H5P.CoursePresentation');
           done();
         })
     });
-
   });
 
   describe('restricted filtering', () => {
 
     it('should filter out content type when filtering out restricted', (done) => {
-      const noFilter = cacheMock.libraries.find(ct => ct.machineName === 'H5P.ImpressPresentation');
+      const noFilter = cacheMock.libraries.find(ct => ct.machineName === 'H5P.Accordion');
       expect(noFilter).toBeDefined();
       expect(noFilter.restricted).toBeTruthy();
 
-      search.filterOutRestricted().then(cts => {
-        const restricted = cts.find(ct => ct.machineName === 'H5P.ImpressPresentation');
+      search.applyFilters(['restricted']).then(cts => {
+        const restricted = cts.find(ct => ct.machineName === 'H5P.Accordion');
         expect(restricted).toBeUndefined();
         done();
       });
@@ -79,7 +78,7 @@ describe('Search service', () => {
       expect(noFilter).toBeDefined();
       expect(noFilter.restricted).toBeUndefined();
 
-      search.filterOutRestricted().then(cts => {
+      search.applyFilters(['restricted']).then(cts => {
         const resNotDefined = cts.find(ct => ct.machineName === 'Reorder');
         expect(resNotDefined).toBeDefined();
         done();
@@ -91,7 +90,7 @@ describe('Search service', () => {
       expect(noFilter).toBeDefined();
       expect(noFilter.restricted).toBeFalsy();
 
-      search.filterOutRestricted().then(cts => {
+      search.applyFilters(['restricted']).then(cts => {
         const notRestricted = cts.find(ct => ct.machineName === 'H5P.InteractiveVideo');
         expect(notRestricted).toBeDefined();
         done();

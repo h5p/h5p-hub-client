@@ -33,15 +33,6 @@ const MAX_TEXT_SIZE_DESCRIPTION = 285;
 const IMAGELIGHTBOX = 'imagelightbox';
 
 /**
- * Checks if a string is empty
- *
- * @param {string} text
- *
- * @return {boolean}
- */
-const isEmpty = (text) => (typeof text === 'string') && (text.length === 0);
-
-/**
  * Disables an HTMLElement
  *
  * @param {HTMLElement} element
@@ -572,7 +563,7 @@ export default class ContentTypeDetailView {
    */
   setExample(url) {
     this.demoButton.setAttribute('href', url || '#');
-    toggleVisibility(!isEmpty(url), this.demoButton);
+    toggleVisibility(!!url, this.demoButton);
   }
 
   /**

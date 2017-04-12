@@ -1774,8 +1774,7 @@
       "localMinorVersion": 0,
       "localPatchVersion": 0,
       "installed": true,
-      "isUpToDate": true,
-      "restricted": false
+      "isUpToDate": true
     }
   ],
   "recentlyUsed": [
