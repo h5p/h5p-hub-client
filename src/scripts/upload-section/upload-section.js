@@ -158,6 +158,9 @@ export default class UploadSection {
           return;
         }
 
+        // Reload new data
+        self.services.setup();
+
         // Fire the received data to any listeners
         self.trigger('upload', json);
       })
