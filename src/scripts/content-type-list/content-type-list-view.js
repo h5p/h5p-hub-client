@@ -276,4 +276,8 @@ export default class ContentTypeListView {
       this.rootElement.scrollTop = elementBottom - this.rootElement.clientHeight + parseFloat(window.getComputedStyle(this.rootElement).paddingBottom);
     }
   }
+
+  isHidden() {
+    return !!this.rootElement.getAttribute('aria-hidden');
+  }
 }

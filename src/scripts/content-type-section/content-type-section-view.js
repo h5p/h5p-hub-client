@@ -301,4 +301,14 @@ export default class ContentBrowserView {
   getElement() {
     return this.rootElement;
   }
+
+  /**
+   * Trigger a search with the current input
+   */
+  search() {
+    this.trigger('search', {
+      element: this.searchBar,
+      query: this.searchBar.value
+    });
+  }
 }
