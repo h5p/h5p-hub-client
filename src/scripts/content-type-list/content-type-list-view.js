@@ -203,4 +203,77 @@ export default class ContentTypeListView {
   getElement() {
     return this.rootElement;
   }
+
+  /**
+   * Move focus from the current element to the previous element.
+   */
+  previous() {
+    // Find current selected element
+    const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
+
+    // Remove selection
+    selectedElement.removeAttribute('tabindex');
+
+    // Use the previous element or the element at the end of the list
+    const previousElement = (selectedElement.previousSibling ? selectedElement.previousSibling : selectedElement.parentNode.lastChild);
+    if (previousElement !== selectedElement) {
+      // Set focus and scroll into view
+      previousElement.setAttribute('tabindex', 0);
+      this.scrollIntoView(previousElement);
+    }
+  }
+
+  /**
+   * Move focus from the current element to the next element.
+   */
+  next() {
+    // Find current selected element
+    const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
+
+    // Remove selection
+    selectedElement.removeAttribute('tabindex');
+
+    // Use the next element or the element at the start of the list
+    const nextElement = (selectedElement.nextSibling ? selectedElement.nextSibling : selectedElement.parentNode.firstChild);
+    if (nextElement !== selectedElement) {
+      // Set focus and scroll into view
+      nextElement.setAttribute('tabindex', 0);
+      this.scrollIntoView(nextElement);
+    }
+  }
+
+  /**
+   * Will use the current selected element.
+   */
+  useCurrent() {
+    // Find use button of currently focused element
+    const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
+    const useButton = querySelector('.button-primary', selectedElement);
+
+    if (useButton) {
+      // Simulate click
+      const event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
+      useButton.dispatchEvent(event);
+    }
+  }
+
+  /**
+   * Scroll to make sure the given element is visible.
+   *
+   * @param {HTMLElement} element
+   */
+  scrollIntoView(element) {
+    if (element.offsetTop < this.rootElement.scrollTop) {
+      // Scroll up to show element
+      this.rootElement.scrollTop = element.offsetTop - parseFloat(window.getComputedStyle(this.rootElement).paddingTop);
+      return;
+    }
+
+    const elementBottom = element.offsetTop + element.clientHeight;
+    if (elementBottom > this.rootElement.scrollTop + this.rootElement.clientHeight) {
+      // Scroll down to show element
+      this.rootElement.scrollTop = elementBottom - this.rootElement.clientHeight + parseFloat(window.getComputedStyle(this.rootElement).paddingBottom);
+    }
+  }
 }

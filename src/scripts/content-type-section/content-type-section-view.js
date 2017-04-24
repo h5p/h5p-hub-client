@@ -69,11 +69,21 @@ export default class ContentBrowserView {
 
     // Allow searching with 'enter' key
     this.inputField.addEventListener('keydown', event => {
-      if (event.which === 13) {
-        this.trigger('search', {
-          element: this.searchBar,
-          query: this.searchBar.value
-        });
+      switch (event.which) {
+        case 13: // Enter
+          this.trigger('use');
+          event.preventDefault();
+          break;
+
+        case 38: // Up
+          this.trigger('previous');
+          event.preventDefault();
+          break;
+
+        case 40: // Down
+          this.trigger('next');
+          event.preventDefault();
+          break;
       }
     });
 

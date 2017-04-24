@@ -44,6 +44,9 @@ $content-type-list-image-size: 100px;
         border-bottom: 1px solid $separator-color;
       }
     }
+    li[tabindex="0"] {
+      background-color: lighten($ac1, 55%);
+    }
 
     .media-object {
       width: $content-type-list-image-size / 2;

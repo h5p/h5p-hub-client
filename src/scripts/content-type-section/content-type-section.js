@@ -71,6 +71,9 @@ export default class ContentTypeSection {
     this.view.on('menu-selected', this.clearInputField, this);
     this.view.on('menu-selected', this.updateDisplaySelected, this);
     this.view.on('menu-selected', this.removeMessages, this);
+    this.view.on('previous', () => this.contentTypeList.view.previous());
+    this.view.on('next', () => this.contentTypeList.view.next());
+    this.view.on('use', () => this.contentTypeList.view.useCurrent());
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeList.on('row-selected', this.view.clearSelection, this.view);
     this.contentTypeDetail.on('close', this.goBackToListView, this);
