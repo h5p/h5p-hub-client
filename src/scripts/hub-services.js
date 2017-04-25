@@ -45,7 +45,7 @@ export default class HubServices {
       credentials: 'include'
     }).then(result => result.json())
       .catch(err => ({
-        messageCode: 'SERVER_ERROR',
+        errorCode: 'SERVER_ERROR',
         err: err,
         success: false
       }))
@@ -128,7 +128,7 @@ export default class HubServices {
    */
   getLicenseDetails(licenseId) {
     // Check if already cached:
-    const cachedLicense = this.licenseCache[licenseId]
+    const cachedLicense = this.licenseCache[licenseId];
 
     if (cachedLicense) {
       return Promise.resolve(cachedLicense);
@@ -146,7 +146,7 @@ export default class HubServices {
    * @return {Promise<ContentType[]|ErrorMessage>}
    */
   isValid(response) {
-    if (response.messageCode) {
+    if (response.errorCode) {
       return Promise.reject(response);
     }
     else {

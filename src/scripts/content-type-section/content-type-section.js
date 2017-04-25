@@ -113,11 +113,21 @@ export default class ContentTypeSection {
    * Handle errors communicating with HUB
    */
   handleError(error) {
-    this.view.displayMessage({
-      type: 'error',
-      title: Dictionary.get('errorCommunicatingHubTitle'),
-      content: Dictionary.get('errorCommunicatingHubContent')
-    });
+    const msgConfig = {
+      type: 'error'
+    };
+
+    // Use error message from ajax
+    if (error.errorCode && error.errorCode !== 'SERVER_ERROR') {
+      msgConfig.title = error.message;
+    }
+    else {
+      // Assume communication problem with Hub
+      msgConfig.title = Dictionary.get('errorCommunicatingHubTitle');
+      msgConfig.content = Dictionary.get('errorCommunicatingHubContent');
+    }
+
+    this.view.displayMessage(msgConfig);
   }
 
 
