@@ -16,7 +16,7 @@ import './utils/fetch';
  * @property {string} isRecommended
  * @property {string} popularity
  * @property {object[]} screenshots
- * @property {string} license
+ * @property {object} license
  * @property {string} example
  * @property {string} tutorial
  * @property {string[]} keywords
@@ -24,6 +24,7 @@ import './utils/fetch';
  * @property {boolean} installed
  * @property {boolean} isUpToDate
  * @property {boolean} restricted
+ * @property {boolean} canInstall Whether the content type can be installed by current user
  */
 export default class HubServices {
   /**

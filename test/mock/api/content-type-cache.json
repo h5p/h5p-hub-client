@@ -1106,7 +1106,7 @@
       "owner": "Joubel",
       "installed": true,
       "isUpToDate": false,
-      "restricted": false,
+      "restricted": true,
       "categories": [
         "Multimedia",
         "Questions"

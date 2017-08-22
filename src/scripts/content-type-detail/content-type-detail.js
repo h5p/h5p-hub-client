@@ -156,7 +156,8 @@ export default class ContentTypeDetail {
     this.view.setIsRestricted(contentType.restricted, contentType.installed);
     const isUpdatePossible = contentType.installed &&
       !contentType.isUpToDate &&
-      !contentType.restricted;
+      !contentType.restricted &&
+      contentType.canInstall;
     this.view.setIsUpdatePossible(isUpdatePossible, contentType.title || contentType.machineName);
 
     // Check if api version is supported
