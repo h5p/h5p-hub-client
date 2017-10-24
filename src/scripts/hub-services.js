@@ -100,8 +100,8 @@ export default class HubServices {
       credentials: 'include',
       body: ''
     })
-     .then(result => result.json())
-     .then(this.rejectIfNotSuccess);
+      .then(result => result.json())
+      .then(this.rejectIfNotSuccess);
   }
 
   /**

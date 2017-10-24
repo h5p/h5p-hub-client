@@ -80,7 +80,7 @@ export default class ContentTypeSection {
       }
       else {
         // Use currently highlighted option
-        this.contentTypeList.view.useCurrent()
+        this.contentTypeList.view.useCurrent();
       }
     });
     this.contentTypeList.on('row-selected', this.showDetailView, this);
@@ -92,7 +92,7 @@ export default class ContentTypeSection {
       this.services.contentTypes()
         .then(contentTypes => {
           this.contentTypeList.refreshContentTypes(contentTypes);
-        })
+        });
     });
 
     // add menu items
@@ -146,7 +146,7 @@ export default class ContentTypeSection {
       self.view.selectMenuItem(
         installed.length ? ContentTypeSection.Tabs.MY_CONTENT_TYPES : ContentTypeSection.Tabs.ALL
       );
-    })
+    });
   }
 
   /**
@@ -189,7 +189,7 @@ export default class ContentTypeSection {
 
       case ContentTypeSection.Tabs.MY_CONTENT_TYPES.eventName:
         this.searchService.applyFilters(['restricted', 'installed'])
-        .then(filteredContentTypes => multiSort(filteredContentTypes, ['title']))
+          .then(filteredContentTypes => multiSort(filteredContentTypes, ['title']))
           .then(sortedContentTypes => this.searchService.sortOnRecent(sortedContentTypes))
           .then(sortedContentTypes => {
             this.contentTypeList.update(sortedContentTypes);

@@ -274,7 +274,7 @@ export default class UploadSection {
       type: 'error',
       title: Dictionary.get('h5pFileUploadServerErrorTitle'),
       content: Dictionary.get('h5pFileUploadServerErrorContent')
-    })
+    });
   }
 
   /**

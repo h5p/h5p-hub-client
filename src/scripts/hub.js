@@ -111,7 +111,7 @@ export default class Hub {
       this.uploadSection.clearUploadForm();
     });
 
-    this.initTabPanel(state)
+    this.initTabPanel(state);
   }
 
   /**

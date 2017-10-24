@@ -1,4 +1,4 @@
-import {curry} from 'utils/functional'
+import {curry} from 'utils/functional';
 
 /**
  * @typedef {Object} MixedContentType
@@ -61,7 +61,7 @@ export class SearchService {
         else {
           return contentTypes;
         }
-      })
+      });
   }
 
   /**
@@ -96,7 +96,7 @@ export const multiSort = (contentTypes, sortOrder) => {
     return {
       contentType: contentType,
       score: 1
-    }
+    };
   });
 
   sortOrder = Array.isArray(sortOrder) ? sortOrder : [sortOrder];
@@ -294,14 +294,14 @@ const sortSearchResults = (a,b) => {
  * @param  {ContentType}  contentType
  * @return {number}
  */
- const getSearchScore = function(query, contentType) {
-   let queries = query.split(' ').filter(query => query !== '');
-   let queryScores = queries.map(query => getScoreForEachQuery(query, contentType));
-   if (queryScores.indexOf(0) > -1) {
-     return 0;
-   }
-   return queryScores.reduce((a, b) => a + b, 0);
- };
+const getSearchScore = function(query, contentType) {
+  let queries = query.split(' ').filter(query => query !== '');
+  let queryScores = queries.map(query => getScoreForEachQuery(query, contentType));
+  if (queryScores.indexOf(0) > -1) {
+    return 0;
+  }
+  return queryScores.reduce((a, b) => a + b, 0);
+};
 
 
 /**
@@ -312,25 +312,25 @@ const sortSearchResults = (a,b) => {
  * @return {number}
  */
 const getScoreForEachQuery = function (query, contentType) {
-   query = query.trim();
-   if (hasSubString(query, contentType.title)) {
-     return 100;
-   }
-   else if (hasSubString(query, contentType.summary)) {
-     return 5;
-   }
-   else if (hasSubString(query, contentType.description)) {
-     return 5;
-   }
-   else if (arrayHasSubString(query, contentType.keywords)) {
-     return 5;
-   }
-   else if (hasSubString(query, contentType.machineName)) {
-     return 1;
-   }
-   else {
-     return 0;
-   }
+  query = query.trim();
+  if (hasSubString(query, contentType.title)) {
+    return 100;
+  }
+  else if (hasSubString(query, contentType.summary)) {
+    return 5;
+  }
+  else if (hasSubString(query, contentType.description)) {
+    return 5;
+  }
+  else if (arrayHasSubString(query, contentType.keywords)) {
+    return 5;
+  }
+  else if (hasSubString(query, contentType.machineName)) {
+    return 1;
+  }
+  else {
+    return 0;
+  }
 };
 
 /**
@@ -403,7 +403,7 @@ const sortContentTypesByMachineName = function(contentTypes, machineNames) {
       return 1;
     }
     else if (aIndex !== -1 && bIndex !== -1) { // both are recently used
-        return (aIndex < bIndex) ? -1 : 1;
+      return (aIndex < bIndex) ? -1 : 1;
     }
   });
 

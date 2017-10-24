@@ -1,5 +1,5 @@
-import initPanel from "components/panel"
-import initTabPanel from "components/tab-panel"
+import initPanel from "components/panel";
+import initTabPanel from "components/tab-panel";
 import { curry } from "utils/functional";
 import { attributeEquals, getAttribute, hasAttribute, show, toggleClass } from "utils/elements";
 import { Eventful } from './mixins/eventful';

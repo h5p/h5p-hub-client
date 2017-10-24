@@ -1,7 +1,7 @@
 import ContetTypeDetailView from "./content-type-detail-view";
 import {Eventful} from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
-import { preloadImages } from '../utils/media'
+import { preloadImages } from '../utils/media';
 
 /**
  * @class
@@ -76,7 +76,7 @@ export default class ContentTypeDetail {
    */
   loadById(id) {
     this.services.contentType(id)
-      .then(this.update.bind(this))
+      .then(this.update.bind(this));
   }
 
   /**
@@ -174,7 +174,7 @@ export default class ContentTypeDetail {
     if (contentType.screenshots) {
       // Fetch screenshots if they exist
       preloadImages(contentType.screenshots)
-        .then(screenshots => this.view.setScreenshots(screenshots))
+        .then(screenshots => this.view.setScreenshots(screenshots));
     }
   }
 
