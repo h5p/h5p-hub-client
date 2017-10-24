@@ -54,5 +54,9 @@
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "whatwg-fetch": "^2.0.3"
+  },
+  "dependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0"
   }
 }
