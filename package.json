@@ -6,6 +6,8 @@
   "scripts": {
     "test": "cross-env DEV_ENV=1 karma start",
     "build": "webpack",
+    "lint": "./node_modules/.bin/eslint src",
+    "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "watch": "cross-env DEV_ENV=1 webpack --watch",
     "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch",
     "dev": "lite-server"
@@ -44,6 +46,7 @@
     "karma-webpack": "^2.0.2",
     "lite-server": "^2.2.2",
     "node-sass": "^4.5.0",
+    "prettier": "1.7.4",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.2",
