@@ -1,6 +1,6 @@
 import React from 'react';
 
-class TabContentContainer extends React.Component {
+class BrowseTab extends React.Component {
 
   componentDidMount() {
     this.tabContent.appendChild(this.props.tab.content);
@@ -13,4 +13,4 @@ class TabContentContainer extends React.Component {
   }
 }
 
-export default TabContentContainer;
+export default BrowseTab;

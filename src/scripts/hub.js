@@ -62,6 +62,7 @@ import { Eventful } from './mixins/eventful';
 export default class Hub {
   /**
    * @param {HubState} state
+   * @param {Object} services
    * @param {object} dictionary
    */
   constructor(state, services, dictionary) {
@@ -198,13 +199,8 @@ export default class Hub {
   }
 
   togglePanel(forceToggle) {
-    if (forceToggle !== undefined) {
-      this.isExpanded = forceToggle;
-    }
-    else {
-      this.isExpanded = !this.isExpanded;
-    }
-
+    const isBool = typeof forceToggle === 'boolean';
+    this.isExpanded = isBool ? forceToggle : !this.isExpanded;
     this.renderView();
   }
 

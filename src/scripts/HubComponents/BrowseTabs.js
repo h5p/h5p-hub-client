@@ -1,9 +1,7 @@
 import React from 'react';
-
-import TabContentContainer from './TabContentContainer';
+import BrowseTab from './BrowseTab/BrowseTab';
 
 class BrowseTabs extends React.Component {
-
   constructor(props) {
     super(props);
   }
@@ -25,9 +23,7 @@ class BrowseTabs extends React.Component {
         {
           this.props.tabConfigs.map(tab => {
             return (
-              <div key={tab.id}>
-                <TabContentContainer tab={tab} />
-              </div>
+              <BrowseTab key={tab.id} tab={tab} />
             )
           })
         }
