@@ -1,7 +1,8 @@
 import React from 'react';
-import DropDownSelector from './DropDownSelector/DropDownSelector';
-import BrowseTabs from './BrowseTabs';
-import ErrorMessage, { severityLevels } from '../GenericComponents/ErrorMessage/ErrorMessage';
+import DropDownSelector from '../DropDownSelector/DropDownSelector';
+import BrowseTabs from '../BrowseTabs/BrowseTabs';
+import ErrorMessage, { severityLevels } from '../../GenericComponents/ErrorMessage/ErrorMessage';
+import './HubViewContainer.scss';
 
 class HubViewContainer extends React.Component {
 

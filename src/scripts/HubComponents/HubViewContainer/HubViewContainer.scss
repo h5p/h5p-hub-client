@@ -1,0 +1,54 @@
+@import '../../../styles/base/colors';
+@import '../../../styles/base/mixins';
+@import '../../../styles/base/variables';
+
+.h5p-hub {
+  &>.panel {
+    &>[role="heading"] {
+      background-color: white;
+      color: $c1;
+      font-style: italic;
+      font-weight: 600;
+
+      .h5p-hub-description {
+        color: transparent;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        display: inline-block;
+        position: absolute;
+      }
+
+      [role="button"] {
+        &:before {
+          font-style: normal;
+          font-weight: normal;
+          margin-right: 1em;
+        }
+
+        &:after {
+          @include h5p-hub-icon($icon-arrow-line, $gutter * 1.1);
+          display: block;
+          font-size: 0.9em;
+          line-height: 3.5em;
+          position: absolute;
+          right: 0;
+          top: 0;
+        }
+      }
+
+      .h5p-hub-selected {
+        color: #474f5a;
+      }
+
+      .icon-hub-icon {
+        color: #474f5a;
+        padding: 0.833em 1.55em;
+
+        &:after {
+          margin-right: 1.8em;
+        }
+      }
+    }
+  }
+}
