@@ -4,33 +4,6 @@
 @import "~h5p-sdk/src/styles/base/mixins";
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-// General color scheme for each section
-@mixin section($color) {
-  border: 1px solid $color;
-
-  [role="tab"] {
-    border-bottom: $height-menuitem-underline solid transparent;
-    transition: border-bottom 1s;
-
-    &[aria-selected="true"] {
-      border-bottom: $height-menuitem-underline solid $color;
-      transition: border-bottom 1s;
-    }
-  }
-
-  .button.button-primary {
-    @include button-filled($color, white);
-  }
-
-  .button.button-inverse-primary {
-    @include button-inverse(white, $color);
-  }
-
-  .icon-search {
-    color: $color;
-  }
-}
-
 .h5p-hub {
   background: #fff;
   font-family: 'Open Sans', sans-serif;
@@ -40,22 +13,6 @@
   &.h5p-sdk {
     .hidden {
       display: none;
-    }
-  }
-
-  &>.panel {
-    border: 1px solid $c1;
-
-    &.h5p-section-content-types {
-      @include section($color-section-content-types);
-    }
-
-    &.h5p-section-content {
-      @include section($color-section-content);
-    }
-
-    &.h5p-section-upload {
-      @include section($color-section-upload);
     }
   }
 

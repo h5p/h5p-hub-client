@@ -1,6 +1,6 @@
 import React from 'react';
 
-class TabButton extends React.Component {
+class TabContent extends React.Component {
 
   componentDidMount() {
     this.tabContent.appendChild(this.props.tab.content);
@@ -19,4 +19,4 @@ class TabButton extends React.Component {
   }
 }
 
-export default TabButton;
+export default TabContent;

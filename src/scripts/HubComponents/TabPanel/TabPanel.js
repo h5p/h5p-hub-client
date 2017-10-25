@@ -1,5 +1,6 @@
 import React from 'react';
-import BrowseTab from './TabButton/TabButton';
+import TabContent from './TabContent/TabContent';
+import './TabPanel.scss';
 
 class TabPanel extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class TabPanel extends React.Component {
                 return (
                   <li
                     id={`tab-${tab.id}`}
+                    className='tab-button'
                     aria-selected={tab.selected}
                     aria-controls={`tab-panel-${tab.id}`}
                     role='tab'
@@ -32,7 +34,7 @@ class TabPanel extends React.Component {
         {
           this.props.tabConfigs.map(tab => {
             return (
-              <BrowseTab key={tab.id} tab={tab} />
+              <TabContent key={tab.id} tab={tab} />
             )
           })
         }
