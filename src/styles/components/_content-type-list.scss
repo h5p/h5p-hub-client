@@ -8,8 +8,9 @@
 $content-type-list-image-size: 100px;
 
 .h5p-hub {
-  ul.content-type-list {
+  .content-type-list {
     padding: 1.25em 0;
+    margin: 0;
     overflow: auto;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
     0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;

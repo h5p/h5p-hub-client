@@ -39,7 +39,7 @@ export default class ContentTypeListView {
     };
 
     // create root element
-    this.rootElement = document.createElement('ul');
+    this.rootElement = document.createElement('ol');
     this.rootElement.setAttribute('role', 'list');
     this.rootElement.className = 'content-type-list';
   }
