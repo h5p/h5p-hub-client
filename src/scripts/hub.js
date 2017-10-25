@@ -87,7 +87,7 @@ export default class Hub {
     this.view = new HubView(state);
 
     this.initializeListeners();
-    this.tabConfigs = this.initTabPanel(state);
+    this.tabConfigs = this.getTabConfigs(state);
 
     this.title = Dictionary.get('hubPanelLabel');
     this.isExpanded = false;
@@ -99,26 +99,21 @@ export default class Hub {
    *
    * @param {string} sectionId
    */
-  initTabPanel(sectionId = 'content-types') {
-    const tabConfigs = [
+  getTabConfigs({ sectionId = 'content-types' }) {
+    return [
       {
         title: Dictionary.get('createContentTabLabel'),
         id: 'content-types',
         content: this.contentTypeSection.getElement(),
+        selected: 'content-types' === sectionId,
       },
       {
         title: Dictionary.get('uploadTabLabel'),
         id: 'upload',
-        content: this.uploadSection.getElement()
+        content: this.uploadSection.getElement(),
+        selected: 'upload' === sectionId,
       }
     ];
-
-    // sets the correct one selected
-    tabConfigs
-      .filter(config => config.id === sectionId)
-      .forEach(config => config.selected = true);
-
-    return tabConfigs;
   }
 
   initializeListeners() {
@@ -209,6 +204,11 @@ export default class Hub {
     this.renderView();
   }
 
+  onSelectedTab(id) {
+    this.tabConfigs.forEach(tab => tab.selected = tab.id === id);
+    this.renderView();
+  }
+
   renderView() {
     // Render react into root element
     // TODO: Error should really be inserted into content type list: HFP-1644
@@ -218,6 +218,7 @@ export default class Hub {
         error={this.error}
         isExpanded={this.isExpanded}
         tabConfigs={this.tabConfigs}
+        onSelectedTab={this.onSelectedTab.bind(this)}
         togglePanel={this.togglePanel.bind(this)}
         resize={this.trigger.bind(this, 'resized')}
       />,
