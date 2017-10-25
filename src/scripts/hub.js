@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
-import HubServices from './hub-services';
 import HubViewContainer from './HubComponents/HubViewContainer';
 import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
@@ -70,6 +69,7 @@ export default class Hub {
 
     // add event system
     Object.assign(this, Eventful());
+    this.rootElement = document.createElement('div');
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
@@ -91,8 +91,8 @@ export default class Hub {
 
     // handle events
     this.on('select', this.setPanelTitle, this);
-    this.on('select', this.view.togglePanelOpen.bind(this.view, false));
-    this.on('upload', this.view.togglePanelOpen.bind(this.view, false));
+    this.on('select', this.togglePanel.bind(this, false));
+    this.on('upload', this.togglePanel.bind(this, false));
     this.view.on('tab-change', event => {
       if (event.id === 'upload' && !event.element.getAttribute('aria-selected')) {
         // Clean up messages
@@ -102,8 +102,7 @@ export default class Hub {
       this.view.setSectionType(event);
     });
     this.view.on('panel-change', ({element}) => {
-      this.view.togglePanelOpen();
-      this.postponedResize();
+      this.togglePanel();
       if (element.getAttribute('aria-expanded') === 'true') {
         this.contentTypeSection.focusSearchBar();
       }
@@ -116,13 +115,10 @@ export default class Hub {
     });
 
     this.initTabPanel(state);
-  }
 
-  /**
-   * Does a resize after 150ms
-   */
-  postponedResize () {
-    setTimeout(() => this.trigger('resized'), 150);
+    this.title = Dictionary.get('hubPanelLabel');
+    this.isExpanded = false;
+    this.renderView();
   }
 
   /**
@@ -167,7 +163,11 @@ export default class Hub {
    * @param {string} id
    */
   setPanelTitle({id}) {
-    this.getContentType(id).then(({title}) => this.view.setTitle(title ? title : id));
+    this.getContentType(id).then(({title}) => {
+      this.view.setTitle(title ? title : id);
+      this.title = title ? title : id;
+      this.renderView();
+    });
   }
 
   /**
@@ -194,6 +194,32 @@ export default class Hub {
 
     tabConfigs.forEach(tabConfig => this.view.addTab(tabConfig));
     this.view.initTabPanel();
+    this.tabConfigs = tabConfigs;
+  }
+
+  togglePanel(forceToggle) {
+    if (forceToggle !== undefined) {
+      this.isExpanded = forceToggle;
+    }
+    else {
+      this.isExpanded = !this.isExpanded;
+    }
+
+    this.renderView();
+  }
+
+  renderView() {
+    // Render react into root element
+    ReactDOM.render(
+      <HubViewContainer
+        title={this.title}
+        isExpanded={this.isExpanded}
+        tabConfigs={this.tabConfigs}
+        togglePanel={this.togglePanel.bind(this)}
+        resize={this.trigger.bind(this, 'resized')}
+      />,
+      this.rootElement
+    );
   }
 
   /**
@@ -202,12 +228,6 @@ export default class Hub {
    * @return {HTMLElement}
    */
   getElement() {
-    const root = document.createElement('div');
-
-    // Render react into view here
-    ReactDOM.render(<HubViewContainer />, root);
-
-    // root.appendChild(this.view.getElement());
-    return root;
+    return this.rootElement;
   }
 }

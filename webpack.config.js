@@ -14,7 +14,7 @@ const polyfillPromise = new webpack.ProvidePlugin({
 
 const config = {
   entry: "./src/entries/" + (isDevMode ? (isDist ? 'dist' : 'dev') : 'dist') + '.js',
-  devtool: 'cheap-source-map',
+  devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js",
