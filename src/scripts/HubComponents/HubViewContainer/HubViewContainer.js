@@ -1,6 +1,6 @@
 import React from 'react';
 import DropDownSelector from '../DropDownSelector/DropDownSelector';
-import BrowseTabs from '../BrowseTabs/BrowseTabs';
+import BrowseTabs from '../TabPanel/TabPanel';
 import ErrorMessage, { severityLevels } from '../../GenericComponents/ErrorMessage/ErrorMessage';
 import './HubViewContainer.scss';
 
@@ -11,8 +11,8 @@ class HubViewContainer extends React.Component {
   }
 
   render() {
-    let sectionId = 'content-types';
-    const panelClasses = 'panel' + (this.props.isExpanded ? ' open' : '');
+    let sectionId = this.props.tabConfigs.find(tab => tab.selected === true).id;
+    const panelClasses = `panel h5p-section-${sectionId}${this.props.isExpanded ? ' open' : ''}`;
 
     return (
       <section className="h5p-hub h5p-sdk">
@@ -32,7 +32,10 @@ class HubViewContainer extends React.Component {
                 errorMessage={this.props.error}
               />
             }
-            <BrowseTabs tabConfigs={this.props.tabConfigs}/>
+            <BrowseTabs
+              onSelectedTab={this.props.onSelectedTab}
+              tabConfigs={this.props.tabConfigs}
+            />
           </div>
         </div>
       </section>

@@ -1,20 +1,20 @@
 @import '../../../styles/base/variables';
-@import '../../../styles/base/mixins';
 
 // General color scheme for each section
 @mixin section($color) {
-  border: 1px solid $color;
+  .tab-button {
+    border-bottom: $height-menuitem-underline solid transparent;
+    transition: border-bottom 1s;
+
+    &[aria-selected="true"] {
+      border-bottom: $height-menuitem-underline solid $color;
+      transition: border-bottom 1s;
+    }
+  }
 }
 
 .h5p-hub {
-  background: #fff;
-  font-family: 'Open Sans', sans-serif;
-  margin-bottom: $gutter;
-  position: relative;
-
   .panel {
-    border: 1px solid $c1;
-
     &.h5p-section-content-types {
       @include section($color-section-content-types);
     }
@@ -27,12 +27,4 @@
       @include section($color-section-upload);
     }
   }
-
-  .panel.open {
-    max-height: 58.65em;
-  }
-}
-
-.h5p-hub.hidden {
-  display: none;
 }

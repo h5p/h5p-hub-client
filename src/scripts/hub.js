@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubViewContainer from './HubComponents/HubViewContainer/HubViewContainer';
@@ -66,8 +65,6 @@ export default class Hub {
    * @param {object} dictionary
    */
   constructor(state, services, dictionary) {
-    const self = this;
-
     // add event system
     Object.assign(this, Eventful());
     this.rootElement = document.createElement('div');
@@ -83,11 +80,8 @@ export default class Hub {
     this.contentTypeSection = new ContentTypeSection(state, this.services);
     this.uploadSection = new UploadSection(state, this.services);
 
-    // views
-    this.view = new HubView(state);
-
     this.initializeListeners();
-    this.tabConfigs = this.initTabPanel(state);
+    this.tabConfigs = this.getTabConfigs(state);
 
     this.title = Dictionary.get('hubPanelLabel');
     this.isExpanded = false;
@@ -99,26 +93,21 @@ export default class Hub {
    *
    * @param {string} sectionId
    */
-  initTabPanel(sectionId = 'content-types') {
-    const tabConfigs = [
+  getTabConfigs({ sectionId = 'content-types' }) {
+    return [
       {
         title: Dictionary.get('createContentTabLabel'),
         id: 'content-types',
         content: this.contentTypeSection.getElement(),
+        selected: 'content-types' === sectionId,
       },
       {
         title: Dictionary.get('uploadTabLabel'),
         id: 'upload',
-        content: this.uploadSection.getElement()
+        content: this.uploadSection.getElement(),
+        selected: 'upload' === sectionId,
       }
     ];
-
-    // sets the correct one selected
-    tabConfigs
-      .filter(config => config.id === sectionId)
-      .forEach(config => config.selected = true);
-
-    return tabConfigs;
   }
 
   initializeListeners() {
@@ -130,20 +119,6 @@ export default class Hub {
     this.on('select', this.setPanelTitle, this);
     this.on('select', this.togglePanel.bind(this, false));
     this.on('upload', this.togglePanel.bind(this, false));
-    this.view.on('tab-change', event => {
-      if (event.id === 'upload' && !event.element.getAttribute('aria-selected')) {
-        // Clean up messages
-        self.uploadSection.clearMessages();
-      }
-
-      this.view.setSectionType(event);
-    });
-    this.view.on('panel-change', ({element}) => {
-      this.togglePanel();
-      if (element.getAttribute('aria-expanded') === 'true') {
-        this.contentTypeSection.focusSearchBar();
-      }
-    }, this);
     this.contentTypeSection.on('reload', this.setupServices, this);
     this.contentTypeSection.on('reload', this.contentTypeSection.selectDefaultMenuItem.bind(this.contentTypeSection, false));
     this.contentTypeSection.on('modal', this.showModal, this);
@@ -159,7 +134,7 @@ export default class Hub {
    */
   showModal({element}) {
     // Prepend to catch and trap focus
-    const parent = this.view.getElement();
+    const parent = this.rootElement;
     parent.insertBefore(element, parent.firstChild);
     element.classList.remove('hidden');
   }
@@ -197,7 +172,6 @@ export default class Hub {
    */
   setPanelTitle({id}) {
     this.getContentType(id).then(({title}) => {
-      this.view.setTitle(title ? title : id);
       this.title = title ? title : id;
       this.renderView();
     });
@@ -206,6 +180,11 @@ export default class Hub {
   togglePanel(forceToggle) {
     const isBool = typeof forceToggle === 'boolean';
     this.isExpanded = isBool ? forceToggle : !this.isExpanded;
+    this.renderView();
+  }
+
+  onSelectedTab(id) {
+    this.tabConfigs.forEach(tab => tab.selected = tab.id === id);
     this.renderView();
   }
 
@@ -218,6 +197,7 @@ export default class Hub {
         error={this.error}
         isExpanded={this.isExpanded}
         tabConfigs={this.tabConfigs}
+        onSelectedTab={this.onSelectedTab.bind(this)}
         togglePanel={this.togglePanel.bind(this)}
         resize={this.trigger.bind(this, 'resized')}
       />,

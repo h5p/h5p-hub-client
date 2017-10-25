@@ -159,3 +159,46 @@ $icon-search: '\e920';
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+
+@mixin button-filled($background-color, $color) {
+  background-color: $background-color;
+  color: $color;
+  border-color: $background-color;
+
+  &:hover {
+    background-color: darken($background-color, 5%);
+    border-color: darken($background-color, 5%);
+  }
+
+  &:active {
+    background-color: darken($background-color, 10%);
+    border-color: darken($background-color, 10%);
+  }
+
+  &[disabled] {
+    background-color: lighten($background-color, 40%);
+    border-color: lighten($background-color, 40%);
+  }
+}
+
+@mixin button-inverse($background-color, $color) {
+  background-color: $background-color;
+  color: $color;
+  border-color: $color;
+
+  &:hover {
+    color: lighten($color, 10%);
+    border-color: lighten($color, 10%);
+  }
+
+  &:active {
+    color: darken($color, 10%);
+    border-color: darken($color, 10%);
+  }
+
+  &[disabled],
+  &[aria-disabled] {
+    color: lighten($color, 40%);
+    border-color: lighten($color, 40%);
+  }
+}
