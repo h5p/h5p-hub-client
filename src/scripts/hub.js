@@ -1,7 +1,11 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+
 import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
 import HubServices from './hub-services';
+import HubViewContainer from './HubComponents/HubViewContainer';
 import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
 
@@ -198,6 +202,12 @@ export default class Hub {
    * @return {HTMLElement}
    */
   getElement() {
-    return this.view.getElement();
+    const root = document.createElement('div');
+
+    // Render react into view here
+    ReactDOM.render(<HubViewContainer />, root);
+
+    // root.appendChild(this.view.getElement());
+    return root;
   }
 }
