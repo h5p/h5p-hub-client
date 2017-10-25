@@ -303,6 +303,34 @@ const getSearchScore = function(query, contentType) {
   return queryScores.reduce((a, b) => a + b, 0);
 };
 
+/* Used to determine separate scoring for the different content type properties */
+const propertyScoring = [
+  {
+    name: 'title',
+    max: 1000,
+    min: 100
+  },
+  {
+    name: 'summary',
+    max: 50,
+    min: 25
+  },
+  {
+    name: 'description',
+    max: 50,
+    min: 25
+  },
+  {
+    name: 'keywords',
+    max: 50,
+    min: 25
+  },
+  {
+    name: 'machineName',
+    max: 1,
+    min: 0.5
+  }
+];
 
 /**
  * Generates a score for a query based on a content type's properties
@@ -313,55 +341,48 @@ const getSearchScore = function(query, contentType) {
  */
 const getScoreForEachQuery = function (query, contentType) {
   query = query.trim();
-  if (hasSubString(query, contentType.title)) {
-    return 100;
+
+  for (let i = 0; i < propertyScoring.length; i++) {
+    let ps = propertyScoring[i];
+
+    let score = determinePropertyScore(query, contentType[ps.name], ps.max, ps.min);
+    if (score !== -1) {
+      return score;
+    }
   }
-  else if (hasSubString(query, contentType.summary)) {
-    return 5;
-  }
-  else if (hasSubString(query, contentType.description)) {
-    return 5;
-  }
-  else if (arrayHasSubString(query, contentType.keywords)) {
-    return 5;
-  }
-  else if (hasSubString(query, contentType.machineName)) {
-    return 1;
-  }
-  else {
-    return 0;
-  }
+
+  return 0; // No matches
 };
 
 /**
- * Checks if a needle is found in the haystack.
- * Not case sensitive
- *
- * @param {string} needle
- * @param {string} haystack
- * @return {boolean}
+ * Determines score only for the first hit on query
  */
-const hasSubString = function(needle, haystack) {
-  if (haystack === undefined) {
-    return false;
+const determinePropertyScore = function(query, property, max, min) {
+  if (!property) {
+    return -1; // Unable to search this property
   }
 
-  return haystack.toLowerCase().indexOf(needle.toLowerCase()) !== -1;
-};
+  // Separate handling for arrays
+  if (property instanceof Array) {
+    for (let i = 0; i < property.length; i++) {
+      let score = determinePropertyScore(query, property[i], max, min);
+      if (score !== -1) {
+        return score;
+      }
+    }
 
-/**
- * Helper function, checks if array has contains a substring
- *
- * @param  {String} subString
- * @param  {Array} arr
- * @return {boolean}
- */
-const arrayHasSubString = function(subString, arr) {
-  if (arr === undefined || subString === '') {
-    return false;
+    return -1; // No hits in array
   }
 
-  return arr.some(string => hasSubString(subString, string));
+  // Handle strings
+  const strPos = property.toLowerCase().indexOf(query.toLowerCase());
+  if (strPos === -1) {
+    return -1; // No hits
+  }
+
+  // Calculate and return score
+  const p = (property.length - strPos) / property.length;
+  return ((max - min) * p) + min;
 };
 
 /**
