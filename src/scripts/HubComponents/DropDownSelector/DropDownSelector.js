@@ -1,4 +1,5 @@
 import React from 'react';
+import './DropDownSelector.scss';
 
 class DropDownSelector extends React.Component {
 
