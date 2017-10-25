@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import HubView from './hub-view';
 import ContentTypeSection from './content-type-section/content-type-section';
 import UploadSection from './upload-section/upload-section';
-import HubViewContainer from './HubComponents/HubViewContainer';
+import HubViewContainer from './HubComponents/HubViewContainer/HubViewContainer';
 import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
 
@@ -86,6 +86,42 @@ export default class Hub {
     // views
     this.view = new HubView(state);
 
+    this.initializeListeners();
+    this.tabConfigs = this.initTabPanel(state);
+
+    this.title = Dictionary.get('hubPanelLabel');
+    this.isExpanded = false;
+    this.renderView();
+  }
+
+  /**
+   * Initiates the tab panel
+   *
+   * @param {string} sectionId
+   */
+  initTabPanel(sectionId = 'content-types') {
+    const tabConfigs = [
+      {
+        title: Dictionary.get('createContentTabLabel'),
+        id: 'content-types',
+        content: this.contentTypeSection.getElement(),
+      },
+      {
+        title: Dictionary.get('uploadTabLabel'),
+        id: 'upload',
+        content: this.uploadSection.getElement()
+      }
+    ];
+
+    // sets the correct one selected
+    tabConfigs
+      .filter(config => config.id === sectionId)
+      .forEach(config => config.selected = true);
+
+    return tabConfigs;
+  }
+
+  initializeListeners() {
     // propagate controller events
     this.propagate(['select'], this.contentTypeSection);
     this.propagate(['upload'], this.uploadSection);
@@ -114,12 +150,6 @@ export default class Hub {
     this.on('clear-upload-form', () => {
       this.uploadSection.clearUploadForm();
     });
-
-    this.initTabPanel(state);
-
-    this.title = Dictionary.get('hubPanelLabel');
-    this.isExpanded = false;
-    this.renderView();
   }
 
   /**
@@ -171,33 +201,6 @@ export default class Hub {
       this.title = title ? title : id;
       this.renderView();
     });
-  }
-
-  /**
-   * Initiates the tab panel
-   *
-   * @param {string} sectionId
-   */
-  initTabPanel({ sectionId = 'content-types' }) {
-    const tabConfigs = [{
-      title: Dictionary.get('createContentTabLabel'),
-      id: 'content-types',
-      content: this.contentTypeSection.getElement(),
-    },
-    {
-      title: Dictionary.get('uploadTabLabel'),
-      id: 'upload',
-      content: this.uploadSection.getElement()
-    }];
-
-    // sets the correct one selected
-    tabConfigs
-      .filter(config => config.id === sectionId)
-      .forEach(config => config.selected = true);
-
-    tabConfigs.forEach(tabConfig => this.view.addTab(tabConfig));
-    this.view.initTabPanel();
-    this.tabConfigs = tabConfigs;
   }
 
   togglePanel(forceToggle) {
