@@ -1,6 +1,7 @@
 import React from 'react';
 import DropDownSelector from './DropDownSelector/DropDownSelector';
 import BrowseTabs from './BrowseTabs';
+import ErrorMessage, { severityLevels } from '../GenericComponents/ErrorMessage/ErrorMessage';
 
 class HubViewContainer extends React.Component {
 
@@ -22,6 +23,14 @@ class HubViewContainer extends React.Component {
             togglePanel={this.props.togglePanel}
           />
           <div id={`panel-body-${sectionId}`} role="region" className={this.props.isExpanded ? '' : 'hidden'}>
+            {
+              this.props.error &&
+              <ErrorMessage
+                severity={severityLevels.error}
+                dismissable={true}
+                errorMessage={this.props.error}
+              />
+            }
             <BrowseTabs tabConfigs={this.props.tabConfigs}/>
           </div>
         </div>

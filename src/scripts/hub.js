@@ -146,6 +146,8 @@ export default class Hub {
       })
       .catch(function (error) {
         self.contentTypeSection.handleError(error);
+        self.error = error;
+        self.renderView();
       });
   }
 
@@ -206,9 +208,11 @@ export default class Hub {
 
   renderView() {
     // Render react into root element
+    // TODO: Error should really be inserted into content type list: HFP-1644
     ReactDOM.render(
       <HubViewContainer
         title={this.title}
+        error={this.error}
         isExpanded={this.isExpanded}
         tabConfigs={this.tabConfigs}
         togglePanel={this.togglePanel.bind(this)}
