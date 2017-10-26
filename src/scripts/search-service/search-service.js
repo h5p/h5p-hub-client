@@ -65,7 +65,7 @@ export class SearchService {
   }
 
   /**
-   * Filter out restricted if it is defined and false
+   * Filter out if it is defined and false
    *
    * @param {string[]} filters Filters that should be applied
    *
@@ -133,8 +133,6 @@ const multiFilter = (contentTypes, filters) => {
  */
 const handleFilter = (contentTypes, filter) => {
   switch(filter) {
-    case 'restricted':
-      return contentTypes.filter(contentType => !contentType.restricted);
     case 'installed':
       return contentTypes.filter(contentType => contentType.installed);
   }
@@ -151,12 +149,6 @@ const handleFilter = (contentTypes, filter) => {
  */
 const handleSortType = (firstContentType, secondContentType, sortOrder) => {
   switch (sortOrder[0]) {
-    case 'restricted':
-      return sortOnRestricted(
-        firstContentType,
-        secondContentType,
-        sortOrder.slice(1)
-      );
     case 'popularity':
       return sortOnProperty(
         firstContentType,
@@ -173,33 +165,6 @@ const handleSortType = (firstContentType, secondContentType, sortOrder) => {
       );
     default:
       return sortSearchResults(firstContentType, secondContentType);
-  }
-};
-
-/**
- * Sort restricted content types. Restricted content types will be moved to the bottom of the
- * list. Content types with undefined restricted property are consider not restricted.
- *
- * @param {MixedContentType} firstContentType
- * @param {MixedContentType} secondContentType
- * @param {string[]} sortOrder Order to apply sort properties
- *
- * @return {number} A standard comparable value for the two content types
- */
-const sortOnRestricted = (firstContentType, secondContentType, sortOrder) => {
-  if (!firstContentType.contentType.restricted === !secondContentType.contentType.restricted) {
-    if (sortOrder.length) {
-      return handleSortType(firstContentType, secondContentType, sortOrder);
-    }
-    else {
-      return 0;
-    }
-  }
-  else if (firstContentType.contentType.restricted) {
-    return 1;
-  }
-  else if (secondContentType.contentType.restricted) {
-    return -1;
   }
 };
 
@@ -260,7 +225,7 @@ const filterByQuery = curry(function(query, contentTypes) {
     score: getSearchScore(query, contentType)
   })).filter(result => result.score > 0);
 
-  return multiSort(filtered, ['restricted', 'default']);
+  return multiSort(filtered, ['default']);
 });
 
 /**

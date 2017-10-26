@@ -153,22 +153,10 @@ export default class ContentTypeDetail {
     this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
     this.view.setLicense(contentType.license);
-    this.view.setIsRestricted(contentType.restricted, contentType.installed);
     const isUpdatePossible = contentType.installed &&
       !contentType.isUpToDate &&
-      !contentType.restricted &&
       contentType.canInstall;
     this.view.setIsUpdatePossible(isUpdatePossible, contentType.title || contentType.machineName);
-
-    // Check if api version is supported
-    const apiVersionSupported = this.apiVersion.major > contentType.h5pMajorVersion ||
-      (this.apiVersion.major === contentType.h5pMajorVersion &&
-      this.apiVersion.minor >= contentType.h5pMinorVersion);
-
-    // If not installed and unsupported version - let view know
-    if (!contentType.installed && !apiVersionSupported) {
-      this.view.apiVersionUnsupported();
-    }
 
     // update carousel
     if (contentType.screenshots) {

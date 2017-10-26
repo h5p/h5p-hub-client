@@ -95,6 +95,9 @@ export default class ContentTypeListView {
    */
   addRow(contentType) {
     const row = this.createContentTypeRow(contentType, this);
+    if (!row) {
+      return;
+    }
 
     row.addEventListener('click', event => {
       this.trigger('row-selected', {
@@ -126,6 +129,17 @@ export default class ContentTypeListView {
    * @return {HTMLElement}
    */
   createContentTypeRow(contentType, scope) {
+
+    // Determine if the content type is using an API version that is not yet supported
+    const apiNotSupported = !(this.apiVersion.major > contentType.h5pMajorVersion ||
+                             (this.apiVersion.major === contentType.h5pMajorVersion &&
+                              this.apiVersion.minor >= contentType.h5pMinorVersion));
+
+    // If the content type is restricted or requires a newer API, skip showing it
+    if (contentType.restricted || (!contentType.installed && apiNotSupported)) {
+      return;
+    }
+
     // create ids
     const index = this.rootElement.querySelectorAll('li').length;
     const contentTypeRowTitleId = `content-type-row-title-${index}`;
@@ -138,8 +152,7 @@ export default class ContentTypeListView {
     const title = contentType.title || contentType.machineName;
     const description = contentType.summary || '';
     const image = contentType.icon || noIcon;
-    const disabled = contentType.restricted || (!contentType.installed && !(this.apiVersion.major > contentType.h5pMajorVersion || (this.apiVersion.major === contentType.h5pMajorVersion && this.apiVersion.minor >= contentType.h5pMinorVersion))) ? 'disabled="disabled"' : '';
-    const updateAvailable = !contentType.isUpToDate && contentType.installed && !contentType.restricted;
+    const updateAvailable = !contentType.isUpToDate && contentType.installed && contentType.canInstall;
 
     // row item
     const element = document.createElement('li');
@@ -158,7 +171,7 @@ export default class ContentTypeListView {
       <div class="media-body">
         <div id="${contentTypeRowTitleId}" class="h4 media-heading">${title}</div>
 
-        <button type="button" aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1" ${disabled}>
+        <button type="button" aria-describedby="${contentTypeRowTitleId}" class="button ${button.cls}" data-id="${contentType.machineName}" tabindex="-1">
           <span class="${button.icon}"></span>
           ${button.text}
         </button>

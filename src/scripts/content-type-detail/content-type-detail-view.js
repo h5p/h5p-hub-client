@@ -306,17 +306,6 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Informs view if api version required by content type is un supported. The view
-   * will disable the install-button and display a warning message.
-   */
-  apiVersionUnsupported() {
-    // Disable install button
-    this.installButton.setAttribute('disabled', 'disabled');
-
-    this.setMessage('contentTypeUnsupportedApiVersionTitle', 'contentTypeUnsupportedApiVersionContent');
-  }
-
-  /**
    * Sets the image
    *
    * @param {string} src
@@ -627,29 +616,6 @@ export default class ContentTypeDetailView {
 
     this.messageViewElement = messageView.getElement();
     this.container.insertBefore(this.messageViewElement, this.container.childNodes[0]);
-  }
-
-  /**
-   * Marks content type as restricted, disabling installing and using the content type.
-   *
-   * @param {boolean} restricted True if content type is restricted
-   */
-  setIsRestricted(restricted, installed) {
-    if(restricted) {
-      disable(this.useButton);
-      disable(this.installButton);
-
-      if (installed) {
-        this.setMessage('contentTypeRestricted', 'contentTypeRestrictedDesc');
-      }
-      else {
-        this.setMessage('contentTypeNotInstalled', 'contentTypeNotInstalledDesc');
-      }
-    }
-    else {
-      enable(this.useButton);
-      enable(this.installButton);
-    }
   }
 
   /**
