@@ -1,17 +1,24 @@
 import React from 'react';
 import DropDownSelector from '../DropDownSelector/DropDownSelector';
-import BrowseTabs from '../TabPanel/TabPanel';
+import TabPanel from '../TabPanel/TabPanel';
 import ErrorMessage, { severityLevels } from '../../GenericComponents/ErrorMessage/ErrorMessage';
+import Dictionary from '../../utils/dictionary';
+import CreateContent from '../CreateContent/CreateContent';
+import UploadContent from '../UploadContent/UploadContent';
 import './HubViewContainer.scss';
 
 class HubViewContainer extends React.Component {
 
   componentDidUpdate() {
+    // TODO: Remove when components are done
+    this.tmpCreate.appendChild(this.props.oldCreateContent);
+    this.tmpUpload.appendChild(this.props.oldUploadContent);
+
     this.props.resize();
   }
 
   render() {
-    let sectionId = this.props.tabConfigs.find(tab => tab.selected === true).id;
+    const sectionId = this.props.state.sectionId || 'content-types';
     const panelClasses = `panel h5p-section-${sectionId}${this.props.isExpanded ? ' open' : ''}`;
 
     return (
@@ -32,10 +39,15 @@ class HubViewContainer extends React.Component {
                 errorMessage={this.props.error}
               />
             }
-            <BrowseTabs
-              onSelectedTab={this.props.onSelectedTab}
-              tabConfigs={this.props.tabConfigs}
-            />
+
+            <TabPanel selected={sectionId}>
+              <CreateContent id="content-types" title={Dictionary.get('createContentTabLabel')}>
+                <div ref={el => this.tmpCreate = el}/>
+              </CreateContent>
+              <UploadContent id="upload" title={Dictionary.get('uploadTabLabel')}>
+                <div ref={el => this.tmpUpload = el}/>
+              </UploadContent>
+            </TabPanel>
           </div>
         </div>
       </section>

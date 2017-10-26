@@ -81,33 +81,10 @@ export default class Hub {
     this.uploadSection = new UploadSection(state, this.services);
 
     this.initializeListeners();
-    this.tabConfigs = this.getTabConfigs(state);
 
     this.title = Dictionary.get('hubPanelLabel');
     this.isExpanded = false;
-    this.renderView();
-  }
-
-  /**
-   * Initiates the tab panel
-   *
-   * @param {string} sectionId
-   */
-  getTabConfigs({ sectionId = 'content-types' }) {
-    return [
-      {
-        title: Dictionary.get('createContentTabLabel'),
-        id: 'content-types',
-        content: this.contentTypeSection.getElement(),
-        selected: 'content-types' === sectionId,
-      },
-      {
-        title: Dictionary.get('uploadTabLabel'),
-        id: 'upload',
-        content: this.uploadSection.getElement(),
-        selected: 'upload' === sectionId,
-      }
-    ];
+    this.renderView(state);
   }
 
   initializeListeners() {
@@ -132,7 +109,7 @@ export default class Hub {
    *
    * @param {HTMLElement} element
    */
-  showModal({element}) {
+  showModal({element}) {
     // Prepend to catch and trap focus
     const parent = this.rootElement;
     parent.insertBefore(element, parent.firstChild);
@@ -170,7 +147,7 @@ export default class Hub {
    *
    * @param {string} id
    */
-  setPanelTitle({id}) {
+  setPanelTitle({id}) {
     this.getContentType(id).then(({title}) => {
       this.title = title ? title : id;
       this.renderView();
@@ -183,12 +160,7 @@ export default class Hub {
     this.renderView();
   }
 
-  onSelectedTab(id) {
-    this.tabConfigs.forEach(tab => tab.selected = tab.id === id);
-    this.renderView();
-  }
-
-  renderView() {
+  renderView(state) {
     // Render react into root element
     // TODO: Error should really be inserted into content type list: HFP-1644
     ReactDOM.render(
@@ -196,10 +168,11 @@ export default class Hub {
         title={this.title}
         error={this.error}
         isExpanded={this.isExpanded}
-        tabConfigs={this.tabConfigs}
-        onSelectedTab={this.onSelectedTab.bind(this)}
         togglePanel={this.togglePanel.bind(this)}
         resize={this.trigger.bind(this, 'resized')}
+        state={state||{}}
+        oldCreateContent={this.contentTypeSection.getElement()}
+        oldUploadContent={this.uploadSection.getElement()}
       />,
       this.rootElement
     );
