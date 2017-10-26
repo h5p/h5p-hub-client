@@ -261,8 +261,11 @@ export default class ContentTypeListView {
   useCurrent() {
     // Find use button of currently focused element
     const selectedElement = querySelector('li[tabindex="0"]', this.rootElement);
-    const useButton = querySelector('.button-primary', selectedElement);
+    if (!selectedElement) {
+      return;
+    }
 
+    const useButton = querySelector('.button-primary', selectedElement);
     if (useButton) {
       // Simulate click
       const event = document.createEvent('MouseEvents');
