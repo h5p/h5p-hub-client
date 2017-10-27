@@ -17,13 +17,15 @@ class Message extends React.Component {
         />
         <div className="message-content">
           <h2>{this.props.title}</h2>
-          {this.props.content &&
+          {
+            this.props.message &&
             <p className="message-body">
               {this.props.message}
             </p>
           }
         </div>
-        {this.props.action &&
+        {
+          this.props.action &&
           <button className="button" onClick={this.props.onAction}>
             {this.props.action}
           </button>
