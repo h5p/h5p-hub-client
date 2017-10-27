@@ -1,3 +1,5 @@
+@import '../../../styles/base/variables';
+
 .h5p-hub {
   .panel {
     .icon-accordion-arrow {
@@ -15,15 +17,5 @@
         transform: rotate(90deg);
       }
     }
-  }
-
-  .panel.h5p-section-content-types.open {
-    max-height: 58.65em;
-  }
-
-  .panel.h5p-section-content-types {
-    max-height: 3.0em;
-    transition: max-height 0.1s;
-    overflow: hidden;
   }
 }
