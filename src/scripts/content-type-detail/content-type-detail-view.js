@@ -1,15 +1,18 @@
-import { addClass, removeClass, setAttribute, getAttribute, removeAttribute, attributeEquals, removeChild, hide, show, toggleVisibility, classListContains, querySelectorAll } from "utils/elements";
-import { curry, forEach } from "utils/functional";
+import { removeClass, removeChild, hide, toggleVisibility, querySelectorAll } from "utils/elements";
+
 import { Eventful } from '../mixins/eventful';
 import initPanel from "components/panel";
 import initModal from "components/modal";
 import initImageScroller from "components/image-scroller";
-import initImageLightbox from "components/image-lightbox";
 import { relayClickEventAs } from '../utils/events';
 import noIcon from '../../images/content-type-placeholder.svg';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
 import ImageLightbox from '../image-lightbox/image-lightbox';
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import DetailsAccordion from "../HubComponents/ContentTypeDetail/DetailsAccordion";
 
 /**
  * @event {ContentTypeDetailView#show-license-dialog}
@@ -33,24 +36,6 @@ const MAX_TEXT_SIZE_DESCRIPTION = 285;
 const IMAGELIGHTBOX = 'imagelightbox';
 
 /**
- * Disables an HTMLElement
- *
- * @param {HTMLElement} element
- *
- * @function
- */
-const disable = setAttribute('disabled', '');
-
-/**
- * Disables an HTMLElement
- *
- * @param {HTMLElement} element
- *
- * @function
- */
-const enable = removeAttribute('disabled');
-
-/**
  * Focuses an HTMLElement
  *
  * @param {HTMLElement} element
@@ -60,22 +45,11 @@ const enable = removeAttribute('disabled');
 const focus = (element) => element.focus();
 
 /**
- * Registers a click handler on an HTMLElement
- *
- * @param {HTMLElement} element
- * @param {Function} handler
- *
- * @function
- */
-const onClick = (element, handler) => element.addEventListener('click', handler);
-
-
-/**
  * @class
  * @mixes Eventful
  */
 export default class ContentTypeDetailView {
-  constructor(state) {
+  constructor() {
     // add event system
     Object.assign(this, Eventful());
 
@@ -110,27 +84,11 @@ export default class ContentTypeDetailView {
     this.carousel = this.rootElement.querySelector('.carousel');
     this.carouselList = this.carousel.querySelector('ul');
 
-    this.panel = this.rootElement.querySelector('.panel');
-    this.licensePanelHeading = this.rootElement.querySelector('.license-panel-heading');
-    this.licensePanelBody = this.rootElement.querySelector('#license-panel');
     this.container = this.rootElement.querySelector('.container');
 
-    /**
-     * Finds the license button for us
-     *
-     * @return {HTMLElement}
-     */
-    this.licenseButton = () => this.licensePanelBody.querySelector('.short-license-read-more');
-
-    /**
-     * Generates an event handler for showing the license
-     *
-     * @function
-     */
-    this.showLicense = curry((licenseId, event) => this.trigger('show-license-dialog', { licenseId: licenseId }));
 
     // init interactive elements
-    initPanel(this.panel);
+
     initImageScroller(this.carousel);
 
     // fire events on button click
@@ -146,6 +104,7 @@ export default class ContentTypeDetailView {
    * @return {HTMLElement}
    */
   createView () {
+
     // ids
     const titleId = 'content-type-detail-view-title';
 
@@ -204,17 +163,7 @@ export default class ContentTypeDetailView {
           ${Dictionary.get("contentTypeUseButtonLabel")}
         </button>
       </div>
-      <dl class="panel panel-default license-panel">
-        <dt aria-level="2" role="heading" class="license-panel-heading">
-          <div role="button" aria-expanded="false" aria-controls="license-panel">
-            <span class="icon-accordion-arrow"></span>
-            <span>${Dictionary.get('contentTypeLicensePanelTitle')}</span>
-          </div>
-        </dt>
-        <dl id="license-panel" role="region" class="hidden">
-          <div class="panel-body"></div>
-        </dl>
-      </dl>`;
+      <div id="TODO"></div>`;
 
     return element;
   }
@@ -298,7 +247,6 @@ export default class ContentTypeDetailView {
 
     // Remove messages
     this.removeMessages();
-    this.resetLicenses();
 
     // Remove images:
     querySelectorAll('li', this.carouselList).forEach(removeChild(this.carouselList));
@@ -407,8 +355,8 @@ export default class ContentTypeDetailView {
    * Removes the licenses that are listed
    */
   resetLicenses() {
-    const container = this.licensePanelBody.querySelector('.panel-body');
-    querySelectorAll('dt,dl', container).forEach(removeChild(container));
+    /*const container = this.licensePanelBody.querySelector('.panel-body');
+    querySelectorAll('dt,dl', container).forEach(removeChild(container));*/
   }
 
   /**
@@ -419,37 +367,23 @@ export default class ContentTypeDetailView {
    * @param {object} license.attributes
    */
   setLicense(license) {
+
     this.license = license;
 
-    const panelContainer = this.licensePanelBody.querySelector('.panel-body');
+    const openLicenseDialog = this.trigger.bind(this, 'show-license-dialog', { licenseId: license.id });
 
     if (license) {
-      // Create short version for detail page
-      const shortLicenseInfo = document.createElement('div');
-      shortLicenseInfo.className = 'short-license-info';
-      shortLicenseInfo.innerHTML = `
-        <h3>${license.id}</h3>
-        <button type="button" class="short-license-read-more icon-info-circle" aria-label="${Dictionary.get('readMore')}"></button>
-        <p>${Dictionary.get("licenseDescription")}</p>
-        <ul class="ul small">
-          <li>${Dictionary.get(license.attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}</li>
-          ${license.attributes.useCommercially ? '<li>' + Dictionary.get("licenseCanUseCommercially") + '</li>' : ''}
-          ${license.attributes.modifiable ? '<li>' + Dictionary.get("licenseCanModify") + '</li>' : ''}
-          ${license.attributes.distributable ? '<li>' + Dictionary.get("licenseCanDistribute") + '</li>' : ''}
-          ${license.attributes.sublicensable ? '<li>' + Dictionary.get("licenseCanSublicense") + '</li>' : ''}
-          ${license.attributes.mustIncludeCopyright ? '<li>' + Dictionary.get("licenseMustIncludeCopyright") + '</li>' : ''}
-          ${license.attributes.mustIncludeLicense ? '<li>' + Dictionary.get("licenseMustIncludeLicense") + '</li>' : ''}
-        </ul>`;
-
-      // add short version of lisence
-      panelContainer.innerText = '';
-      panelContainer.appendChild(shortLicenseInfo);
-
-      // handle clicking read more
-      onClick(this.licenseButton(), this.showLicense(license.id));
+      ReactDOM.render(
+        <DetailsAccordion
+          id={license.id}
+          attributes={license.attributes}
+          onShowLicenseDetails={openLicenseDialog}/>
+        , this.rootElement.querySelector('#TODO')
+      );
     }
     else {
-      panelContainer.innerText = Dictionary.get('licenseUnspecified');
+      // TODO
+      // panelContainer.innerText = Dictionary.get('licenseUnspecified');
     }
   }
 
@@ -512,7 +446,7 @@ export default class ContentTypeDetailView {
       description.innerHTML = details.description
         .replace(':year', new Date().getFullYear())
         .replace(':owner', this.owner);
-    }).catch(error => {
+    }).catch(() => {
       modalBody.innerHTML = Dictionary.get('licenseFetchDetailsFailed');
     }).then(() => removeClass('loading', modalBody));
 
@@ -605,7 +539,7 @@ export default class ContentTypeDetailView {
    * Makes it easy to set a message
    *
    * @param {string} title
-   * @param {string} description
+   * @param {string} description
    */
   setMessage(title, description) {
     let messageView = new MessageView({

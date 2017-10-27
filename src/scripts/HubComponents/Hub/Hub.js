@@ -1,7 +1,7 @@
 import React from 'react';
 import DropDownSelector from '../DropDownSelector/DropDownSelector';
 import TabPanel from '../TabPanel/TabPanel';
-import ErrorMessage, { severityLevels } from '../../GenericComponents/ErrorMessage/ErrorMessage';
+import Message, { severityLevels } from '../../GenericComponents/Message/Message';
 import Dictionary from '../../utils/dictionary';
 import Browser from '../Browser/Browser';
 import UploadContent from '../UploadContent/UploadContent';
@@ -36,10 +36,10 @@ class Hub extends React.Component {
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
             {
               this.props.error &&
-              <ErrorMessage
+              <Message
                 severity={severityLevels.error}
                 dismissable={true}
-                errorMessage={this.props.error}
+                message={this.props.error}
               />
             }
 
