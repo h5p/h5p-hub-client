@@ -1,7 +1,7 @@
 import React from 'react';
 import DropDownSelector from '../DropDownSelector/DropDownSelector';
 import TabPanel from '../TabPanel/TabPanel';
-import ErrorMessage, { severityLevels } from '../../GenericComponents/ErrorMessage/ErrorMessage';
+import Message, { severityLevels } from '../../GenericComponents/Message/Message';
 import Dictionary from '../../utils/dictionary';
 import CreateContent from '../CreateContent/CreateContent';
 import UploadContent from '../UploadContent/UploadContent';
@@ -33,10 +33,10 @@ class HubViewContainer extends React.Component {
           <div id={`panel-body-${sectionId}`} role="region" className={this.props.isExpanded ? '' : 'hidden'}>
             {
               this.props.error &&
-              <ErrorMessage
+              <Message
                 severity={severityLevels.error}
                 dismissable={true}
-                errorMessage={this.props.error}
+                message={this.props.error}
               />
             }
 
