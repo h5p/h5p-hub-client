@@ -553,24 +553,6 @@ export default class ContentTypeDetailView {
   }
 
   /**
-   * Toggle spinner visibility for the currently showing install or update button
-   *
-   * @param {boolean} enable Set spinner state
-   */
-  toggleSpinner(enable) {
-    const buttonToCheck = enable ? 'updateButton' : 'updatingButton';
-    const isShowingInstallButton = this[buttonToCheck].classList.contains('hidden');
-    if (isShowingInstallButton) {
-      this.installButton.classList[enable ? 'add' : 'remove']('hidden');
-      this.installingButton.classList[enable ? 'remove' : 'add']('hidden');
-    }
-    else {
-      this.updateButton.classList[enable ? 'add' : 'remove']('hidden');
-      this.updatingButton.classList[enable ? 'remove' : 'add']('hidden');
-    }
-  }
-
-  /**
    * Hides the root element
    */
   hide() {

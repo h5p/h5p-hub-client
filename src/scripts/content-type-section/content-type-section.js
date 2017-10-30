@@ -262,7 +262,7 @@ export default class ContentTypeSection {
       //this.contentTypeDetail = new DetailView();
 
       ReactDOM.render(
-        <DetailView
+        <Detail
           library={library}
           visible={true}
         />,

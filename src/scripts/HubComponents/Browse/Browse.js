@@ -16,6 +16,11 @@ class Browse extends React.Component {
     console.log('Order By: ' + propertyId);
   }
 
+  handleLibraryUse(id) {
+    console.log('handleLibraryUse');
+    this.setState({library: undefined});
+  }
+
   render() {
     // TODO: Focus search bar when loaded (or timeout 200 ?)
 
@@ -51,15 +56,18 @@ class Browse extends React.Component {
             filterBy={this.state.filterBy || ''}
             orderBy={this.state.orderBy || 'recently'}
             contentTypes={this.props.contentTypes}
-            ref={list => this.list = list}/>
-          <LibraryDetail
-            library={this.state.library}
-            visible={true}/>
+            ref={list => this.list = list}
+          />
+          {
+            this.state.library &&
+            <LibraryDetail
+              library={this.state.library}
+              onUse={id => this.handleLibraryUse(id)}
+              onClose={() => this.setState({library: undefined})}
+            />
+          }
         </div>
-
       </div>
-
-
     );
   }
 }

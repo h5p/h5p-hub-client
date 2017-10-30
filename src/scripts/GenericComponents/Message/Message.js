@@ -5,7 +5,7 @@ import Dictionary from '../../utils/dictionary';
 class Message extends React.Component {
 
   render() {
-    var className = `message ${this.props.name} ${this.props.type}` + (this.props.dismissible ? ' dismissible' : '');
+    var className = `message ${this.props.severity}` + (this.props.dismissible ? ' dismissible' : '');
 
     return (
       <div className={className} role="alert">

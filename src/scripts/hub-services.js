@@ -40,8 +40,13 @@ export default class HubServices {
   /**
    * Fetch the content type metadata
    */
-  setup() {
-    this.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
+  static init({ apiRootUrl, contentId }) {
+
+    HubServices.apiRootUrl = apiRootUrl;
+    HubServices.contentId = contentId;
+    HubServices.licenseCache = {};
+
+    /*this.cachedContentTypes = fetch(`${this.apiRootUrl}content-type-cache`, {
       method: 'GET',
       credentials: 'include'
     }).then(result => result.json())
@@ -52,7 +57,7 @@ export default class HubServices {
       }))
       .then(this.isValid);
 
-    return this.cachedContentTypes;
+    return this.cachedContentTypes;*/
   }
 
   /**
@@ -94,7 +99,7 @@ export default class HubServices {
    *
    * @return {Promise.<ContentType>}
    */
-  installContentType(id) {
+  static installContentType(id) {
     return fetch(ns.getAjaxUrl('library-install', {id: id}), {
       method: 'POST',
       credentials: 'include',
@@ -111,7 +116,7 @@ export default class HubServices {
    *
    * @return {Promise} Returns the promise of a json containing the content json and the h5p json
    */
-  uploadContent(formData) {
+  static uploadContent(formData) {
     formData.append('contentId', this.contentId);
 
     return fetch(`${this.apiRootUrl}library-upload`, {
@@ -127,7 +132,7 @@ export default class HubServices {
    * @param {string} licenseId
    * @return {Promise}
    */
-  getLicenseDetails(licenseId) {
+  static getLicenseDetails(licenseId) {
     // Check if already cached:
     const cachedLicense = this.licenseCache[licenseId];
 

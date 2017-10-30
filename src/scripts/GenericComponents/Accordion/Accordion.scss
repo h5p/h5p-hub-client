@@ -1,21 +1,45 @@
 @import '../../../styles/base/variables';
 
-.h5p-hub {
-  .panel {
-    .icon-accordion-arrow {
-      margin-top: -4px;
-      font-size: 0.7em;
-      margin-right: $gutter;
-      margin-left: $gutter;
-      display: inline-block;
-      vertical-align: middle;
-      transition: transform 0.1s ease-out;
-    }
+.h5p-hub-accordion {
+  border: $border-panel;
+  border-bottom: 0;
 
-    [aria-expanded="true"] {
-      .icon-accordion-arrow {
-        transform: rotate(90deg);
-      }
+  .icon-accordion-arrow {
+    margin-top: -4px;
+    font-size: 0.7em;
+    margin-right: $gutter;
+    margin-left: $gutter;
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.1s ease-out;
+  }
+
+  [aria-expanded="true"] {
+    .icon-accordion-arrow {
+      transform: rotate(90deg);
     }
+  }
+}
+
+.h5p-hub-accordion-toggler {
+  display: block;
+  box-sizing: border-box;
+  text-decoration: none;
+  width: 100%;
+  padding: $gutter;
+  color: $text-dark;
+}
+
+.h5p-hub-accordion-heading {
+  border-bottom: $border-panel;
+  background-color: $c3;
+  cursor: pointer;
+}
+
+.h5p-hub-accordion-region {
+  border-bottom: $border-panel;
+
+  .panel-body {
+    padding: $gutter;
   }
 }
