@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Hub from './HubComponents/Hub/Hub';
+import HubServices from './hub-services';
 import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
 
@@ -21,7 +22,10 @@ export default class HubClient {
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
-    
+
+    // Setting up service
+    HubServices.init(0, '');
+
     // Render react into root element
     ReactDOM.render(
       <Hub

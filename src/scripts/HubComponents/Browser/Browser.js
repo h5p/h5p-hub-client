@@ -16,6 +16,11 @@ class Browser extends React.Component {
     console.log('Order By: ' + propertyId);
   }
 
+  handleLibraryUse(id) {
+    console.log('handleLibraryUse');
+    this.setState({library: undefined});
+  }
+
   render() {
 
     // TODO: Add state: loaded / loading
@@ -56,9 +61,14 @@ class Browser extends React.Component {
             orderBy={this.state.orderBy}
             contentTypes={this.props.contentTypes}/>
 
-          <LibraryDetail
-            library={this.state.library}
-            visible={true}/>
+          {
+            this.state.library &&
+            <LibraryDetail
+              library={this.state.library}
+              onUse={id => this.handleLibraryUse(id)}
+              onClose={() => this.setState({library: undefined})}
+            />
+          }
         </div>
       </div>
     );
