@@ -3,7 +3,7 @@ import DropDownSelector from '../DropDownSelector/DropDownSelector';
 import TabPanel from '../TabPanel/TabPanel';
 import Message, { severityLevels } from '../../GenericComponents/Message/Message';
 import Dictionary from '../../utils/dictionary';
-import Browser from '../Browser/Browser';
+import Browser from '../Browse/Browse';
 import UploadContent from '../UploadContent/UploadContent';
 import './Hub.scss';
 
@@ -15,12 +15,25 @@ class Hub extends React.Component {
     this.state = {
       expanded: false,
       section: 'content-types',
-      selected: props.selected
+      selected: props.selected,
+      title: props.title
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // Recieve updates to panel title
+    this.state.title = nextProps.title;
   }
 
   componentDidUpdate() {
     this.props.onResize();
+  }
+
+  handleUse(contentType) {
+    // Collapse Hub
+    this.setState({expanded: false, title: contentType.title || contentType.machineName});
+
+    this.props.onUse(contentType);
   }
 
   render() {
@@ -28,7 +41,7 @@ class Hub extends React.Component {
       <section className="h5p-hub h5p-sdk">
         <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`}>
           <DropDownSelector
-            title={Dictionary.get('hubPanelLabel')}
+            title={this.state.title || Dictionary.get('hubPanelLabel')}
             sectionId={this.state.section}
             isExpanded={this.state.expanded}
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
@@ -47,7 +60,8 @@ class Hub extends React.Component {
               <Browser id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.props.contentTypes}
-                apiVersion={this.props.apiVersion}/>
+                apiVersion={this.props.apiVersion}
+                onUse={this.handleUse.bind(this)} />
               <UploadContent id="upload" title={Dictionary.get('uploadTabLabel')}>
                 <div>TODO</div>
               </UploadContent>

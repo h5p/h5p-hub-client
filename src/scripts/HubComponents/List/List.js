@@ -3,7 +3,7 @@ import Choose from '../Choose/Choose';
 import noIcon from '../../../images/content-type-placeholder.svg';
 import Dictionary from '../../utils/dictionary';
 
-class Browser extends React.Component {
+class List extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,18 +21,15 @@ class Browser extends React.Component {
 
   handleClick(event, contentType) {
     if (contentType.installed) {
-      this.props.onUse(contentType.machineName);
+      this.props.onUse(contentType);
+      event.preventDefault();
     }
-    else {
-      console.log('Installing ' + contentType.machineName);
-    }
-    event.preventDefault();
   }
 
   getLibrary(id) {
     for (var i = 0; i < this.props.contentTypes.libraries.length; i++) {
       const library = this.props.contentTypes.libraries[i];
-      if(library.machineName.toLocaleLowerCase().replace('.','-') == id) {
+      if (library.machineName.toLocaleLowerCase().replace('.','-') == id) { // TODO: Check duplicate IDs
         return library;
       }
     }
@@ -97,4 +94,4 @@ class Browser extends React.Component {
   }
 }
 
-export default Browser;
+export default List;
