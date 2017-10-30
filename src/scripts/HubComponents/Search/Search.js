@@ -41,26 +41,23 @@ class Search extends React.Component {
   }
 
   handleKeyDown(event) {
-    console.log('keydown', event.which);
-
-    // TODO: Document why
-    /*switch (event.which) {
-      case 13: // Enter
-        this.trigger('use');
-        event.preventDefault();
-        break;
-
+    // Allow quick selecting from the list while typing
+    switch (event.which) {
       case 38: // Up
-        this.trigger('previous');
+        this.props.onSelectedChange(-1);
         event.preventDefault();
         break;
 
       case 40: // Down
-        this.trigger('next');
+        this.props.onSelectedChange(1);
         event.preventDefault();
         break;
-    }*/
 
+      case 13: // Enter
+        this.props.onUseSelected();
+        event.preventDefault();
+        break;
+    }
   }
 
   handleBlur() {
