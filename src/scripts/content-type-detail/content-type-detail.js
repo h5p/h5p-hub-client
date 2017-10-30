@@ -145,14 +145,14 @@ export default class ContentTypeDetail {
   update(contentType) {
     this.view.reset();
 
-    this.view.setId(contentType.machineName);
-    this.view.setTitle(contentType.title || contentType.machineName);
-    this.view.setDescription(contentType.description);
+    //this.view.setId(contentType.machineName);
+    //this.view.setTitle(contentType.title || contentType.machineName);
+    //this.view.setDescription(contentType.description);
     this.view.setImage(contentType.icon);
-    this.view.setExample(contentType.example);
-    this.view.setOwner(contentType.owner);
+    //this.view.setExample(contentType.example);
+    //this.view.setOwner(contentType.owner);
     this.view.setIsInstalled(contentType.installed);
-    this.view.setLicense(contentType.license);
+    //this.view.setLicense(contentType.license);
     const isUpdatePossible = contentType.installed &&
       !contentType.isUpToDate &&
       contentType.canInstall;

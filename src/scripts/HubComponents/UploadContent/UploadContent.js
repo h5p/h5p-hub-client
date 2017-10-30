@@ -75,6 +75,7 @@ class UploadContent extends React.Component {
     return fileName.replace(/^.*\./, '');
   }
 
+  // TODO: Add 'Use' to the dictionary
   render() {
     return (
       <div className="upload-wrapper">

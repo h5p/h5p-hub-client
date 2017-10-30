@@ -115,6 +115,26 @@
     }
   }
 
+  .result-header {
+    font-size: 1.125em;
+    margin: 1em 0;
+  }
+  .result-hits {
+    font-size: 0.8em;
+  }
+  .sort-by-list > li {
+    float: left;
+    margin-left: 1em;
+    cursor: pointer;
+
+    &.hightlight {
+      font-weight: 600;
+    }
+  }
+  .sort-by-header {
+    float: left;
+  }
+
   .navbar-brand {
     display: none;
     overflow: hidden;
@@ -141,7 +161,6 @@
    /* Small */
    @media (min-width: 600px) {
      .navbar {
-       display: flex;
        padding: 0;
        border-bottom: solid 1px rgba(206, 214, 227, 0.34);
 
