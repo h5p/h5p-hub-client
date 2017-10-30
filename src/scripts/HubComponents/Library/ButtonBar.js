@@ -10,12 +10,16 @@ class ButtonBar extends React.Component {
 
   render() {
 
-    let install, use, installing, update, updating = false;
+    let install, use, installing, update, updating, installDisabled;
 
     if (this.props.installed) {
       updating = this.props.updating;
       use = !updating;
       update = this.props.updatable && !updating;
+    }
+    else if (!this.props.canInstall) {
+      install = true;
+      installDisabled = true;
     }
     else {
       installing = this.props.installing;
@@ -24,7 +28,7 @@ class ButtonBar extends React.Component {
 
     return (
       <div className="button-bar">
-        <button type="button" className={"button button-inverse-primary button-install" + (install ? '' : ' hidden')} onClick={this.props.onInstall}>
+        <button type="button" className={"button button-inverse-primary button-install" + (install ? '' : ' hidden')} disabled={installDisabled} onClick={this.props.onInstall}>
           <span className="icon-arrow-thick"></span>
           {Dictionary.get('contentTypeInstallButtonLabel')}
         </button>

@@ -15,11 +15,20 @@ class Detail extends React.Component {
 
     this.state = {
       installed: props.library.installed,
+      canInstall: props.library.canInstall,
       updatable: !props.library.isUpToDate,
       installing: false,
       updating: false,
       visible: true
     };
+
+    if (!props.library.canInstall) {
+      this.state.message = {
+        severity: 'warning',
+        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+      }
+    }
   }
 
   handleInstall() {
@@ -117,6 +126,7 @@ class Detail extends React.Component {
         <hr />
         <ButtonBar
           installed={this.state.installed}
+          canInstall={this.state.canInstall}
           updatable={this.state.updatable}
           installing={this.state.installing}
           updating={this.state.updating}
