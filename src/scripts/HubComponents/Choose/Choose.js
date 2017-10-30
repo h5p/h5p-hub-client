@@ -10,6 +10,13 @@ class Choose extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      selected: nextProps.selected,
+      focused: nextProps.selected
+    });
+  }
+
   select(id) {
     this.props.onChange(id);
     this.setState({selected: id});
