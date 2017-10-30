@@ -24,7 +24,8 @@ class Browse extends React.Component {
 
         <div className="menu-group">
 
-          <Search/>
+          <Search onSelectedChange={dir => this.list.changeSelected(dir)}
+            onUseSelected={() => this.list.useSelected()}/>
 
           <div className="navbar">
             <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
@@ -46,7 +47,8 @@ class Browse extends React.Component {
             onSelect={library => {this.setState({library: library});}}
             filterBy={this.state.filterBy}
             orderBy={this.state.orderBy}
-            contentTypes={this.props.contentTypes}/>
+            contentTypes={this.props.contentTypes}
+            ref={list => this.list = list}/>
           <LibraryDetail
             library={this.state.library}
             visible={true}/>

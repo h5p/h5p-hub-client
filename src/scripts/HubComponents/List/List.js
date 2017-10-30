@@ -19,6 +19,14 @@ class List extends React.Component {
     };
   }
 
+  changeSelected(dir) {
+    this.choose.changeFocused(dir);
+  }
+
+  useSelected() {
+    this.props.onUse(this.getLibrary(this.choose.getFocused()));
+  }
+
   handleClick(event, contentType) {
     if (contentType.installed) {
       this.props.onUse(contentType);
@@ -86,7 +94,9 @@ class List extends React.Component {
 
     return (
       <ol className="content-type-list">
-        <Choose selected={first} onChange={id => this.props.onSelect(this.getLibrary(id))}>
+        <Choose selected={first}
+          onChange={id => this.props.onSelect(this.getLibrary(id))}
+          ref={choose => this.choose = choose}>
           {listItems}
         </Choose>
       </ol>

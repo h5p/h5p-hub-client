@@ -15,8 +15,18 @@ class Choose extends React.Component {
     this.setState({selected: id});
   }
 
-  focus(id) {
-    this.setState({focused: id, focusOnRender: true});
+  focus(id, preventFocus) {
+    if (id) {
+      this.setState({focused: id, focusOnRender: !preventFocus});
+    }
+  }
+
+  changeFocused(dir) {
+    this.focus(this.getSiblingIdFor(this.state.focused, dir), true);
+  }
+
+  getFocused() {
+    return this.state.focused;
   }
 
   getSiblingIdFor(id, dir) {
