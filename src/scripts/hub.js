@@ -18,7 +18,8 @@ export default class HubClient {
     // add event system
     Object.assign(this, Eventful());
 
-    var container = document.createElement('div');
+    const self = this;
+    const container = document.createElement('div');
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
@@ -26,17 +27,33 @@ export default class HubClient {
     // Setting up service
     HubServices.init(0, '');
 
-    // Render react into root element
-    ReactDOM.render(
-      <Hub
-        contentId={state.contentId}
-        contentTypes={state.contentTypes}
-        selected={state.selected}
-        apiVersion={state.apiVersion}
-        onResize={this.trigger.bind(this, 'resize')}
-      />,
-      container
-    );
+    /**
+     * @private
+     */
+    const render = function () {
+      // Render react into root element
+      ReactDOM.render(
+        <Hub
+          title={state.title}
+          contentId={state.contentId}
+          contentTypes={state.contentTypes}
+          selected={state.selected}
+          apiVersion={state.apiVersion}
+          onResize={self.trigger.bind(self, 'resize')}
+          onUse={self.trigger.bind(self, 'select')}
+          onUpload={self.trigger.bind(self, 'upload')}
+        />,
+        container
+      );
+    };
+
+    /**
+     * @return {HTMLElement} Container with the Hub
+     */
+    this.setPanelTitle = function (title) {
+      state.title = title;
+      render(); // Re-render
+    };
 
     /**
      * @return {HTMLElement} Container with the Hub
@@ -44,5 +61,8 @@ export default class HubClient {
     this.getElement = function () {
       return container;
     };
+
+    // Trigger initial rendering
+    render();
   }
 }

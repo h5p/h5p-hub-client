@@ -4,7 +4,7 @@ import Choose from '../Choose/Choose';
 import List from '../List/List';
 import LibraryDetail from '../Library/Detail';
 
-class Browser extends React.Component {
+class Browse extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,22 +22,15 @@ class Browser extends React.Component {
   }
 
   render() {
-
-    // TODO: Add state: loaded / loading
-    // TODO: Import displayMessage(config) (when loading fails)
     // TODO: Focus search bar when loaded (or timeout 200 ?)
-
-    // TODO: Search service
-    // TODO: List
-    // TODO: Detail
-
 
     return (
       <div className="content-type-section-view loaded">
 
         <div className="menu-group">
 
-          <Search/>
+          <Search onSelectedChange={dir => this.list.changeSelected(dir)}
+            onUseSelected={() => this.list.useSelected()}/>
 
           <div className="navbar">
             <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
@@ -55,12 +48,13 @@ class Browser extends React.Component {
         </div>
 
         <div className="content-type-section">
-          <List onUse={id => console.log('Using ' + id)}
-            onSelect={library => this.setState({library: library})}
+          <List onUse={this.props.onUse}
+            onSelect={library => {this.setState({library: library});}}
             filterBy={this.state.filterBy}
             orderBy={this.state.orderBy}
-            contentTypes={this.props.contentTypes}/>
-
+            contentTypes={this.props.contentTypes}
+            ref={list => this.list = list}
+          />
           {
             this.state.library &&
             <LibraryDetail
@@ -75,4 +69,4 @@ class Browser extends React.Component {
   }
 }
 
-export default Browser;
+export default Browse;
