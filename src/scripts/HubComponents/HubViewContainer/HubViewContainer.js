@@ -12,7 +12,7 @@ class HubViewContainer extends React.Component {
   componentDidUpdate() {
     // TODO: Remove when components are done
     this.tmpCreate.appendChild(this.props.oldCreateContent);
-    this.tmpUpload.appendChild(this.props.oldUploadContent);
+    // this.tmpUpload.appendChild(this.props.oldUploadContent);
 
     this.props.resize();
   }
@@ -45,7 +45,6 @@ class HubViewContainer extends React.Component {
                 <div ref={el => this.tmpCreate = el}/>
               </CreateContent>
               <UploadContent id="upload" title={Dictionary.get('uploadTabLabel')}>
-                <div ref={el => this.tmpUpload = el}/>
               </UploadContent>
             </TabPanel>
           </div>
