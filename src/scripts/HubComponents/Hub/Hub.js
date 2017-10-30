@@ -62,7 +62,11 @@ class Hub extends React.Component {
                 contentTypes={this.props.contentTypes}
                 apiVersion={this.props.apiVersion}
                 onUse={this.handleUse.bind(this)} />
-              <UploadContent id="upload" title={Dictionary.get('uploadTabLabel')}>
+              <UploadContent id="upload"
+                title={Dictionary.get('uploadTabLabel')}
+                getAjaxUrl={this.props.getAjaxUrl}
+                contentId={this.props.contentId}>
+
                 <div>TODO</div>
               </UploadContent>
             </TabPanel>

@@ -39,6 +39,7 @@ export default class HubClient {
           contentTypes={state.contentTypes}
           selected={state.selected}
           apiVersion={state.apiVersion}
+          getAjaxUrl={state.getAjaxUrl}
           onResize={self.trigger.bind(self, 'resize')}
           onUse={self.trigger.bind(self, 'select')}
           onUpload={self.trigger.bind(self, 'upload')}
