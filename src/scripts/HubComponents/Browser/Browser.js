@@ -2,6 +2,7 @@ import React from 'react';
 import Search from '../Search/Search';
 import Choose from '../Choose/Choose';
 import List from '../List/List';
+import LibraryDetail from '../Library/Detail';
 
 class Browser extends React.Component {
   constructor(props) {
@@ -50,15 +51,16 @@ class Browser extends React.Component {
 
         <div className="content-type-section">
           <List onUse={id => console.log('Using ' + id)}
-            onSelect={id => console.log('Showing details for ' + id)}
+            onSelect={library => this.setState({library: library})}
             filterBy={this.state.filterBy}
             orderBy={this.state.orderBy}
             contentTypes={this.props.contentTypes}/>
+
+          <LibraryDetail
+            library={this.state.library}
+            visible={true}/>
         </div>
-
       </div>
-
-
     );
   }
 }

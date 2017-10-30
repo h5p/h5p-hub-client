@@ -1,10 +1,14 @@
 import ContentTypeSectionView from "./content-type-section-view";
 import { SearchService, multiSort } from "../search-service/search-service";
 import ContentTypeList from '../content-type-list/content-type-list';
-import ContentTypeDetail from '../content-type-detail/content-type-detail';
+//import ContentTypeDetail from '../content-type-detail/content-type-detail';
 import {Eventful} from '../mixins/eventful';
 import Dictionary from '../utils/dictionary';
 import MessageView from '../message-view/message-view';
+
+import Detail from '../HubComponents/ContentTypeDetail/Detail';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 /**
  * @class ContentTypeSection
@@ -19,7 +23,6 @@ export default class ContentTypeSection {
    * @param {HubServices} services
    */
   constructor(state, services) {
-    const self = this;
     this.services = services;
 
     // add event system
@@ -47,21 +50,24 @@ export default class ContentTypeSection {
     // controller
     this.searchService = new SearchService(this.services);
     this.contentTypeList = new ContentTypeList(state);
-    this.contentTypeDetail = new ContentTypeDetail(state, this.services);
+    //this.contentTypeDetail = new ContentTypeDetail(state, this.services);
 
     // Element for holding list and details views
     const section = document.createElement('div');
     section.classList.add('content-type-section');
 
+    this.todo = document.createElement('div');
+
     this.rootElement = section;
     this.rootElement.appendChild(this.contentTypeList.getElement());
-    this.rootElement.appendChild(this.contentTypeDetail.getElement());
+    this.rootElement.appendChild(this.todo);
 
     this.view.getElement().appendChild(this.rootElement);
 
+
     // propagate events
     this.propagate(['select', 'update-content-type-list'], this.contentTypeList);
-    this.propagate(['select', 'modal'], this.contentTypeDetail);
+    //this.propagate(['select', 'modal'], this.contentTypeDetail);
     this.propagate(['reload'], this.view);
 
     // register listeners
@@ -85,7 +91,7 @@ export default class ContentTypeSection {
     });
     this.contentTypeList.on('row-selected', this.showDetailView, this);
     this.contentTypeList.on('row-selected', this.view.clearSelection, this.view);
-    this.contentTypeDetail.on('close', this.goBackToListView, this);
+    /*this.contentTypeDetail.on('close', this.goBackToListView, this);
     this.contentTypeDetail.on('select', this.closeDetailView, this);
     this.contentTypeDetail.on('installed-content-type', () => {
       this.services.setup();
@@ -93,7 +99,7 @@ export default class ContentTypeSection {
         .then(contentTypes => {
           this.contentTypeList.refreshContentTypes(contentTypes);
         });
-    });
+    });*/
 
     // add menu items
     Object.keys(ContentTypeSection.Tabs)
@@ -248,30 +254,45 @@ export default class ContentTypeSection {
    * @param {string} id
    */
   showDetailView({id}) {
-    this.contentTypeDetail.loadById(id);
-    this.contentTypeDetail.show();
-    this.contentTypeList.hide();
-    this.view.typeAheadEnabled = false;
-    this.view.removeDeactivatedStyleFromMenu();
 
-    // Wait for transition before focusing since focusing an element will force the browser to
-    // put that element into view. Doing so before the element is in the correct position will
-    // skew all elements on the page.
-    setTimeout(() => {
-      this.contentTypeDetail.focus();
-    }, 300);
+    this.services.contentType(id).then((library) => {
+      //this.contentTypeDetail.loadById(id);
+      //this.contentTypeDetail.show();
+      //
+      //this.contentTypeDetail = new DetailView();
+
+      ReactDOM.render(
+        <DetailView
+          library={library}
+          visible={true}
+        />,
+        this.todo
+      );
+
+      this.contentTypeList.hide();
+      this.view.typeAheadEnabled = false;
+      this.view.removeDeactivatedStyleFromMenu();
+
+      // Wait for transition before focusing since focusing an element will force the browser to
+      // put that element into view. Doing so before the element is in the correct position will
+      // skew all elements on the page.
+      /*setTimeout(() => {
+        this.contentTypeDetail.focus();
+      }, 300);*/
+    });
   }
 
   /**
    * Closes the detail view
    */
   closeDetailView() {
-    if (!this.contentTypeDetail.isHidden()) {
+
+    /*if (!this.contentTypeDetail.isHidden()) {
       this.contentTypeDetail.hide();
       this.contentTypeList.show();
       this.view.typeAheadEnabled = true;
       this.view.addDeactivatedStyleToMenu();
-    }
+    }*/
   }
 
   /**

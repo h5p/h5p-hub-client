@@ -29,6 +29,15 @@ class Browser extends React.Component {
     event.preventDefault();
   }
 
+  getLibrary(id) {
+    for (var i = 0; i < this.props.contentTypes.libraries.length; i++) {
+      const library = this.props.contentTypes.libraries[i];
+      if(library.machineName.toLocaleLowerCase().replace('.','-') == id) {
+        return library;
+      }
+    }
+  }
+
   render() {
     const apiVersion = this.props.contentTypes.apiVersion;
 
@@ -80,7 +89,7 @@ class Browser extends React.Component {
 
     return (
       <ol className="content-type-list">
-        <Choose selected={first} onChange={id => this.props.onSelect(id)}>
+        <Choose selected={first} onChange={id => this.props.onSelect(this.getLibrary(id))}>
           {listItems}
         </Choose>
       </ol>

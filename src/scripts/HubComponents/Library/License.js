@@ -2,7 +2,7 @@ import React from 'react';
 
 import Dictionary from '../../utils/dictionary';
 
-class LicenseOverview extends React.Component {
+class License extends React.Component {
   render() {
     return (
       <div className='short-license-info'>
@@ -11,7 +11,7 @@ class LicenseOverview extends React.Component {
         <button
           type="button"
           className="short-license-read-more icon-info-circle"
-          aria-label="{Dictionary.get('readMore')}"
+          aria-label={Dictionary.get('readMore')}
           onClick={this.props.onShowLicenseDetails}>
         </button>
 
@@ -45,4 +45,4 @@ class LicenseOverview extends React.Component {
   }
 }
 
-export default LicenseOverview;
+export default License;

@@ -1,22 +1,22 @@
 import React from 'react';
 import Accordion from '../../GenericComponents/Accordion/Accordion';
-import LicenseOverview from './LicenseOverview';
+import License from './License';
 import Dictionary from '../../utils/dictionary';
-import './DetailsAccordion.scss';
+import './LibraryAccordion.scss';
 
-class DetailsAccordion extends React.Component {
+class LibraryAccordion extends React.Component {
   render() {
     return (
       <Accordion>
-        <LicenseOverview
+        <License
           header={Dictionary.get('contentTypeLicensePanelTitle')}
           id={this.props.id}
           attributes={this.props.attributes}
-          onShowLicenseDetails={this.props.onShowLicenseDetails.bind(this)}
+          /*onShowLicenseDetails={this.props.onShowLicenseDetails.bind(this)}*/
         />
       </Accordion>
     );
   }
 }
 
-export default DetailsAccordion;
+export default LibraryAccordion;
