@@ -6,6 +6,7 @@ import ImageSlider from '../../GenericComponents/ImageSlider/ImageSlider';
 import ButtonBar from './ButtonBar';
 import HubServices from '../../hub-services';
 import Message from '../../GenericComponents/Message/Message';
+import ReadMore from '../../GenericComponents/ReadMore';
 
 import noIcon from '../../../images/content-type-placeholder.svg';
 
@@ -27,7 +28,7 @@ class Detail extends React.Component {
         severity: 'warning',
         title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
         content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-      }
+      };
     }
   }
 
@@ -116,7 +117,10 @@ class Detail extends React.Component {
           <div className="text-details">
             <h2 id="{titleId}" className="title" tabIndex="-1">{title}</h2>
             <div className="owner">{this.props.library.owner}</div>
-            <p className="small">{this.props.library.description}</p>
+            <ReadMore
+              text={this.props.library.description}
+              maxLength={285}
+            />
             <a className="button demo-button" target="_blank" href={demoUrl}>
               {Dictionary.get("contentTypeDemoButtonLabel")}
             </a>
@@ -133,10 +137,13 @@ class Detail extends React.Component {
           onInstall={() => this.handleInstall()}
           onUse={() => this.handleUse()}
         />
-        <LibraryAccordion
-          id={this.props.library.license.id}
-          attributes={this.props.library.license.attributes}
-        />
+        {
+          this.props.library.license &&
+          <LibraryAccordion
+            id={this.props.library.license.id}
+            attributes={this.props.library.license.attributes}
+          />
+        }
       </div>
     );
   }
