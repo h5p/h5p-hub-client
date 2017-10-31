@@ -1,5 +1,5 @@
 import React from 'react';
-import Buttonify from '../Buttonify';
+import Button from '../Button';
 
 import './Accordion.scss';
 
@@ -20,19 +20,21 @@ class Accordion extends React.Component {
 
   render() {
     const elements = React.Children.map(this.props.children, child => {
+
+      const buttonProps = {
+        className: "h5p-hub-accordion-toggler",
+        "aria-expanded": this.state.expanded === child.props.id
+      };
+
       return (
         <div>
           <dt aria-level="2" role="heading" className="h5p-hub-accordion-heading">
-            <Buttonify>
-              <div
-                className="h5p-hub-accordion-toggler"
-                aria-expanded={this.state.expanded == child.props.id}
-                onButtonClick={() => this.handleToggle(child)}
-              >
-                <span className="icon-accordion-arrow"></span>
-                <span>{child.props.header}</span>
-              </div>
-            </Buttonify>
+            <Button buttonProps={buttonProps}
+              onButtonClick={() => this.handleToggle(child)}
+            >
+              <span className="icon-accordion-arrow"></span>
+              <span>{child.props.header}</span>
+            </Button>
           </dt>
           <dl role="region" className={'h5p-hub-accordion-region' + (this.state.expanded == child.props.id ? '' : ' hidden')}>
             <div className="panel-body">
