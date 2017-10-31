@@ -2,6 +2,7 @@ import React from 'react';
 import Choose from '../Choose/Choose';
 import noIcon from '../../../images/content-type-placeholder.svg';
 import Dictionary from '../../utils/dictionary';
+import search from '../../utils/search.js';
 
 class List extends React.Component {
   constructor(props) {
@@ -17,6 +18,20 @@ class List extends React.Component {
       className: 'button-inverse-primary button-install',
       icon: 'icon-arrow-thick'
     };
+
+    this.state = {
+      contentTypes: this.getFilteredContentTypes(props)
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      contentTypes: this.getFilteredContentTypes(nextProps)
+    });
+  }
+
+  getFilteredContentTypes(props) {
+    return search(props.contentTypes, props.filterBy, props.orderBy);
   }
 
   changeSelected(dir) {
@@ -37,7 +52,7 @@ class List extends React.Component {
   getLibrary(id) {
     for (var i = 0; i < this.props.contentTypes.libraries.length; i++) {
       const library = this.props.contentTypes.libraries[i];
-      if (library.machineName.toLocaleLowerCase().replace('.','-') == id) { // TODO: Check duplicate IDs
+      if (library.machineName.toLocaleLowerCase().replace('.','-') == id) {
         return library;
       }
     }
@@ -47,7 +62,7 @@ class List extends React.Component {
     const apiVersion = this.props.contentTypes.apiVersion;
 
     let first;
-    const listItems = this.props.contentTypes.libraries.map(contentType => {
+    const listItems = this.state.contentTypes.map(contentType => {
       // Determine if the content type is using an API version that is not yet supported
       const apiNotSupported = !(apiVersion.major > contentType.h5pMajorVersion ||
                                (apiVersion.major === contentType.h5pMajorVersion &&

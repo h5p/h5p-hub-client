@@ -15,13 +15,13 @@ class Accordion extends React.Component {
     const elements = React.Children.map(this.props.children, child => {
       return (
         <div>
-          <dt aria-level="2" role="heading" className="license-panel-heading">
-            <div role="button" aria-expanded="false" aria-controls="license-panel">
+          <dt aria-level="2" role="heading" className="h5p-hub-accordion-heading">
+            <div role="button" className="h5p-hub-accordion-toggler" aria-expanded="false" aria-controls={child.props.id}>
               <span className="icon-accordion-arrow"></span>
               <span>{child.props.header}</span>
             </div>
           </dt>
-          <dl id="license-panel" role="region" className="hidden">
+          <dl id={child.props.id} role="region" className="h5p-hub-accordion-region hidden">
             <div className="panel-body">
               {child}
             </div>
@@ -31,7 +31,7 @@ class Accordion extends React.Component {
     });
 
     return (
-      <dl className="panel panel-default license-panel">
+      <dl className="h5p-hub-accordion">
         {elements}
       </dl>
     );

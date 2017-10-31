@@ -6,38 +6,23 @@ class Search extends React.Component {
     super(props);
   }
 
-  handleClick() {
-    console.log('click');
-
-    // TODO: Document why
-    /*this.trigger('search', {
-      element: this.searchBar,
-      query: this.searchBar.value
-    });*/
-  }
-
   handleFocus() {
-    console.log('focus');
-
-    // TODO: Document why
-    /*search = setTimeout(() => {
-      search = null;
-    }, 40);*/
+    // Prevent search right after focus is recieved
+    this.searchTimer = setTimeout(() => {
+      this.searchTimer = null;
+    }, 40);
   }
 
   handleInput() {
-    console.log('input');
-
-    // TODO: Document why
-    /*if (this.typeAheadEnabled && !search) {
-      search = setTimeout(() => {
-        this.trigger('search', {
-          element: this.searchBar,
-          query: this.searchBar.value
-        });
-        search = null;
+    const input = this.input;
+    // Automatically search/filter after input
+    // Use timer to prevent filtering more than once per 40ms
+    if (this.props.auto && !this.searchTimer) {
+      this.searchTimer = setTimeout(() => {
+        this.props.onFilterBy(input.value);
+        this.searchTimer = null;
       }, 40);
-    }*/
+    }
   }
 
   handleKeyDown(event) {
@@ -61,10 +46,12 @@ class Search extends React.Component {
   }
 
   handleBlur() {
-    console.log('blur');
+    // No need to filter/search after focus is lost
+    clearTimeout(this.searchTimer);
+  }
 
-    // TODO: Document why
-    //clearTimeout(search);
+  reset() {
+    this.input.value = '';
   }
 
   render() {
@@ -77,11 +64,12 @@ class Search extends React.Component {
           type="text"
           aria-label={searchLabel}
           placeholder={searchLabel}
-          onClick={this.handleClick.bind(this)}
+          onClick={() => this.props.onFilterBy(this.input.value)}
           onFocus={this.handleFocus.bind(this)}
           onInput={this.handleInput.bind(this)}
           onKeyDown={e => this.handleKeyDown(e)}
-          onBlur={this.handleBlur.bind(this)} />
+          onBlur={this.handleBlur.bind(this)}
+          ref={input => this.input = input}/>
         <div className="input-group-addon icon-search"></div>
       </div>
     );

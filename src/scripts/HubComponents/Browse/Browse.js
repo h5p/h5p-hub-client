@@ -16,6 +16,11 @@ class Browse extends React.Component {
     console.log('Order By: ' + propertyId);
   }
 
+  handleLibraryUse(id) {
+    console.log('handleLibraryUse');
+    this.setState({library: undefined});
+  }
+
   render() {
     // TODO: Focus search bar when loaded (or timeout 200 ?)
 
@@ -25,14 +30,17 @@ class Browse extends React.Component {
         <div className="menu-group">
 
           <Search onSelectedChange={dir => this.list.changeSelected(dir)}
-            onUseSelected={() => this.list.useSelected()}/>
+            onUseSelected={() => this.list.useSelected()}
+            onFilterBy={query => this.setState({filterBy: query})}
+            auto={!this.state.library}
+            ref={search => this.search = search}/>
 
           <div className="navbar">
             <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
 
             <div id="sort-by" className="sort-by-header">Show:</div>
             <ul className="sort-by-list" aria-labelledby="sort-by">
-              <Choose selected="recently" onChange={this.handleOrderBy.bind(this)}>
+              <Choose selected="recently" onChange={id => {this.setState({orderBy: id, filterBy: ''}); this.search.reset();}}>
                 <li id="recently">Recently Used First</li>
                 <li id="newest">Newest First</li>
                 <li id="a-to-z">A to Z</li>
@@ -45,18 +53,21 @@ class Browse extends React.Component {
         <div className="content-type-section">
           <List onUse={this.props.onUse}
             onSelect={library => {this.setState({library: library});}}
-            filterBy={this.state.filterBy}
-            orderBy={this.state.orderBy}
+            filterBy={this.state.filterBy || ''}
+            orderBy={this.state.orderBy || 'recently'}
             contentTypes={this.props.contentTypes}
-            ref={list => this.list = list}/>
-          <LibraryDetail
-            library={this.state.library}
-            visible={true}/>
+            ref={list => this.list = list}
+          />
+          {
+            this.state.library &&
+            <LibraryDetail
+              library={this.state.library}
+              onUse={id => this.handleLibraryUse(id)}
+              onClose={() => this.setState({library: undefined})}
+            />
+          }
         </div>
-
       </div>
-
-
     );
   }
 }
