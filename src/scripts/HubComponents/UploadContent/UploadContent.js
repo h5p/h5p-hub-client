@@ -1,11 +1,11 @@
 import React from 'react';
 import Dictionary from '../../utils/dictionary';
-import '../../utils/fetch'
+import '../../utils/fetch';
 
 class UploadContent extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {isSelected: false, filePath: '', isUploading: false}
+    this.state = {isSelected: false, filePath: '', isUploading: false};
     this.showUploadInput = this.showUploadInput.bind(this);
     this.upload = this.upload.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -16,7 +16,7 @@ class UploadContent extends React.Component {
   }
 
   upload(event) {
-    const filePath = event.target.files[0].name
+    const filePath = event.target.files[0].name;
 
     //update upload button
     if (this.getFileExtension(filePath) !== 'h5p') {
@@ -27,31 +27,29 @@ class UploadContent extends React.Component {
       this.setState({isSelected: false, filePath: ''});
     }
     else {
-      this.uploadInput = event.target
+      this.uploadInput = event.target;
       this.setState({isSelected: true, filePath, isUploading: false});
 
       event.stopPropagation();
+
       // Focus use button
-      setTimeout(function() { this.refs.useButton.focus()}.bind(this), 10);
+      setTimeout((() => this.refs.useButton.focus()).bind(this), 10);
     }
   }
 
   uploadFile() {
     // Add the H5P file to a form, ready for transportation
-    let apiRootUrl = '/drupal/h5peditor/c7eb04653791f/0/'; // TODO: Do not use hardcoded path
-    let contentId = 0; // TODO: Do not use hardcoded contentId
     let data = new FormData();
     data.append('h5p', this.uploadInput.files[0]);
-    data.append('contentId', this.contentId);
+    data.append('contentId', this.props.contentId);
 
-    this.setState({isSelected: true, filePath: '', isUploading: true})
+    this.setState({isSelected: true, filePath: '', isUploading: true});
 
-    return fetch(`${apiRootUrl}library-upload`, {
+    return fetch(this.props.getAjaxUrl('library-upload'), {
       method: 'POST',
       credentials: 'include',
       body: data
-    })
-    .then(result => {
+    }).then(result => {
       // Validation failed
       if (!result.ok) {
         // TODO: Render fail message
@@ -59,13 +57,12 @@ class UploadContent extends React.Component {
         return;
       }
 
-      this.setState({isSelected: false, isUploading: false})
+      this.setState({isSelected: false, isUploading: false});
 
       // TODO: Trigger upload
       console.log('Uploaded');
 
-    })
-    .catch(() => {
+    }).catch(() => {
       // TODO: renderServerErrorMessage
       this.setState({isSelected: false, isUploading: false});
     });
