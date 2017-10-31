@@ -1,14 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import initPanel from "components/panel";
+import Buttonify from '../Buttonify';
 
 import './Accordion.scss';
 
+
 class Accordion extends React.Component {
 
-  componentDidMount() {
-    var rootElement = ReactDOM.findDOMNode(this);
-    initPanel(rootElement);
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      expanded: props.expanded
+    };
+  }
+
+  handleToggle(child) {
+    this.setState({expanded: this.state.expanded === child.props.id ? undefined : child.props.id});
   }
 
   render() {
@@ -16,12 +23,18 @@ class Accordion extends React.Component {
       return (
         <div>
           <dt aria-level="2" role="heading" className="h5p-hub-accordion-heading">
-            <div role="button" className="h5p-hub-accordion-toggler" aria-expanded="false" aria-controls={child.props.id}>
-              <span className="icon-accordion-arrow"></span>
-              <span>{child.props.header}</span>
-            </div>
+            <Buttonify>
+              <div
+                className="h5p-hub-accordion-toggler"
+                aria-expanded={this.state.expanded == child.props.id}
+                onButtonClick={() => this.handleToggle(child)}
+              >
+                <span className="icon-accordion-arrow"></span>
+                <span>{child.props.header}</span>
+              </div>
+            </Buttonify>
           </dt>
-          <dl id={child.props.id} role="region" className="h5p-hub-accordion-region hidden">
+          <dl role="region" className={'h5p-hub-accordion-region' + (this.state.expanded == child.props.id ? '' : ' hidden')}>
             <div className="panel-body">
               {child}
             </div>
