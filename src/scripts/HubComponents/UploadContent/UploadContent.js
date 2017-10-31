@@ -1,11 +1,24 @@
 import React from 'react';
 import Dictionary from '../../utils/dictionary';
+<<<<<<< HEAD
+import Message from '../../GenericComponents/Message/Message';
+=======
+>>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
 import '../../utils/fetch';
 
 class UploadContent extends React.Component {
   constructor(props) {
     super(props);
+<<<<<<< HEAD
+    this.state = {
+      isSelected: false,
+      filePath: '',
+      isUploading: false,
+      error: false
+    };
+=======
     this.state = {isSelected: false, filePath: '', isUploading: false};
+>>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     this.showUploadInput = this.showUploadInput.bind(this);
     this.upload = this.upload.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -16,15 +29,20 @@ class UploadContent extends React.Component {
   }
 
   upload(event) {
+<<<<<<< HEAD
+    this.setState({error: false});
+=======
+>>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     const filePath = event.target.files[0].name;
 
-    //update upload button
     if (this.getFileExtension(filePath) !== 'h5p') {
-
-      // TODO: renderWrongExtensionMessage();
-
-      // Hide the 'use' button for non-h5p files
-      this.setState({isSelected: false, filePath: ''});
+      this.setState({
+        isSelected: false,
+        filePath: '',
+        error: true,
+        errorTitle: Dictionary.get('h5pFileWrongExtensionTitle'),
+        errorMessage: Dictionary.get('h5pFileWrongExtensionContent')
+      });
     }
     else {
       this.uploadInput = event.target;
@@ -33,7 +51,11 @@ class UploadContent extends React.Component {
       event.stopPropagation();
 
       // Focus use button
+<<<<<<< HEAD
+      setTimeout(function() {this.refs.useButton.focus();}.bind(this), 10);
+=======
       setTimeout((() => this.refs.useButton.focus()).bind(this), 10);
+>>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     }
   }
 
@@ -49,6 +71,33 @@ class UploadContent extends React.Component {
       method: 'POST',
       credentials: 'include',
       body: data
+<<<<<<< HEAD
+    })
+      .then(result => {
+      // Validation failed
+        if (!result.ok) {
+          this.setState({
+            error: true,
+            errorTitle: Dictionary.get('h5pFileValidationFailedTitle'),
+            errorMessage: Dictionary.get('h5pFileValidationFailedContent')
+          });
+          return;
+        }
+
+        this.setState({isSelected: false, isUploading: false});
+
+        // TODO: Trigger upload
+      })
+      .catch(() => {
+        this.setState({
+          isSelected: false,
+          isUploading: false,
+          error: true,
+          errorTitle: Dictionary.get('h5pFileUploadServerErrorTitle'),
+          errorMessage: Dictionary.get('h5pFileUploadServerErrorContent')
+        });
+      });
+=======
     }).then(result => {
       // Validation failed
       if (!result.ok) {
@@ -66,6 +115,7 @@ class UploadContent extends React.Component {
       // TODO: renderServerErrorMessage
       this.setState({isSelected: false, isUploading: false});
     });
+>>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
   }
 
   getFileExtension(fileName) {
@@ -76,7 +126,15 @@ class UploadContent extends React.Component {
   render() {
     return (
       <div className="upload-wrapper">
-        <div className="message-wrapper"></div>
+        {
+          this.state.error &&
+          <Message
+            type={'error'}
+            dismissable={false}
+            title={this.state.errorTitle}
+            message={this.state.errorMessage}
+          />
+        }
         <div className={"upload-throbber " + (this.state.isUploading ? '  ' : 'hidden')}
           aria-label="{Dictionary.get('uploadingThrobber')}"
           tabIndex="-1">
@@ -103,10 +161,11 @@ class UploadContent extends React.Component {
               className="button upload-button"
               onClick={this.showUploadInput}
               disabled={this.state.isUploading}
-              tabIndex="0">{Dictionary.get('uploadFileButtonLabel')}
+              tabIndex="0">{this.isSelected ? Dictionary.get('uploadFileButtonLabel') : Dictionary.get('uploadFileButtonChangeLabel')}
             </button>
           </div>
         </div>
+        <p class="upload-instruction-description" dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}/>
       </div>
     );
   }
