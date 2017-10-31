@@ -79,7 +79,7 @@ class Detail extends React.Component {
   }
 
   handleUse() {
-    this.hide(() => this.props.onUse(this.props.machineName));
+    this.hide(() => this.props.onUse(this.props.library));
   }
 
   handleClose() {

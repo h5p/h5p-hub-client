@@ -62,7 +62,7 @@ class Browse extends React.Component {
             this.state.library &&
             <LibraryDetail
               library={this.state.library}
-              onUse={id => this.handleLibraryUse(id)}
+              onUse={this.props.onUse}
               onClose={() => this.setState({library: undefined})}
             />
           }
