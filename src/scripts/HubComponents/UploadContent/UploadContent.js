@@ -131,7 +131,7 @@ class UploadContent extends React.Component {
             </button>
           </div>
         </div>
-        <p class="upload-instruction-description" dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}/>
+        <p className="upload-instruction-description" dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}/>
       </div>
     );
   }
