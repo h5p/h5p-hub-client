@@ -1,24 +1,17 @@
 import React from 'react';
 import Dictionary from '../../utils/dictionary';
-<<<<<<< HEAD
 import Message from '../../GenericComponents/Message/Message';
-=======
->>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
 import '../../utils/fetch';
 
 class UploadContent extends React.Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
     this.state = {
       isSelected: false,
       filePath: '',
       isUploading: false,
       error: false
     };
-=======
-    this.state = {isSelected: false, filePath: '', isUploading: false};
->>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     this.showUploadInput = this.showUploadInput.bind(this);
     this.upload = this.upload.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
@@ -29,10 +22,7 @@ class UploadContent extends React.Component {
   }
 
   upload(event) {
-<<<<<<< HEAD
     this.setState({error: false});
-=======
->>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     const filePath = event.target.files[0].name;
 
     if (this.getFileExtension(filePath) !== 'h5p') {
@@ -51,11 +41,7 @@ class UploadContent extends React.Component {
       event.stopPropagation();
 
       // Focus use button
-<<<<<<< HEAD
-      setTimeout(function() {this.refs.useButton.focus();}.bind(this), 10);
-=======
       setTimeout((() => this.refs.useButton.focus()).bind(this), 10);
->>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
     }
   }
 
@@ -71,7 +57,6 @@ class UploadContent extends React.Component {
       method: 'POST',
       credentials: 'include',
       body: data
-<<<<<<< HEAD
     })
       .then(result => {
       // Validation failed
@@ -97,25 +82,6 @@ class UploadContent extends React.Component {
           errorMessage: Dictionary.get('h5pFileUploadServerErrorContent')
         });
       });
-=======
-    }).then(result => {
-      // Validation failed
-      if (!result.ok) {
-        // TODO: Render fail message
-        console.log('did not succeed');
-        return;
-      }
-
-      this.setState({isSelected: false, isUploading: false});
-
-      // TODO: Trigger upload
-      console.log('Uploaded');
-
-    }).catch(() => {
-      // TODO: renderServerErrorMessage
-      this.setState({isSelected: false, isUploading: false});
-    });
->>>>>>> 9f8a78a5dff2a9bee8a4203732798fb174e48e7a
   }
 
   getFileExtension(fileName) {
