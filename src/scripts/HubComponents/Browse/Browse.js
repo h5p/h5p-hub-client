@@ -12,15 +12,6 @@ class Browse extends React.Component {
     };
   }
 
-  handleOrderBy(propertyId) {
-    console.log('Order By: ' + propertyId);
-  }
-
-  handleLibraryUse(id) {
-    console.log('handleLibraryUse');
-    this.setState({library: undefined});
-  }
-
   render() {
     // TODO: Focus search bar when loaded (or timeout 200 ?)
 
