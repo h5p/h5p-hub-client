@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Dictionary from '../../utils/dictionary';
-import LibraryAccordion from './LibraryAccordion';
+import ContentTypeAccordion from './ContentTypeAccordion';
 import ImageSlider from '../../GenericComponents/ImageSlider/ImageSlider';
 import ButtonBar from './ButtonBar';
 import HubServices from '../../hub-services';
@@ -139,7 +139,7 @@ class Detail extends React.Component {
         />
         {
           this.props.library.license &&
-          <LibraryAccordion
+          <ContentTypeAccordion
             id={this.props.library.license.id}
             attributes={this.props.library.license.attributes}
           />

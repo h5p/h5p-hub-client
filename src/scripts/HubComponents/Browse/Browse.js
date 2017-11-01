@@ -2,7 +2,7 @@ import React from 'react';
 import Search from '../Search/Search';
 import Choose from '../Choose/Choose';
 import List from '../List/List';
-import LibraryDetail from '../Library/Detail';
+import ContentTypeDetail from '../ContentType/Detail';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -51,7 +51,7 @@ class Browse extends React.Component {
           />
           {
             this.state.library &&
-            <LibraryDetail
+            <ContentTypeDetail
               library={this.state.library}
               onUse={this.props.onUse}
               onClose={() => this.setState({library: undefined})}
