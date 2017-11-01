@@ -11,8 +11,11 @@ class Button extends React.Component {
   }
 
   render() {
+
+    const ButtonTag = this.props.type || 'div';
+
     return (
-      <div
+      <ButtonTag
         {...this.props.buttonProps}
         role="button"
         tabIndex="0"
@@ -20,7 +23,7 @@ class Button extends React.Component {
         onKeyDown={(event) => this.handleKeyDown(event)}
       >
         {this.props.children}
-      </div>
+      </ButtonTag>
     );
   }
 }
