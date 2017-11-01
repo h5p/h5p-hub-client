@@ -11,7 +11,6 @@ class Browse extends React.Component {
     this.state = {
       filterOn: '',
       orderBy: 'recently',
-      library: null
       detailViewActive: false
     };
 
