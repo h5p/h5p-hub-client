@@ -25,6 +25,9 @@ class Choose extends React.Component {
   focus(id, preventFocus) {
     if (id) {
       this.setState({focused: id, focusOnRender: !preventFocus});
+      if (this.props.onFocus) {
+        this.props.onFocus(id);
+      }
     }
   }
 

@@ -8,30 +8,25 @@ class List extends React.Component {
   constructor(props) {
     super(props);
 
-    this.useButton = {
-      text: Dictionary.get('contentTypeUseButtonLabel'),
-      className: 'button-primary',
-      icon: ''
-    };
-    this.installButton = {
-      text: Dictionary.get('contentTypeGetButtonLabel'),
-      className: 'button-inverse-primary button-install',
-      icon: 'icon-arrow-thick'
-    };
-
-    this.state = {
-      contentTypes: this.getFilteredContentTypes(props)
-    };
+    this.state = this.getFilteredState(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      contentTypes: this.getFilteredContentTypes(nextProps)
-    });
+    this.setState(this.getFilteredState(nextProps));
   }
 
-  getFilteredContentTypes(props) {
-    return search(props.contentTypes, props.filterBy, props.orderBy);
+  /**
+   * Create a state update filtering and ordering the content types.
+   * Set focus to the first content type.
+   */
+  getFilteredState(props) {
+    const newState = {
+      contentTypes: search(props.contentTypes, props.filterOn, props.orderBy)
+    };
+    if (newState.contentTypes[0]) {
+      newState.focused = newState.contentTypes[0].machineName.toLocaleLowerCase().replace('.','-');
+    }
+    return newState;
   }
 
   changeSelected(dir) {
@@ -42,17 +37,15 @@ class List extends React.Component {
     this.props.onUse(this.getLibrary(this.choose.getFocused()));
   }
 
-  handleClick(event, contentType) {
-    if (contentType.installed) {
-      this.props.onUse(contentType);
-      event.preventDefault();
-    }
+  handleUse(event, contentType) {
+    this.props.onUse(contentType);
+    event.preventDefault();
   }
 
   getLibrary(id) {
     for (var i = 0; i < this.props.contentTypes.libraries.length; i++) {
       const library = this.props.contentTypes.libraries[i];
-      if (library.machineName.toLocaleLowerCase().replace('.','-') == id) {
+      if (library.machineName.toLocaleLowerCase().replace('.','-') === id) {
         return library;
       }
     }
@@ -61,7 +54,6 @@ class List extends React.Component {
   render() {
     const apiVersion = this.props.contentTypes.apiVersion;
 
-    let first;
     const listItems = this.state.contentTypes.map(contentType => {
       // Determine if the content type is using an API version that is not yet supported
       const apiNotSupported = !(apiVersion.major > contentType.h5pMajorVersion ||
@@ -74,11 +66,8 @@ class List extends React.Component {
       }
 
       let id = contentType.machineName.toLocaleLowerCase().replace('.','-');
-      if (!first) {
-        first = id;
-      }
+      let tabindex = (this.state.focused === id ? 0 : -1);
       let title = (contentType.title || contentType.machineName);
-      let button = (contentType.installed ? this.useButton : this.installButton);
       let updateAvailable = (!contentType.isUpToDate && contentType.installed && contentType.canInstall);
 
       return (
@@ -91,10 +80,17 @@ class List extends React.Component {
           <div className="media-body">
             <div className="h4 media-heading">{title}</div>
 
-            <button type="button" className={'button ' + button.className} tabIndex="-1" onClick={event => this.handleClick(event, contentType)}>
-              <span className={button.icon}></span>
-              {button.text}
-            </button>
+            {contentType.installed ? (
+              <button type="button" className="button button-primary" tabIndex={tabindex} onClick={event => this.handleUse(event, contentType)}>
+                <span></span>
+                {Dictionary.get('contentTypeUseButtonLabel')}
+              </button>
+            ) : (
+              <button type="button" className="button button-inverse-primary button-install'" tabIndex={tabindex}>
+                <span className="icon-arrow-thick"></span>
+                {Dictionary.get('contentTypeGetButtonLabel')}
+              </button>
+            )}
 
             <div className={'content-type-update-info' + (updateAvailable ? '' : ' hidden')}>
               {Dictionary.get('contentTypeUpdateAvailable')}
@@ -109,8 +105,9 @@ class List extends React.Component {
 
     return (
       <ol className="content-type-list">
-        <Choose selected={first}
+        <Choose selected={this.state.focused}
           onChange={id => this.props.onSelect(this.getLibrary(id))}
+          onFocus={id => this.setState({focused: id})}
           ref={choose => this.choose = choose}>
           {listItems}
         </Choose>

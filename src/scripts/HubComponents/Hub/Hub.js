@@ -3,7 +3,7 @@ import DropDownSelector from '../DropDownSelector/DropDownSelector';
 import TabPanel from '../TabPanel/TabPanel';
 import Message, { severityLevels } from '../../GenericComponents/Message/Message';
 import Dictionary from '../../utils/dictionary';
-import Browser from '../Browse/Browse';
+import Browse from '../Browse/Browse';
 import UploadContent from '../UploadContent/UploadContent';
 import './Hub.scss';
 
@@ -57,7 +57,7 @@ class Hub extends React.Component {
             }
 
             <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
-              <Browser id="content-types"
+              <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.props.contentTypes}
                 apiVersion={this.props.apiVersion}
