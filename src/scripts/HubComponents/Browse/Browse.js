@@ -9,7 +9,19 @@ class Browse extends React.Component {
     super(props);
 
     this.state = {
+      detailViewActive: false
     };
+
+    this.handleDetailClose = this.handleDetailClose.bind(this);
+    this.handleOnLibrarySelect = this.handleOnLibrarySelect.bind(this);
+  }
+
+  handleDetailClose() {
+    this.setState({detailViewActive: false});
+  }
+
+  handleOnLibrarySelect(library) {
+    this.setState({library: library, detailViewActive: true});
   }
 
   render() {
@@ -43,20 +55,18 @@ class Browse extends React.Component {
 
         <div className="content-type-section">
           <List onUse={this.props.onUse}
-            onSelect={library => {this.setState({library: library});}}
+            onSelect={this.handleOnLibrarySelect}
             filterBy={this.state.filterBy || ''}
             orderBy={this.state.orderBy || 'recently'}
             contentTypes={this.props.contentTypes}
             ref={list => this.list = list}
           />
-          {
-            this.state.library &&
-            <ContentTypeDetail
-              library={this.state.library}
-              onUse={this.props.onUse}
-              onClose={() => this.setState({library: undefined})}
-            />
-          }
+          <ContentTypeDetail
+            library={this.state.library}
+            visible={this.state.detailViewActive}
+            onUse={this.props.onUse}
+            onClose={this.handleDetailClose}
+          />
         </div>
       </div>
     );

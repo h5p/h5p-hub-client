@@ -11,29 +11,44 @@ import ReadMore from '../../GenericComponents/ReadMore';
 import noIcon from '../../../images/content-type-placeholder.svg';
 
 class Detail extends React.Component {
+
   constructor(props) {
     super(props);
-
     this.state = {
+      visible: false
+    };
+
+    this.close = this.close.bind(this);
+    this.handleInstall = this.handleInstall.bind(this);
+    this.handleUse = this.handleUse.bind(this);
+  }
+
+  componentWillReceiveProps(props) {
+    if (!props.library) {
+      return;
+    }
+
+    this.setState({
       installed: props.library.installed,
       canInstall: props.library.canInstall,
       updatable: !props.library.isUpToDate,
       installing: false,
       updating: false,
-      visible: true
-    };
+      visible: props.visible
+    });
 
     if (!props.library.canInstall) {
-      this.state.message = {
-        severity: 'warning',
-        title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-        content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-      };
+      this.setState({
+        message: {
+          severity: 'warning',
+          title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
+          content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+        }
+      });
     }
   }
 
   handleInstall() {
-
     this.setState({
       installing: true,
       message: undefined
@@ -70,38 +85,35 @@ class Detail extends React.Component {
     });
   }
 
-  hide(callback) {
-    this.setState({visible: false});
-    // TODO - could we avoid this timeout?
-    if (callback) {
-      setTimeout(() => callback(), 500);
-    }
+  close() {
+    this.props.onClose();
   }
 
   handleUse() {
-    this.hide(() => this.props.onUse(this.props.library));
-  }
-
-  handleClose() {
-    this.hide(() => this.props.onClose());
+    this.close();
+    this.props.onUse(this.props.library);
   }
 
   render() {
-    // TODO - should not happen!
-    if (!this.props.library) {
-      return null;
-    }
 
+    const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-type-detail-view-title';
+
+    // On the first render, no library is selected. We add an empty DIV,
+    // just to get the sliding effect when viewing the first library
+    if (!this.props.library) {
+      return (
+        <div className={classNames} id="content-type-detail"/>
+      );
+    }
 
     const title = this.props.library.title || this.props.library.machineName;
     const demoUrl = this.props.library.example || '#';
-    const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
     const logoUrl = this.props.library.icon || noIcon;
 
     return (
       <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId}>
-        <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={() => this.handleClose()}></button>
+        <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
         {
           this.state.message &&
           <Message
@@ -134,8 +146,8 @@ class Detail extends React.Component {
           updatable={this.state.updatable}
           installing={this.state.installing}
           updating={this.state.updating}
-          onInstall={() => this.handleInstall()}
-          onUse={() => this.handleUse()}
+          onInstall={this.handleInstall}
+          onUse={this.handleUse}
         />
         {
           this.props.library.license &&
