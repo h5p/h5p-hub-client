@@ -2,7 +2,7 @@ import React from 'react';
 import Search from '../Search/Search';
 import Choose from '../Choose/Choose';
 import List from '../List/List';
-import LibraryDetail from '../Library/Detail';
+import ContentTypeDetail from '../ContentType/Detail';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -12,7 +12,19 @@ class Browse extends React.Component {
       filterOn: '',
       orderBy: 'recently',
       library: null
+      detailViewActive: false
     };
+
+    this.handleDetailClose = this.handleDetailClose.bind(this);
+    this.handleOnLibrarySelect = this.handleOnLibrarySelect.bind(this);
+  }
+
+  handleDetailClose() {
+    this.setState({detailViewActive: false});
+  }
+
+  handleOnLibrarySelect(library) {
+    this.setState({library: library, detailViewActive: true});
   }
 
   render() {
@@ -25,7 +37,7 @@ class Browse extends React.Component {
         <div className="menu-group">
 
           <Search value={this.state.filterOn}
-            auto={!this.state.library}
+            auto={!this.state.detailViewActive}
             onNavigate={dir => this.list.changeSelected(dir)}
             onSelect={() => this.list.useSelected()}
             onFilter={query => this.setState({filterOn: query})}/>
@@ -47,20 +59,18 @@ class Browse extends React.Component {
 
         <div className="content-type-section">
           <List onUse={this.props.onUse}
-            onSelect={library => this.setState({library: library})}
+            onSelect={this.handleOnLibrarySelect}
             filterOn={this.state.filterOn}
             orderBy={this.state.orderBy}
             contentTypes={this.props.contentTypes}
             ref={list => this.list = list}
           />
-          {
-            this.state.library &&
-            <LibraryDetail
-              library={this.state.library}
-              onUse={this.props.onUse}
-              onClose={() => this.setState({library: null})}
-            />
-          }
+          <ContentTypeDetail
+            library={this.state.library}
+            visible={this.state.detailViewActive}
+            onUse={this.props.onUse}
+            onClose={this.handleDetailClose}
+          />
         </div>
       </div>
     );
