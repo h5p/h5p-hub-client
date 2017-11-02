@@ -2,9 +2,9 @@ import React from 'react';
 import Accordion from '../../GenericComponents/Accordion/Accordion';
 import License from './License';
 import Dictionary from '../../utils/dictionary';
-import './LibraryAccordion.scss';
+import './ContentTypeAccordion.scss';
 
-class LibraryAccordion extends React.Component {
+class ContentTypeAccordion extends React.Component {
   render() {
     return (
       <Accordion>
@@ -19,4 +19,4 @@ class LibraryAccordion extends React.Component {
   }
 }
 
-export default LibraryAccordion;
+export default ContentTypeAccordion;

@@ -18,6 +18,11 @@ class ReadMore extends React.Component {
 
   render() {
     const text = this.props.text;
+
+    if (text === undefined || text.length === 0) {
+      return null;
+    }
+
     const needMore = text.length > this.props.maxLength;
     const partOne = needMore ? text.substr(0, this.props.maxLength) : text;
     const partTwo = needMore ? text.substr(this.props.maxLength) : '';
