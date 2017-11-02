@@ -36,6 +36,13 @@ class Hub extends React.Component {
     this.props.onUse(contentType);
   }
 
+  handleUpload(data) {
+    // Collapse Hub
+    this.setState({expanded: false, title: data.h5p.title});
+
+    this.props.onUpload(data);
+  }
+
   render() {
     return (
       <section className="h5p-hub h5p-sdk">
@@ -65,10 +72,8 @@ class Hub extends React.Component {
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')}
                 getAjaxUrl={this.props.getAjaxUrl}
-                contentId={this.props.contentId}>
-
-                <div>TODO</div>
-              </UploadContent>
+                contentId={this.props.contentId}
+                onUpload={this.handleUpload.bind(this)} />
             </TabPanel>
           </div>
         </div>
