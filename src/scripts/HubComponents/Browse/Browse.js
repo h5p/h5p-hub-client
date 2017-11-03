@@ -9,6 +9,8 @@ class Browse extends React.Component {
     super(props);
 
     this.state = {
+      filterOn: '',
+      orderBy: 'recently',
       detailViewActive: false
     };
 
@@ -26,24 +28,25 @@ class Browse extends React.Component {
 
   render() {
     // TODO: Focus search bar when loaded (or timeout 200 ?)
+    // TODO: Translate new text strings
 
     return (
       <div className="content-type-section-view loaded">
 
         <div className="menu-group">
 
-          <Search onSelectedChange={dir => this.list.changeSelected(dir)}
-            onUseSelected={() => this.list.useSelected()}
-            onFilterBy={query => this.setState({filterBy: query})}
-            auto={!this.state.library}
-            ref={search => this.search = search}/>
+          <Search value={this.state.filterOn}
+            auto={!this.state.detailViewActive}
+            onNavigate={dir => this.list.changeSelected(dir)}
+            onSelect={() => this.list.useSelected()}
+            onFilter={query => this.setState({filterOn: query})}/>
 
           <div className="navbar">
             <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
 
             <div id="sort-by" className="sort-by-header">Show:</div>
             <ul className="sort-by-list" aria-labelledby="sort-by">
-              <Choose selected="recently" onChange={id => {this.setState({orderBy: id, filterBy: ''}); this.search.reset();}}>
+              <Choose selected={this.state.orderBy} onChange={id => this.setState({orderBy: id, filterOn: ''})}>
                 <li id="recently">Recently Used First</li>
                 <li id="newest">Newest First</li>
                 <li id="a-to-z">A to Z</li>
@@ -56,8 +59,8 @@ class Browse extends React.Component {
         <div className="content-type-section">
           <List onUse={this.props.onUse}
             onSelect={this.handleOnLibrarySelect}
-            filterBy={this.state.filterBy || ''}
-            orderBy={this.state.orderBy || 'recently'}
+            filterOn={this.state.filterOn}
+            orderBy={this.state.orderBy}
             contentTypes={this.props.contentTypes}
             ref={list => this.list = list}
           />

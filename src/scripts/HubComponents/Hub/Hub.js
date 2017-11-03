@@ -3,7 +3,7 @@ import DropDownSelector from '../DropDownSelector/DropDownSelector';
 import TabPanel from '../TabPanel/TabPanel';
 import Message, { severityLevels } from '../../GenericComponents/Message/Message';
 import Dictionary from '../../utils/dictionary';
-import Browser from '../Browse/Browse';
+import Browse from '../Browse/Browse';
 import UploadContent from '../UploadContent/UploadContent';
 import './Hub.scss';
 
@@ -36,6 +36,13 @@ class Hub extends React.Component {
     this.props.onUse(contentType);
   }
 
+  handleUpload(data) {
+    // Collapse Hub
+    this.setState({expanded: false, title: data.h5p.title});
+
+    this.props.onUpload(data);
+  }
+
   render() {
     return (
       <section className="h5p-hub h5p-sdk">
@@ -57,7 +64,7 @@ class Hub extends React.Component {
             }
 
             <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
-              <Browser id="content-types"
+              <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.props.contentTypes}
                 apiVersion={this.props.apiVersion}
@@ -65,10 +72,8 @@ class Hub extends React.Component {
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')}
                 getAjaxUrl={this.props.getAjaxUrl}
-                contentId={this.props.contentId}>
-
-                <div>TODO</div>
-              </UploadContent>
+                contentId={this.props.contentId}
+                onUpload={this.handleUpload.bind(this)} />
             </TabPanel>
           </div>
         </div>

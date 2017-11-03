@@ -13,7 +13,7 @@ class UploadContent extends React.Component {
       error: false
     };
     this.showUploadInput = this.showUploadInput.bind(this);
-    this.upload = this.upload.bind(this);
+    this.select = this.select.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   }
 
@@ -21,7 +21,7 @@ class UploadContent extends React.Component {
     this.refs.fileField.click();
   }
 
-  upload(event) {
+  select(event) {
     this.setState({error: false});
     const filePath = event.target.files[0].name;
 
@@ -57,10 +57,10 @@ class UploadContent extends React.Component {
       method: 'POST',
       credentials: 'include',
       body: data
-    })
-      .then(result => {
-      // Validation failed
-        if (!result.ok) {
+    }).then(result => result.json())
+      .then(json => {
+        // Validation failed
+        if (json.success !== true) {
           this.setState({
             error: true,
             errorTitle: Dictionary.get('h5pFileValidationFailedTitle'),
@@ -70,8 +70,7 @@ class UploadContent extends React.Component {
         }
 
         this.setState({isSelected: false, isUploading: false});
-
-        // TODO: Trigger upload
+        this.props.onUpload(json.data);
       })
       .catch(() => {
         this.setState({
@@ -121,7 +120,7 @@ class UploadContent extends React.Component {
           </button>
           <div className="input-wrapper">
             <input ref="fileField" type="file" accept=".h5p" aria-hidden="true"
-              onChange={this.upload}
+              onChange={this.select}
             />
             <button type="button"
               className="button upload-button"
