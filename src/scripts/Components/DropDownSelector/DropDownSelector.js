@@ -29,10 +29,10 @@ const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
 };
 
 DropDownSelector.propTypes = {
-  togglePanel: PropTypes.func,
-  isExpanded: PropTypes.bool,
-  sectionId: PropTypes.string,
-  title: PropTypes.string,
+  togglePanel: PropTypes.func.isRequired,
+  isExpanded: PropTypes.bool.isRequired,
+  sectionId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default DropDownSelector;
