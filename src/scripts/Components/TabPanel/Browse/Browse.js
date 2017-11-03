@@ -15,17 +15,32 @@ class Browse extends React.Component {
       orderBy: 'recently',
       detailViewActive: false
     };
-
-    this.handleDetailClose = this.handleDetailClose.bind(this);
-    this.handleOnLibrarySelect = this.handleOnLibrarySelect.bind(this);
   }
 
-  handleDetailClose() {
-    this.setState({detailViewActive: false});
+  handleDetailClose = () => {
+    this.setState({
+      detailViewActive: false
+    });
   }
 
-  handleOnLibrarySelect(library) {
-    this.setState({library: library, detailViewActive: true});
+  handleOnLibrarySelect = (library) => {
+    this.setState({
+      library: library,
+      detailViewActive: true
+    });
+  }
+
+  handleFilterOn = (keyword) => {
+    this.setState({
+      filterOn: keyword
+    });
+  }
+
+  handleOrderBy = (property) => {
+    this.setState({
+      orderBy: property,
+      filterOn: ''
+    });
   }
 
   render() {
@@ -39,14 +54,14 @@ class Browse extends React.Component {
           auto={!this.state.detailViewActive}
           onNavigate={dir => this.list.changeSelected(dir)}
           onSelect={() => this.list.useSelected()}
-          onFilter={query => this.setState({filterOn: query})}/>
+          onFilter={this.handleFilterOn}/>
 
         <div className="navbar">
           <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
 
           <div id="sort-by" className="sort-by-header">Show:</div>
           <ul className="sort-by-list" aria-labelledby="sort-by">
-            <Choose selected={this.state.orderBy} onChange={id => this.setState({orderBy: id, filterOn: ''})}>
+            <Choose selected={this.state.orderBy} onChange={this.handleOrderBy}>
               <li id="recently">Recently Used First</li>
               <li id="newest">Newest First</li>
               <li id="a-to-z">A to Z</li>
