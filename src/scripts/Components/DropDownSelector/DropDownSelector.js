@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './DropDownSelector.scss';
 
 const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
@@ -25,6 +26,13 @@ const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
       </div>
     </div>
   );
+};
+
+DropDownSelector.propTypes = {
+  togglePanel: PropTypes.func,
+  isExpanded: PropTypes.bool,
+  sectionId: PropTypes.string,
+  title: PropTypes.string,
 };
 
 export default DropDownSelector;
