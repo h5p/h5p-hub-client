@@ -24,12 +24,7 @@ class Message extends React.Component {
             </p>
           }
         </div>
-        {
-          this.props.action &&
-          <button className="button" onClick={this.props.onAction}>
-            {this.props.action}
-          </button>
-        }
+        {this.props.children}
       </div>
     );
   }
