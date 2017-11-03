@@ -1,7 +1,9 @@
 import React from 'react';
-import Dictionary from '../../utils/dictionary';
-import Message from '../../GenericComponents/Message/Message';
-import '../../utils/fetch';
+
+import '../../../utils/fetch';
+import Dictionary from '../../../utils/dictionary';
+
+import Message from '../../Message/Message';
 
 class UploadContent extends React.Component {
   constructor(props) {

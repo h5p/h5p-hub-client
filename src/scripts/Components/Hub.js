@@ -1,10 +1,13 @@
 import React from 'react';
-import DropDownSelector from '../DropDownSelector/DropDownSelector';
-import TabPanel from '../TabPanel/TabPanel';
-import Message, { severityLevels } from '../../GenericComponents/Message/Message';
-import Dictionary from '../../utils/dictionary';
-import Browse from '../Browse/Browse';
-import UploadContent from '../UploadContent/UploadContent';
+import Dictionary from '../utils/dictionary';
+
+import DropDownSelector from './DropDownSelector/DropDownSelector';
+import TabPanel from './TabPanel/TabPanel';
+import Browse from './TabPanel/Browse/Browse';
+import UploadContent from './TabPanel/UploadContent/UploadContent';
+
+import Message, { severityLevels } from './Message/Message';
+
 import './Hub.scss';
 
 class Hub extends React.Component {

@@ -1,7 +1,9 @@
 import React from 'react';
-import Accordion from '../../GenericComponents/Accordion/Accordion';
+import Dictionary from '../../../../utils/dictionary';
+
+import Accordion from './Accordion/Accordion';
 import License from './License';
-import Dictionary from '../../utils/dictionary';
+
 import './ContentTypeAccordion.scss';
 
 class ContentTypeAccordion extends React.Component {

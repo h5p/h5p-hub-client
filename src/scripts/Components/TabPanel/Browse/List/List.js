@@ -1,8 +1,9 @@
 import React from 'react';
-import Choose from '../Choose/Choose';
-import noIcon from '../../../images/content-type-placeholder.svg';
-import Dictionary from '../../utils/dictionary';
-import search from '../../utils/search.js';
+
+import noIcon from '../../../../../images/content-type-placeholder.svg';
+import Choose from '../../../Choose/Choose';
+import Dictionary from '../../../../utils/dictionary';
+import search from '../../../../utils/search.js';
 
 class List extends React.Component {
   constructor(props) {

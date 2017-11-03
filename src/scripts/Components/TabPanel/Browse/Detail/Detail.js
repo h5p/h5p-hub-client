@@ -1,14 +1,14 @@
 import React from 'react';
 
-import Dictionary from '../../utils/dictionary';
-import ContentTypeAccordion from './ContentTypeAccordion';
-import ImageSlider from '../../GenericComponents/ImageSlider/ImageSlider';
-import ButtonBar from './ButtonBar';
-import HubServices from '../../hub-services';
-import Message from '../../GenericComponents/Message/Message';
-import ReadMore from '../../GenericComponents/ReadMore';
+import Dictionary from '../../../../utils/dictionary';
+import noIcon from '../../../../../images/content-type-placeholder.svg';
+import HubServices from '../../../../hub-services';
 
-import noIcon from '../../../images/content-type-placeholder.svg';
+import Message from '../../../Message/Message';
+import ContentTypeAccordion from './ContentTypeAccordion';
+import ImageSlider from './ImageSlider/ImageSlider';
+import ButtonBar from './ButtonBar';
+import ReadMore from './ReadMore';
 
 class Detail extends React.Component {
 

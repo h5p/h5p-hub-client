@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dictionary from '../../utils/dictionary';
+import Dictionary from '../../../../utils/dictionary';
 
 class ButtonBar extends React.Component {
 

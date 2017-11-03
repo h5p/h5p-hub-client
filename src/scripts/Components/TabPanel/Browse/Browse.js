@@ -1,8 +1,10 @@
 import React from 'react';
-import Search from '../Search/Search';
-import Choose from '../Choose/Choose';
-import List from '../List/List';
-import ContentTypeDetail from '../ContentType/Detail';
+
+import Choose from '../../Choose/Choose';
+
+import Search from './Search/Search';
+import List from './List/List';
+import Detail from './Detail/Detail';
 
 class Browse extends React.Component {
   constructor(props) {
@@ -64,7 +66,7 @@ class Browse extends React.Component {
             contentTypes={this.props.contentTypes}
             ref={list => this.list = list}
           />
-          <ContentTypeDetail
+          <Detail
             library={this.state.library}
             visible={this.state.detailViewActive}
             onUse={this.props.onUse}
