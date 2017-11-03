@@ -1,5 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './TabPanel.scss';
+import Choose from '../Choose/Choose';
 
 class TabPanel extends React.Component {
   constructor(props) {
@@ -17,22 +19,22 @@ class TabPanel extends React.Component {
 
   render() {
     const tabButtons = React.Children.map(this.props.children, child => (
-      <li id={`tab-${child.props.id}`}
-        className='tab-button'
-        aria-selected={this.state.selected === child.props.id}
-        aria-controls={`tab-panel-${child.props.id}`}
-        role='tab'
-        key={child.props.id}
-        onClick={this.handleSelect.bind(this, child.props.id)}>
+      <li id={child.props.id}
+          className='tab-button'
+          aria-selected={this.state.selected === child.props.id}
+          aria-controls={`tab-panel-${child.props.id}`}
+          role='tab'
+          key={child.props.id}
+      >
         {child.props.title}
       </li>
     ));
 
     const tabContent = React.Children.map(this.props.children, child => (
       <div className={`tabpanel${this.state.selected === child.props.id ? '' : ' hidden'}`}
-        id={`tab-panel-${child.props.id}`}
-        aria-labelledby={`tab-${child.props.id}`}
-        role='tabpanel'>
+           id={`tab-panel-${child.props.id}`}
+           aria-labelledby={child.props.id}
+           role='tabpanel'>
         {child}
       </div>
     ));
@@ -41,7 +43,12 @@ class TabPanel extends React.Component {
       <div className='tab-panel'>
         <nav>
           <ul role='tablist'>
-            {tabButtons}
+            <Choose
+              selected={this.props.children[0].props.id}
+              onChange={id => this.handleSelect(id)}
+            >
+              {tabButtons}
+            </Choose>
           </ul>
         </nav>
         {tabContent}
@@ -49,5 +56,10 @@ class TabPanel extends React.Component {
     );
   }
 }
+
+TabPanel.propTypes = {
+  selected: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
 
 export default TabPanel;

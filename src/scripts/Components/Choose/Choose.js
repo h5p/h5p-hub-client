@@ -99,7 +99,7 @@ class Choose extends React.Component {
       child ? React.cloneElement(child, {
         className: (child.props.className ? child.props.className + ' ' : '') + (child.props.id === this.state.selected ? 'hightlight' : ''),
         tabIndex: child.props.id === this.state.focused ? 0 : -1,
-        role: 'button',
+        role: child.props.role || 'button',
         onClick: event => this.handleClick(event, child.props.id),
         onKeyDown: event => this.handleKeyDown(event, child.props.id),
         ref: item => item ? this.items.push(item) : undefined
