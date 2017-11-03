@@ -35,27 +35,23 @@ class Browse extends React.Component {
     return (
       <div className="content-type-section-view loaded">
 
-        <div className="menu-group">
+        <Search value={this.state.filterOn}
+          auto={!this.state.detailViewActive}
+          onNavigate={dir => this.list.changeSelected(dir)}
+          onSelect={() => this.list.useSelected()}
+          onFilter={query => this.setState({filterOn: query})}/>
 
-          <Search value={this.state.filterOn}
-            auto={!this.state.detailViewActive}
-            onNavigate={dir => this.list.changeSelected(dir)}
-            onSelect={() => this.list.useSelected()}
-            onFilter={query => this.setState({filterOn: query})}/>
+        <div className="navbar">
+          <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
 
-          <div className="navbar">
-            <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
-
-            <div id="sort-by" className="sort-by-header">Show:</div>
-            <ul className="sort-by-list" aria-labelledby="sort-by">
-              <Choose selected={this.state.orderBy} onChange={id => this.setState({orderBy: id, filterOn: ''})}>
-                <li id="recently">Recently Used First</li>
-                <li id="newest">Newest First</li>
-                <li id="a-to-z">A to Z</li>
-              </Choose>
-            </ul>
-          </div>
-
+          <div id="sort-by" className="sort-by-header">Show:</div>
+          <ul className="sort-by-list" aria-labelledby="sort-by">
+            <Choose selected={this.state.orderBy} onChange={id => this.setState({orderBy: id, filterOn: ''})}>
+              <li id="recently">Recently Used First</li>
+              <li id="newest">Newest First</li>
+              <li id="a-to-z">A to Z</li>
+            </Choose>
+          </ul>
         </div>
 
         <div className="content-type-section">

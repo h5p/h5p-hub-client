@@ -68,18 +68,19 @@ class Search extends React.Component {
 
     return (
       <div className="input-group" role="search">
-        <input id="hub-search-bar"
-          className="form-control form-control-rounded"
-          type="text"
-          value={this.state.value}
-          aria-label={searchLabel}
-          placeholder={searchLabel}
-          onClick={(event) => this.props.onFilter(event.target.value)}
-          onFocus={this.handleFocus.bind(this)}
-          onInput={this.handleInput.bind(this)}
-          onKeyDown={e => this.handleKeyDown(e)}
-          onBlur={this.handleBlur.bind(this)}/>
-        <div className="input-group-addon icon-search"></div>
+        <div className="border-wrap">
+          <input id="hub-search-bar"
+            type="text"
+            value={this.state.value}
+            aria-label={searchLabel}
+            placeholder={searchLabel}
+            onClick={(event) => this.props.onFilter(event.target.value)}
+            onFocus={this.handleFocus.bind(this)}
+            onInput={this.handleInput.bind(this)}
+            onKeyDown={e => this.handleKeyDown(e)}
+            onBlur={this.handleBlur.bind(this)}/>
+          <div className="input-group-addon icon-search"></div>
+        </div>
       </div>
     );
   }
