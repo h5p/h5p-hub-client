@@ -42,7 +42,7 @@ class Detail extends React.Component {
         message: {
           severity: 'warning',
           title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-          content: Dictionary.get('contentTypeUnsupportedApiVersionContent')
+          message: Dictionary.get('contentTypeUnsupportedApiVersionContent')
         }
       });
     }
@@ -79,7 +79,7 @@ class Detail extends React.Component {
           severity: 'error',
           error: error,
           errorCode: 'RESPONSE_FAILED',
-          content: 'TODO - Reasons will be printed here'
+          message: 'TODO - Reasons will be printed here'
         }
       });
     });
@@ -116,11 +116,7 @@ class Detail extends React.Component {
         <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
         {
           this.state.message &&
-          <Message
-            title={this.state.message.title}
-            message={this.state.message.content}
-            severity={this.state.message.severity}
-          />
+          <Message {...this.state.message}/>
         }
         <div className="container">
           <div className="image-wrapper">
