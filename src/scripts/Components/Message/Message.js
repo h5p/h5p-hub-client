@@ -1,20 +1,26 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Dictionary from '../../utils/dictionary';
+
+import './Message.scss';
 
 class Message extends React.Component {
 
   render() {
-    var className = `message ${this.props.severity}` + (this.props.dismissible ? ' dismissible' : '');
+    const className = `h5p-hub-message ${this.props.severity}` + (this.props.onClose ? ' dismissible' : '');
 
     return (
       <div className={className} role="alert">
-        <button
-          className="message-close"
-          tabIndex="0"
-          aria-label={Dictionary.get('closeButtonLabel')}
-          onClick={this.props.onClose}
-        />
+        {
+          this.props.onClose &&
+          <button
+            className="message-close"
+            tabIndex="0"
+            aria-label={Dictionary.get('closeButtonLabel')}
+            onClick={this.props.onClose}
+          />
+        }
         <div className="message-content">
           <h2>{this.props.title}</h2>
           {
@@ -24,21 +30,18 @@ class Message extends React.Component {
             </p>
           }
         </div>
-        {
-          this.props.action &&
-          <button className="button" onClick={this.props.onAction}>
-            {this.props.action}
-          </button>
-        }
+        {this.props.children}
       </div>
     );
   }
 }
 
-export default Message;
-
-export const severityLevels = {
-  info: 0,
-  warning: 1,
-  error: 2,
+Message.propTypes = {
+  severity: PropTypes.oneOf(['info', 'warning', 'error']).isRequired,
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string,
+  onClose: PropTypes.func,
+  children: PropTypes.element
 };
+
+export default Message;
