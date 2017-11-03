@@ -2,53 +2,44 @@ import React from 'react';
 
 import Dictionary from '../../../../utils/dictionary';
 
-class ButtonBar extends React.Component {
+const ButtonBar = ({canInstall, installed, installing, updating, updatable, onInstall, onUse}) => {
+  //let installButton, useButton, updateButton, installDisabled;
 
-  constructor(props) {
-    super(props);
+  return null;
+
+  /*let secondButtonType;
+  let secondButtonDisabled = false;
+  let secondButtonAction = function () {};
+
+  if (installed && updatable) {
+    secondButtonType += updating ? 'Updating' : 'Update';
+    secondButtonAction = updating ? secondButtonAction : onInstall;
+  }
+  else if (!canInstall) {
+    secondButtonType += 'Install';
+    secondButtonDisabled = true;
+  }
+  else {
+    secondButtonType += installing ? 'Installing': 'Install';
+    secondButtonAction = installing ? secondButtonAction : onInstall;
   }
 
-  render() {
+  // TODO - make max two buttons
 
-    let install, use, installing, update, updating, installDisabled;
+  const secondButtonLabelKey = `contentType${secondButtonType}ButtonLabel`;
+  const secondButtonClass = `button button-inverse-primary button-${secondButtonType.toLowerCase()}`;
 
-    if (this.props.installed) {
-      updating = this.props.updating;
-      use = !updating;
-      update = this.props.updatable && !updating;
-    }
-    else if (!this.props.canInstall) {
-      install = true;
-      installDisabled = true;
-    }
-    else {
-      installing = this.props.installing;
-      install = !installing;
-    }
-
-    return (
-      <div className="button-bar">
-        <button type="button" className={"button button-inverse-primary button-install" + (install ? '' : ' hidden')} disabled={installDisabled} onClick={this.props.onInstall}>
-          <span className="icon-arrow-thick"></span>
-          {Dictionary.get('contentTypeInstallButtonLabel')}
-        </button>
-        <button type="button" className={"button button-inverse-primary button-installing" + (installing ? '' : ' hidden')}>
-          <span className="icon-loading-search icon-spin"></span>
-          {Dictionary.get("contentTypeInstallingButtonLabel")}
-        </button>
-        <button type="button" className={"button button-inverse-primary button-update" + (update ? '' : ' hidden')} onClick={this.props.onInstall}>
-          {Dictionary.get("contentTypeUpdateButtonLabel")}
-        </button>
-        <button type="button" className={"button button-inverse-primary button-updating" + (updating ? '' : ' hidden')}>
-          <span className="icon-loading-search icon-spin"></span>
-          {Dictionary.get("contentTypeUpdatingButtonLabel")}
-        </button>
-        <button type="button" className={"button button-primary button-use" + (use ? '' : ' hidden')} onClick={this.props.onUse}>
-          {Dictionary.get("contentTypeUseButtonLabel")}
-        </button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="button-bar">
+      <button type="button" className={secondButtonClass} disabled={secondButtonDisabled} onClick={secondButtonAction}>
+        <span className="icon-arrow-thick"></span>
+        {Dictionary.get(secondButtonLabelKey)}
+      </button>
+      <button type="button" className={"button button-primary button-use" + (useButton ? '' : ' hidden')} onClick={onUse}>
+        {Dictionary.get("contentTypeUseButtonLabel")}
+      </button>
+    </div>
+  );*/
+};
 
 export default ButtonBar;
