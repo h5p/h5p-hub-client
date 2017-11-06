@@ -31,14 +31,6 @@ class Choose extends React.Component {
     }
   }
 
-  changeFocused(dir) {
-    this.focus(this.getSiblingIdFor(this.state.focused, dir), true);
-  }
-
-  getFocused() {
-    return this.state.focused;
-  }
-
   getSiblingIdFor(id, dir) {
     for (let i = 0; i < this.items.length; i++) {
       if (id === this.items[i].id) {
@@ -95,10 +87,10 @@ class Choose extends React.Component {
 
   render() {
     this.items = []; // Array to preserve order
-    return React.Children.map(this.props.children, child =>
+    return React.Children.map(this.props.children, (child, i) =>
       child ? React.cloneElement(child, {
-        className: (child.props.className ? child.props.className + ' ' : '') + (child.props.id === this.state.selected ? 'hightlight' : ''),
-        tabIndex: child.props.id === this.state.focused ? 0 : -1,
+        className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'hightlight' : '') : (i === 0 ? 'hightlight' : '')),
+        tabIndex: (this.state.focused ? (child.props.id === this.state.focused ? 0 : -1) : (i === 0 ? 0 : -1)),
         role: child.props.role || 'button',
         onClick: event => this.handleClick(event, child.props.id),
         onKeyDown: event => this.handleKeyDown(event, child.props.id),
