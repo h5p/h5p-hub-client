@@ -32,8 +32,6 @@ class List extends React.Component {
   }
 
   render() {
-    const apiVersion = this.props.apiVersion;
-
     const listItems = this.props.contentTypes.map((contentType, i) => {
       let id = contentType.machineName.toLocaleLowerCase().replace('.','-');
       let tabindex = -1;
@@ -82,11 +80,10 @@ class List extends React.Component {
     });
 
     return (
-      <ol className="content-type-list">
+      <ol className="content-type-list" aria-hidden={!this.props.visible}>
         <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
           onChange={this.handleSelect}
-          onFocus={this.handleFocus}
-        >
+          onFocus={this.handleFocus}>
           {listItems}
         </Choose>
       </ol>

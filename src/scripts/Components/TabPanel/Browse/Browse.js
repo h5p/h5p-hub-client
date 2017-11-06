@@ -107,13 +107,12 @@ class Browse extends React.Component {
             onFocus={this.handleFocus}
             contentTypes={this.state.contentTypes}
             focused={this.state.focused}
-          />
+            visible={!this.state.detailViewActive}/>
           <Detail
             library={this.state.library}
             visible={this.state.detailViewActive}
             onUse={this.props.onUse}
-            onClose={this.handleDetailClose}
-          />
+            onClose={this.handleDetailClose}/>
         </div>
       </div>
     );

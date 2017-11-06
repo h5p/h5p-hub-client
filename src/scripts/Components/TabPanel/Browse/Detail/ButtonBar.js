@@ -2,44 +2,51 @@ import React from 'react';
 
 import Dictionary from '../../../../utils/dictionary';
 
-const ButtonBar = ({canInstall, installed, installing, updating, updatable, onInstall, onUse}) => {
-  //let installButton, useButton, updateButton, installDisabled;
+import './ButtonBar.scss';
 
-  return null;
-
-  /*let secondButtonType;
+const ButtonBar = ({canInstall, installed, installing, updatable, onInstall, onUse}) => {
+  let secondButtonType;
   let secondButtonDisabled = false;
-  let secondButtonAction = function () {};
 
+  // Should we display the use button?
+  let useButton = installed && !installing;
+
+  // Should we display a secondary button?
+  // (install, installing, update, updating)
   if (installed && updatable) {
-    secondButtonType += updating ? 'Updating' : 'Update';
-    secondButtonAction = updating ? secondButtonAction : onInstall;
+    secondButtonType = installing ? 'Updating' : 'Update';
+    secondButtonDisabled = installing;
   }
   else if (!canInstall) {
-    secondButtonType += 'Install';
+    secondButtonType = 'Install';
     secondButtonDisabled = true;
   }
-  else {
-    secondButtonType += installing ? 'Installing': 'Install';
-    secondButtonAction = installing ? secondButtonAction : onInstall;
+  else if (!installed) {
+    secondButtonType = installing ? 'Installing': 'Install';
+    secondButtonDisabled = installing;
   }
 
-  // TODO - make max two buttons
-
-  const secondButtonLabelKey = `contentType${secondButtonType}ButtonLabel`;
-  const secondButtonClass = `button button-inverse-primary button-${secondButtonType.toLowerCase()}`;
-
   return (
-    <div className="button-bar">
-      <button type="button" className={secondButtonClass} disabled={secondButtonDisabled} onClick={secondButtonAction}>
-        <span className="icon-arrow-thick"></span>
-        {Dictionary.get(secondButtonLabelKey)}
-      </button>
-      <button type="button" className={"button button-primary button-use" + (useButton ? '' : ' hidden')} onClick={onUse}>
-        {Dictionary.get("contentTypeUseButtonLabel")}
-      </button>
+    <div className="h5p-hub-content-type-detail-button-bar">
+      {
+        secondButtonType &&
+        <button type="button"
+          className={`button button-inverse-primary button-${secondButtonType.toLowerCase()}`}
+          disabled={secondButtonDisabled}
+          onClick={installing ? onInstall : undefined}
+        >
+          {Dictionary.get(`contentType${secondButtonType}ButtonLabel`)}
+        </button>
+      }
+      {
+        useButton &&
+        <button type="button" className={"button button-primary button-use"} onClick={onUse}>
+          {Dictionary.get("contentTypeUseButtonLabel")}
+        </button>
+      }
+
     </div>
-  );*/
+  );
 };
 
 export default ButtonBar;
