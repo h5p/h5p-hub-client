@@ -36,7 +36,7 @@
   #hub-search-bar {
     border: 1px solid #bfc0c0;
     font-weight: 600;
-    padding: 0.5em 0.5em 0.5em 1.5em;
+    padding: 0.5em 0.5em 0.5em 1.2em;
     font-style: italic;
     font-weight: 400;
     font-size: 1em;
@@ -91,7 +91,7 @@
     background-color: transparent;
     color: #020202;
     border: 0;
-    padding: $gutter $gutter * 2;
+    padding: 1.2em 1.2em 0.975422574em 2.292em;
     margin: 0;
     font-size: 1em;
 
@@ -131,19 +131,25 @@
   }
 
   .result-header {
-    font-size: 1.2em;
-    margin: 0 0 1em;
+    margin: 0 0 0.7844743em;
+    font-size: 1.042em;
+	  font-weight: 600;
   }
   .result-hits {
     font-size: 0.8em;
     color: #808080;
+    font-weight: 400;
+    padding-left: 0.4em;
   }
   .sort-by-list > li {
     float: left;
-    margin-left: 2em;
+    margin-left: 0.5em;
     cursor: pointer;
     color: #808080;
     user-select: none;
+    font-size: 0.9em;
+    padding: 0.25em 0.75em;
+    outline-color: #1a93f4;
 
     &.hightlight {
       font-weight: 600;
@@ -152,6 +158,8 @@
   }
   .sort-by-header {
     float: left;
+    padding: 0.25em 0.75em 0.25em 0;
+    font-size: 0.9em;
   }
 
   .navbar-brand {

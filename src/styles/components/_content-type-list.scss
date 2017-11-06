@@ -12,9 +12,7 @@ $content-type-list-image-size: 100px;
     padding: 1.25em 0;
     margin: 0;
     overflow: auto;
-    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
-    0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
-    height: 40em;
+    height: 39.122137405em;
     opacity: 1;
     transition: opacity 0.2s, visibility 0s linear 0s;
 
@@ -27,6 +25,17 @@ $content-type-list-image-size: 100px;
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
+    &:before {
+      content: " ";
+      width: 100%;
+      box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
+                  0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
 
     li {
       width: 100%;
