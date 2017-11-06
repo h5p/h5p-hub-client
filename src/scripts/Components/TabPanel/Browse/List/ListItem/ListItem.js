@@ -5,13 +5,11 @@ import Dictionary from '../../../../../utils/dictionary';
 
 const ListItem = ({contentType, tabIndex}) => {
 
-  const id = contentType.machineName.toLocaleLowerCase().replace('.','-');
   const title = (contentType.title || contentType.machineName);
   const updateAvailable = (!contentType.isUpToDate && contentType.installed && contentType.canInstall);
 
   return (
-    <li key={id} id={id} className="media">
-
+    <div>
       <div className="media-left">
         <img className="media-object" src={contentType.icon || noIcon} alt={title + ' ' + Dictionary.get('contentTypeIconAltText')}/>
       </div>
@@ -37,8 +35,7 @@ const ListItem = ({contentType, tabIndex}) => {
 
         <div className="description">{contentType.summary || ''}</div>
       </div>
-
-    </li>
+    </div>
   );
 };
 

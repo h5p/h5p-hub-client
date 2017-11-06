@@ -31,9 +31,10 @@ class List extends React.Component {
 
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
-      <ListItem key={'content-type-' + i}
-        contentType={contentType}
-        tabIndex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
+        <ListItem contentType={contentType}
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+      </li>
     ));
 
     return (
