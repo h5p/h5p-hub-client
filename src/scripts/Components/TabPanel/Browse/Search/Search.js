@@ -71,7 +71,7 @@ class Search extends React.Component {
         <div className="border-wrap">
           <input id="hub-search-bar"
             type="text"
-            value={this.state.value}
+            value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
             onClick={(event) => this.props.onFilter(event.target.value)}
