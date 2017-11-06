@@ -1,8 +1,9 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import noIcon from '../../../../../../images/content-type-placeholder.svg';
 import Dictionary from '../../../../../utils/dictionary';
 
-const ListItem = (contentType, tabIndex) => {
+const ListItem = ({contentType, tabIndex}) => {
 
   const id = contentType.machineName.toLocaleLowerCase().replace('.','-');
   const title = (contentType.title || contentType.machineName);
