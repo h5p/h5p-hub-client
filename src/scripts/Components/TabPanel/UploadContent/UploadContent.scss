@@ -1,0 +1,75 @@
+@import '../../../../styles/base/variables';
+@import '../../../../styles/base/mixins';
+
+.h5p-hub {
+
+  .upload-wrapper {
+    padding: 1em 2em 2em 2em;
+
+    .message {
+      margin-top: 0;
+    }
+
+    [aria-hidden="true"] {
+      display: none;
+    }
+
+    .visible {
+      display: inline-block;
+    }
+
+    .upload-throbber {
+      outline: 0;
+      height: 10em;
+
+      &.hidden {
+        display: none;
+      }
+
+      &:before {
+        @include throbber(4em);
+        margin: auto;
+      }
+    }
+
+    .upload-button {
+      margin-left: 0.5em;
+    }
+
+    .use-button {
+      margin-left: 0.5em;
+    }
+
+    button[disabled] {
+      opacity: 0.5;
+    }
+  }
+
+  .upload-path {
+    margin-bottom: 1em;
+    cursor: pointer;
+    outline: 0;
+    padding-left: 1.5em;
+
+    &[disabled] {
+      cursor: default;
+    }
+  }
+
+  h1.upload-instruction-header {
+    font-size: $text-title-small;
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+  }
+
+  p.upload-instruction-description {
+    font-size: 1.042em;
+  }
+
+  @media (min-width: $screen-small) {
+    .upload-path {
+      width: 60%;
+      margin-bottom: 0;
+    }
+  }
+}

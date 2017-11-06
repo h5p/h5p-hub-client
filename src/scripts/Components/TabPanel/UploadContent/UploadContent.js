@@ -1,8 +1,8 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import './UploadContent.scss';
 import '../../../utils/fetch';
 import Dictionary from '../../../utils/dictionary';
-
 import Message from '../../Message/Message';
 
 class UploadContent extends React.Component {
@@ -12,7 +12,8 @@ class UploadContent extends React.Component {
       isSelected: false,
       filePath: '',
       isUploading: false,
-      error: false
+      validationError: false,
+      serverError: false,
     };
     this.showUploadInput = this.showUploadInput.bind(this);
     this.select = this.select.bind(this);
@@ -20,20 +21,23 @@ class UploadContent extends React.Component {
   }
 
   showUploadInput() {
-    this.refs.fileField.click();
+    this.fileField.click();
   }
 
   select(event) {
     this.setState({error: false});
+
+    if (event.target.files.length === 0) {
+      return; // Do nothing if the file has not been changed
+    }
+
     const filePath = event.target.files[0].name;
 
     if (this.getFileExtension(filePath) !== 'h5p') {
       this.setState({
         isSelected: false,
         filePath: '',
-        error: true,
-        errorTitle: Dictionary.get('h5pFileWrongExtensionTitle'),
-        errorMessage: Dictionary.get('h5pFileWrongExtensionContent')
+        validationError: true,
       });
     }
     else {
@@ -43,7 +47,7 @@ class UploadContent extends React.Component {
       event.stopPropagation();
 
       // Focus use button
-      setTimeout((() => this.refs.useButton.focus()).bind(this), 10);
+      setTimeout(() => this.useButton.focus(), 10);
     }
   }
 
@@ -53,7 +57,7 @@ class UploadContent extends React.Component {
     data.append('h5p', this.uploadInput.files[0]);
     data.append('contentId', this.props.contentId);
 
-    this.setState({isSelected: true, filePath: '', isUploading: true});
+    this.setState({isSelected: true, isUploading: true});
 
     return fetch(this.props.getAjaxUrl('library-upload'), {
       method: 'POST',
@@ -64,9 +68,7 @@ class UploadContent extends React.Component {
         // Validation failed
         if (json.success !== true) {
           this.setState({
-            error: true,
-            errorTitle: Dictionary.get('h5pFileValidationFailedTitle'),
-            errorMessage: Dictionary.get('h5pFileValidationFailedContent')
+            validationError: true,
           });
           return;
         }
@@ -78,9 +80,7 @@ class UploadContent extends React.Component {
         this.setState({
           isSelected: false,
           isUploading: false,
-          error: true,
-          errorTitle: Dictionary.get('h5pFileUploadServerErrorTitle'),
-          errorMessage: Dictionary.get('h5pFileUploadServerErrorContent')
+          serverError: true,
         });
       });
   }
@@ -93,35 +93,42 @@ class UploadContent extends React.Component {
   render() {
     return (
       <div className="upload-wrapper">
-        {
-          this.state.error &&
+        {this.state.validationError &&
           <Message
             type={'error'}
             dismissable={false}
-            title={this.state.errorTitle}
-            message={this.state.errorMessage}
+            title={Dictionary.get('h5pFileWrongExtensionTitle')}
+            message={Dictionary.get('h5pFileWrongExtensionContent')}
           />
         }
-        <div className={"upload-throbber " + (this.state.isUploading ? '  ' : 'hidden')}
-          aria-label="{Dictionary.get('uploadingThrobber')}"
-          tabIndex="-1">
-        </div>
+        {this.state.serverError &&
+          <Message
+            type={'error'}
+            dismissable={false}
+            title={Dictionary.get('h5pFileUploadServerErrorTitle')}
+            message={Dictionary.get('h5pFileUploadServerErrorContent')}
+          />
+        }
+        <div className={"upload-throbber " + (this.state.isUploading ? ' ' : 'hidden')}
+          aria-label="{Dictionary.get('uploadingThrobber')}"/>
         <h1 className="upload-instruction-header">{Dictionary.get('uploadInstructionsTitle')}</h1>
         <div className="upload-form">
           <input className="upload-path"
-            placeholder={(this.state.isSelected ? this.state.filePath : Dictionary.get('uploadPlaceholder'))}
+            placeholder={((this.state.isSelected || this.state.isUploading) ? this.state.filePath : Dictionary.get('uploadPlaceholder'))}
             onClick={this.showUploadInput}
             tabIndex="-1"
             disabled={this.state.isUploading}
             readOnly
           />
-          <button ref="useButton" type="button"
+          <button type="button"
+            ref={(button) => {this.useButton = button; }}
             className={"button use-button " + (this.state.isSelected ? 'visible' : ' ')}
             disabled={this.state.isUploading}
             onClick={this.uploadFile}>Use
           </button>
           <div className="input-wrapper">
-            <input ref="fileField" type="file" accept=".h5p" aria-hidden="true"
+            <input type="file" accept=".h5p" aria-hidden="true"
+              ref={(input) => {this.fileField = input; }}
               onChange={this.select}
             />
             <button type="button"
@@ -137,5 +144,11 @@ class UploadContent extends React.Component {
     );
   }
 }
+
+UploadContent.propTypes = {
+  contentId: PropTypes.number.isRequired,
+  onUpload: PropTypes.func.isRequired,
+  getAjaxUrl: PropTypes.func.isRequired,
+};
 
 export default UploadContent;

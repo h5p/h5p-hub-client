@@ -73,7 +73,7 @@ class Hub extends React.Component {
                 apiVersion={this.props.apiVersion}
                 onUse={this.handleUse.bind(this)} />
               <UploadContent id="upload"
-                title={Dictionary.get('uploadTabLabel')}
+                title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
                 onUpload={this.handleUpload.bind(this)} />
