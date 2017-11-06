@@ -72,23 +72,6 @@ $color-back-button: #474f5a;
       }
     }
 
-    .button-bar {
-      margin: ($gutter * 2) 0;
-      text-align: right;
-
-      .button-update,
-      .button-updating {
-        margin-right: 0.6em;
-      }
-
-      .button-update:before {
-        @include icon($icon-update);
-        margin-right: 0.5em;
-        font-weight: normal;
-        font-size: 0.9em;
-      }
-    }
-
     .back-button {
       color: $color-back-button;
       font-size: 1.3em;

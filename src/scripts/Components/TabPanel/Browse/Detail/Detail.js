@@ -33,7 +33,6 @@ class Detail extends React.Component {
       canInstall: props.library.canInstall,
       updatable: !props.library.isUpToDate,
       installing: false,
-      updating: false,
       visible: props.visible
     });
 
@@ -141,7 +140,6 @@ class Detail extends React.Component {
           canInstall={this.state.canInstall}
           updatable={this.state.updatable}
           installing={this.state.installing}
-          updating={this.state.updating}
           onInstall={this.handleInstall}
           onUse={this.handleUse}
         />
