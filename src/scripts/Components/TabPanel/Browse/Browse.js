@@ -72,7 +72,10 @@ class Browse extends React.Component {
   }
 
   handleSelect = () => {
-    this.props.onUse(this.state.focused || this.state.contentTypes[0]);
+    const selected = this.state.focused || this.state.contentTypes[0];
+    if (selected) {
+      this.props.onUse(selected);
+    }
   }
 
   render() {

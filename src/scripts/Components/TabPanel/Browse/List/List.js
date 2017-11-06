@@ -2,6 +2,8 @@ import React from 'react';
 import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
 
+import './List.scss';
+
 class List extends React.Component {
   constructor(props) {
     super(props);
@@ -38,13 +40,22 @@ class List extends React.Component {
     ));
 
     return (
-      <ol className="content-type-list" aria-hidden={!this.props.visible}>
-        <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
-          onChange={this.handleSelect}
-          onFocus={this.handleFocus}>
-          {listItems}
-        </Choose>
-      </ol>
+      <div className="content-type-list" aria-hidden={!this.props.visible}>
+        {this.props.contentTypes.length ? (
+          <ol>
+            <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
+              onChange={this.handleSelect}
+              onFocus={this.handleFocus}>
+              {listItems}
+            </Choose>
+          </ol>
+        ) : (
+          <div className="no-results">
+            <div className="no-results-title">No results found</div>
+            <div className="no-results-desc">There is no content type that matches your search criteria.</div>
+          </div>
+        )}
+      </div>
     );
   }
 }
