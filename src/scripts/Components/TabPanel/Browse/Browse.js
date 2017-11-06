@@ -75,6 +75,7 @@ class Browse extends React.Component {
             filterOn={this.state.filterOn}
             orderBy={this.state.orderBy}
             contentTypes={this.props.contentTypes}
+            visible={!this.state.detailViewActive}
             ref={list => this.list = list}
           />
           <Detail

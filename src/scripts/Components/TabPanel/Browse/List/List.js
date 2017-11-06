@@ -105,7 +105,7 @@ class List extends React.Component {
     });
 
     return (
-      <ol className="content-type-list">
+      <ol className="content-type-list" aria-hidden={!this.props.visible}>
         <Choose selected={this.state.focused}
           onChange={id => this.props.onSelect(this.getLibrary(id))}
           onFocus={id => this.setState({focused: id})}
