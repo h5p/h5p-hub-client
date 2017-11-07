@@ -87,11 +87,11 @@ class Browse extends React.Component {
     return (
       <div className="content-type-section-view loaded">
 
-        <Search onNavigate={this.handleFocusMove}
-          onSelect={this.handleSelect}
+        <Search value={this.state.filterOn}
+          auto={!this.state.detailViewActive}
           onFilter={this.handleFilterOn}
-          value={this.state.filterOn}
-          auto={!this.state.detailViewActive}/>
+          onNavigate={this.handleFocusMove}
+          onSelect={this.handleSelect}/>
 
         <Order hits={this.state.contentTypes.length}
           selected={this.state.orderBy}

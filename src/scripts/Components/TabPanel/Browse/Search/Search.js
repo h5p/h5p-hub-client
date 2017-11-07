@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dictionary from '../../../../utils/dictionary';
 
 import './Search.scss';
@@ -100,5 +101,13 @@ class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  value: PropTypes.string.isRequired,
+  auto: PropTypes.bool.isRequired,
+  onFilter: PropTypes.func.isRequired,
+  onNavigate: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired
+};
 
 export default Search;
