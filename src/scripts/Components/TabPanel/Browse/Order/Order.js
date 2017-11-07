@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import Choose from '../../../Choose/Choose';
 import Dictionary from '../../../../utils/dictionary';
 
+import './Order.scss';
+
 const Order = ({hits, selected, onChange, hasRecentlyUsed, visible}) => {
   return (
     <div className={'navbar' + (visible ? '' : ' hidden')}>
