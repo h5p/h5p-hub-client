@@ -20,14 +20,14 @@ class Search extends React.Component {
     }
   }
 
-  handleFocus() {
+  handleFocus = () => {
     // Prevent search right after focus is recieved
     this.searchTimer = setTimeout(() => {
       this.searchTimer = null;
     }, 40);
   }
 
-  handleInput(event) {
+  handleInput = (event) => {
     const input = event.target;
     this.setState({value: input.value});
 
@@ -41,7 +41,7 @@ class Search extends React.Component {
     }
   }
 
-  handleKeyDown(event) {
+  handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
     switch (event.which) {
       case 38: // Up
@@ -68,7 +68,7 @@ class Search extends React.Component {
     }
   }
 
-  handleBlur() {
+  handleBlur = () => {
     // No need to filter/search after focus is lost
     clearTimeout(this.searchTimer);
   }
@@ -91,10 +91,10 @@ class Search extends React.Component {
             aria-label={searchLabel}
             placeholder={searchLabel}
             onClick={event => this.handleClick(event)}
-            onFocus={this.handleFocus.bind(this)}
-            onInput={this.handleInput.bind(this)}
-            onKeyDown={e => this.handleKeyDown(e)}
-            onBlur={this.handleBlur.bind(this)}/>
+            onFocus={this.handleFocus}
+            onInput={this.handleInput}
+            onKeyDown={event => this.handleKeyDown(event)}
+            onBlur={this.handleBlur}/>
           <div className="icon-search"></div>
         </div>
       </div>
