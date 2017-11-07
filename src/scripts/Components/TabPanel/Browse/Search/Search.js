@@ -52,7 +52,14 @@ class Search extends React.Component {
         break;
 
       case 13: // Enter
-        this.props.onSelect();
+        if (!this.props.auto) {
+          // Trigger filter/earch
+          this.props.onFilter(event.target.value);
+        }
+        else {
+          // Select highlighted
+          this.props.onSelect();
+        }
         event.preventDefault();
         break;
     }
@@ -61,6 +68,12 @@ class Search extends React.Component {
   handleBlur() {
     // No need to filter/search after focus is lost
     clearTimeout(this.searchTimer);
+  }
+
+  handleClick = (event) => {
+    if (this.props.auto) {
+      this.props.onFilter(event.target.value);
+    }
   }
 
   render() {
@@ -74,7 +87,7 @@ class Search extends React.Component {
             value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
-            onClick={(event) => this.props.onFilter(event.target.value)}
+            onClick={event => this.handleClick(event)}
             onFocus={this.handleFocus.bind(this)}
             onInput={this.handleInput.bind(this)}
             onKeyDown={e => this.handleKeyDown(e)}

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import Choose from '../../Choose/Choose';
-
 import Search from './Search/Search';
+import Order from './Order/Order';
 import List from './List/List';
 import Detail from './Detail/Detail';
 
@@ -34,10 +33,12 @@ class Browse extends React.Component {
   }
 
   handleFilterOn = (keyword) => {
+    // Search for keyword and close detail view if open
     this.setState({
       contentTypes: search(this.props.contentTypes, keyword, this.state.orderBy),
       filterOn: keyword,
-      focused: null
+      focused: null,
+      detailViewActive: false
     });
   }
 
@@ -72,6 +73,7 @@ class Browse extends React.Component {
   }
 
   handleSelect = () => {
+    // Use highlighted item
     const selected = this.state.focused || this.state.contentTypes[0];
     if (selected) {
       this.props.onUse(selected);
@@ -91,18 +93,11 @@ class Browse extends React.Component {
           value={this.state.filterOn}
           auto={!this.state.detailViewActive}/>
 
-        <div className="navbar">
-          <div className="result-header">All Content Types <span className="result-hits">({this.state.contentTypes.length} results)</span></div>
-
-          <div id="sort-by" className="sort-by-header">Show:</div>
-          <ul className="sort-by-list" aria-labelledby="sort-by">
-            <Choose selected={this.state.orderBy} onChange={this.handleOrderBy}>
-              <li id="recently">{this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length ? 'Recently Used First' : 'Popular First'}</li>
-              <li id="newest">Newest First</li>
-              <li id="a-to-z">A to Z</li>
-            </Choose>
-          </ul>
-        </div>
+        <Order hits={this.state.contentTypes.length}
+          selected={this.state.orderBy}
+          onChange={this.handleOrderBy}
+          hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
+          visible={!this.state.detailViewActive}/>
 
         <div className="content-type-section">
           <List onUse={this.props.onUse}
