@@ -70,7 +70,7 @@ class Hub extends React.Component {
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.props.contentTypes}
-                apiVersion={this.props.apiVersion}
+                setFocus={this.state.expanded}
                 onUse={this.handleUse.bind(this)} />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading

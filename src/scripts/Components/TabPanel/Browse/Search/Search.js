@@ -18,6 +18,9 @@ class Search extends React.Component {
     if (nextProps.value !== this.state.value) {
       this.setState({value: nextProps.value});
     }
+    if (nextProps.setFocus !== this.props.setFocus) {
+      this.setState({focusOnRender: nextProps.setFocus});
+    }
   }
 
   handleInput = (event) => {
@@ -31,6 +34,13 @@ class Search extends React.Component {
         this.props.onFilter(input.value);
         this.searchTimer = null;
       }, 40);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.focusOnRender) {
+      delete this.state.focusOnRender;
+      this.input.focus();
     }
   }
 
@@ -73,7 +83,8 @@ class Search extends React.Component {
             aria-label={searchLabel}
             placeholder={searchLabel}
             onInput={this.handleInput}
-            onKeyDown={event => this.handleKeyDown(event)}/>
+            onKeyDown={event => this.handleKeyDown(event)}
+            ref={el => this.input = el}/>
           <div className="icon-search"/>
         </div>
       </div>
@@ -82,7 +93,7 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   auto: PropTypes.bool.isRequired,
   onFilter: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,

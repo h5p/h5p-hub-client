@@ -81,7 +81,6 @@ class Browse extends React.Component {
   }
 
   render() {
-    // TODO: Focus search bar when loaded (or timeout 200 ?)
     // TODO: Translate new text strings
 
     return (
@@ -89,6 +88,7 @@ class Browse extends React.Component {
 
         <Search value={this.state.filterOn}
           auto={!this.state.detailViewActive}
+          setFocus={this.props.setFocus}
           onFilter={this.handleFilterOn}
           onNavigate={this.handleFocusMove}
           onSelect={this.handleSelect}/>
