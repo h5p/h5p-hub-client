@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Search from './Search/Search';
 import Order from './Order/Order';
@@ -100,12 +101,12 @@ class Browse extends React.Component {
           visible={!this.state.detailViewActive}/>
 
         <div className="content-type-section">
-          <List onUse={this.props.onUse}
-            onSelect={this.handleOnLibrarySelect}
-            onFocus={this.handleFocus}
-            contentTypes={this.state.contentTypes}
+          <List contentTypes={this.state.contentTypes}
             focused={this.state.focused}
-            visible={!this.state.detailViewActive}/>
+            visible={!this.state.detailViewActive}
+            onUse={this.props.onUse}
+            onSelect={this.handleOnLibrarySelect}
+            onFocus={this.handleFocus}/>
           <Detail
             library={this.state.library}
             visible={this.state.detailViewActive}
@@ -116,5 +117,11 @@ class Browse extends React.Component {
     );
   }
 }
+
+Browse.propTypes = {
+  contentTypes: PropTypes.object.isRequired,
+  setFocus: PropTypes.bool.object,
+  onUse: PropTypes.func.isRequired
+};
 
 export default Browse;

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dictionary from '../utils/dictionary';
 
 import DropDownSelector from './DropDownSelector/DropDownSelector';
@@ -32,14 +33,14 @@ class Hub extends React.Component {
     this.props.onResize();
   }
 
-  handleUse(contentType) {
+  handleUse = (contentType) => {
     // Collapse Hub
     this.setState({expanded: false, title: contentType.title || contentType.machineName});
 
     this.props.onUse(contentType);
   }
 
-  handleUpload(data) {
+  handleUpload = (data) => {
     // Collapse Hub
     this.setState({expanded: false, title: data.h5p.title});
 
@@ -71,12 +72,12 @@ class Hub extends React.Component {
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.props.contentTypes}
                 setFocus={this.state.expanded}
-                onUse={this.handleUse.bind(this)} />
+                onUse={this.handleUse} />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
-                onUpload={this.handleUpload.bind(this)} />
+                onUpload={this.handleUpload} />
             </TabPanel>
           </div>
         </div>
@@ -84,5 +85,16 @@ class Hub extends React.Component {
     );
   }
 }
+
+Hub.propTypes = {
+  title: PropTypes.string.isRequired,
+  contentId: PropTypes.number,
+  contentTypes: PropTypes.object.isRequired,
+  selected: PropTypes.string.isRequired,
+  getAjaxUrl: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired,
+  onUpload: PropTypes.func.isRequired
+};
 
 export default Hub;

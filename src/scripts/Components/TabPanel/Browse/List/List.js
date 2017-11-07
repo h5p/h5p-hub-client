@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
 
@@ -10,7 +12,7 @@ class List extends React.Component {
   }
 
   getLibrary = (id) => {
-    for (var i = 0; i < this.props.contentTypes.length; i++) {
+    for (let i = 0; i < this.props.contentTypes.length; i++) {
       const library = this.props.contentTypes[i];
       if (library.machineName.toLocaleLowerCase().replace('.','-') === id) {
         return library;
@@ -67,5 +69,14 @@ class List extends React.Component {
     );
   }
 }
+
+List.propTypes = {
+  contentTypes: PropTypes.array.isRequired,
+  focused: PropTypes.object,
+  visible: PropTypes.bool,
+  onUse: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired
+};
 
 export default List;
