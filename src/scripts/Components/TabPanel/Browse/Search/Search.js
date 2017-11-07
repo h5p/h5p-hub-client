@@ -95,7 +95,7 @@ class Search extends React.Component {
             onInput={this.handleInput}
             onKeyDown={event => this.handleKeyDown(event)}
             onBlur={this.handleBlur}/>
-          <div className="icon-search"></div>
+          <div className="icon-search"/>
         </div>
       </div>
     );
