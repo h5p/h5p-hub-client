@@ -1,6 +1,8 @@
 import React from 'react';
 import Dictionary from '../../../../utils/dictionary';
 
+import './Search.scss';
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -80,7 +82,7 @@ class Search extends React.Component {
     let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
     return (
-      <div className="input-group" role="search">
+      <div className="search-wrapper" role="search">
         <div className="border-wrap">
           <input id="hub-search-bar"
             type="text"
@@ -92,7 +94,7 @@ class Search extends React.Component {
             onInput={this.handleInput.bind(this)}
             onKeyDown={e => this.handleKeyDown(e)}
             onBlur={this.handleBlur.bind(this)}/>
-          <div className="input-group-addon icon-search"></div>
+          <div className="icon-search"></div>
         </div>
       </div>
     );
