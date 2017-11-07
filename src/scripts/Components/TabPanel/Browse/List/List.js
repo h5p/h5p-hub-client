@@ -31,6 +31,11 @@ class List extends React.Component {
     this.props.onSelect(this.getLibrary(id));
   }
 
+  componentDidUpdate() {
+    // Reset scrolling
+    this.list.scrollTop = 0;
+  }
+
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
       <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
@@ -40,7 +45,10 @@ class List extends React.Component {
     ));
 
     return (
-      <div className="content-type-list" aria-hidden={!this.props.visible}>
+      <div className="content-type-list"
+        aria-hidden={!this.props.visible}
+        ref={el => this.list = el}>
+
         {this.props.contentTypes.length ? (
           <ol>
             <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
