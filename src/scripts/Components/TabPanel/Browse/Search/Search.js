@@ -20,13 +20,6 @@ class Search extends React.Component {
     }
   }
 
-  handleFocus = () => {
-    // Prevent search right after focus is recieved
-    this.searchTimer = setTimeout(() => {
-      this.searchTimer = null;
-    }, 40);
-  }
-
   handleInput = (event) => {
     const input = event.target;
     this.setState({value: input.value});
@@ -68,11 +61,6 @@ class Search extends React.Component {
     }
   }
 
-  handleBlur = () => {
-    // No need to filter/search after focus is lost
-    clearTimeout(this.searchTimer);
-  }
-
   render() {
     let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
@@ -84,10 +72,8 @@ class Search extends React.Component {
             value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
-            onFocus={this.handleFocus}
             onInput={this.handleInput}
-            onKeyDown={event => this.handleKeyDown(event)}
-            onBlur={this.handleBlur}/>
+            onKeyDown={event => this.handleKeyDown(event)}/>
           <div className="icon-search"/>
         </div>
       </div>
