@@ -73,12 +73,6 @@ class Search extends React.Component {
     clearTimeout(this.searchTimer);
   }
 
-  handleClick = (event) => {
-    if (this.props.auto) {
-      this.props.onFilter(event.target.value);
-    }
-  }
-
   render() {
     let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
@@ -90,7 +84,6 @@ class Search extends React.Component {
             value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
-            onClick={event => this.handleClick(event)}
             onFocus={this.handleFocus}
             onInput={this.handleInput}
             onKeyDown={event => this.handleKeyDown(event)}
