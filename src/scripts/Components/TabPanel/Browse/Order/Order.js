@@ -2,19 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Choose from '../../../Choose/Choose';
+import Dictionary from '../../../../utils/dictionary';
 
 const Order = ({hits, selected, onChange, hasRecentlyUsed, visible}) => {
-
   return (
     <div className={'navbar' + (visible ? '' : ' hidden')}>
-      <div className="result-header">All Content Types <span className="result-hits">({hits} results)</span></div>
-
-      <div id="sort-by" className="sort-by-header">Show:</div>
+      <div className="result-header">{Dictionary.get('contentTypeSectionAll')}<span className="result-hits">({Dictionary.get('numResults').replace(':num', hits)})</span></div>
+      <div id="sort-by" className="sort-by-header">{Dictionary.get('show')}:</div>
       <ul className="sort-by-list" aria-labelledby="sort-by">
         <Choose selected={selected} onChange={onChange}>
-          <li id="recently">{hasRecentlyUsed ? 'Recently Used First' : 'Popular First'}</li>
-          <li id="newest">Newest First</li>
-          <li id="a-to-z">A to Z</li>
+          <li id="recently">{Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst')}</li>
+          <li id="newest">{Dictionary.get('newestFirst')}</li>
+          <li id="a-to-z">{Dictionary.get('aToZ')}</li>
         </Choose>
       </ul>
     </div>

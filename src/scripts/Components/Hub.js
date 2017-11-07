@@ -87,10 +87,10 @@ class Hub extends React.Component {
 }
 
 Hub.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   contentId: PropTypes.number,
   contentTypes: PropTypes.object.isRequired,
-  selected: PropTypes.string.isRequired,
+  selected: PropTypes.string,
   getAjaxUrl: PropTypes.func.isRequired,
   onResize: PropTypes.func.isRequired,
   onUse: PropTypes.func.isRequired,

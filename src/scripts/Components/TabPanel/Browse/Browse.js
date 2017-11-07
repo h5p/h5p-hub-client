@@ -82,8 +82,6 @@ class Browse extends React.Component {
   }
 
   render() {
-    // TODO: Translate new text strings
-
     return (
       <div className="content-type-section-view loaded">
 
@@ -120,7 +118,7 @@ class Browse extends React.Component {
 
 Browse.propTypes = {
   contentTypes: PropTypes.object.isRequired,
-  setFocus: PropTypes.bool.object,
+  setFocus: PropTypes.bool,
   onUse: PropTypes.func.isRequired
 };
 
