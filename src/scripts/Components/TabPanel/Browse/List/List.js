@@ -54,6 +54,7 @@ class List extends React.Component {
         {this.props.contentTypes.length ? (
           <ol>
             <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
+              setFocus={this.props.setFocus}
               onChange={this.handleSelect}
               onFocus={this.handleFocus}>
               {listItems}
@@ -74,6 +75,7 @@ List.propTypes = {
   contentTypes: PropTypes.array.isRequired,
   focused: PropTypes.object,
   visible: PropTypes.bool,
+  setFocus: PropTypes.bool,
   onUse: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onFocus: PropTypes.func.isRequired

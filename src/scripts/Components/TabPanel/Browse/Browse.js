@@ -48,7 +48,8 @@ class Browse extends React.Component {
       contentTypes: search(this.props.contentTypes, null, property),
       orderBy: property,
       filterOn: '',
-      focused: null
+      focused: null,
+      setFocus: !this.state.setFocus, // Toggle to trigger focus
     });
   }
 
@@ -101,6 +102,7 @@ class Browse extends React.Component {
         <div className="content-type-section">
           <List contentTypes={this.state.contentTypes}
             focused={this.state.focused}
+            setFocus={!this.state.setFocus}
             visible={!this.state.detailViewActive}
             onUse={this.props.onUse}
             onSelect={this.handleOnLibrarySelect}
