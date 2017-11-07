@@ -4,6 +4,7 @@ import './UploadContent.scss';
 import '../../../utils/fetch';
 import Dictionary from '../../../utils/dictionary';
 import Message from '../../Message/Message';
+import UploadForm from './UploadForm/UploadForm';
 
 class UploadContent extends React.Component {
   constructor(props) {
@@ -15,17 +16,12 @@ class UploadContent extends React.Component {
       validationError: false,
       serverError: false,
     };
-    this.showUploadInput = this.showUploadInput.bind(this);
-    this.select = this.select.bind(this);
-    this.uploadFile = this.uploadFile.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
-  showUploadInput() {
-    this.fileField.click();
-  }
-
-  select(event) {
-    this.setState({error: false});
+  handleValidation(event) {
+    this.setState({validationError: false, serverError: false});
 
     if (event.target.files.length === 0) {
       return; // Do nothing if the file has not been changed
@@ -45,13 +41,10 @@ class UploadContent extends React.Component {
       this.setState({isSelected: true, filePath, isUploading: false});
 
       event.stopPropagation();
-
-      // Focus use button
-      setTimeout(() => this.useButton.focus(), 10);
     }
   }
 
-  uploadFile() {
+  handleUpload() {
     // Add the H5P file to a form, ready for transportation
     let data = new FormData();
     data.append('h5p', this.uploadInput.files[0]);
@@ -68,19 +61,27 @@ class UploadContent extends React.Component {
         // Validation failed
         if (json.success !== true) {
           this.setState({
-            validationError: true,
+            isSelected: false,
+            isUploading: false,
+            serverError: true,
+            filePath: '',
           });
           return;
         }
 
-        this.setState({isSelected: false, isUploading: false});
         this.props.onUpload(json.data);
+        this.setState({
+          isSelected: false,
+          isUploading: false,
+          filePath: '',
+        });
       })
       .catch(() => {
         this.setState({
           isSelected: false,
           isUploading: false,
           serverError: true,
+          filePath: '',
         });
       });
   }
@@ -89,7 +90,6 @@ class UploadContent extends React.Component {
     return fileName.replace(/^.*\./, '');
   }
 
-  // TODO: Add 'Use' to the dictionary
   render() {
     return (
       <div className="upload-wrapper">
@@ -99,6 +99,7 @@ class UploadContent extends React.Component {
             dismissable={false}
             title={Dictionary.get('h5pFileWrongExtensionTitle')}
             message={Dictionary.get('h5pFileWrongExtensionContent')}
+            severity='error'
           />
         }
         {this.state.serverError &&
@@ -107,38 +108,19 @@ class UploadContent extends React.Component {
             dismissable={false}
             title={Dictionary.get('h5pFileUploadServerErrorTitle')}
             message={Dictionary.get('h5pFileUploadServerErrorContent')}
+            severity='error'
           />
         }
-        <div className={"upload-throbber " + (this.state.isUploading ? ' ' : 'hidden')}
-          aria-label="{Dictionary.get('uploadingThrobber')}"/>
+        <div className={"upload-throbber" + (this.state.isUploading ? '' : ' hidden')}
+          aria-label={Dictionary.get('uploadingThrobber')}/>
         <h1 className="upload-instruction-header">{Dictionary.get('uploadInstructionsTitle')}</h1>
-        <div className="upload-form">
-          <input className="upload-path"
-            placeholder={((this.state.isSelected || this.state.isUploading) ? this.state.filePath : Dictionary.get('uploadPlaceholder'))}
-            onClick={this.showUploadInput}
-            tabIndex="-1"
-            disabled={this.state.isUploading}
-            readOnly
-          />
-          <button type="button"
-            ref={(button) => {this.useButton = button; }}
-            className={"button use-button " + (this.state.isSelected ? 'visible' : ' ')}
-            disabled={this.state.isUploading}
-            onClick={this.uploadFile}>Use
-          </button>
-          <div className="input-wrapper">
-            <input type="file" accept=".h5p" aria-hidden="true"
-              ref={(input) => {this.fileField = input; }}
-              onChange={this.select}
-            />
-            <button type="button"
-              className="button upload-button"
-              onClick={this.showUploadInput}
-              disabled={this.state.isUploading}
-              tabIndex="0">{this.isSelected ? Dictionary.get('uploadFileButtonLabel') : Dictionary.get('uploadFileButtonChangeLabel')}
-            </button>
-          </div>
-        </div>
+        <UploadForm
+          isSelected={this.state.isSelected}
+          isUploading={this.state.isUploading}
+          filePath={this.state.filePath}
+          onValidate={this.handleValidation}
+          onUpload={this.handleUpload}
+        />
         <p className="upload-instruction-description" dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}/>
       </div>
     );
