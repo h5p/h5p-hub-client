@@ -31,6 +31,27 @@
   .panel.open {
     max-height: 58.65em;
   }
+
+  .button-install {
+    [class^="icon-"] {
+      margin-right: $gutter / 2;
+      display: inline-block;
+    }
+
+    .icon-arrow-thick {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .menu-group,
+  .content-type-section {
+    display: none;
+  }
+
+  .content-type-section {
+    position: relative;
+    overflow: hidden;
+  }
 }
 
 .h5p-hub.hidden {

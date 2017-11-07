@@ -1,6 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
+
+import './List.scss';
 
 class List extends React.Component {
   constructor(props) {
@@ -8,7 +12,7 @@ class List extends React.Component {
   }
 
   getLibrary = (id) => {
-    for (var i = 0; i < this.props.contentTypes.length; i++) {
+    for (let i = 0; i < this.props.contentTypes.length; i++) {
       const library = this.props.contentTypes[i];
       if (library.machineName.toLocaleLowerCase().replace('.','-') === id) {
         return library;
@@ -29,23 +33,50 @@ class List extends React.Component {
     this.props.onSelect(this.getLibrary(id));
   }
 
+  componentDidUpdate() {
+    // Reset scrolling
+    this.list.scrollTop = 0;
+  }
+
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
-      <ListItem key={'content-type-' + i}
-        contentType={contentType}
-        tabIndex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
+        <ListItem contentType={contentType}
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+      </li>
     ));
 
     return (
-      <ol className="content-type-list" aria-hidden={!this.props.visible}>
-        <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
-          onChange={this.handleSelect}
-          onFocus={this.handleFocus}>
-          {listItems}
-        </Choose>
-      </ol>
+      <div className="content-type-list"
+        aria-hidden={!this.props.visible}
+        ref={el => this.list = el}>
+
+        {this.props.contentTypes.length ? (
+          <ol>
+            <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
+              onChange={this.handleSelect}
+              onFocus={this.handleFocus}>
+              {listItems}
+            </Choose>
+          </ol>
+        ) : (
+          <div className="no-results">
+            <div className="no-results-title">No results found</div>
+            <div className="no-results-desc">There is no content type that matches your search criteria.</div>
+          </div>
+        )}
+      </div>
     );
   }
 }
+
+List.propTypes = {
+  contentTypes: PropTypes.array.isRequired,
+  focused: PropTypes.object,
+  visible: PropTypes.bool,
+  onUse: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired
+};
 
 export default List;

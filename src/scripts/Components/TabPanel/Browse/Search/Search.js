@@ -1,5 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dictionary from '../../../../utils/dictionary';
+
+import './Search.scss';
 
 class Search extends React.Component {
   constructor(props) {
@@ -15,16 +18,12 @@ class Search extends React.Component {
     if (nextProps.value !== this.state.value) {
       this.setState({value: nextProps.value});
     }
+    if (nextProps.setFocus !== this.props.setFocus) {
+      this.setState({focusOnRender: nextProps.setFocus});
+    }
   }
 
-  handleFocus() {
-    // Prevent search right after focus is recieved
-    this.searchTimer = setTimeout(() => {
-      this.searchTimer = null;
-    }, 40);
-  }
-
-  handleInput(event) {
+  handleInput = (event) => {
     const input = event.target;
     this.setState({value: input.value});
 
@@ -38,7 +37,14 @@ class Search extends React.Component {
     }
   }
 
-  handleKeyDown(event) {
+  componentDidUpdate() {
+    if (this.state.focusOnRender) {
+      delete this.state.focusOnRender;
+      this.input.focus();
+    }
+  }
+
+  handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
     switch (event.which) {
       case 38: // Up
@@ -52,38 +58,46 @@ class Search extends React.Component {
         break;
 
       case 13: // Enter
-        this.props.onSelect();
+        if (!this.props.auto) {
+          // Trigger filter/earch
+          this.props.onFilter(event.target.value);
+        }
+        else {
+          // Select highlighted
+          this.props.onSelect();
+        }
         event.preventDefault();
         break;
     }
-  }
-
-  handleBlur() {
-    // No need to filter/search after focus is lost
-    clearTimeout(this.searchTimer);
   }
 
   render() {
     let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
 
     return (
-      <div className="input-group" role="search">
+      <div className="search-wrapper" role="search">
         <div className="border-wrap">
           <input id="hub-search-bar"
             type="text"
             value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
-            onClick={(event) => this.props.onFilter(event.target.value)}
-            onFocus={this.handleFocus.bind(this)}
-            onInput={this.handleInput.bind(this)}
-            onKeyDown={e => this.handleKeyDown(e)}
-            onBlur={this.handleBlur.bind(this)}/>
-          <div className="input-group-addon icon-search"></div>
+            onInput={this.handleInput}
+            onKeyDown={event => this.handleKeyDown(event)}
+            ref={el => this.input = el}/>
+          <div className="icon-search"/>
         </div>
       </div>
     );
   }
 }
+
+Search.propTypes = {
+  value: PropTypes.string,
+  auto: PropTypes.bool.isRequired,
+  onFilter: PropTypes.func.isRequired,
+  onNavigate: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired
+};
 
 export default Search;

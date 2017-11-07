@@ -1,0 +1,43 @@
+
+.h5p-hub {
+  .navbar {
+    background-color: transparent;
+    color: #020202;
+    border: 0;
+    padding: 1.2em 1.2em 0.975422574em 2.292em;
+    margin: 0;
+    font-size: 1em;
+  }
+}
+
+.result-header {
+  margin: 0 0 0.7844743em;
+  font-size: 1.042em;
+  font-weight: 600;
+}
+.result-hits {
+  font-size: 0.8em;
+  color: #808080;
+  font-weight: 400;
+  padding-left: 0.4em;
+}
+.sort-by-list > li {
+  float: left;
+  margin-left: 0.5em;
+  cursor: pointer;
+  color: #808080;
+  user-select: none;
+  font-size: 0.9em;
+  padding: 0.25em 0.75em;
+  outline-color: #1a93f4;
+
+  &.hightlight {
+    font-weight: 600;
+    color: #020202;
+  }
+}
+.sort-by-header {
+  float: left;
+  padding: 0.25em 0.75em 0.25em 0;
+  font-size: 0.9em;
+}

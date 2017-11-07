@@ -1,0 +1,153 @@
+@import "../../../../../styles/base/colors";
+@import "../../../../../styles/base/mixins";
+@import "../../../../../styles/base/variables";
+
+$content-type-list-image-size: 100px;
+.content-type-list {
+  padding: 1.25em 0;
+  margin: 0;
+  overflow: auto;
+  height: 39.122137405em;
+  opacity: 1;
+  transition: opacity 0.2s, visibility 0s linear 0s;
+
+  &[aria-hidden="true"] {
+    display: inherit;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0s linear 0.2s;
+  }
+
+  @include scroll-bar($c3, lighten($c1, 20%));
+
+  &:before {
+    content: " ";
+    width: 100%;
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
+                0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .media .media-body {
+    overflow: visible;
+  }
+
+  li {
+    width: 100%;
+    padding: 0.5em 1.5em 0.5em 1em;
+    box-sizing: border-box;
+    cursor: pointer;
+    overflow: auto;
+    outline-color: lighten($ac1, 10%);
+    margin-top: 0;
+
+    &:hover {
+      background-color: lighten($ac1, 55%);
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $separator-color;
+    }
+  }
+  li[tabindex="0"] {
+    background-color: lighten($ac1, 55%);
+  }
+
+  .media-object {
+    width: $content-type-list-image-size / 2;
+  }
+
+  .button {
+    min-width: 4em;
+    padding: 0.65em 1.5em;
+    float: right;
+  }
+
+  @media (min-width: $screen-medium) {
+    .button {
+      margin-top: 0.25em;
+    }
+  }
+
+  li:hover .media-heading {
+    // TODO - change color on hover!
+  }
+
+  .media-heading {
+    float: left;
+    margin-right: $gutter;
+  }
+
+  .description {
+    color: $c6;
+    font-size: $text-body-small;
+    float: left;
+    clear: left;
+  }
+
+  .content-type-update-info {
+    margin-right: 0;
+    color: $text-light;
+    font-size: 0.8em;
+    font-style: italic;
+    float: left;
+
+    &:before {
+      @include icon($icon-update);
+      font-style: normal;
+      font-size: 0.8em;
+      margin-right: 0.4em;
+    }
+  }
+  @media (min-width: $screen-medium) {
+    .content-type-update-info {
+      margin-right: 2em;
+      margin-top: 1em;
+      float: right;
+    }
+  }
+
+  .content-type-actions-info {
+    display: inline-block;
+    float: right;
+  }
+
+  .content-type-row-button {
+    display: inline-block;
+    white-space: nowrap;
+    text-align: right;
+    padding: 0;
+  }
+
+  @media (min-width: $screen-small) {
+    .content-type-row-button {
+      padding: $gutter;
+    }
+
+    .media-object {
+      width: $content-type-list-image-size;
+    }
+  }
+}
+
+.no-results {
+  background: url('../../../../../images/no-results.svg') no-repeat;
+  background-position: 4em 0em;
+  background-size: contain;
+  padding: 0em 1em 0.5em 17em;
+  margin-top: 1em;
+}
+.no-results-title {
+  margin-bottom: 0.75em;
+  font-size: 1.2em;
+}
