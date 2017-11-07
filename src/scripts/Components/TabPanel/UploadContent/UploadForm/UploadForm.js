@@ -24,6 +24,7 @@ class UploadForm extends React.Component {
   }
 
   render() {
+    // TODO: Add use to the dictionary
     return (
       <div className="upload-form">
         <input className="upload-path"
@@ -37,7 +38,7 @@ class UploadForm extends React.Component {
           ref={(button) => {this.useButton = button; }}
           className={"button use-button " + (this.props.isSelected ? 'visible' : ' ')}
           disabled={this.props.isUploading}
-          onClick={this.props.onUpload}>Use // TODO: Add use to the dictionary
+          onClick={this.props.onUpload}>Use
         </button>
         <div className="input-wrapper">
           <input type="file" accept=".h5p" aria-hidden="true"
