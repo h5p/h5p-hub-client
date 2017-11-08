@@ -18,7 +18,8 @@ class Hub extends React.Component {
       expanded: false,
       section: 'content-types',
       selected: props.selected,
-      title: props.title
+      title: props.title,
+      contentTypes: props.contentTypes
     };
   }
 
@@ -45,6 +46,12 @@ class Hub extends React.Component {
     this.props.onUpload(data);
   }
 
+  handleInstall = (contentTypes) => {
+    this.setState({
+      contentTypes: contentTypes
+    });
+  };
+
   render() {
     return (
       <section className="h5p-hub h5p-sdk">
@@ -59,9 +66,11 @@ class Hub extends React.Component {
             <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
-                contentTypes={this.props.contentTypes}
+                contentTypes={this.state.contentTypes}
                 setFocus={this.state.expanded}
-                onUse={this.handleUse} />
+                getAjaxUrl={this.props.getAjaxUrl}
+                onUse={this.handleUse}
+                onInstall={this.handleInstall}/>
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}

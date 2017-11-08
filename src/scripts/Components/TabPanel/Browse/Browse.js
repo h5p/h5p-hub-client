@@ -23,6 +23,14 @@ class Browse extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState(state => {
+      return {
+        contentTypes: search(nextProps.contentTypes, state.filterOn, state.orderBy)
+      };
+    });
+  }
+
   handleDetailClose = () => {
     this.setState({
       detailViewActive: false
@@ -141,7 +149,9 @@ class Browse extends React.Component {
             library={this.state.library}
             visible={this.state.detailViewActive}
             onUse={this.props.onUse}
-            onClose={this.handleDetailClose}/>
+            onClose={this.handleDetailClose}
+            getAjaxUrl={this.props.getAjaxUrl}
+            onInstall={this.props.onInstall}/>
         </div>
       </div>
     );
@@ -151,7 +161,9 @@ class Browse extends React.Component {
 Browse.propTypes = {
   contentTypes: PropTypes.object.isRequired,
   setFocus: PropTypes.bool,
-  onUse: PropTypes.func.isRequired
+  getAjaxUrl: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired,
+  onInstall: PropTypes.func.isRequired
 };
 
 export default Browse;
