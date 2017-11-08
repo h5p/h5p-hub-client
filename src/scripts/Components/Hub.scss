@@ -46,6 +46,14 @@
   .content-type-section {
     position: relative;
     overflow: hidden;
+
+    &.height-limit {
+      height: 34em;
+    }
+  }
+  .content-type-section-view > .h5p-hub-message {
+    margin: 0;
+    padding: 0.5em 3.5em 0.7em 2.292em;
   }
 }
 
