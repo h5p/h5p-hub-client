@@ -21,7 +21,6 @@
   margin: $gutter 0;
   padding: 0.5em 1.250em;
   padding-right: 2.250em;
-  text-align: right;
 
   .title {
     font-size: $text-list-title;
@@ -52,9 +51,11 @@
     position: absolute;
     background-color: transparent;
     color: #555;
-    right: 2em;
+    right: 1.75em;
     line-height: 2.75;
     font-size: 0.75em;
+    width: 2.75em;
+    text-align: center;
   }
 
   .message-close:before {
@@ -83,9 +84,5 @@
   &.dismissible {
     overflow: auto;
     padding-right: 3.5em;
-
-    .message-content {
-      float: right;
-    }
   }
 }
