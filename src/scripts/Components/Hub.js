@@ -7,8 +7,6 @@ import TabPanel from './TabPanel/TabPanel';
 import Browse from './TabPanel/Browse/Browse';
 import UploadContent from './TabPanel/UploadContent/UploadContent';
 
-import Message, { severityLevels } from './Message/Message';
-
 import './Hub.scss';
 
 class Hub extends React.Component {
@@ -58,15 +56,6 @@ class Hub extends React.Component {
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
-            {
-              this.props.error &&
-              <Message
-                severity={severityLevels.error}
-                dismissable={true}
-                message={this.props.error}
-              />
-            }
-
             <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
