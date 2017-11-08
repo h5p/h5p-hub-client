@@ -20,11 +20,6 @@ class List extends React.Component {
     }
   }
 
-  handleUse = (event, contentType) => {
-    this.props.onUse(contentType);
-    event.preventDefault();
-  }
-
   handleFocus = (id) => {
     this.props.onFocus(this.getLibrary(id));
   }
@@ -42,7 +37,8 @@ class List extends React.Component {
     const listItems = this.props.contentTypes.map((contentType, i) => (
       <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
         <ListItem contentType={contentType}
-          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
+          onUse={this.props.onUse}/>
       </li>
     ));
 
