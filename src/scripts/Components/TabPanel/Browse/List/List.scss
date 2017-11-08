@@ -146,9 +146,13 @@ $content-type-list-image-size: 100px;
   background-position: 4em 0em;
   background-size: contain;
   padding: 0em 1em 0.5em 17em;
-  margin-top: 1em;
+  margin-top: 2em;
 }
 .no-results-title {
-  margin-bottom: 0.75em;
+  margin-bottom: 0.4em;
   font-size: 1.2em;
+  font-weight: bold;
+}
+.no-results-desc {
+  color: #4d4d4d;
 }
