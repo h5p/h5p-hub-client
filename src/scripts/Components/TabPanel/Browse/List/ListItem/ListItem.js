@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import noIcon from '../../../../../../images/content-type-placeholder.svg';
 import Dictionary from '../../../../../utils/dictionary';
 
+import './ListItem.scss';
+
 const ListItem = ({contentType, tabindex, onUse}) => {
 
   const title = (contentType.title || contentType.machineName);
