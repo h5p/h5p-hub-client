@@ -6,7 +6,7 @@
   .upload-wrapper {
     padding: 1em 2em 2em 2em;
 
-    .message {
+    .h5p-hub-message {
       margin-top: 0;
     }
 
@@ -42,6 +42,10 @@
 
     button[disabled] {
       opacity: 0.5;
+    }
+
+    a:focus {
+      outline: auto;
     }
   }
 
