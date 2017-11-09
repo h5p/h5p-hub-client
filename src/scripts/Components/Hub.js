@@ -24,8 +24,11 @@ class Hub extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // Recieve updates to panel title
-    this.state.title = nextProps.title;
+    if (nextProps !== this.props.title) {
+      // Recieve updates to panel title
+      this.state.title = nextProps.title;
+      this.state.expanded = true; // Open panel
+    }
   }
 
   componentDidUpdate() {
