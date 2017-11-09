@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 
 import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
+import Dictionary from '../../../../utils/dictionary';
 
 import './List.scss';
 
 class List extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.contentTypes !== this.props.contentTypes) {
+      // Reset scrolling when content types change
+      this.setState({resetScroll: true});
+    }
   }
 
   getLibrary = (id) => {
@@ -20,29 +28,31 @@ class List extends React.Component {
     }
   }
 
-  handleUse = (event, contentType) => {
-    this.props.onUse(contentType);
-    event.preventDefault();
-  }
-
   handleFocus = (id) => {
     this.props.onFocus(this.getLibrary(id));
   }
 
   handleSelect = (id) => {
-    this.props.onSelect(this.getLibrary(id));
+    const contentType = this.getLibrary(id);
+    this.props.onSelect(contentType);
+    this.props.onFocus(contentType);
   }
 
   componentDidUpdate() {
-    // Reset scrolling
-    this.list.scrollTop = 0;
+    if (this.state.resetScroll) {
+      delete this.state.resetScroll;
+
+      // Reset list scrolling
+      this.list.scrollTop = 0;
+    }
   }
 
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
       <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
         <ListItem contentType={contentType}
-          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)} />
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
+          onUse={this.props.onUse}/>
       </li>
     ));
 
@@ -62,8 +72,8 @@ class List extends React.Component {
           </ol>
         ) : (
           <div className="no-results">
-            <div className="no-results-title">No results found</div>
-            <div className="no-results-desc">There is no content type that matches your search criteria.</div>
+            <div className="no-results-title">{Dictionary.get('noResultsFound')}</div>
+            <div className="no-results-desc">{Dictionary.get('noResultsFoundDesc')}</div>
           </div>
         )}
       </div>

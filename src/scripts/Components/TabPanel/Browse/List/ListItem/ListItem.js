@@ -3,10 +3,23 @@ import PropTypes from 'prop-types';
 import noIcon from '../../../../../../images/content-type-placeholder.svg';
 import Dictionary from '../../../../../utils/dictionary';
 
-const ListItem = ({contentType, tabindex}) => {
+import './ListItem.scss';
+
+const ListItem = ({contentType, tabindex, onUse}) => {
 
   const title = (contentType.title || contentType.machineName);
   const updateAvailable = (!contentType.isUpToDate && contentType.installed && contentType.canInstall);
+
+  const handleUse = (event) => {
+    onUse(contentType);
+    event.preventDefault();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.which === 13 || event.which === 32) {
+      handleUse(event);
+    }
+  };
 
   return (
     <div>
@@ -18,7 +31,7 @@ const ListItem = ({contentType, tabindex}) => {
         <div className="h4 media-heading">{title}</div>
 
         {contentType.installed ? (
-          <button type="button" className="button button-primary" tabIndex={tabindex} onClick={event => this.handleUse(event, contentType)}>
+          <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleUse} onKeyDown={handleKeyDown}>
             <span></span>
             {Dictionary.get('contentTypeUseButtonLabel')}
           </button>
@@ -41,7 +54,8 @@ const ListItem = ({contentType, tabindex}) => {
 
 ListItem.propTypes = {
   contentType: PropTypes.object.isRequired,
-  tabindex: PropTypes.number.isRequired
+  tabindex: PropTypes.number.isRequired,
+  onUse: PropTypes.func.isRequired
 };
 
 export default ListItem;

@@ -33,7 +33,7 @@ const ButtonBar = ({canInstall, installed, installing, updatable, onInstall, onU
         <button type="button"
           className={`button button-inverse-primary button-${secondButtonType.toLowerCase()}`}
           disabled={secondButtonDisabled}
-          onClick={installing ? onInstall : undefined}
+          onClick={installing ? undefined : onInstall}
         >
           {Dictionary.get(`contentType${secondButtonType}ButtonLabel`)}
         </button>

@@ -35,7 +35,7 @@ export default class HubClient {
       ReactDOM.render(
         <Hub
           title={state.title}
-          contentId={state.contentId}
+          contentId={parseInt(state.contentId)}
           contentTypes={state.contentTypes}
           selected={state.selected}
           getAjaxUrl={state.getAjaxUrl}
