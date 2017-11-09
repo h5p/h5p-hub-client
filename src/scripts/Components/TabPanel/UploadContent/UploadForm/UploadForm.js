@@ -13,8 +13,7 @@ class UploadForm extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    // Focus on the 'Use' button after a file is selected
-    if (!prevProps.isSelected && this.props.isSelected) {
+    if (this.props.fileSelected) {
       this.useButton.focus();
     }
   }
@@ -24,21 +23,20 @@ class UploadForm extends React.Component {
   }
 
   render() {
-    // TODO: Add use to the dictionary
     return (
       <div className="upload-form">
         <input className="upload-path"
-          placeholder={((this.props.isSelected || this.props.isUploading) ? this.props.filePath : Dictionary.get('uploadPlaceholder'))}
+          placeholder={((this.props.fileSelected || this.props.fileUploading) ? this.props.filePath : Dictionary.get('uploadPlaceholder'))}
           onClick={this.clickFileField}
           tabIndex="-1"
-          disabled={this.props.isUploading}
+          disabled={this.props.fileUploading}
           readOnly
         />
         <button type="button"
           ref={(button) => {this.useButton = button; }}
-          className={"button use-button " + (this.props.isSelected ? 'visible' : ' ')}
-          disabled={this.props.isUploading}
-          onClick={this.props.onUpload}>Use
+          className={"button use-button " + (this.props.fileSelected ? 'visible' : ' ')}
+          disabled={this.props.fileUploading}
+          onClick={this.props.onUpload}>{Dictionary.get("contentTypeUseButtonLabel")}
         </button>
         <div className="input-wrapper">
           <input type="file" accept=".h5p" aria-hidden="true"
@@ -48,8 +46,8 @@ class UploadForm extends React.Component {
           <button type="button"
             className="button upload-button"
             onClick={this.clickFileField}
-            disabled={this.props.isUploading}
-            tabIndex="0">{this.props.isSelected ? Dictionary.get('uploadFileButtonChangeLabel') : Dictionary.get('uploadFileButtonLabel')}
+            disabled={this.props.fileUploading}
+            tabIndex="0">{this.props.fileSelected ? Dictionary.get('uploadFileButtonChangeLabel') : Dictionary.get('uploadFileButtonLabel')}
           </button>
         </div>
       </div>
@@ -58,8 +56,8 @@ class UploadForm extends React.Component {
 }
 
 UploadForm.propTypes = {
-  isSelected: PropTypes.bool.isRequired,
-  isUploading: PropTypes.bool.isRequired,
+  fileSelected: PropTypes.bool.isRequired,
+  fileUploading: PropTypes.bool.isRequired,
   filePath: PropTypes.string.isRequired,
   onValidate: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
