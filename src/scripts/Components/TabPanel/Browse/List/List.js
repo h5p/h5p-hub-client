@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
+import Dictionary from '../../../../utils/dictionary';
 
 import './List.scss';
 
@@ -58,8 +59,8 @@ class List extends React.Component {
           </ol>
         ) : (
           <div className="no-results">
-            <div className="no-results-title">No results found</div>
-            <div className="no-results-desc">There is no content type that matches your search criteria.</div>
+            <div className="no-results-title">{Dictionary.get('noResultsFound')}</div>
+            <div className="no-results-desc">{Dictionary.get('noResultsFoundDesc')}</div>
           </div>
         )}
       </div>
