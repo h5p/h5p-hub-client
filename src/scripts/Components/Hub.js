@@ -43,8 +43,15 @@ class Hub extends React.Component {
   }
 
   handleUpload = (data) => {
+    let panelTitle = data.h5p.mainLibrary;
+    for (var i = 0; i < this.state.contentTypes.libraries.length; i++) {
+      let contentType = this.state.contentTypes.libraries[i];
+      if (contentType.machineName === data.h5p.mainLibrary) {
+        panelTitle = contentType.title;
+      }
+    }
     // Collapse Hub
-    this.setState({expanded: false, title: data.h5p.title});
+    this.setState({expanded: false, title: panelTitle});
 
     this.props.onUpload(data);
   }

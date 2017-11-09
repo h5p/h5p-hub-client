@@ -78,6 +78,7 @@ class UploadContent extends React.Component {
           fileSelected: false,
           fileUploading: false,
           filePath: '',
+          uploadData: {},
         });
       })
       .catch(() => {
@@ -86,6 +87,7 @@ class UploadContent extends React.Component {
           fileUploading: false,
           serverError: true,
           filePath: '',
+          uploadData: {},
         });
       });
   }
