@@ -12,6 +12,13 @@ class List extends React.Component {
     super(props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.contentTypes !== this.props.contentTypes) {
+      // Reset scrolling when content types change
+      this.setState({resetScroll: true});
+    }
+  }
+
   getLibrary = (id) => {
     for (let i = 0; i < this.props.contentTypes.length; i++) {
       const library = this.props.contentTypes[i];
@@ -26,12 +33,18 @@ class List extends React.Component {
   }
 
   handleSelect = (id) => {
-    this.props.onSelect(this.getLibrary(id));
+    const contentType = this.getLibrary(id);
+    this.props.onSelect(contentType);
+    this.props.onFocus(contentType);
   }
 
   componentDidUpdate() {
-    // Reset scrolling
-    this.list.scrollTop = 0;
+    if (this.state.resetScroll) {
+      delete this.state.resetScroll;
+
+      // Reset list scrolling
+      this.list.scrollTop = 0;
+    }
   }
 
   render() {
