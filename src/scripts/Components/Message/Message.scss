@@ -41,8 +41,10 @@
   .message-body {
     font-size: 0.925em;
     margin: 0;
-    color: $text-light;
     padding-bottom: 0.5em;
+  }
+  .message-content .message-body {
+    color: $text-light;
   }
 
   .message-close {

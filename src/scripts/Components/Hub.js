@@ -62,6 +62,17 @@ class Hub extends React.Component {
     });
   };
 
+  handleReload = () => {
+    fetch(this.props.getAjaxUrl('content-type-cache'), {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(result => result.json())
+      .then(response => (response.success === false ?
+        this.setState({error: response.message + ' (' + response.errorCode  + ')'}) :
+        this.setState({contentTypes: response})));
+  };
+
   render() {
     return (
       <section className="h5p-hub h5p-sdk">
@@ -79,8 +90,10 @@ class Hub extends React.Component {
                 contentTypes={this.state.contentTypes}
                 setFocus={this.state.expanded}
                 getAjaxUrl={this.props.getAjaxUrl}
+                error={this.state.error}
                 onUse={this.handleUse}
-                onInstall={this.handleInstall}/>
+                onInstall={this.handleInstall}
+                onReload={this.handleReload}/>
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
