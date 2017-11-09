@@ -15,6 +15,12 @@ const ListItem = ({contentType, tabindex, onUse}) => {
     event.preventDefault();
   };
 
+  const handleKeyDown = (event) => {
+    if (event.which === 13 || event.which === 32) {
+      handleUse(event);
+    }
+  };
+
   return (
     <div>
       <div className="media-left">
@@ -25,7 +31,7 @@ const ListItem = ({contentType, tabindex, onUse}) => {
         <div className="h4 media-heading">{title}</div>
 
         {contentType.installed ? (
-          <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleUse}>
+          <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleUse} onKeyDown={handleKeyDown}>
             <span></span>
             {Dictionary.get('contentTypeUseButtonLabel')}
           </button>
