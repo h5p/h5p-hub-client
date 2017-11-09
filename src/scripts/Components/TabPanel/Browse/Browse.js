@@ -117,7 +117,7 @@ class Browse extends React.Component {
           title={Dictionary.get('noContentTypesAvailable')}
           message={Dictionary.get('noContentTypesAvailableDesc')}>
           {this.props.error &&
-            <p class="message-body">{this.props.error}</p>
+            <p className="message-body">{this.props.error}</p>
           }
           <button type="button" className="button button-primary retry-button"
             tabIndex="0" onClick={this.handleRetry} disabled={this.state.retrying}>
