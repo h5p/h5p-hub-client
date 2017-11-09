@@ -26,7 +26,8 @@ class Browse extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState(state => {
       return {
-        contentTypes: search(nextProps.contentTypes, state.filterOn, state.orderBy)
+        contentTypes: search(nextProps.contentTypes, state.filterOn, state.orderBy),
+        retrying: undefined
       };
     });
   }
@@ -100,16 +101,29 @@ class Browse extends React.Component {
     });
   }
 
-  render() {
+  handleRetry = () => {
+    this.setState({
+      retrying: true
+    });
+    this.props.onReload();
+  }
 
+  render() {
     if (!this.props.contentTypes.libraries || !this.props.contentTypes.libraries.length) {
       // No content types available
       return (
         <Message
           severity='error'
           title={Dictionary.get('noContentTypesAvailable')}
-          message={Dictionary.get('noContentTypesAvailableDesc')}
-        />
+          message={Dictionary.get('noContentTypesAvailableDesc')}>
+          {this.props.error &&
+            <p class="message-body">{this.props.error}</p>
+          }
+          <button type="button" className="button button-primary retry-button"
+            tabIndex="0" onClick={this.handleRetry} disabled={this.state.retrying}>
+            {Dictionary.get('tryAgain')}
+          </button>
+        </Message>
       );
     }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Dictionary from '../../../../utils/dictionary';
+import '../../../../utils/fetch';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
