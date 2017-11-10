@@ -67,6 +67,8 @@ class UploadContent extends React.Component {
             fileSelected: false,
             fileUploading: false,
             serverError: true,
+            serverErrorTitle: json.errorCode,
+            serverErrorMessage: json.message,
             filePath: '',
             uploadData: {}
           });
@@ -86,6 +88,8 @@ class UploadContent extends React.Component {
           fileSelected: false,
           fileUploading: false,
           serverError: true,
+          serverError: Dictionary.get('h5pFileUploadServerErrorTitle'),
+          serverErrorMessage: Dictionary.get('h5pFileUploadServerErrorContent'),
           filePath: '',
           uploadData: {},
         });
@@ -112,8 +116,8 @@ class UploadContent extends React.Component {
           <Message
             type={'error'}
             dismissable={false}
-            title={Dictionary.get('h5pFileUploadServerErrorTitle')}
-            message={Dictionary.get('h5pFileUploadServerErrorContent')}
+            title={this.state.serverErrorTitle}
+            message={this.state.serverErrorMessage}
             severity='error'
           />
         }

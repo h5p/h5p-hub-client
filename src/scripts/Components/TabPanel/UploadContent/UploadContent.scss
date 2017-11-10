@@ -10,14 +10,6 @@
       margin-top: 0;
     }
 
-    [aria-hidden="true"] {
-      display: none;
-    }
-
-    .visible {
-      display: inline-block;
-    }
-
     .upload-throbber {
       outline: 0;
       height: 10em;
@@ -32,31 +24,8 @@
       }
     }
 
-    .upload-button {
-      margin-left: 0.5em;
-    }
-
-    .use-button {
-      margin-left: 0.5em;
-    }
-
-    button[disabled] {
-      opacity: 0.5;
-    }
-
     a:focus {
       outline: auto;
-    }
-  }
-
-  .upload-path {
-    margin-bottom: 1em;
-    cursor: pointer;
-    outline: 0;
-    padding-left: 1.5em;
-
-    &[disabled] {
-      cursor: default;
     }
   }
 
@@ -68,11 +37,5 @@
 
   p.upload-instruction-description {
     font-size: 1.042em;
-  }
-
-  @media (min-width: $screen-small) {
-    .upload-path {
-      width: 60%;
-    }
   }
 }

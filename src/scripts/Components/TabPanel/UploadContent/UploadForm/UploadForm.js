@@ -16,6 +16,9 @@ class UploadForm extends React.Component {
     if (this.props.fileSelected) {
       this.useButton.focus();
     }
+    else {
+      this.fileField.value = "";
+    }
   }
 
   clickFileField() {
