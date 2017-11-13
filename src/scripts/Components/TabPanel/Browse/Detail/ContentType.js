@@ -6,6 +6,7 @@ import '../../../../utils/fetch';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
+import Modal from './Modal/Modal';
 import ContentTypeAccordion from './ContentTypeAccordion';
 import ImageSlider from './ImageSlider/ImageSlider';
 import ButtonBar from './ButtonBar';
@@ -18,7 +19,8 @@ class ContentType extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: false
+      visible: false,
+      selectedScreenshot: 0
     };
   }
 
@@ -44,6 +46,19 @@ class ContentType extends React.Component {
         }
       });
     }
+  }
+
+  onImageSelect = (index) => {
+    this.setState({
+      modalIsOpen: true,
+      selectedScreenshot: index
+    });
+  }
+
+  onModalClose = () => {
+    this.setState({
+      modalIsOpen: false
+    });
   }
 
   handleInstall = () => {
@@ -141,7 +156,10 @@ class ContentType extends React.Component {
             </a>
           </div>
         </div>
-        <ImageSlider images={this.props.library.screenshots}/>
+        <ImageSlider
+          images={this.props.library.screenshots}
+          onImageSelect={this.onImageSelect}
+          showProgress={false}/>
         <hr />
         <ButtonBar
           installed={this.state.installed}
@@ -158,6 +176,17 @@ class ContentType extends React.Component {
             attributes={this.props.library.license.attributes}
           />
         }
+        <Modal
+          visible={this.state.modalIsOpen}
+          onClose={this.onModalClose}
+          label={Dictionary.get('imageLightboxTitle')}
+        >
+          <ImageSlider
+            images={this.props.library.screenshots}
+            imagesToShow={1}
+            showProgress={true}
+            selected={this.state.selectedScreenshot}/>
+        </Modal>
       </div>
     );
   }

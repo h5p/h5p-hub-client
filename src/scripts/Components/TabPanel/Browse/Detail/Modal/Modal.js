@@ -2,6 +2,9 @@ import React from 'react';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
 
+import Button from '../../../../Button/Button';
+import Dictionary from '../../../../../utils/dictionary';
+
 import './Modal.scss';
 
 class Lightbox extends React.Component {
@@ -29,6 +32,11 @@ class Lightbox extends React.Component {
   }
 
   render() {
+    const closeButtonProps = {
+      className: 'lightbox-close',
+      'aria-label': Dictionary.get('close')
+    };
+
     return (
       <Modal
         isOpen={this.state.modalIsOpen}
@@ -38,6 +46,9 @@ class Lightbox extends React.Component {
         className='lightbox-inner'
         overlayClassName='lightbox'
       >
+        <Button
+          buttonProps={closeButtonProps}
+          onButtonClick={this.closeModal}/>
         {this.props.children}
       </Modal>
     );

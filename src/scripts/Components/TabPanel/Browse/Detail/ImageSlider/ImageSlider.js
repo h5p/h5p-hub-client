@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../../utils/dictionary';
-import Modal from '../Modal/Modal';
+
 
 import './ImageSlider.scss';
 
@@ -12,19 +12,21 @@ class ImageSlider extends React.Component {
     super(props);
 
     this.state = {
-      imagesToShow: 5,
-      offset: 0,
-      selected: 0,
-      modalIsOpen: false
+      imagesToShow: this.props.imagesToShow || 5,
+      offset: this.props.selected || 0,
+      selected: this.props.selected || 0,
+      modalIsOpen: false,
+      focusOnRender: false
     };
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResized);
+    if (!this.props.imagesToShow) {
+      window.addEventListener('resize', this.onWindowResized);
+    }
   }
 
   onWindowResized = () => {
-
     if (!this.carousel) {
       return;
     }
@@ -41,66 +43,54 @@ class ImageSlider extends React.Component {
 
     if (this.state.imagesToShow != imagesToShow) {
       this.setState({
-        imagesToShow: imagesToShow
+        imagesToShow: imagesToShow,
+        offset: 0,
+        selected: 0
       });
     }
   }
 
   handleImageSelected = (index) => {
-    //console.log('TODO: Open screenshots in overlay: ' + index);
-    this.setState({
-      modalIsOpen: true
-    });
+    if (this.props.onImageSelect) {
+      this.props.onImageSelect(index);
+    }
   }
 
   previousSlide = () => {
-    var offset = this.state.offset - 1;
-    this.setState({
-      offset: offset,
-      selected: offset
-    });
+    this.setState((prevState) => ({
+      offset: prevState.offset - 1,
+      selected: prevState.offset - 1
+    }));
   }
 
   nextSlide = () => {
-    const offset = this.state.offset + 1;
-    this.setState({
-      offset: offset,
-      selected: offset
+    this.setState((prevState) => ({
+      offset: prevState.offset + 1,
+      selected: prevState.offset + 1
+    }));
+  }
+
+  moveFocus(increment) {
+    this.setState((prevState) => {
+
+      const index = prevState.selected + increment;
+
+      if (index >= 0 && index < this.props.images.length) {
+        let newOffset = prevState.offset;
+        if(index < prevState.offset) {
+          newOffset = prevState.offset - 1;
+        }
+        else if (index >= prevState.offset + prevState.imagesToShow) {
+          newOffset = prevState.offset + 1;
+        }
+
+        return {
+          selected: index,
+          focusOnRender: true,
+          offset: newOffset
+        };
+      }
     });
-  }
-
-  focusOn(index) {
-    if (index >= 0 && index < this.props.images.length) {
-      this.setState({
-        selected: index,
-        focusOnRender: true,
-        offset: this.offsetNeeded(index)
-      });
-    }
-  }
-
-  focusNext() {
-    this.focusOn(this.state.selected + 1);
-  }
-
-  focusPrevious() {
-    this.focusOn(this.state.selected - 1);
-  }
-
-  /**
-   * Check if offset needs to be changed for a certain slide
-   *
-   * @param {number} index The index of the slide
-   */
-  offsetNeeded(index) {
-    if(index < this.state.offset) {
-      return this.state.offset - 1;
-    }
-    else if (index >= this.state.offset + this.state.imagesToShow) {
-      return this.state.offset + 1;
-    }
-
-    return this.state.offset;
   }
 
   componentWillReceiveProps() {
@@ -115,7 +105,9 @@ class ImageSlider extends React.Component {
       this.items[this.state.selected].focus();
       this.scroller.scrollLeft = 0;
 
-      delete this.state.focusOnRender;
+      this.setState({
+        focusOnRender: false
+      });
     }
   }
 
@@ -127,13 +119,13 @@ class ImageSlider extends React.Component {
     switch(event.which) {
       case 37: // Left
       case 38: // Up
-        this.focusPrevious();
+        this.moveFocus(-1);
         event.preventDefault();
         break;
 
       case 39: // Right
       case 40: // Down
-        this.focusNext();
+        this.moveFocus(+1);
         event.preventDefault();
         break;
 
@@ -152,9 +144,7 @@ class ImageSlider extends React.Component {
   }
 
   render() {
-
     const images = this.props.images;
-
     if (!images || !images.length) {
       return null;
     }
@@ -181,7 +171,10 @@ class ImageSlider extends React.Component {
           onClick={() => this.handleImageSelected(idx)}
           ref={item => item ? this.items.push(item) : undefined}
         >
-          <img src={image.url} alt={image.alt}/>
+          <img
+            src={image.url}
+            alt={image.alt}
+            className={this.props.onImageSelect ? 'selectable' : ''}/>
         </li>
       );
     });
@@ -205,13 +198,13 @@ class ImageSlider extends React.Component {
           navigationNeeded &&
           <NavigationButton type="next" onClick={this.nextSlide} disabled={disableNext}/>
         }
-        <Modal
-          visible={this.state.modalIsOpen}
-          onClose={this.onImageModalClose}
-          label={Dictionary.get('imageLightboxTitle')}
-        >
-          Here comes the image slider!
-        </Modal>
+        {
+          this.props.showProgress &&
+          <div className="progress">
+            {Dictionary.get('imageLightBoxProgress').replace(':num', this.state.offset+1).replace(':total', numSlides)}
+          </div>
+        }
+
       </div>
     );
   }
@@ -247,6 +240,10 @@ const NavigationButton = ({onClick, type, disabled}) => {
 };
 
 ImageSlider.propTypes = {
+  onImageSelect: PropTypes.func,
+  imagesToShow: PropTypes.number,
+  showProgress: PropTypes.bool.isRequired,
+  selected: PropTypes.number,
   images: PropTypes.arrayOf(PropTypes.shape({
     url: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired

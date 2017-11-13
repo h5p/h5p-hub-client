@@ -1,10 +1,11 @@
+@import '../../../../../../styles/base/mixins';
+
 .lightbox {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1;
 
   background: rgba(0, 0, 0, 0.8);
 }
@@ -17,7 +18,32 @@
   width: 100%;
   box-sizing: border-box;
 
-  background-color: #fff;
   padding: 2em;
   text-align: center;
+}
+
+.lightbox-close {
+  position: relative;
+  top: -1.5em;
+  right: 0;
+  float: right;
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 2em;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  z-index: 1;
+  user-select: none;
+  box-sizing: border-box;
+  transition: background 0.2s;
+}
+.lightbox-close:hover {
+  background: rgba(132, 143, 158, 0.8);
+}
+.lightbox-close:before {
+  @include icon($icon-close);
+  font-size: 0.6em;
 }

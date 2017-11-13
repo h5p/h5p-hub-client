@@ -13,8 +13,7 @@ $color-button: rgba($c1, .8);
   .scroller {
     overflow: hidden;
     width: calc(100% - 5em);
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 2.5em;
   }
 
   ul {
@@ -32,14 +31,24 @@ $color-button: rgba($c1, .8);
     list-style-type: none;
     float: left;
     box-sizing: border-box;
-    overflow: auto;
+    overflow: hidden;
 
     img {
       max-width: 100%;
       box-sizing: border-box;
       border: 1px solid #ced6e3;
+    }
+
+    img.selectable {
       cursor: pointer;
     }
+  }
+
+  .progress {
+    color: #fff;
+    position: relative;
+    bottom: -2em;
+    text-align: center;
   }
 
   .navigation {
@@ -81,5 +90,28 @@ $color-button: rgba($c1, .8);
   .next:before {
     @include icon($icon-arrow-thick);
     transform: rotate(180deg);
+  }
+}
+
+/* Styling for the image slider in the lightbox */
+.lightbox-inner .carousel {
+  ul {
+    transition-duration: 0.15s;
+  }
+
+  li {
+    padding: 0;
+  }
+
+  .navigation {
+    font-size: 1.2em;
+  }
+
+  .next {
+    right: -0.75em;
+  }
+
+  .prev {
+    left: -0.75em;
   }
 }
