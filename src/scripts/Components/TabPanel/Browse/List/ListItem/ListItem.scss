@@ -1,0 +1,71 @@
+@import "../../../../../../styles/base/colors";
+@import "../../../../../../styles/base/mixins";
+@import "../../../../../../styles/base/variables";
+
+$content-type-list-image-size: 100px;
+
+.h5p-hub .content-type-list {
+  .media .media-body {
+    overflow: visible;
+  }
+
+  .media-object {
+    width: $content-type-list-image-size / 2;
+  }
+
+  .media-heading {
+    float: left;
+    margin-right: $gutter;
+  }
+
+  .button {
+    min-width: 4em;
+    padding: 0.65em 1.5em;
+    float: right;
+  }
+
+  .description {
+    color: $c6;
+    font-size: $text-body-small;
+    float: left;
+    clear: left;
+  }
+
+  .content-type-update-info {
+    margin-right: 0;
+    color: $text-light;
+    font-size: 0.8em;
+    font-style: italic;
+    float: left;
+
+    &:before {
+      @include icon($icon-update);
+      font-style: normal;
+      font-size: 0.8em;
+      margin-right: 0.4em;
+    }
+  }
+
+  .content-type-actions-info {
+    display: inline-block;
+    float: right;
+  }
+
+  @media (min-width: $screen-medium) {
+    .button {
+      margin-top: 0.25em;
+    }
+
+    .content-type-update-info {
+      margin-right: 2em;
+      margin-top: 1em;
+      float: right;
+    }
+  }
+
+  @media (min-width: $screen-small) {
+    .media-object {
+      width: $content-type-list-image-size;
+    }
+  }
+}

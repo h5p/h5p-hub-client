@@ -1,0 +1,41 @@
+@import '../../../../styles/base/variables';
+@import '../../../../styles/base/mixins';
+
+.h5p-hub {
+
+  .upload-wrapper {
+    padding: 1em 2em 2em 2em;
+
+    .h5p-hub-message {
+      margin-top: 0;
+    }
+
+    .upload-throbber {
+      outline: 0;
+      height: 10em;
+
+      &.hidden {
+        display: none;
+      }
+
+      &:before {
+        @include throbber(4em);
+        margin: auto;
+      }
+    }
+
+    a:focus {
+      outline: auto;
+    }
+  }
+
+  h1.upload-instruction-header {
+    font-size: $text-title-small;
+    margin-top: $gutter;
+    margin-bottom: $gutter;
+  }
+
+  p.upload-instruction-description {
+    font-size: 1.042em;
+  }
+}

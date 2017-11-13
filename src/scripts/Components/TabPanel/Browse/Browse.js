@@ -1,25 +1,41 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import Choose from '../../Choose/Choose';
-
+import Message from '../../Message/Message';
 import Search from './Search/Search';
+import Order from './Order/Order';
 import List from './List/List';
 import Detail from './Detail/Detail';
+
+import search from '../../../utils/search.js';
+import Dictionary from '../../../utils/dictionary';
 
 class Browse extends React.Component {
   constructor(props) {
     super(props);
 
+    const defaultOrderBy = 'recently';
     this.state = {
-      filterOn: '',
-      orderBy: 'recently',
-      detailViewActive: false
+      orderBy: defaultOrderBy,
+      contentTypes: search(props.contentTypes, null, defaultOrderBy),
+      detailViewActive: false,
+      warnOutdated: this.props.contentTypes.outdated
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState(state => {
+      return {
+        contentTypes: search(nextProps.contentTypes, state.filterOn, state.orderBy),
+        retrying: undefined
+      };
+    });
   }
 
   handleDetailClose = () => {
     this.setState({
-      detailViewActive: false
+      detailViewActive: false,
+      setFocus: !this.state.setFocus, // Toggle to trigger focus
     });
   }
 
@@ -31,63 +47,138 @@ class Browse extends React.Component {
   }
 
   handleFilterOn = (keyword) => {
+    // Search for keyword and close detail view if open
     this.setState({
-      filterOn: keyword
+      contentTypes: search(this.props.contentTypes, keyword, this.state.orderBy),
+      filterOn: keyword,
+      focused: null,
+      detailViewActive: false
     });
   }
 
   handleOrderBy = (property) => {
     this.setState({
+      contentTypes: search(this.props.contentTypes, null, property),
       orderBy: property,
-      filterOn: ''
+      filterOn: '',
+      focused: null,
+      setFocus: !this.state.setFocus, // Toggle to trigger focus
     });
   }
 
+  handleFocus = (focused) => {
+    this.setState({
+      focused: focused
+    });
+  }
+
+  handleFocusMove = (direction) => {
+    const focused = this.state.focused || this.state.contentTypes[0];
+
+    for (let i = 0; i < this.state.contentTypes.length; i++) {
+      if (focused === this.state.contentTypes[i]) {
+        if (this.state.contentTypes[i + direction]) {
+          this.setState({
+            focused: this.state.contentTypes[i + direction]
+          });
+        }
+        return;
+      }
+    }
+  }
+
+  handleSelect = () => {
+    // Use highlighted item
+    const selected = this.state.focused || this.state.contentTypes[0];
+    if (selected) {
+      this.props.onUse(selected);
+    }
+  }
+
+  handleWarningClose = () => {
+    this.setState({
+      warnOutdated: false
+    });
+  }
+
+  handleRetry = () => {
+    this.setState({
+      retrying: true
+    });
+    this.props.onReload();
+  }
+
   render() {
-    // TODO: Focus search bar when loaded (or timeout 200 ?)
-    // TODO: Translate new text strings
+    if (!this.props.contentTypes.libraries || !this.props.contentTypes.libraries.length) {
+      // No content types available
+      return (
+        <Message
+          severity='error'
+          title={Dictionary.get('noContentTypesAvailable')}
+          message={Dictionary.get('noContentTypesAvailableDesc')}>
+          {this.props.error &&
+            <p className="message-body">{this.props.error}</p>
+          }
+          <button type="button" className="button button-primary retry-button"
+            tabIndex="0" onClick={this.handleRetry} disabled={this.state.retrying}>
+            {Dictionary.get('tryAgain')}
+          </button>
+        </Message>
+      );
+    }
 
     return (
       <div className="content-type-section-view loaded">
 
         <Search value={this.state.filterOn}
           auto={!this.state.detailViewActive}
-          onNavigate={dir => this.list.changeSelected(dir)}
-          onSelect={() => this.list.useSelected()}
-          onFilter={this.handleFilterOn}/>
+          setFocus={this.props.setFocus}
+          onFilter={this.handleFilterOn}
+          onNavigate={this.handleFocusMove}
+          onSelect={this.handleSelect}/>
 
-        <div className="navbar">
-          <div className="result-header">All Content Types <span className="result-hits">(35 results)</span></div>
-
-          <div id="sort-by" className="sort-by-header">Show:</div>
-          <ul className="sort-by-list" aria-labelledby="sort-by">
-            <Choose selected={this.state.orderBy} onChange={this.handleOrderBy}>
-              <li id="recently">Recently Used First</li>
-              <li id="newest">Newest First</li>
-              <li id="a-to-z">A to Z</li>
-            </Choose>
-          </ul>
-        </div>
-
-        <div className="content-type-section">
-          <List onUse={this.props.onUse}
-            onSelect={this.handleOnLibrarySelect}
-            filterOn={this.state.filterOn}
-            orderBy={this.state.orderBy}
-            contentTypes={this.props.contentTypes}
-            visible={!this.state.detailViewActive}
-            ref={list => this.list = list}
+        {this.state.warnOutdated &&
+          <Message
+            severity='warning'
+            title={Dictionary.get('contentTypeCacheOutdated')}
+            message={Dictionary.get('contentTypeCacheOutdatedDesc')}
+            onClose={this.handleWarningClose}
           />
+        }
+
+        <Order hits={this.state.contentTypes.length}
+          selected={this.state.orderBy}
+          onChange={this.handleOrderBy}
+          hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
+          visible={!this.state.detailViewActive}/>
+
+        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '')}>
+          <List contentTypes={this.state.contentTypes}
+            focused={this.state.focused}
+            setFocus={!this.state.setFocus}
+            visible={!this.state.detailViewActive}
+            onUse={this.props.onUse}
+            onSelect={this.handleOnLibrarySelect}
+            onFocus={this.handleFocus}/>
           <Detail
             library={this.state.library}
             visible={this.state.detailViewActive}
             onUse={this.props.onUse}
             onClose={this.handleDetailClose}
-          />
+            getAjaxUrl={this.props.getAjaxUrl}
+            onInstall={this.props.onInstall}/>
         </div>
       </div>
     );
   }
 }
+
+Browse.propTypes = {
+  contentTypes: PropTypes.object.isRequired,
+  setFocus: PropTypes.bool,
+  getAjaxUrl: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired,
+  onInstall: PropTypes.func.isRequired
+};
 
 export default Browse;

@@ -1,0 +1,54 @@
+@import "../../../../../styles/base/colors";
+@import "../../../../../styles/base/variables";
+
+.search-wrapper {
+  padding: $gutter 1.125em;
+  background-color: $c1;
+  position: relative;
+
+  .border-wrap {
+    padding: 3px;
+    background: #fff;
+    border-radius: 1.25em;
+    font-size: 1.15em;
+  }
+
+  .icon-search {
+    position: absolute;
+    font-size: 1em;
+    top: 1.4em;
+    right: 2.2em;
+    cursor: pointer;
+    color: #4f5662;
+  }
+}
+
+#hub-search-bar {
+  border: 1px solid #bfc0c0;
+  padding: 0.5em 0.5em 0.5em 1.2em;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1em;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+  color: #000000;
+  border-radius: 1.25em;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:focus {
+    border-color: #3ba0f2;
+    outline: none;
+  }
+  &:before {
+    background: none;
+    border: 4px solid #fff;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    pointer-events: none;
+  }
+}

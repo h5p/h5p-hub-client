@@ -1,12 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Dictionary from '../utils/dictionary';
 
 import DropDownSelector from './DropDownSelector/DropDownSelector';
 import TabPanel from './TabPanel/TabPanel';
 import Browse from './TabPanel/Browse/Browse';
 import UploadContent from './TabPanel/UploadContent/UploadContent';
-
-import Message, { severityLevels } from './Message/Message';
 
 import './Hub.scss';
 
@@ -19,32 +18,59 @@ class Hub extends React.Component {
       expanded: false,
       section: 'content-types',
       selected: props.selected,
-      title: props.title
+      title: props.title,
+      contentTypes: props.contentTypes
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    // Recieve updates to panel title
-    this.state.title = nextProps.title;
+    if (nextProps !== this.props.title) {
+      // Recieve updates to panel title
+      this.state.title = nextProps.title;
+      this.state.expanded = true; // Open panel
+    }
   }
 
   componentDidUpdate() {
     this.props.onResize();
   }
 
-  handleUse(contentType) {
+  handleUse = (contentType) => {
     // Collapse Hub
     this.setState({expanded: false, title: contentType.title || contentType.machineName});
 
     this.props.onUse(contentType);
   }
 
-  handleUpload(data) {
+  handleUpload = (data) => {
+    let panelTitle = data.h5p.mainLibrary;
+    this.state.contentTypes.libraries.forEach(library => {
+      if (library.machineName === data.h5p.mainLibrary) {
+        panelTitle = library.title;
+      }
+    })
     // Collapse Hub
-    this.setState({expanded: false, title: data.h5p.title});
+    this.setState({expanded: false, title: panelTitle});
 
     this.props.onUpload(data);
   }
+
+  handleInstall = (contentTypes) => {
+    this.setState({
+      contentTypes: contentTypes
+    });
+  };
+
+  handleReload = () => {
+    fetch(this.props.getAjaxUrl('content-type-cache'), {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(result => result.json())
+      .then(response => (response.success === false ?
+        this.setState({error: response.message + ' (' + response.errorCode  + ')'}) :
+        this.setState({contentTypes: response})));
+  };
 
   render() {
     return (
@@ -57,26 +83,21 @@ class Hub extends React.Component {
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
-            {
-              this.props.error &&
-              <Message
-                severity={severityLevels.error}
-                dismissable={true}
-                message={this.props.error}
-              />
-            }
-
             <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
-                contentTypes={this.props.contentTypes}
-                apiVersion={this.props.apiVersion}
-                onUse={this.handleUse.bind(this)} />
+                contentTypes={this.state.contentTypes}
+                setFocus={this.state.expanded}
+                getAjaxUrl={this.props.getAjaxUrl}
+                error={this.state.error}
+                onUse={this.handleUse}
+                onInstall={this.handleInstall}
+                onReload={this.handleReload}/>
               <UploadContent id="upload"
-                title={Dictionary.get('uploadTabLabel')}
+                title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
-                onUpload={this.handleUpload.bind(this)} />
+                onUpload={this.handleUpload} />
             </TabPanel>
           </div>
         </div>
@@ -84,5 +105,16 @@ class Hub extends React.Component {
     );
   }
 }
+
+Hub.propTypes = {
+  title: PropTypes.string,
+  contentId: PropTypes.number,
+  contentTypes: PropTypes.object.isRequired,
+  selected: PropTypes.string,
+  getAjaxUrl: PropTypes.func.isRequired,
+  onResize: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired,
+  onUpload: PropTypes.func.isRequired
+};
 
 export default Hub;

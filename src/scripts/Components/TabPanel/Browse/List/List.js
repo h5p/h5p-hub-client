@@ -1,120 +1,94 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import noIcon from '../../../../../images/content-type-placeholder.svg';
+import ListItem from './ListItem/ListItem';
 import Choose from '../../../Choose/Choose';
 import Dictionary from '../../../../utils/dictionary';
-import search from '../../../../utils/search.js';
+
+import './List.scss';
 
 class List extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = this.getFilteredState(props);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.getFilteredState(nextProps));
-  }
-
-  /**
-   * Create a state update filtering and ordering the content types.
-   * Set focus to the first content type.
-   */
-  getFilteredState(props) {
-    const newState = {
-      contentTypes: search(props.contentTypes, props.filterOn, props.orderBy)
-    };
-    if (newState.contentTypes[0]) {
-      newState.focused = newState.contentTypes[0].machineName.toLocaleLowerCase().replace('.','-');
+    if (nextProps.contentTypes !== this.props.contentTypes) {
+      // Reset scrolling when content types change
+      this.setState({resetScroll: true});
     }
-    return newState;
   }
 
-  changeSelected(dir) {
-    this.choose.changeFocused(dir);
-  }
-
-  useSelected() {
-    this.props.onUse(this.getLibrary(this.choose.getFocused()));
-  }
-
-  handleUse(event, contentType) {
-    this.props.onUse(contentType);
-    event.preventDefault();
-  }
-
-  getLibrary(id) {
-    for (var i = 0; i < this.props.contentTypes.libraries.length; i++) {
-      const library = this.props.contentTypes.libraries[i];
+  getLibrary = (id) => {
+    for (let i = 0; i < this.props.contentTypes.length; i++) {
+      const library = this.props.contentTypes[i];
       if (library.machineName.toLocaleLowerCase().replace('.','-') === id) {
         return library;
       }
     }
   }
 
+  handleFocus = (id) => {
+    this.props.onFocus(this.getLibrary(id));
+  }
+
+  handleSelect = (id) => {
+    const contentType = this.getLibrary(id);
+    this.props.onSelect(contentType);
+    this.props.onFocus(contentType);
+  }
+
+  componentDidUpdate() {
+    if (this.state.resetScroll) {
+      delete this.state.resetScroll;
+
+      // Reset list scrolling
+      this.list.scrollTop = 0;
+    }
+  }
+
   render() {
-    const apiVersion = this.props.contentTypes.apiVersion;
-
-    const listItems = this.state.contentTypes.map(contentType => {
-      // Determine if the content type is using an API version that is not yet supported
-      const apiNotSupported = !(apiVersion.major > contentType.h5pMajorVersion ||
-                               (apiVersion.major === contentType.h5pMajorVersion &&
-                                apiVersion.minor >= contentType.h5pMinorVersion));
-
-      // If the content type is restricted or requires a newer API, skip showing it
-      if (contentType.restricted || (!contentType.installed && apiNotSupported)) {
-        return;
-      }
-
-      let id = contentType.machineName.toLocaleLowerCase().replace('.','-');
-      let tabindex = (this.state.focused === id ? 0 : -1);
-      let title = (contentType.title || contentType.machineName);
-      let updateAvailable = (!contentType.isUpToDate && contentType.installed && contentType.canInstall);
-
-      return (
-        <li key={id} id={id} className="media">
-
-          <div className="media-left">
-            <img className="media-object" src={contentType.icon || noIcon} alt={title + ' ' + Dictionary.get('contentTypeIconAltText')}/>
-          </div>
-
-          <div className="media-body">
-            <div className="h4 media-heading">{title}</div>
-
-            {contentType.installed ? (
-              <button type="button" className="button button-primary" tabIndex={tabindex} onClick={event => this.handleUse(event, contentType)}>
-                <span></span>
-                {Dictionary.get('contentTypeUseButtonLabel')}
-              </button>
-            ) : (
-              <button type="button" className="button button-inverse-primary button-install'" tabIndex={tabindex}>
-                <span className="icon-arrow-thick"></span>
-                {Dictionary.get('contentTypeGetButtonLabel')}
-              </button>
-            )}
-
-            <div className={'content-type-update-info' + (updateAvailable ? '' : ' hidden')}>
-              {Dictionary.get('contentTypeUpdateAvailable')}
-            </div>
-
-            <div className="description">{contentType.summary || ''}</div>
-          </div>
-
-        </li>
-      );
-    });
+    const listItems = this.props.contentTypes.map((contentType, i) => (
+      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
+        <ListItem contentType={contentType}
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
+          onUse={this.props.onUse}/>
+      </li>
+    ));
 
     return (
-      <ol className="content-type-list" aria-hidden={!this.props.visible}>
-        <Choose selected={this.state.focused}
-          onChange={id => this.props.onSelect(this.getLibrary(id))}
-          onFocus={id => this.setState({focused: id})}
-          ref={choose => this.choose = choose}>
-          {listItems}
-        </Choose>
-      </ol>
+      <div className="content-type-list"
+        aria-hidden={!this.props.visible}
+        ref={el => this.list = el}>
+
+        {this.props.contentTypes.length ? (
+          <ol>
+            <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
+              setFocus={this.props.setFocus}
+              onChange={this.handleSelect}
+              onFocus={this.handleFocus}>
+              {listItems}
+            </Choose>
+          </ol>
+        ) : (
+          <div className="no-results">
+            <div className="no-results-title">{Dictionary.get('noResultsFound')}</div>
+            <div className="no-results-desc">{Dictionary.get('noResultsFoundDesc')}</div>
+          </div>
+        )}
+      </div>
     );
   }
 }
+
+List.propTypes = {
+  contentTypes: PropTypes.array.isRequired,
+  focused: PropTypes.object,
+  visible: PropTypes.bool,
+  setFocus: PropTypes.bool,
+  onUse: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onFocus: PropTypes.func.isRequired
+};
 
 export default List;

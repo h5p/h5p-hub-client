@@ -37,7 +37,7 @@ const orderByMap = {
 
 /**
  *
- * @param {Object[]} list Content Type list
+ * @param {Object} list Content Type list
  * @param {string} filterBy Search query
  * @param {string} orderBy
  */
@@ -46,31 +46,55 @@ export default function search(list, filterBy, orderBy) {
     const filtered = list.libraries.map(contentType => ({
       contentType: contentType,
       score: getSearchScore(filterBy, contentType)
-    })).filter(result => result.score > 0);
+    })).filter(result => result.score > 0 && !isUnavailable(result.contentType, list.apiVersion));
 
     return multiSort(filtered);
   }
 
-  var sortOn = [orderByMap[orderBy]];
+  let sortOn = [orderByMap[orderBy]];
   if (orderBy === 'recently') {
-    // Add recently value to content types
-    for (let i = 0; i < list.recentlyUsed.length; i++) {
-      let machineName = list.recentlyUsed[i];
 
-      for (let j = 0; j < list.libraries.length; j++) {
-        let contentType = list.libraries[j];
+    if (!list.recentlyUsed || !list.recentlyUsed.length) {
+      // Switch to popularity
+      sortOn = ['popularity'];
+    }
+    else {
+      // Add recently value to content types
+      for (let i = 0; i < list.recentlyUsed.length; i++) {
+        let machineName = list.recentlyUsed[i];
 
-        if (contentType.machineName === machineName) {
-          contentType.recently = i + 1; // Avoid stripping 0
+        for (let j = 0; j < list.libraries.length; j++) {
+          let contentType = list.libraries[j];
+
+          if (contentType.machineName === machineName) {
+            contentType.recently = i + 1; // Avoid stripping 0
+          }
         }
       }
+      sortOn.push('popularity'); // Alternative/second order by
     }
-
-    sortOn.push('popularity'); // Alternative
   }
 
-  return multiSort(list.libraries, sortOn);
+  return multiSort(list.libraries.filter(contentType => !isUnavailable(contentType, list.apiVersion)), sortOn);
 }
+
+/**
+ * Check if the content type is restricted or unsupported and should be filtered
+ * away.
+ *
+ * @param {Object} contentType
+ * @param {Object} apiVersion
+ * @return {boolean}
+ */
+const isUnavailable = (contentType, apiVersion) => {
+  // Determine if the content type is using an API version that is not yet supported
+  const apiNotSupported = !(apiVersion.major > contentType.h5pMajorVersion ||
+                           (apiVersion.major === contentType.h5pMajorVersion &&
+                            apiVersion.minor >= contentType.h5pMinorVersion));
+
+  // If the content type is restricted or requires a newer API, skip showing it
+  return contentType.restricted || (!contentType.installed && apiNotSupported);
+};
 
 /**
  * Calculates weighting for different search terms based

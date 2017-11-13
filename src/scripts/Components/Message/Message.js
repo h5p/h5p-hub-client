@@ -41,7 +41,7 @@ Message.propTypes = {
   title: PropTypes.string.isRequired,
   message: PropTypes.string,
   onClose: PropTypes.func,
-  children: PropTypes.element
+  children: PropTypes.array
 };
 
 export default Message;

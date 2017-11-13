@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Choose extends React.Component {
   constructor(props) {
@@ -15,6 +16,11 @@ class Choose extends React.Component {
       selected: nextProps.selected,
       focused: nextProps.selected
     });
+    if (nextProps.setFocus !== this.props.setFocus) {
+      this.setState({
+        focusOnRender: true
+      });
+    }
   }
 
   select(id) {
@@ -29,14 +35,6 @@ class Choose extends React.Component {
         this.props.onFocus(id);
       }
     }
-  }
-
-  changeFocused(dir) {
-    this.focus(this.getSiblingIdFor(this.state.focused, dir), true);
-  }
-
-  getFocused() {
-    return this.state.focused;
   }
 
   getSiblingIdFor(id, dir) {
@@ -85,9 +83,18 @@ class Choose extends React.Component {
   componentDidUpdate() {
     if (this.state.focusOnRender) {
       delete this.state.focusOnRender;
-      for (let i = 0; i < this.items.length; i++) {
-        if (this.state.focused === this.items[i].id) {
-          this.items[i].focus();
+      if (!this.state.focused) {
+        // Focus first item
+        if (this.items[0]) {
+          this.items[0].focus();
+        }
+      }
+      else {
+        // Find highlighted item and give focus
+        for (let i = 0; i < this.items.length; i++) {
+          if (this.state.focused === this.items[i].id) {
+            this.items[i].focus();
+          }
         }
       }
     }
@@ -95,10 +102,10 @@ class Choose extends React.Component {
 
   render() {
     this.items = []; // Array to preserve order
-    return React.Children.map(this.props.children, child =>
+    return React.Children.map(this.props.children, (child, i) =>
       child ? React.cloneElement(child, {
-        className: (child.props.className ? child.props.className + ' ' : '') + (child.props.id === this.state.selected ? 'hightlight' : ''),
-        tabIndex: child.props.id === this.state.focused ? 0 : -1,
+        className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'hightlight' : '') : (i === 0 ? 'hightlight' : '')),
+        tabIndex: (this.state.focused ? (child.props.id === this.state.focused ? 0 : -1) : (i === 0 ? 0 : -1)),
         role: child.props.role || 'button',
         onClick: event => this.handleClick(event, child.props.id),
         onKeyDown: event => this.handleKeyDown(event, child.props.id),
@@ -107,5 +114,12 @@ class Choose extends React.Component {
     );
   }
 }
+
+Choose.propTypes = {
+  selected: PropTypes.string,
+  setFocus: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  onFocus: PropTypes.func
+};
 
 export default Choose;

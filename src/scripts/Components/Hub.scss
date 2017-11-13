@@ -31,6 +31,60 @@
   .panel.open {
     max-height: 58.65em;
   }
+
+  .button-install {
+    [class^="icon-"] {
+      margin-right: $gutter / 2;
+      display: inline-block;
+    }
+
+    .icon-arrow-thick {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .content-type-section {
+    position: relative;
+    overflow: hidden;
+
+    &.height-limit {
+      height: 34em;
+    }
+  }
+  .content-type-section-view > .h5p-hub-message {
+    margin: 0;
+    padding: 0.5em 3.5em 0.7em 2.292em;
+  }
+  .error .button.retry-button {
+    margin: 0.5em 0 0.75em;
+    border-width: 2px;
+
+    &:hover,
+    &:active {
+      background-color: #c64750;
+      border-color: #c64750;
+      color: #fff;
+    }
+    &:focus {
+      box-shadow: 0.06em 0 0.6em 0.1em #c64750;
+    }
+    &[disabled] {
+      box-shadow: none;
+      background-color: #c64750;
+      border-color: #c64750;
+      color: #fff;
+      opacity: 0.5;
+      padding-left: 3em;
+    }
+    &[disabled]:before {
+      @include throbber();
+
+      position: absolute;
+      margin-left: -2.35em;
+      margin-top: -0.8em;
+      color: #fff;
+    }
+  }
 }
 
 .h5p-hub.hidden {

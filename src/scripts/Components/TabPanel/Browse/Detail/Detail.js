@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Dictionary from '../../../../utils/dictionary';
+import '../../../../utils/fetch';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
-import HubServices from '../../../../hub-services';
 
 import Message from '../../../Message/Message';
 import ContentTypeAccordion from './ContentTypeAccordion';
@@ -51,33 +51,42 @@ class Detail extends React.Component {
 
     const title = this.props.library.title || this.props.library.machineName;
 
-    HubServices.installContentType(this.props.library.machineName).then(() => {
-      // TODO - How to make grandparents know it needs to
-      // update content type list? Could the HubServices be used for that?
-      const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
+    fetch(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), {
+      method: 'POST',
+      credentials: 'include',
+      body: ''
+    })
+      .then(result => result.json())
+      .then(response => {
+        if (response.success === false) {
+          // Install failed
+          this.setState({
+            installed: false,
+            installing: false,
+            message: {
+              severity: 'error',
+              title: Dictionary.get('contentTypeInstallError', {':contentType': title}),
+              message: response.message + ' (' + response.errorCode  + ')',
+              onClose: () => this.setState({message: null})
+            }
+          });
+        }
+        else {
+          // Install success, update parent
+          this.props.onInstall(response);
 
-      this.setState({
-        installed: true,
-        installing: false,
-        message: {
-          title: Dictionary.get(installMessageKey, {':contentType': title}),
-          severity: 'info'
+          const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
+          this.setState({
+            installed: true,
+            installing: false,
+            message: {
+              severity: 'info',
+              title: Dictionary.get(installMessageKey, {':contentType': title}),
+              onClose: () => this.setState({message: null})
+            }
+          });
         }
       });
-    }).catch(error => {
-      this.setState({
-        installed: false,
-        installing: false,
-        message: {
-          success: false,
-          title: Dictionary.get('contentTypeInstallError', {':contentType': title}),
-          severity: 'error',
-          error: error,
-          errorCode: 'RESPONSE_FAILED',
-          message: 'TODO - Reasons will be printed here'
-        }
-      });
-    });
   }
 
   close = () => {
