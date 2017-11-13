@@ -1,6 +1,6 @@
-@import "../../../base/mixins";
-@import "~h5p-sdk/src/styles/base/colors";
-@import "~h5p-sdk/src/styles/base/variables";
+@import '../../../../../styles/base/colors';
+@import '../../../../../styles/base/variables';
+@import '../../../../../styles/base/mixins';
 @import "~susy/sass/susy";
 
 $color-back-button: #474f5a;

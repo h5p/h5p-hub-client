@@ -10,6 +10,8 @@ import ImageSlider from './ImageSlider/ImageSlider';
 import ButtonBar from './ButtonBar';
 import ReadMore from './ReadMore';
 
+import './ContentType.scss';
+
 class Detail extends React.Component {
 
   constructor(props) {
