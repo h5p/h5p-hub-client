@@ -15,6 +15,9 @@ class UploadContent extends React.Component {
       fileUploading: false,
       validationError: false,
       serverError: false,
+      serverErrorTitle: '',
+      serverErrorMessage: '',
+      uploadData: {},
     };
     this.handleValidation = this.handleValidation.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
@@ -67,8 +70,8 @@ class UploadContent extends React.Component {
             fileSelected: false,
             fileUploading: false,
             serverError: true,
-            serverErrorTitle: json.errorCode,
-            serverErrorMessage: json.message,
+            serverErrorTitle: json.errorCode ? json.errorCode : Dictionary.get('h5pFileUploadServerErrorTitle'),
+            serverErrorMessage: json.message ? json.message : Dictionary.get('h5pFileUploadServerErrorContent'),
             filePath: '',
             uploadData: {}
           });
@@ -88,7 +91,7 @@ class UploadContent extends React.Component {
           fileSelected: false,
           fileUploading: false,
           serverError: true,
-          serverError: Dictionary.get('h5pFileUploadServerErrorTitle'),
+          serverErrorTitle: Dictionary.get('h5pFileUploadServerErrorTitle'),
           serverErrorMessage: Dictionary.get('h5pFileUploadServerErrorContent'),
           filePath: '',
           uploadData: {},
@@ -128,11 +131,12 @@ class UploadContent extends React.Component {
           fileSelected={this.state.fileSelected}
           fileUploading={this.state.fileUploading}
           filePath={this.state.filePath}
-          focusUseButton={this.state.focusUseButton}
           onValidate={this.handleValidation}
           onUpload={this.handleUpload}
         />
-        <p className="upload-instruction-description" dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}/>
+        <p className="upload-instruction-description"
+          dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}
+        />
       </div>
     );
   }

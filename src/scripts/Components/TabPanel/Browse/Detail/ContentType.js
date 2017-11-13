@@ -77,33 +77,35 @@ class ContentType extends React.Component {
       .then(result => result.json())
       .then(response => {
         if (response.success === false) {
-          // Install failed
-          this.setState({
-            installed: false,
-            installing: false,
-            message: {
-              severity: 'error',
-              title: Dictionary.get('contentTypeInstallError', {':contentType': title}),
-              message: response.message + ' (' + response.errorCode  + ')',
-              onClose: () => this.setState({message: null})
-            }
-          });
+          throw response.message + ' (' + response.errorCode  + ')';
         }
-        else {
-          // Install success, update parent
-          this.props.onInstall(response);
 
-          const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
-          this.setState({
-            installed: true,
-            installing: false,
-            message: {
-              severity: 'info',
-              title: Dictionary.get(installMessageKey, {':contentType': title}),
-              onClose: () => this.setState({message: null})
-            }
-          });
-        }
+        // Install success, update parent
+        this.props.onInstall(response);
+
+        const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
+        this.setState({
+          installed: true,
+          installing: false,
+          message: {
+            severity: 'info',
+            title: Dictionary.get(installMessageKey, {':contentType': title}),
+            onClose: () => this.setState({message: null})
+          }
+        });
+      })
+      .catch(function (reason) {
+        // Install failed
+        this.setState({
+          installed: false,
+          installing: false,
+          message: {
+            severity: 'error',
+            title: Dictionary.get('contentTypeInstallError', {':contentType': title}),
+            message: reason,
+            onClose: () => this.setState({message: null})
+          }
+        });
       });
   }
 

@@ -10,7 +10,6 @@ $color-back-button: #474f5a;
     background-color: white;
     padding: 1.3em;
     display: inherit;
-    opacity: 0;
     position: absolute;
     top: 0;
     left: 0;
@@ -20,17 +19,16 @@ $color-back-button: #474f5a;
     height: 100%;
     box-sizing: border-box;
     transform: translateX(100%);
-    transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0.2s;
+    transition: transform 0.2s ease-out, visibility 0s linear 0.2s;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
         0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
     @include scroll-bar($c3, lighten($c1, 20%));
 
     &.show {
-      opacity: 1;
       transform: translateX(0);
       visibility: visible;
-      transition: opacity 0.2s ease-out, transform 0.2s ease-out, visibility 0s linear 0s;
+      transition: transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
     .panel[aria-hidden="false"] {
