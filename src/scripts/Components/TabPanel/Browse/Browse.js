@@ -5,7 +5,7 @@ import Message from '../../Message/Message';
 import Search from './Search/Search';
 import Order from './Order/Order';
 import List from './List/List';
-import Detail from './Detail/Detail';
+import Detail from './Detail/ContentType';
 
 import search from '../../../utils/search.js';
 import Dictionary from '../../../utils/dictionary';
