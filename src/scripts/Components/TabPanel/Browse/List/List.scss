@@ -42,7 +42,7 @@
     padding: 0.5em 1.5em 0.5em 1em;
     box-sizing: border-box;
     cursor: pointer;
-    overflow: auto;
+    overflow: visible;
     outline-color: lighten($ac1, 10%);
     margin-top: 0;
 
