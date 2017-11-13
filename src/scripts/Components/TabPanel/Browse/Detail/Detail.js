@@ -17,10 +17,6 @@ class Detail extends React.Component {
     this.state = {
       visible: false
     };
-
-    this.close = this.close.bind(this);
-    this.handleInstall = this.handleInstall.bind(this);
-    this.handleUse = this.handleUse.bind(this);
   }
 
   componentWillReceiveProps(props) {
@@ -47,7 +43,7 @@ class Detail extends React.Component {
     }
   }
 
-  handleInstall() {
+  handleInstall = () => {
     this.setState({
       installing: true,
       message: undefined
@@ -84,11 +80,11 @@ class Detail extends React.Component {
     });
   }
 
-  close() {
+  close = () => {
     this.props.onClose();
   }
 
-  handleUse() {
+  handleUse = () => {
     this.close();
     this.props.onUse(this.props.library);
   }
@@ -133,7 +129,7 @@ class Detail extends React.Component {
             </a>
           </div>
         </div>
-        <ImageSlider/>
+        <ImageSlider images={this.props.library.screenshots}/>
         <hr />
         <ButtonBar
           installed={this.state.installed}

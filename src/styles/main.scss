@@ -1,12 +1,8 @@
-@import "~h5p-sdk/src/styles/base/colors";
-@import "~h5p-sdk/src/styles/base/variables";
-
 @import "~h5p-sdk/src/styles/components/reset";
 @import "~h5p-sdk/src/styles/components/typography";
 @import "~h5p-sdk/src/styles/components/button";
 @import "~h5p-sdk/src/styles/components/images";
 @import "~h5p-sdk/src/styles/components/image-lightbox";
-@import "~h5p-sdk/src/styles/components/image-scroller";
 @import "~h5p-sdk/src/styles/components/input-field";
 @import "~h5p-sdk/src/styles/components/tab-panel";
 @import "~h5p-sdk/src/styles/components/media";
@@ -15,7 +11,6 @@
 @import "~h5p-sdk/src/styles/components/navbar";
 
 @import "base/colors";
-@import "components/carousel";
 @import "components/hub";
 @import "components/icons";
 @import "components/content-type-section";

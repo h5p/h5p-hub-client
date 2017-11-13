@@ -1,0 +1,84 @@
+@import '../../../../../../styles/base/variables';
+@import '../../../../../../styles/base/mixins';
+
+$gutter-image: 0.625em;
+$size-button: 2.1em;
+$color-button: rgba($c1, .8);
+
+.carousel {
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+
+  .scroller {
+    overflow: hidden;
+    width: calc(100% - 5em);
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  ul {
+    width: 100%;
+    padding: 0;
+    margin: 0 auto;
+    word-wrap: break-word;
+    transition: margin 0.3s linear;
+  }
+
+  li {
+    padding: 0 ($gutter-image / 2);
+    width: 20%;
+    margin: 0;
+    list-style-type: none;
+    float: left;
+    box-sizing: border-box;
+    overflow: auto;
+
+    img {
+      max-width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ced6e3;
+    }
+  }
+
+  .navigation {
+    width: 2.1em;
+    height: 2.1em;
+    line-height: 2.1em;
+    position: absolute;
+    border-radius: 50%;
+    color: white;
+    background-color: rgba(105, 117, 133, 0.8);
+    cursor: pointer;
+    /* Vertical align */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .navigation[disabled] {
+    background-color: rgba(189, 195, 203, 0.8);
+    color: rgba(255, 255, 255, 0.6);
+    pointer-events: none;
+  }
+
+  .navigation:before {
+    display: inline-block;
+    line-height: 1em;
+    height: 1em;
+  }
+
+  .prev {
+    left: 0;
+  }
+  .prev:before {
+    @include icon($icon-arrow-thick);
+  }
+
+  .next {
+    right: 0;
+  }
+  .next:before {
+    @include icon($icon-arrow-thick);
+    transform: rotate(180deg);
+  }
+}
