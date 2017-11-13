@@ -104,22 +104,6 @@ $color-back-button: #474f5a;
         cursor: pointer;
       }
     }
-
-    .short-license-info {
-      h3 {
-        display: inline-block;
-      }
-
-      .short-license-read-more {
-        border: 0;
-        background-color: transparent;
-        cursor: pointer;
-      }
-    }
-
-    .part-one, .part-two {
-      outline: none;
-    }
   }
 
   .license-dialog .loading .panel {

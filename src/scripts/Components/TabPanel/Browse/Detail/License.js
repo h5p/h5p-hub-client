@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 
+import './License.scss';
+
 const License = ({id, onShowLicenseDetails, attributes}) => {
   return (
     <div className='short-license-info'>
@@ -10,7 +12,7 @@ const License = ({id, onShowLicenseDetails, attributes}) => {
 
       <button
         type="button"
-        className="short-license-read-more icon-info-circle"
+        className="short-license-read-more"
         aria-label={Dictionary.get('readMore')}
         onClick={onShowLicenseDetails}>
       </button>

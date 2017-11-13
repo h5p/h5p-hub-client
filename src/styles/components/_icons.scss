@@ -1,5 +1,4 @@
 @import "../base/mixins";
-@import "~h5p-sdk/src/styles/base/colors";
 @import "~h5p-sdk/src/styles/base/variables";
 
 @include keyframes('spin') {
@@ -9,11 +8,6 @@
 }
 
 .h5p-hub {
-  .icon-spin {
-    display: inline-block;
-    @include animation(spin 2s linear infinite);
-  }
-
   .button {
     [class^="icon-"] {
       margin-right: $gutter / 2;
@@ -22,7 +16,6 @@
       font-size: 0.9em;
     }
   }
-
   .icon-hub-icon:before {
     font-family: 'h5p-hub';
     content: $icon-hub;
@@ -31,10 +24,6 @@
     font-family: 'h5p-hub';
     content: $icon-arrow-thick;
   }
-  .icon-info-circle:before {
-    font-family: 'h5p-hub';
-    content: $icon-info-circle;
-  }
   .icon-accordion-arrow:before {
     font-family: 'h5p-hub';
     content: $icon-accordion-arrow;
@@ -42,13 +31,5 @@
   .icon-search:before {
     font-family: 'h5p-hub';
     content: $icon-search;
-  }
-  .icon-loading-search:before {
-    font-family: 'h5p-hub';
-    content: $icon-throbber;
-  }
-  .icon-close:before {
-    font-family: 'h5p-hub';
-    content: $icon-close;
   }
 }
