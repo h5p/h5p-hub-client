@@ -67,9 +67,13 @@ class Hub extends React.Component {
       credentials: 'include'
     })
       .then(result => result.json())
-      .then(response => (response.success === false ?
-        this.setState({error: response.message + ' (' + response.errorCode  + ')'}) :
-        this.setState({contentTypes: response})));
+      .then(response => {
+        if (response.success === false) {
+          throw response.message + ' (' + response.errorCode  + ')';
+        }
+        this.setState({contentTypes: response});
+      })
+      .catch(reason => this.setState({error: reason}));
   };
 
   render() {
