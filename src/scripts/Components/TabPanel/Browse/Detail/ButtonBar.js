@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 
@@ -9,7 +10,7 @@ const ButtonBar = ({canInstall, installed, installing, updatable, onInstall, onU
   let secondButtonDisabled = false;
 
   // Should we display the use button?
-  let useButton = installed && !installing;
+  const useButton = installed && !installing;
 
   // Should we display a secondary button?
   // (install, installing, update, updating)
@@ -17,7 +18,7 @@ const ButtonBar = ({canInstall, installed, installing, updatable, onInstall, onU
     secondButtonType = installing ? 'Updating' : 'Update';
     secondButtonDisabled = installing;
   }
-  else if (!canInstall) {
+  else if (canInstall === false) {
     secondButtonType = 'Install';
     secondButtonDisabled = true;
   }
@@ -47,6 +48,15 @@ const ButtonBar = ({canInstall, installed, installing, updatable, onInstall, onU
 
     </div>
   );
+};
+
+ButtonBar.propTypes = {
+  canInstall: PropTypes.bool.isRequired,
+  installed: PropTypes.bool.isRequired,
+  installing: PropTypes.bool.isRequired,
+  updatable: PropTypes.bool.isRequired,
+  onInstall: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired
 };
 
 export default ButtonBar;
