@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 import '../../../../utils/fetch';
@@ -12,7 +13,7 @@ import ReadMore from './ReadMore';
 
 import './ContentType.scss';
 
-class Detail extends React.Component {
+class ContentType extends React.Component {
 
   constructor(props) {
     super(props);
@@ -162,4 +163,38 @@ class Detail extends React.Component {
   }
 }
 
-export default Detail;
+ContentType.propTypes = {
+  library: PropTypes.shape({
+    installed: PropTypes.bool.isRequired,
+    canInstall: PropTypes.bool.isRequired,
+    isUpToDate: PropTypes.bool.isRequired,
+    visible: PropTypes.bool.isRequired,
+    example: PropTypes.string,
+    title: PropTypes.string,
+    description: PropTypes.string.isRequired,
+    machineName: PropTypes.string.isRequired,
+    screenshots: PropTypes.arrayOf(PropTypes.shape({
+      url: PropTypes.string.isRequired,
+      alt: PropTypes.string.isRequired
+    })),
+    owner: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    license: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      attributes: PropTypes.shape({
+        canHoldLiable: PropTypes.bool.isRequired,
+        useCommercially: PropTypes.bool,
+        modifiable: PropTypes.bool,
+        distributable: PropTypes.bool,
+        sublicensable: PropTypes.bool,
+        mustIncludeCopyright: PropTypes.bool,
+        mustIncludeLicense: PropTypes.bool
+      })
+    }),
+    onInstall: PropTypes.func.required,
+    onUse: PropTypes.func.required,
+    onClose: PropTypes.func.required
+  })
+};
+
+export default ContentType;
