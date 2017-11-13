@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../../utils/dictionary';
+import Modal from '../Modal/Modal';
 
 import './ImageSlider.scss';
 
@@ -13,7 +14,8 @@ class ImageSlider extends React.Component {
     this.state = {
       imagesToShow: 5,
       offset: 0,
-      selected: 0
+      selected: 0,
+      modalIsOpen: false
     };
   }
 
@@ -45,7 +47,10 @@ class ImageSlider extends React.Component {
   }
 
   handleImageSelected = (index) => {
-    console.log('TODO: Open screenshots in overlay: ' + index);
+    //console.log('TODO: Open screenshots in overlay: ' + index);
+    this.setState({
+      modalIsOpen: true
+    });
   }
 
   previousSlide = () => {
@@ -140,6 +145,12 @@ class ImageSlider extends React.Component {
     }
   }
 
+  onImageModalClose = () => {
+    this.setState({
+      modalIsOpen: false
+    });
+  }
+
   render() {
 
     const images = this.props.images;
@@ -194,6 +205,13 @@ class ImageSlider extends React.Component {
           navigationNeeded &&
           <NavigationButton type="next" onClick={this.nextSlide} disabled={disableNext}/>
         }
+        <Modal
+          visible={this.state.modalIsOpen}
+          onClose={this.onImageModalClose}
+          label={Dictionary.get('imageLightboxTitle')}
+        >
+          Here comes the image slider!
+        </Modal>
       </div>
     );
   }

@@ -58,8 +58,10 @@
     "whatwg-fetch": "^2.0.3"
   },
   "dependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "react-dom": "^16.0.0",
+    "react-modal": "^3.1.2"
   }
 }
