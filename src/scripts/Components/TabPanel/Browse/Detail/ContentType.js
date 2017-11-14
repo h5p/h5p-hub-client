@@ -185,7 +185,8 @@ class ContentType extends React.Component {
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
-            showProgress={false}/>
+            showProgress={false}
+            selected={this.state.selectedScreenshot}/>
         }
         <hr />
         <ButtonBar

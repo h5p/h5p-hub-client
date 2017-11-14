@@ -44,6 +44,15 @@ $color-button: rgba($c1, .8);
     }
   }
 
+  li:focus {
+    outline: 0;
+
+    img {
+      border-color: #0a78d1;
+    }
+  }
+
+
   .progress {
     color: #fff;
     position: relative;
@@ -60,6 +69,7 @@ $color-button: rgba($c1, .8);
     color: white;
     background-color: rgba(105, 117, 133, 0.8);
     cursor: pointer;
+    border: 2px solid transparent;
     /* Vertical align */
     top: 50%;
     transform: translateY(-50%);
@@ -75,6 +85,16 @@ $color-button: rgba($c1, .8);
     display: inline-block;
     line-height: 1em;
     height: 1em;
+  }
+
+  .navigation:hover {
+    background-color: rgba(132, 143, 158, 0.8);
+  }
+
+  .navigation:focus {
+    outline: 0;
+    box-shadow: 0.06em 0 0.6em 0.1em #7bc1f9;
+    border-color: #7bc1f9;
   }
 
   .prev {
@@ -101,10 +121,18 @@ $color-button: rgba($c1, .8);
 
   li {
     padding: 0;
+
+    img {
+      border-color: transparent;
+    }
   }
 
   .navigation {
     font-size: 1.2em;
+  }
+
+  .navigation:focus {
+    background-color: transparent;
   }
 
   .next {
