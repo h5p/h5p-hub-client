@@ -1,7 +1,6 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../UploadContent.scss';
+import './UploadForm.scss';
 import '../../../../utils/fetch';
 import Dictionary from '../../../../utils/dictionary';
 
