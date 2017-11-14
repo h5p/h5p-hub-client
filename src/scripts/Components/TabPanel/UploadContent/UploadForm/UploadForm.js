@@ -1,7 +1,6 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import '../UploadContent.scss';
+import './UploadForm.scss';
 import '../../../../utils/fetch';
 import Dictionary from '../../../../utils/dictionary';
 
@@ -12,7 +11,7 @@ class UploadForm extends React.Component {
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate() {
     if (this.props.fileSelected) {
       this.useButton.focus();
     }
@@ -37,7 +36,8 @@ class UploadForm extends React.Component {
         />
         <button type="button"
           ref={(button) => {this.useButton = button; }}
-          className={"button use-button " + (this.props.fileSelected ? 'visible' : ' ')}
+          className={"button use-button"}
+          aria-hidden={(this.props.fileSelected ? '' : 'true')}
           disabled={this.props.fileUploading}
           onClick={this.props.onUpload}>{Dictionary.get("contentTypeUseButtonLabel")}
         </button>
@@ -54,7 +54,7 @@ class UploadForm extends React.Component {
           </button>
         </div>
       </div>
-    )
+    );
   }
 }
 
@@ -64,6 +64,6 @@ UploadForm.propTypes = {
   filePath: PropTypes.string.isRequired,
   onValidate: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
-}
+};
 
 export default UploadForm;

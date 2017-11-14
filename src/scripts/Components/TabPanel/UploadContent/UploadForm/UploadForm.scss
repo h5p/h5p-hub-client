@@ -2,44 +2,57 @@
 @import '../../../../../styles/base/mixins';
 
 .h5p-hub {
+  .upload-form {
+    .input-wrapper {
+      display: inline-block;
 
-  .upload-wrapper {
+      input[type="file"] {
+        display: none; // Hide the default file input as it can't be styled
+      }
+    }
 
     [aria-hidden="true"] {
       display: none;
     }
 
-    .visible {
-      display: inline-block;
-    }
-
     .upload-button {
+      background: transparent;
+      color: $c1;
+      border: 0.125em solid $c1;
       margin-left: 0.5em;
     }
 
     .use-button {
+      background: $c1;
+      color: white;
       margin-left: 0.5em;
     }
-
+    
     button[disabled] {
       opacity: 0.5;
     }
-  }
 
-  .upload-path {
-    margin-bottom: 1em;
-    cursor: pointer;
-    outline: 0;
-    padding-left: 1.5em;
-
-    &[disabled] {
-      cursor: default;
-    }
-  }
-
-  @media (min-width: $screen-small) {
     .upload-path {
-      width: 60%;
+      display: inline-block;
+      min-width: 14em;
+      padding: 10px;
+      padding-left: 1.5em;
+      margin-bottom: 1em;
+      border: 0.125em solid $c2;
+      border-radius: 1.375em;
+      outline: 0;
+      color: $c6;
+      cursor: pointer;
+
+      &[disabled] {
+        cursor: default;
+      }
+    }
+
+    @media (min-width: $screen-small) {
+      .upload-path {
+        width: 60%;
+      }
     }
   }
 }

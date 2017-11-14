@@ -20,7 +20,14 @@ class ContentType extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      selectedScreenshot: 0
+      selectedScreenshot: 0,
+      modalIsOpen: false,
+      installed: false,
+      canInstall: false,
+      updatable: false,
+      omstalling: false,
+      showImageSlider: true,
+      message: undefined
     };
   }
 
@@ -34,8 +41,27 @@ class ContentType extends React.Component {
       canInstall: props.library.canInstall,
       updatable: !props.library.isUpToDate,
       installing: false,
-      visible: props.visible
+      visible: props.visible,
+      showImageSlider: true,
     });
+  }
+
+  componentDidMount() {
+    if (this.container) {
+      this.container.addEventListener('transitionend', this.onTransitionEnd);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.container) {
+      this.container.removeEventListener('transitionend', this.onTransitionEnd);
+    }
+  }
+
+  onTransitionEnd = () => {
+    if (!this.state.visible && this.state.showImageSlider) {
+      this.setState({showImageSlider: false});
+    }
   }
 
   onImageSelect = (index) => {
@@ -114,37 +140,37 @@ class ContentType extends React.Component {
     // just to get the sliding effect when viewing the first library
     if (!this.props.library) {
       return (
-        <div className={classNames} id="content-type-detail"/>
+        <div className={classNames} id="content-type-detail" ref={container => this.container = container}/>
       );
     }
 
-    const title = this.props.library.title || this.props.library.machineName;
-    const demoUrl = this.props.library.example || '#';
-    const logoUrl = this.props.library.icon || noIcon;
-
     return (
-      <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId}>
+      <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId} ref={container => this.container = container}>
         <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
         <div className="container">
           <div className="image-wrapper">
-            <img className="img-responsive content-type-image" src={logoUrl}/>
+            <img className="img-responsive content-type-image" src={this.props.library.icon || noIcon}/>
           </div>
           <div className="text-details">
-            <h2 id="{titleId}" className="title" tabIndex="-1">{title}</h2>
+            <h2 id="{titleId}" className="title" tabIndex="-1">{this.props.library.title || this.props.library.machineName}</h2>
             <div className="owner">{this.props.library.owner}</div>
             <ReadMore
               text={this.props.library.description}
               maxLength={285}
             />
-            <a className="button demo-button" target="_blank" href={demoUrl}>
+            <a className="button demo-button" target="_blank" href={this.props.library.example || '#'}>
               {Dictionary.get("contentTypeDemoButtonLabel")}
             </a>
           </div>
         </div>
-        <ImageSlider
-          images={this.props.library.screenshots}
-          onImageSelect={this.onImageSelect}
-          showProgress={false}/>
+        {
+          this.state.showImageSlider &&
+          <ImageSlider
+            images={this.props.library.screenshots}
+            onImageSelect={this.onImageSelect}
+            showProgress={false}
+            selected={this.state.selectedScreenshot}/>
+        }
         <hr />
         {
           !!this.state.errorMessage &&
