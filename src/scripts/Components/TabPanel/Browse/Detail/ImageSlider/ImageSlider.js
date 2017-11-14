@@ -26,6 +26,18 @@ class ImageSlider extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (!this.props.imagesToShow) {
+      window.removeEventListener('resize', this.onWindowResized);
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // If focusOnRender is changing from true to false, it means
+    // this is invoked after focus is set, and we don't need to re-render
+    return !(this.state.focusOnRender && !nextState.focusOnRender);
+  }
+
   onWindowResized = () => {
     if (!this.carousel) {
       return;
