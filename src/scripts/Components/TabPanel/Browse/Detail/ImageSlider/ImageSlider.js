@@ -26,6 +26,18 @@ class ImageSlider extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    if (!this.props.imagesToShow) {
+      window.removeEventListener('resize', this.onWindowResized);
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    // If focusOnRender is changing from true to false, it means
+    // this is invoked after focus is set, and we don't need to re-render
+    return !(this.state.focusOnRender && !nextState.focusOnRender);
+  }
+
   onWindowResized = () => {
     if (!this.carousel) {
       return;
@@ -57,17 +69,27 @@ class ImageSlider extends React.Component {
   }
 
   previousSlide = () => {
-    this.setState((prevState) => ({
-      offset: prevState.offset - 1,
-      selected: prevState.offset - 1
-    }));
+    this.setState((prevState) => {
+      const index = prevState.offset - 1;
+      if (index >= 0) {
+        return {
+          offset: index,
+          selected: index
+        };
+      }
+    });
   }
 
   nextSlide = () => {
-    this.setState((prevState) => ({
-      offset: prevState.offset + 1,
-      selected: prevState.offset + 1
-    }));
+    this.setState((prevState, props) => {
+      const index = prevState.offset + 1;
+      if (index < props.images.length) {
+        return {
+          offset: index,
+          selected: index
+        };
+      }
+    });
   }
 
   moveFocus(increment) {
@@ -93,9 +115,9 @@ class ImageSlider extends React.Component {
     });
   }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     this.setState({
-      selected: 0,
+      selected: nextProps.selected || 0,
       offset: 0
     });
   }
@@ -116,24 +138,31 @@ class ImageSlider extends React.Component {
       return;
     }
 
+    let swallowEvent = false;
+
     switch(event.which) {
       case 37: // Left
       case 38: // Up
         this.moveFocus(-1);
-        event.preventDefault();
+        swallowEvent = true;
         break;
 
       case 39: // Right
       case 40: // Down
         this.moveFocus(+1);
-        event.preventDefault();
+        swallowEvent = true;
         break;
 
       case 32: // Space
       case 13: // Enter
         this.handleImageSelected(index);
-        event.preventDefault();
+        swallowEvent = true;
         break;
+    }
+
+    if (swallowEvent) {
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 
@@ -141,6 +170,17 @@ class ImageSlider extends React.Component {
     this.setState({
       modalIsOpen: false
     });
+  }
+
+  handleGlobalKeyDown = (event) => {
+    if (event.which === 39) {
+      // Right
+      this.nextSlide();
+    }
+    else if (event.which === 37) {
+      // Left
+      this.previousSlide();
+    }
   }
 
   render() {
@@ -184,7 +224,12 @@ class ImageSlider extends React.Component {
     const navigationNeeded = (numSlides > this.state.imagesToShow);
 
     return (
-      <div className="carousel" role="region" aria-label={Dictionary.get('screenshots')} ref={carousel => this.carousel = carousel}>
+      <div
+        className="carousel"
+        role="region"
+        aria-label={Dictionary.get('screenshots')}
+        ref={carousel => this.carousel = carousel}
+        onKeyDown={this.handleGlobalKeyDown}>
         {
           navigationNeeded &&
           <NavigationButton type="prev" onClick={this.previousSlide} disabled={disablePrev}/>

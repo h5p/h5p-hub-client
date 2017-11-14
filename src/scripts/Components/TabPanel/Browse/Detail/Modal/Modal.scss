@@ -9,7 +9,6 @@
 
   background: rgba(0, 0, 0, 0.8);
 }
-
 .lightbox-inner {
   position: absolute;
   left: 50%;
@@ -21,7 +20,9 @@
   padding: 2em;
   text-align: center;
 }
-
+.lightbox-inner:focus {
+  outline: 0;
+}
 .lightbox-close {
   position: relative;
   top: -1.5em;
@@ -37,8 +38,13 @@
   cursor: pointer;
   z-index: 1;
   user-select: none;
-  box-sizing: border-box;
+  border: 2px solid transparent;
   transition: background 0.2s;
+}
+.lightbox-close:focus {
+  border-color: #7bc1f9;
+  box-shadow: 0.06em 0 0.6em 0.1em #7bc1f9;
+  outline: 0;
 }
 .lightbox-close:hover {
   background: rgba(132, 143, 158, 0.8);
