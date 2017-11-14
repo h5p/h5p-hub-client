@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
-import '../../../../utils/fetch';
+import fetchJSON from '../../../../utils/fetchJSON';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
@@ -36,16 +36,6 @@ class ContentType extends React.Component {
       installing: false,
       visible: props.visible
     });
-
-    if (!props.library.canInstall) {
-      this.setState({
-        message: {
-          severity: 'warning',
-          title: Dictionary.get('contentTypeUnsupportedApiVersionTitle'),
-          message: Dictionary.get('contentTypeUnsupportedApiVersionContent')
-        }
-      });
-    }
   }
 
   onImageSelect = (index) => {
@@ -64,47 +54,32 @@ class ContentType extends React.Component {
   handleInstall = () => {
     this.setState({
       installing: true,
-      message: undefined
+      errorMessage: null,
+      infoMessage: null
     });
 
-    const title = this.props.library.title || this.props.library.machineName;
-
-    fetch(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), {
-      method: 'POST',
-      credentials: 'include',
-      body: ''
-    })
-      .then(result => result.json())
+    fetchJSON(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), 'POST')
       .then(response => {
-        if (response.success === false) {
-          throw response.message + ' (' + response.errorCode  + ')';
-        }
-
         // Install success, update parent
         this.props.onInstall(response);
 
         const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
+        const title = this.props.library.title || this.props.library.machineName;
         this.setState({
           installed: true,
           installing: false,
-          message: {
-            severity: 'info',
+          infoMessage: {
             title: Dictionary.get(installMessageKey, {':contentType': title}),
-            onClose: () => this.setState({message: null})
+            details: response.details
           }
         });
       })
-      .catch(function (reason) {
+      .catch(reason => {
         // Install failed
         this.setState({
           installed: false,
           installing: false,
-          message: {
-            severity: 'error',
-            title: Dictionary.get('contentTypeInstallError', {':contentType': title}),
-            message: reason,
-            onClose: () => this.setState({message: null})
-          }
+          errorMessage: reason
         });
       });
   }
@@ -116,6 +91,18 @@ class ContentType extends React.Component {
   handleUse = () => {
     this.close();
     this.props.onUse(this.props.library);
+  }
+
+  handleErrorDismiss = () => {
+    this.setState({
+      errorMessage: null
+    });
+  }
+
+  handleInfoDismiss = () => {
+    this.setState({
+      infoMessage: null
+    });
   }
 
   render() {
@@ -138,10 +125,6 @@ class ContentType extends React.Component {
     return (
       <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId}>
         <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
-        {
-          this.state.message &&
-          <Message {...this.state.message}/>
-        }
         <div className="container">
           <div className="image-wrapper">
             <img className="img-responsive content-type-image" src={logoUrl}/>
@@ -163,6 +146,22 @@ class ContentType extends React.Component {
           onImageSelect={this.onImageSelect}
           showProgress={false}/>
         <hr />
+        {
+          !!this.state.errorMessage &&
+          <Message
+            severity='error'
+            title={this.state.errorMessage.title}
+            message={this.state.errorMessage.details}
+            onClose={this.handleErrorDismiss}/>
+        }
+        {
+          !!this.state.infoMessage &&
+          <Message
+            severity='info'
+            title={this.state.infoMessage.title}
+            message={this.state.infoMessage.details}
+            onClose={this.handleInfoDismiss}/>
+        }
         <ButtonBar
           installed={this.state.installed}
           canInstall={this.state.canInstall}

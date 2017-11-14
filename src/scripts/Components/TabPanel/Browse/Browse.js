@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Message from '../../Message/Message';
 import Search from './Search/Search';
 import Order from './Order/Order';
 import List from './List/List';
 import Detail from './Detail/ContentType';
-
+import NoContentTypesError from './NoContentTypesError/NoContentTypesError';
 import search from '../../../utils/search.js';
 import Dictionary from '../../../utils/dictionary';
 
@@ -112,18 +111,10 @@ class Browse extends React.Component {
     if (!this.props.contentTypes.libraries || !this.props.contentTypes.libraries.length) {
       // No content types available
       return (
-        <Message
-          severity='error'
-          title={Dictionary.get('noContentTypesAvailable')}
-          message={Dictionary.get('noContentTypesAvailableDesc')}>
-          {this.props.error &&
-            <p className="message-body">{this.props.error}</p>
-          }
-          <button type="button" className="button button-primary retry-button"
-            tabIndex="0" onClick={this.handleRetry} disabled={this.state.retrying}>
-            {Dictionary.get('tryAgain')}
-          </button>
-        </Message>
+        <NoContentTypesError
+          throbbing={this.state.retrying}
+          hint={this.props.error}
+          onRetry={this.handleRetry}/>
       );
     }
 
@@ -137,7 +128,8 @@ class Browse extends React.Component {
           onNavigate={this.handleFocusMove}
           onSelect={this.handleSelect}/>
 
-        {this.state.warnOutdated &&
+        {
+          !!this.state.warnOutdated &&
           <Message
             severity='warning'
             title={Dictionary.get('contentTypeCacheOutdated')}
