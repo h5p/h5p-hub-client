@@ -48,7 +48,7 @@ class Hub extends React.Component {
       if (library.machineName === data.h5p.mainLibrary) {
         panelTitle = library.title;
       }
-    })
+    });
     // Collapse Hub
     this.setState({expanded: false, title: panelTitle});
 
