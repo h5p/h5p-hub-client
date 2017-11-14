@@ -15,10 +15,6 @@
       display: none;
     }
 
-    .visible {
-      display: inline-block;
-    }
-
     .upload-button {
       background: transparent;
       color: $c1;
@@ -27,12 +23,11 @@
     }
 
     .use-button {
-      display: none;
       background: $c1;
       color: white;
       margin-left: 0.5em;
     }
-
+    
     button[disabled] {
       opacity: 0.5;
     }
