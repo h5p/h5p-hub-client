@@ -20,7 +20,14 @@ class ContentType extends React.Component {
     super(props);
     this.state = {
       visible: false,
-      selectedScreenshot: 0
+      selectedScreenshot: 0,
+      modalIsOpen: false,
+      installed: false,
+      canInstall: false,
+      updatable: false,
+      omstalling: false,
+      showImageSlider: true,
+      message: undefined
     };
   }
 
@@ -35,7 +42,7 @@ class ContentType extends React.Component {
       updatable: !props.library.isUpToDate,
       installing: false,
       visible: props.visible,
-      hideSlider: false
+      showImageSlider: true,
     });
 
     if (!props.library.canInstall) {
@@ -62,8 +69,8 @@ class ContentType extends React.Component {
   }
 
   onTransitionEnd = () => {
-    if (!this.state.visible && !this.state.hideSlider) {
-      this.setState({hideSlider: true});
+    if (!this.state.visible && this.state.showImageSlider) {
+      this.setState({showImageSlider: false});
     }
   }
 
@@ -174,7 +181,7 @@ class ContentType extends React.Component {
           </div>
         </div>
         {
-          !this.state.hideSlider &&
+          this.state.showImageSlider &&
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
