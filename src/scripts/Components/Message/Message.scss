@@ -26,6 +26,10 @@
     font-size: $text-list-title;
     color: $text-dark;
   }
+  .message-content h2 {
+    margin-top: 0.4165em;
+    font-size: 1.2em;
+  }
 
   .description {
     font-size: $text-body-small;
