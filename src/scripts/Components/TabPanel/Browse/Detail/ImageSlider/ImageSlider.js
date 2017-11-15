@@ -167,12 +167,6 @@ class ImageSlider extends React.Component {
     }
   }
 
-  onImageModalClose = () => {
-    this.setState({
-      modalIsOpen: false
-    });
-  }
-
   handleGlobalKeyDown = (event) => {
     if (event.which === 39) {
       // Right
