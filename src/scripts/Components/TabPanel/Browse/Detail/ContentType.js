@@ -36,6 +36,14 @@ class ContentType extends React.Component {
       return;
     }
 
+    if (this.props.library !== props.library) {
+      // Reset messages when library change
+      this.setState({
+        errorMessage: null,
+        infoMessage: null
+      });
+    }
+
     this.setState({
       installed: props.library.installed,
       canInstall: props.library.canInstall,
