@@ -10,6 +10,14 @@ class Message extends React.Component {
   render() {
     const className = `h5p-hub-message ${this.props.severity}` + (this.props.onClose ? ' dismissible' : '');
 
+    let messages = this.props.message;
+    if (!Array.isArray(messages)) {
+      messages = [messages];
+    }
+    const messageDetails = messages.map((message, index) => (
+      <p key={index} className="message-body" dangerouslySetInnerHTML={{__html: message}}/>
+    ));
+
     return (
       <div className={className} role="alert">
         {
@@ -23,12 +31,7 @@ class Message extends React.Component {
         }
         <div className="message-content">
           <h2>{this.props.title}</h2>
-          {
-            this.props.message &&
-            <p className="message-body">
-              {this.props.message}
-            </p>
-          }
+          {messageDetails}
         </div>
         {this.props.children}
       </div>
@@ -39,7 +42,10 @@ class Message extends React.Component {
 Message.propTypes = {
   severity: PropTypes.oneOf(['info', 'warning', 'error']).isRequired,
   title: PropTypes.string.isRequired,
-  message: PropTypes.string,
+  message: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.array
+  ]),
   onClose: PropTypes.func,
   children: PropTypes.array
 };

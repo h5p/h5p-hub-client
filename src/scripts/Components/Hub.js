@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Dictionary from '../utils/dictionary';
+import fetchJSON from '../utils/fetchJSON';
 
 import DropDownSelector from './DropDownSelector/DropDownSelector';
 import TabPanel from './TabPanel/TabPanel';
@@ -62,17 +63,8 @@ class Hub extends React.Component {
   };
 
   handleReload = () => {
-    fetch(this.props.getAjaxUrl('content-type-cache'), {
-      method: 'GET',
-      credentials: 'include'
-    })
-      .then(result => result.json())
-      .then(response => {
-        if (response.success === false) {
-          throw response.message + ' (' + response.errorCode  + ')';
-        }
-        this.setState({contentTypes: response});
-      })
+    fetchJSON(this.props.getAjaxUrl('content-type-cache'))
+      .then(response => this.setState({contentTypes: response}))
       .catch(reason => this.setState({error: reason}));
   };
 
