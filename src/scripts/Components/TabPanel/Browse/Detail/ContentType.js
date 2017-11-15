@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 import '../../../../utils/fetch';
+import {nonEmptyString} from '../../../../utils/helpers';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
@@ -14,6 +15,8 @@ import ReadMore from './ReadMore';
 
 import './ContentType.scss';
 
+const licenseCache = {};
+
 class ContentType extends React.Component {
 
   constructor(props) {
@@ -21,7 +24,7 @@ class ContentType extends React.Component {
     this.state = {
       visible: false,
       selectedScreenshot: 0,
-      modalIsOpen: false,
+      modalType: undefined,
       installed: false,
       canInstall: false,
       updatable: false,
@@ -76,14 +79,15 @@ class ContentType extends React.Component {
 
   onImageSelect = (index) => {
     this.setState({
-      modalIsOpen: true,
+      modalType: 'screenshots',
       selectedScreenshot: index
     });
   }
 
   onModalClose = () => {
     this.setState({
-      modalIsOpen: false
+      modalType: undefined,
+      licenseDetails: undefined
     });
   }
 
@@ -144,8 +148,36 @@ class ContentType extends React.Component {
     this.props.onUse(this.props.library);
   }
 
-  render() {
+  handleShowLicenseDetails = () => {
 
+    const licenseId = this.props.library.license.id;
+    let details = licenseCache[licenseId];
+
+    if (details) {
+      // We already got it
+      this.setState({licenseDetails: details});
+    }
+    else {
+      // Fetch the license:
+      fetch(`https://api.h5p.org/v1/licenses/${this.props.library.license.id}`)
+        .then(result => result.json())
+        .then(response => {
+          if (response.success === false) {
+            details = Dictionary.get('licenseFetchDetailsFailed');
+          }
+          else {
+            details = licenseCache[licenseId] = response.description
+              .replace(':owner', this.props.library.owner)
+              .replace(':year', new Date().getFullYear());
+          }
+          this.setState({licenseDetails: details});
+        });
+    }
+
+    this.setState({modalType: 'license'});
+  };
+
+  render() {
     const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-type-detail-view-title';
 
@@ -155,6 +187,46 @@ class ContentType extends React.Component {
       return (
         <div className={classNames} id="content-type-detail" ref={container => this.container = container}/>
       );
+    }
+
+    // Modal content - image slider or license ?
+    const ModalContent = () => {
+      if (this.state.modalType === 'screenshots') {
+        return (
+          <ImageSlider
+            images={this.props.library.screenshots}
+            imagesToShow={1}
+            showProgress={true}
+            selected={this.state.selectedScreenshot}/>
+        );
+      }
+      else if (this.state.modalType === 'license') {
+        return (
+          <div>
+            <div className="modal-header">{Dictionary.get('licenseModalTitle')}</div>
+            <div className="modal-content">
+              <h5 id="license-details-id" className="modal-title">{this.props.library.license.id}</h5>
+              <div
+                id="license-details-description"
+                className={this.state.licenseDetails ? undefined : 'loading'}
+                dangerouslySetInnerHTML={{__html: this.state.licenseDetails}}
+              />
+            </div>
+          </div>
+        );
+      }
+
+      return null;
+    };
+
+    let modalAria = {};
+
+    if (this.state.modalType === 'screenshots') {
+      modalAria.label = Dictionary.get('imageLightboxTitle');
+    }
+    if (this.state.modalType === 'license' && this.state.licenseDetails) {
+      modalAria.labelledby = 'license-details-id';
+      modalAria.describedby = 'license-details-description';
     }
 
     return (
@@ -202,37 +274,41 @@ class ContentType extends React.Component {
           <ContentTypeAccordion
             id={this.props.library.license.id}
             attributes={this.props.library.license.attributes}
+            onShowLicenseDetails={this.handleShowLicenseDetails}
           />
         }
+
         <Modal
-          visible={this.state.modalIsOpen}
+          visible={this.state.modalType !== undefined}
           onClose={this.onModalClose}
-          label={Dictionary.get('imageLightboxTitle')}
+          className={this.state.modalType || ''}
+          aria={modalAria}
         >
-          <ImageSlider
-            images={this.props.library.screenshots}
-            imagesToShow={1}
-            showProgress={true}
-            selected={this.state.selectedScreenshot}/>
+          <ModalContent/>
         </Modal>
+
       </div>
     );
   }
 }
 
 ContentType.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  onInstall: PropTypes.func.isRequired,
+  onUse: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+  getAjaxUrl: PropTypes.func.isRequired,
   library: PropTypes.shape({
     installed: PropTypes.bool.isRequired,
     canInstall: PropTypes.bool.isRequired,
     isUpToDate: PropTypes.bool.isRequired,
-    visible: PropTypes.bool.isRequired,
     example: PropTypes.string,
     title: PropTypes.string,
     description: PropTypes.string.isRequired,
     machineName: PropTypes.string.isRequired,
     screenshots: PropTypes.arrayOf(PropTypes.shape({
-      url: PropTypes.string.isRequired,
-      alt: PropTypes.string.isRequired
+      url: nonEmptyString,
+      alt: nonEmptyString
     })),
     owner: PropTypes.string.isRequired,
     icon: PropTypes.string,
@@ -247,10 +323,7 @@ ContentType.propTypes = {
         mustIncludeCopyright: PropTypes.bool,
         mustIncludeLicense: PropTypes.bool
       })
-    }),
-    onInstall: PropTypes.func.required,
-    onUse: PropTypes.func.required,
-    onClose: PropTypes.func.required
+    })
   })
 };
 

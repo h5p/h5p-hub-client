@@ -5,7 +5,7 @@ import Message from '../../Message/Message';
 import Search from './Search/Search';
 import Order from './Order/Order';
 import List from './List/List';
-import Detail from './Detail/ContentType';
+import ContentType from './Detail/ContentType';
 
 import search from '../../../utils/search.js';
 import Dictionary from '../../../utils/dictionary';
@@ -160,7 +160,7 @@ class Browse extends React.Component {
             onUse={this.props.onUse}
             onSelect={this.handleOnLibrarySelect}
             onFocus={this.handleFocus}/>
-          <Detail
+          <ContentType
             library={this.state.library}
             visible={this.state.detailViewActive}
             onUse={this.props.onUse}

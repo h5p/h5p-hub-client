@@ -12,6 +12,8 @@ class Lightbox extends React.Component {
   constructor(props) {
     super(props);
 
+    Modal.setAppElement('.h5p-section-content-types');
+
     this.state = {
       modalIsOpen: false
     };
@@ -24,6 +26,7 @@ class Lightbox extends React.Component {
   }
 
   closeModal = () => {
+    document.querySelector('.h5p-section-content-types').removeAttribute('aria-hidden');
     this.props.onClose();
   }
 
@@ -43,8 +46,9 @@ class Lightbox extends React.Component {
         onRequestClose={this.closeModal}
         contentLabel={this.props.label}
         parentSelector={this.getParent}
-        className='lightbox-inner'
+        className={`lightbox-inner ${this.props.className}`}
         overlayClassName='lightbox'
+        aria={this.props.aria}
       >
         <Button
           buttonProps={closeButtonProps}
@@ -57,7 +61,12 @@ class Lightbox extends React.Component {
 
 Lightbox.propTypes = {
   onClose: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired
+  aria: PropTypes.shape({
+    label: PropTypes.string,
+    labelledby: PropTypes.string,
+    describedby: PropTypes.string
+  }),
+  className: PropTypes.string.isRequired
 };
 
 export default Lightbox;

@@ -22,6 +22,12 @@ $color-button: rgba($c1, .8);
     margin: 0 auto;
     word-wrap: break-word;
     transition: margin 0.3s linear;
+
+    // Using flex to make the images vertical centered
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   li {

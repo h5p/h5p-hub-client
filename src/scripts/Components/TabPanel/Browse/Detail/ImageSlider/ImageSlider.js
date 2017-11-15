@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../../utils/dictionary';
+import {nonEmptyString} from '../../../../../utils/helpers';
 
 
 import './ImageSlider.scss';
@@ -232,7 +233,7 @@ class ImageSlider extends React.Component {
         onKeyDown={this.handleGlobalKeyDown}>
         {
           navigationNeeded &&
-          <NavigationButton type="prev" onClick={this.previousSlide} disabled={disablePrev}/>
+          <NavigationButton type="prev" label={Dictionary.get('previousImage')} onClick={this.previousSlide} disabled={disablePrev}/>
         }
         <nav className="scroller" ref={scroller => this.scroller = scroller}>
           <ul style={sliderStyle}>
@@ -241,11 +242,11 @@ class ImageSlider extends React.Component {
         </nav>
         {
           navigationNeeded &&
-          <NavigationButton type="next" onClick={this.nextSlide} disabled={disableNext}/>
+          <NavigationButton type="next" label={Dictionary.get('nextImage')} onClick={this.nextSlide} disabled={disableNext}/>
         }
         {
           this.props.showProgress &&
-          <div className="progress">
+          <div className="progress" role="alert">
             {Dictionary.get('imageLightBoxProgress').replace(':num', this.state.offset+1).replace(':total', numSlides)}
           </div>
         }
@@ -273,11 +274,12 @@ const breakpoints = [
   }
 ];
 
-const NavigationButton = ({onClick, type, disabled}) => {
+const NavigationButton = ({onClick, type, disabled, label}) => {
   return (
     <button
       className={'navigation ' + type}
       aria-disabled={disabled}
+      aria-label={label}
       disabled={disabled}
       onClick={onClick}
     />
@@ -290,8 +292,8 @@ ImageSlider.propTypes = {
   showProgress: PropTypes.bool.isRequired,
   selected: PropTypes.number,
   images: PropTypes.arrayOf(PropTypes.shape({
-    url: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired
+    url: nonEmptyString,
+    alt: nonEmptyString
   })).isRequired
 };
 

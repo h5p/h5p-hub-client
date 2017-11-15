@@ -23,22 +23,28 @@ const License = ({id, onShowLicenseDetails, attributes}) => {
         <li>
           {Dictionary.get(attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
         </li>
-        {attributes.useCommercially &&
+        {
+          attributes.useCommercially &&
           <li>{Dictionary.get("licenseCanUseCommercially")}</li>
         }
-        {attributes.modifiable &&
+        {
+          attributes.modifiable &&
           <li>{Dictionary.get("licenseCanModify")}</li>
         }
-        {attributes.distributable &&
+        {
+          attributes.distributable &&
           <li>{Dictionary.get("licenseCanDistribute")}</li>
         }
-        {attributes.sublicensable &&
+        {
+          attributes.sublicensable &&
           <li>{Dictionary.get("licenseCanSublicense")}</li>
         }
-        {attributes.mustIncludeCopyright &&
+        {
+          attributes.mustIncludeCopyright &&
           <li>{Dictionary.get("licenseMustIncludeCopyright")}</li>
         }
-        {attributes.mustIncludeLicense &&
+        {
+          attributes.mustIncludeLicense &&
           <li>{Dictionary.get("licenseMustIncludeLicense")}</li>
         }
       </ul>

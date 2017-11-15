@@ -134,3 +134,33 @@ $color-back-button: #474f5a;
     }
   }
 }
+
+.lightbox-inner.license {
+  background: #fff;
+  text-align: left;
+  width: calc(100% - 5em);
+  max-height: calc(100% - 5em);
+  overflow-y: auto;
+
+  .loading:after {
+    @include throbber(3em);
+    width: 1em;
+    margin: 0 auto;
+  }
+
+  .lightbox-close {
+    top: -0.8em;
+    right: -0.8em;
+    color: #333;
+  }
+
+  .modal-header {
+    font-weight: 400;
+    font-size: 1.6em;
+    margin-bottom: 1em;
+  }
+
+  .modal-title {
+    font-weight: 700;
+  }
+}
