@@ -58,18 +58,6 @@ class ContentType extends React.Component {
     });
   }
 
-  componentDidMount() {
-    if (this.container) {
-      this.container.addEventListener('transitionend', this.onTransitionEnd);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.container) {
-      this.container.removeEventListener('transitionend', this.onTransitionEnd);
-    }
-  }
-
   onTransitionEnd = () => {
     if (!this.state.visible && this.state.showImageSlider) {
       this.setState({showImageSlider: false});
@@ -181,7 +169,7 @@ class ContentType extends React.Component {
     // just to get the sliding effect when viewing the first library
     if (!this.props.library) {
       return (
-        <div className={classNames} id="content-type-detail" ref={container => this.container = container}/>
+        <div className={classNames} id="content-type-detail"/>
       );
     }
 
@@ -226,7 +214,7 @@ class ContentType extends React.Component {
     }
 
     return (
-      <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId} ref={container => this.container = container}>
+      <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId} onTransitionEnd={this.onTransitionEnd}>
         <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
         <div className="container">
           <div className="image-wrapper">
