@@ -74,6 +74,9 @@ export default function search(list, filterBy, orderBy) {
       sortOn.push('popularity'); // Alternative/second order by
     }
   }
+  else if (orderBy === 'newest') {
+    sortOn.splice(0, 0, 'installed');
+  }
 
   return multiSort(list.libraries.filter(contentType => !isUnavailable(contentType, list.apiVersion)), sortOn);
 }
