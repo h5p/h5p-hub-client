@@ -32,12 +32,10 @@ const ListItem = ({contentType, tabindex, onUse}) => {
 
         {contentType.installed ? (
           <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleUse} onKeyDown={handleKeyDown}>
-            <span></span>
             {Dictionary.get('contentTypeUseButtonLabel')}
           </button>
         ) : (
-          <button type="button" className="button button-inverse-primary button-install'" tabIndex={tabindex}>
-            <span className="icon-arrow-thick"></span>
+          <button type="button" className="button button-inverse-primary button-install" tabIndex={tabindex}>
             {Dictionary.get('contentTypeGetButtonLabel')}
           </button>
         )}

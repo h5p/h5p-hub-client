@@ -51,6 +51,14 @@ $content-type-list-image-size: 100px;
     float: right;
   }
 
+  .button-install:before {
+    @include icon($icon-arrow-thick);
+    display: inline-block;
+    transform: rotate(-90deg);
+    margin-right: 0.7em;
+    font-size: 0.9em;
+  }
+
   @media (min-width: $screen-medium) {
     .button {
       margin-top: 0.25em;
