@@ -29,7 +29,7 @@ class ContentType extends React.Component {
       installed: false,
       canInstall: false,
       updatable: false,
-      omstalling: false,
+      installing: false,
       showImageSlider: true,
       message: undefined
     };
