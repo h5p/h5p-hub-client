@@ -32,10 +32,10 @@ class Browse extends React.Component {
   }
 
   handleDetailClose = () => {
-    this.setState({
+    this.setState(state => ({
       detailViewActive: false,
-      setFocus: !this.state.setFocus, // Toggle to trigger focus
-    });
+      setFocus: !state.setFocus, // Toggle to trigger focus
+    }));
   }
 
   handleOnLibrarySelect = (library) => {
@@ -113,7 +113,7 @@ class Browse extends React.Component {
       return (
         <NoContentTypesError
           throbbing={this.state.retrying}
-          hint={this.props.error}
+          details={this.props.error}
           onRetry={this.handleRetry}/>
       );
     }
@@ -142,6 +142,7 @@ class Browse extends React.Component {
           selected={this.state.orderBy}
           onChange={this.handleOrderBy}
           hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
+          searching={!!this.state.filterOn}
           visible={!this.state.detailViewActive}/>
 
         <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '')}>

@@ -1,23 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Message from '../../../Message/Message';
 import Dictionary from '../../../../utils/dictionary';
 
-const NoContentTypesError = ({throbbing, hint, onRetry}) => (
-  <Message
-    severity='error'
-    title={Dictionary.get('noContentTypesAvailable')}
-    message={[Dictionary.get('noContentTypesAvailableDesc'), hint.title].concat(hint.details)}>
-    <button type="button" className="button button-primary retry-button"
-      tabIndex="0" onClick={onRetry} disabled={throbbing}>
-      {Dictionary.get('tryAgain')}
-    </button>
-  </Message>
-);
+const NoContentTypesError = ({throbbing, details, onRetry}) => {
+
+  // Start by adding human understandable title
+  let messages = [Dictionary.get('noContentTypesAvailableDesc')];
+
+  // Add all details messages
+  if (details && details.title) {
+    messages.push(details.title);
+    if (details.details) {
+      messages = messages.concat(details.details);
+    }
+  }
+
+  return (
+    <Message
+      severity='error'
+      title={Dictionary.get('noContentTypesAvailable')}
+      message={messages}>
+      <button type="button" className="button button-primary retry-button"
+        tabIndex="0" onClick={onRetry} disabled={throbbing}>
+        {Dictionary.get('tryAgain')}
+      </button>
+    </Message>
+  );
+};
 
 NoContentTypesError.propTypes = {
-  throbbing: PropTypes.string,
-  hint: PropTypes.object.isRequired,
+  throbbing: PropTypes.bool,
+  details: PropTypes.object,
   onRetry: PropTypes.func.isRequired
 };
 

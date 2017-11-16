@@ -62,7 +62,10 @@ Message.propTypes = {
     PropTypes.array
   ]),
   onClose: PropTypes.func,
-  children: PropTypes.array
+  children: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array
+  ])
 };
 
 export default Message;
