@@ -24,9 +24,16 @@ class Browse extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState(state => {
+
+      // If there is a current selected library, we need to update it
+      const library = nextProps.contentTypes.libraries.find(lib => (
+        state.library && lib.machineName === state.library.machineName
+      ));
+
       return {
         contentTypes: search(nextProps.contentTypes, state.filterOn, state.orderBy),
-        retrying: undefined
+        retrying: undefined,
+        library: library
       };
     });
   }

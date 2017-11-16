@@ -7,6 +7,10 @@ import './Message.scss';
 
 class Message extends React.Component {
 
+  createTroubleshootingURL(code) {
+    return code ? `https://h5p.org/documentation/troubleshooting#${code}` : undefined;
+  }
+
   render() {
     const className = `h5p-hub-message ${this.props.severity}` + (this.props.onClose ? ' dismissible' : '');
 
@@ -14,9 +18,20 @@ class Message extends React.Component {
     if (!Array.isArray(messages)) {
       messages = [messages];
     }
-    const messageDetails = messages.map((message, index) => (
-      <p key={index} className="message-body" dangerouslySetInnerHTML={{__html: message}}/>
-    ));
+    const messageDetails = messages.map((message, index) => {
+      let text = (typeof message === 'object' ? message.message : message);
+      let getHelpUrl = (typeof message === 'object' ? this.createTroubleshootingURL(message.code) : undefined);
+
+      return (
+        <p key={index} className="message-body">
+          <span dangerouslySetInnerHTML={{__html: text}}/>
+          {
+            getHelpUrl &&
+            <a className="get-help" target="_blank" href={getHelpUrl}>Get help</a>
+          }
+        </p>
+      );
+    });
 
     return (
       <div className={className} role="alert">

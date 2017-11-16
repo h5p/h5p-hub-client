@@ -51,6 +51,15 @@
     color: $text-light;
   }
 
+  .get-help {
+    margin-left: 0.5em;
+  }
+  .get-help:before {
+    @include icon($icon-info-circle);
+    margin-right: 0.3em;
+    display: inline-block;
+  }
+
   .message-close {
     cursor: pointer;
     display: block;

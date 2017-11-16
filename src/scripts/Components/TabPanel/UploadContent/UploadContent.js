@@ -13,10 +13,7 @@ class UploadContent extends React.Component {
       fileSelected: false,
       filePath: '',
       fileUploading: false,
-      validationError: false,
-      serverError: false,
-      serverErrorTitle: '',
-      serverErrorMessage: '',
+      error: undefined,
       uploadData: {},
     };
     this.handleValidation = this.handleValidation.bind(this);
@@ -24,7 +21,7 @@ class UploadContent extends React.Component {
   }
 
   handleValidation(event) {
-    this.setState({validationError: false, serverError: false});
+    this.setState({error: undefined});
 
     if (event.target.files.length === 0) {
       return; // Do nothing if the file has not been changed
@@ -36,7 +33,10 @@ class UploadContent extends React.Component {
       this.setState({
         fileSelected: false,
         filePath: '',
-        validationError: true,
+        error: {
+          title: Dictionary.get('h5pFileWrongExtensionTitle'),
+          message: Dictionary.get('h5pFileWrongExtensionContent')
+        }
       });
     }
     else {
