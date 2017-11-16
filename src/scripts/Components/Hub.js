@@ -7,6 +7,7 @@ import DropDownSelector from './DropDownSelector/DropDownSelector';
 import TabPanel from './TabPanel/TabPanel';
 import Browse from './TabPanel/Browse/Browse';
 import UploadContent from './TabPanel/UploadContent/UploadContent';
+import Message from './Message/Message';
 
 import './Hub.scss';
 
@@ -45,28 +46,44 @@ class Hub extends React.Component {
 
   handleUpload = (data) => {
     let panelTitle = data.h5p.mainLibrary;
-    this.state.contentTypes.libraries.forEach(library => {
+    data.contentTypes.libraries.forEach(library => {
       if (library.machineName === data.h5p.mainLibrary) {
         panelTitle = library.title;
       }
     });
-    // Collapse Hub
-    this.setState({expanded: false, title: panelTitle});
+    // Collapse Hub, update title and content type cache
+    this.setState({
+      expanded: false,
+      title: panelTitle,
+      contentTypes: data.contentTypes,
+      infoMessage: {
+        title: Dictionary.get('uploadSuccess').replace(':title', panelTitle),
+        details: data.contentTypes.details
+      }
+    });
 
     this.props.onUpload(data);
   }
 
-  handleInstall = (contentTypes) => {
+  handleUpdate = (contentTypes) => {
+    // Handles updates to the content type cache
+    this.props.onUpdate(contentTypes);
     this.setState({
       contentTypes: contentTypes
     });
-  };
+  }
 
   handleReload = () => {
     fetchJSON(this.props.getAjaxUrl('content-type-cache'))
-      .then(response => this.setState({contentTypes: response}))
+      .then(response => this.handleUpdate(response))
       .catch(reason => this.setState({error: reason}));
   };
+
+  handleInfoDismiss = () => {
+    this.setState({
+      infoMessage: null
+    });
+  }
 
   render() {
     return (
@@ -87,7 +104,7 @@ class Hub extends React.Component {
                 getAjaxUrl={this.props.getAjaxUrl}
                 error={this.state.error}
                 onUse={this.handleUse}
-                onInstall={this.handleInstall}
+                onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
@@ -97,6 +114,14 @@ class Hub extends React.Component {
             </TabPanel>
           </div>
         </div>
+        {
+          !!this.state.infoMessage &&
+          <Message
+            severity='info'
+            title={this.state.infoMessage.title}
+            message={this.state.infoMessage.details}
+            onClose={this.handleInfoDismiss}/>
+        }
       </section>
     );
   }

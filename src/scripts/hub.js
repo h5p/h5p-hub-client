@@ -42,6 +42,7 @@ export default class HubClient {
           onResize={self.trigger.bind(self, 'resize')}
           onUse={self.trigger.bind(self, 'select')}
           onUpload={self.trigger.bind(self, 'upload')}
+          onUpdate={self.trigger.bind(self, 'update')}
         />,
         container
       );

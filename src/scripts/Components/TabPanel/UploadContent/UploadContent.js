@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './UploadContent.scss';
-import '../../../utils/fetch';
+import fetchJSON from '../../../utils/fetchJSON';
 import Dictionary from '../../../utils/dictionary';
 import Message from '../../Message/Message';
 import UploadForm from './UploadForm/UploadForm';
@@ -51,34 +51,22 @@ class UploadContent extends React.Component {
   }
 
   handleUpload() {
+    this.setState({
+      fileSelected: true,
+      fileUploading: true
+    });
+
     // Add the H5P file to a form, ready for transportation
     let data = new FormData();
     data.append('h5p', this.state.uploadData);
     data.append('contentId', this.props.contentId);
 
-    this.setState({fileSelected: true, fileUploading: true});
 
-    return fetch(this.props.getAjaxUrl('library-upload'), {
-      method: 'POST',
-      credentials: 'include',
-      body: data
-    }).then(result => result.json())
-      .then(json => {
-        // Validation failed
-        if (json.success !== true) {
-          this.setState({
-            fileSelected: false,
-            fileUploading: false,
-            serverError: true,
-            serverErrorTitle: json.errorCode ? json.errorCode : Dictionary.get('h5pFileUploadServerErrorTitle'),
-            serverErrorMessage: json.message ? json.message : Dictionary.get('h5pFileUploadServerErrorContent'),
-            filePath: '',
-            uploadData: {}
-          });
-          return;
-        }
+    fetchJSON(this.props.getAjaxUrl('library-upload'), data)
+      .then(response => {
+        // Upload success, inform parent
+        this.props.onUpload(response.data);
 
-        this.props.onUpload(json.data);
         this.setState({
           fileSelected: false,
           fileUploading: false,
@@ -86,21 +74,26 @@ class UploadContent extends React.Component {
           uploadData: {},
         });
       })
-      .catch(() => {
+      .catch(reason => {
+        // Upload failed
         this.setState({
           fileSelected: false,
           fileUploading: false,
-          serverError: true,
-          serverErrorTitle: Dictionary.get('h5pFileUploadServerErrorTitle'),
-          serverErrorMessage: Dictionary.get('h5pFileUploadServerErrorContent'),
+          errorMessage: reason,
           filePath: '',
-          uploadData: {},
+          uploadData: {}
         });
       });
   }
 
   getFileExtension(fileName) {
     return fileName.replace(/^.*\./, '');
+  }
+
+  handleErrorDismiss = () => {
+    this.setState({
+      errorMessage: null
+    });
   }
 
   render() {
@@ -115,14 +108,13 @@ class UploadContent extends React.Component {
             severity='error'
           />
         }
-        {this.state.serverError &&
+        {
+          !!this.state.errorMessage &&
           <Message
-            type={'error'}
-            dismissable={false}
-            title={this.state.serverErrorTitle}
-            message={this.state.serverErrorMessage}
             severity='error'
-          />
+            title={this.state.errorMessage.title}
+            message={this.state.errorMessage.details}
+            onClose={this.handleErrorDismiss}/>
         }
         <div className={"upload-throbber" + (this.state.fileUploading ? '' : ' hidden')}
           aria-label={Dictionary.get('uploadingThrobber')}/>

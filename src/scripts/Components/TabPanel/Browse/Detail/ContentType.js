@@ -85,10 +85,10 @@ class ContentType extends React.Component {
       infoMessage: null
     });
 
-    fetchJSON(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), 'POST')
+    fetchJSON(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), '')
       .then(response => {
         // Install success, update parent
-        this.props.onInstall(response);
+        this.props.onInstall(response.data);
 
         const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
         const title = this.props.library.title || this.props.library.machineName;
@@ -97,7 +97,7 @@ class ContentType extends React.Component {
           installing: false,
           infoMessage: {
             title: Dictionary.get(installMessageKey, {':contentType': title}),
-            details: response.details
+            details: response.data.details
           }
         });
       })
