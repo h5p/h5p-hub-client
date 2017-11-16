@@ -97,7 +97,7 @@ class ContentType extends React.Component {
           installing: false,
           infoMessage: {
             title: Dictionary.get(installMessageKey, {':contentType': title}),
-            details: response.data.details
+            message: response.data.details
           }
         });
       })
@@ -278,17 +278,15 @@ class ContentType extends React.Component {
         {
           !!this.state.errorMessage &&
           <Message
+            {...this.state.errorMessage}
             severity='error'
-            title={this.state.errorMessage.title}
-            message={this.state.errorMessage.details}
             onClose={this.handleErrorDismiss}/>
         }
         {
           !!this.state.infoMessage &&
           <Message
+            {...this.state.infoMessage}
             severity='info'
-            title={this.state.infoMessage.title}
-            message={this.state.infoMessage.details}
             onClose={this.handleInfoDismiss}/>
         }
         <ButtonBar

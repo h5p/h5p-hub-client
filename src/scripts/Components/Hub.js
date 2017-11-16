@@ -58,7 +58,7 @@ class Hub extends React.Component {
       contentTypes: data.contentTypes,
       infoMessage: {
         title: Dictionary.get('uploadSuccess').replace(':title', panelTitle),
-        details: data.contentTypes.details
+        message: data.contentTypes.details
       }
     });
 
@@ -117,9 +117,8 @@ class Hub extends React.Component {
         {
           !!this.state.infoMessage &&
           <Message
+            {...this.state.infoMessage}
             severity='info'
-            title={this.state.infoMessage.title}
-            message={this.state.infoMessage.details}
             onClose={this.handleInfoDismiss}/>
         }
       </section>

@@ -11,15 +11,15 @@ const fetchJSON = (url, data) =>
       return response.json().catch(() => {
         throw {
           title: response.statusText + ' (' + response.status + ')',
-          details: [Dictionary.get('unableToInterpretError'), Dictionary.get('unableToInterpretSolution')]
+          message: [Dictionary.get('unableToInterpretError'), Dictionary.get('unableToInterpretSolution')]
         };
       });
     })
     .then(response => {
       if (response.success === false) {
         throw {
-          title: response.message + ' (' + response.errorCode  + ')',
-          details: response.details
+          title: response.message,
+          message: response.details
         };
       }
       return response;

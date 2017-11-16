@@ -79,7 +79,7 @@ class UploadContent extends React.Component {
         this.setState({
           fileSelected: false,
           fileUploading: false,
-          errorMessage: reason,
+          error: reason,
           filePath: '',
           uploadData: {}
         });
@@ -92,28 +92,18 @@ class UploadContent extends React.Component {
 
   handleErrorDismiss = () => {
     this.setState({
-      errorMessage: null
+      error: null
     });
   }
 
   render() {
     return (
       <div className="upload-wrapper">
-        {this.state.validationError &&
-          <Message
-            type={'error'}
-            dismissable={false}
-            title={Dictionary.get('h5pFileWrongExtensionTitle')}
-            message={Dictionary.get('h5pFileWrongExtensionContent')}
-            severity='error'
-          />
-        }
         {
-          !!this.state.errorMessage &&
+          !!this.state.error &&
           <Message
+            {...this.state.error}
             severity='error'
-            title={this.state.errorMessage.title}
-            message={this.state.errorMessage.details}
             onClose={this.handleErrorDismiss}/>
         }
         <div className={"upload-throbber" + (this.state.fileUploading ? '' : ' hidden')}
