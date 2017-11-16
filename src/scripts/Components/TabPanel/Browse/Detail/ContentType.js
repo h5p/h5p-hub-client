@@ -192,9 +192,13 @@ class ContentType extends React.Component {
       else if (this.state.modalType === 'license') {
         return (
           <div>
-            <div className="modal-header">{Dictionary.get('licenseModalTitle')}</div>
+            <div className="modal-header">
+              {Dictionary.get('licenseModalTitle')}
+            </div>
             <div className="modal-content">
-              <h5 id="license-details-id" className="modal-title">{this.props.library.license.id}</h5>
+              <h5 id="license-details-id" className="modal-title">
+                {this.props.library.license.id}
+              </h5>
               <div
                 id="license-details-description"
                 className={this.state.licenseDetails ? undefined : 'loading'}
@@ -219,20 +223,45 @@ class ContentType extends React.Component {
     }
 
     return (
-      <div className={classNames} id="content-type-detail" role="region" tabIndex="-1" aria-labelledby={titleId} onTransitionEnd={this.onTransitionEnd}>
-        <button type="button" className="back-button icon-arrow-thick" aria-label={Dictionary.get('contentTypeBackButtonLabel')} tabIndex="0" onClick={this.close}></button>
+      <div className={classNames}
+        id="content-type-detail"
+        role="region"
+        tabIndex="-1"
+        aria-labelledby={titleId}
+        onTransitionEnd={this.onTransitionEnd}
+      >
+        <button
+          type="button"
+          className="back-button icon-arrow-thick"
+          aria-label={Dictionary.get('contentTypeBackButtonLabel')}
+          tabIndex="0"
+          onClick={this.close}
+        />
         <div className="container">
           <div className="image-wrapper">
-            <img className="img-responsive content-type-image" src={this.props.library.icon || noIcon}/>
+            <img
+              className="img-responsive content-type-image"
+              src={this.props.library.icon || noIcon}
+            />
           </div>
           <div className="text-details">
-            <h2 id="{titleId}" className="title" tabIndex="-1">{this.props.library.title || this.props.library.machineName}</h2>
+            <h2
+              id="{titleId}"
+              className="title"
+              tabIndex="-1"
+            >
+              {this.props.library.title || this.props.library.machineName}
+            </h2>
             <div className="owner">{this.props.library.owner}</div>
             <ReadMore
               text={this.props.library.description}
               maxLength={285}
             />
-            <a className="button demo-button" target="_blank" href={this.props.library.example || '#'}>
+            <a
+              className="button demo-button"
+              target="_blank"
+              href={this.props.library.example || '#'}
+            >
               {Dictionary.get("contentTypeDemoButtonLabel")}
             </a>
           </div>
@@ -278,7 +307,6 @@ class ContentType extends React.Component {
             onShowLicenseDetails={this.handleShowLicenseDetails}
           />
         }
-
         <Modal
           visible={this.state.modalType !== undefined}
           onClose={this.onModalClose}
@@ -287,7 +315,6 @@ class ContentType extends React.Component {
         >
           <ModalContent/>
         </Modal>
-
       </div>
     );
   }
