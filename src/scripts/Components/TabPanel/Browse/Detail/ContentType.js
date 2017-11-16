@@ -143,6 +143,11 @@ class ContentType extends React.Component {
               .replace(':year', new Date().getFullYear());
           }
           this.setState({licenseDetails: details});
+        })
+        .catch(() => {
+          this.setState({
+            licenseDetails: Dictionary.get('licenseFetchDetailsFailed')
+          });
         });
     }
 
