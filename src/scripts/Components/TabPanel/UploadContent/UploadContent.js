@@ -13,10 +13,7 @@ class UploadContent extends React.Component {
       fileSelected: false,
       filePath: '',
       fileUploading: false,
-      validationError: false,
-      serverError: false,
-      serverErrorTitle: '',
-      serverErrorMessage: '',
+      error: undefined,
       uploadData: {},
     };
     this.handleValidation = this.handleValidation.bind(this);
@@ -24,7 +21,7 @@ class UploadContent extends React.Component {
   }
 
   handleValidation(event) {
-    this.setState({validationError: false, serverError: false});
+    this.setState({error: undefined});
 
     if (event.target.files.length === 0) {
       return; // Do nothing if the file has not been changed
@@ -36,7 +33,10 @@ class UploadContent extends React.Component {
       this.setState({
         fileSelected: false,
         filePath: '',
-        validationError: true,
+        error: {
+          title: Dictionary.get('h5pFileWrongExtensionTitle'),
+          message: Dictionary.get('h5pFileWrongExtensionContent')
+        }
       });
     }
     else {
@@ -69,9 +69,10 @@ class UploadContent extends React.Component {
           this.setState({
             fileSelected: false,
             fileUploading: false,
-            serverError: true,
-            serverErrorTitle: json.errorCode ? json.errorCode : Dictionary.get('h5pFileUploadServerErrorTitle'),
-            serverErrorMessage: json.message ? json.message : Dictionary.get('h5pFileUploadServerErrorContent'),
+            error: {
+              title: json.message,
+              message: json.details
+            },
             filePath: '',
             uploadData: {}
           });
@@ -90,9 +91,10 @@ class UploadContent extends React.Component {
         this.setState({
           fileSelected: false,
           fileUploading: false,
-          serverError: true,
-          serverErrorTitle: Dictionary.get('h5pFileUploadServerErrorTitle'),
-          serverErrorMessage: Dictionary.get('h5pFileUploadServerErrorContent'),
+          error: {
+            title: Dictionary.get('h5pFileUploadServerErrorTitle'),
+            message: Dictionary.get('h5pFileUploadServerErrorContent')
+          },
           filePath: '',
           uploadData: {},
         });
@@ -106,21 +108,13 @@ class UploadContent extends React.Component {
   render() {
     return (
       <div className="upload-wrapper">
-        {this.state.validationError &&
+        {
+          this.state.error &&
           <Message
-            type={'error'}
+            type='error'
             dismissable={false}
-            title={Dictionary.get('h5pFileWrongExtensionTitle')}
-            message={Dictionary.get('h5pFileWrongExtensionContent')}
-            severity='error'
-          />
-        }
-        {this.state.serverError &&
-          <Message
-            type={'error'}
-            dismissable={false}
-            title={this.state.serverErrorTitle}
-            message={this.state.serverErrorMessage}
+            title={this.state.error.title}
+            message={this.state.error.message}
             severity='error'
           />
         }
