@@ -113,7 +113,7 @@ class Browse extends React.Component {
       return (
         <NoContentTypesError
           throbbing={this.state.retrying}
-          hint={this.props.error}
+          details={this.props.error}
           onRetry={this.handleRetry}/>
       );
     }
