@@ -32,10 +32,10 @@ class Browse extends React.Component {
   }
 
   handleDetailClose = () => {
-    this.setState({
+    this.setState(state => ({
       detailViewActive: false,
-      setFocus: !this.state.setFocus, // Toggle to trigger focus
-    });
+      setFocus: !state.setFocus, // Toggle to trigger focus
+    }));
   }
 
   handleOnLibrarySelect = (library) => {
