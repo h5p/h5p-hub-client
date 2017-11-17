@@ -45,7 +45,7 @@ class Browse extends React.Component {
     }));
   }
 
-  handleOnLibrarySelect = (library) => {
+  handleListSelect = (library) => {
     this.setState({
       library: library,
       detailViewActive: true
@@ -93,11 +93,16 @@ class Browse extends React.Component {
     }
   }
 
-  handleSelect = () => {
+  handleSearchSelect = () => {
     // Use highlighted item
     const selected = this.state.focused || this.state.contentTypes[0];
     if (selected) {
-      this.props.onUse(selected);
+      if (selected.installed) {
+        this.props.onUse(selected);
+      }
+      else {
+        this.handleListSelect(selected);
+      }
     }
   }
 
@@ -133,7 +138,7 @@ class Browse extends React.Component {
           setFocus={this.props.setFocus}
           onFilter={this.handleFilterOn}
           onNavigate={this.handleFocusMove}
-          onSelect={this.handleSelect}/>
+          onSelect={this.handleSearchSelect}/>
 
         {
           !!this.state.warnOutdated &&
@@ -158,7 +163,7 @@ class Browse extends React.Component {
             setFocus={!this.state.setFocus}
             visible={!this.state.detailViewActive}
             onUse={this.props.onUse}
-            onSelect={this.handleOnLibrarySelect}
+            onSelect={this.handleListSelect}
             onFocus={this.handleFocus}/>
           <ContentType
             library={this.state.library}
