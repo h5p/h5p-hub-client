@@ -2,6 +2,7 @@
 .h5p-hub {
   .navbar {
     background-color: transparent;
+    list-style: none;
     color: #020202;
     border: 0;
     padding: 1.2em 1.2em 0.975422574em 2.292em;
@@ -10,8 +11,8 @@
     opacity: 1;
     visibility: visible;
     transition: opacity 0.2s, visibility 0s linear 0s;
-
-    display: block; /* Override SDK */
+    overflow: auto;
+    display: block;
 
     &.hidden {
       opacity: 0;
@@ -33,7 +34,7 @@
 }
 ul.sort-by-list {
   margin-top: 0.7844743em;
-  
+
   & > li {
     float: left;
     margin-left: 0.5em;

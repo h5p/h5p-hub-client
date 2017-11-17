@@ -6,19 +6,7 @@ We are testing this using [browserstack.com](https://browserstack.com), to make 
 
 ## Building
 
-Get the [h5p-sdk](https://github.com/h5p/h5p-sdk), and link it to this project.
-
-```bash
- cd ..
- git clone git@github.com:h5p/h5p-sdk.git
- cd h5p-sdk
- npm link
- cd ../h5p-hub-client
- npm link h5p-sdk
-```
-
-
-Run `build` to concatinate *JavaScript* files and compile scss files to css. Resulting files are found in the [dist folder](dist).
+Run `build` to concatenate *JavaScript* files and compile scss files to css. Resulting files are found in the [dist folder](dist).
 
 ```bash
 npm run build

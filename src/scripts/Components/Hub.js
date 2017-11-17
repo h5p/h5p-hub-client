@@ -93,7 +93,7 @@ class Hub extends React.Component {
 
   render() {
     return (
-      <section className="h5p-hub h5p-sdk">
+      <section className="h5p-hub">
         <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`}>
           <DropDownSelector
             title={this.state.title || Dictionary.get('hubPanelLabel')}
