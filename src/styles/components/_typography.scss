@@ -1,0 +1,112 @@
+@import "../base/colors";
+@import "../base/variables";
+
+$dl-horizontal-dt-width: 5em;
+
+.h5p-hub {
+  font-family: 'Open Sans', sans-serif;
+  font-size: $text-body-large;
+  color: $text-dark;
+
+  .h1,.h2,.h3,.h4,.h5,.h6,
+  h1, h2, h3, h4, h5, h6 {
+    font-family: inherit;
+    color: inherit;
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .h1,.h2,.h3,
+  h1, h2, h3 {
+    margin-top: $gutter;
+    margin-bottom: $gutter / 2;
+  }
+
+  .h4,.h5,.h6,
+  h4, h5, h6 {
+    margin-top: $gutter / 2;
+    margin-bottom: $gutter / 2;
+    font-weight: 600;
+  }
+
+  h1,.h1 {
+    font-size: 1.733em;
+  }
+
+  h2,.h2 {
+    font-size: 1.458em;
+  }
+
+  h3,.h3 {
+    font-size: 1.250em;
+  }
+
+  h4,.h4 {
+    font-size: 1.042em;
+  }
+
+  h5,.h5 {
+    font-size: 0.938em;
+  }
+
+  h6,.h6 {
+    font-size: 0.875em;
+  }
+
+  ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  hr {
+    border: 0;
+    height: 0;
+    margin: $gutter 0;
+    border-bottom: 1px solid $separator-color;
+  }
+
+  small, .small {
+    color: $text-light;
+    line-height: 1.7em;
+    font-size: $text-body-small;
+  }
+
+  .link,
+  a {
+    font-family: 'Open Sans', sans-serif;
+    color: $text-dark;
+    font-size: 1em;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: underline;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+  }
+
+  .dl-horizontal {
+    dt {
+      float: left;
+      width: $dl-horizontal-dt-width;
+      overflow: hidden;
+      clear: left;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    dd {
+      margin-left: $dl-horizontal-dt-width + $gutter;
+    }
+  }
+
+
+  .additional-information {
+    font-style: italic;
+    color: $text-light;
+  }
+
+  .hidden {
+    display: none;
+  }
+}

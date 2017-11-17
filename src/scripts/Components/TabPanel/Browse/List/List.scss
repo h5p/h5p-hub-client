@@ -37,7 +37,7 @@
     list-style: none;
   }
 
-  li {
+  .media {
     width: 100%;
     padding: 0.5em 1.5em 0.5em 1em;
     box-sizing: border-box;
@@ -46,6 +46,10 @@
     outline-color: lighten($ac1, 10%);
     margin-top: 0;
 
+    &:first-child {
+      margin-top: 0;
+    }
+
     &:hover {
       background-color: lighten($ac1, 55%);
     }
@@ -53,17 +57,18 @@
     &:not(:last-child) {
       border-bottom: 1px solid $separator-color;
     }
-  }
-  li[tabindex="0"] {
-    background-color: lighten($ac1, 55%);
+
+    &[tabindex="0"] {
+      background-color: lighten($ac1, 55%);
+
+    }
   }
 }
 
 .no-results {
-  background: url('../../../../../images/no-results.svg') no-repeat;
-  background-position: 4em 0em;
+  background: no-repeat 4em 0 url('../../../../../images/no-results.svg');
   background-size: contain;
-  padding: 0em 1em 0.5em 17em;
+  padding: 0 1em 0.5em 17em;
   margin-top: 2em;
 }
 .no-results-title {

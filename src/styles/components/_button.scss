@@ -1,0 +1,87 @@
+@import "../base/colors";
+@import "../base/variables";
+@import "../base/mixins";
+
+@mixin button-filled($background-color, $color) {
+  background-color: $background-color;
+  color: $color;
+  border-color: $background-color;
+
+  &:hover {
+    background-color: darken($background-color, 5%);
+    border-color: darken($background-color, 5%);
+  }
+
+  &:active {
+    background-color: darken($background-color, 10%);
+    border-color: darken($background-color, 10%);
+  }
+
+  &[disabled] {
+    background-color: lighten($background-color, 40%);
+    border-color: lighten($background-color, 40%);
+  }
+}
+
+@mixin button-inverse($background-color, $color) {
+  background-color: $background-color;
+  color: $color;
+  border-color: $color;
+
+  &:hover {
+    color: lighten($color, 10%);
+    border-color: lighten($color, 10%);
+  }
+
+  &:active {
+    color: darken($color, 10%);
+    border-color: darken($color, 10%);
+  }
+
+  &[disabled],
+  &[aria-disabled] {
+    color: lighten($color, 40%);
+    border-color: lighten($color, 40%);
+  }
+}
+
+.h5p-hub {
+  .button {
+    font-family: 'Open Sans', sans-serif;
+    font-size: $text-body-small;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1em;
+    min-width: 4em;
+    padding: 0.708em 1.5em;
+    border-radius: 1.375em;
+    background-color: $c3;
+    color: $text-dark;
+    display: inline-block;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: background-color .35s ease;
+
+    // For disabled buttons, don't care about mouse events
+    &[disabled] {
+      pointer-events: none;
+    }
+
+    &:focus {
+      @include blueGlow
+    }
+
+    &.button-primary {
+      @include button-filled($ac1, white);
+    }
+
+    &.button-inverse-primary {
+      @include button-inverse(white, $ac1);
+    }
+
+    &:before {
+      font-weight: normal;
+    }
+  }
+}

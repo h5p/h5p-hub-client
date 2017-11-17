@@ -7,6 +7,22 @@ $content-type-list-image-size: 100px;
 .h5p-hub .content-type-list {
   .media .media-body {
     overflow: visible;
+    zoom: 1;
+    width: 10000px;
+  }
+
+  .media-left {
+    display: table-cell;
+    vertical-align: top;
+  }
+
+  .media-body {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .media-left {
+    padding-right: $gutter;
   }
 
   .media-object {
@@ -14,6 +30,7 @@ $content-type-list-image-size: 100px;
   }
 
   .media-heading {
+    margin-top: 0;
     float: left;
     margin-right: $gutter;
   }

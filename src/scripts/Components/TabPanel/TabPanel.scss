@@ -1,4 +1,6 @@
 @import '../../../styles/base/variables';
+@import "../../../styles/base/mixins";
+
 
 // General color scheme for each section
 @mixin section($color) {
@@ -25,6 +27,64 @@
 
     &.h5p-section-upload {
       @include section($color-section-upload);
+    }
+  }
+
+  .tab-panel {
+    border: none;
+
+    [role="tablist"] {
+      background-color: $c4;
+      list-style: none;
+      border-bottom: none;
+      padding-left: 1em;
+      margin: 0;
+
+      > span {
+        display: block;
+        height: 0.3em;
+        background: $ac1;
+        position: relative;
+        transition: all .5s ease;
+      }
+    }
+    [role="tab"] {
+      display: inline-block;
+      padding: $gutter;
+      text-decoration: none;
+      text-align: center;
+      cursor: pointer;
+      transition: all .5s ease;
+      color: $c3;
+      outline-color: lighten($ac1, 10%);
+
+      &:nth-child(1) ~ span,
+      &:nth-child(1)[aria-selected="true"] ~ span {
+        height: 0.27em;
+        width: 200px;
+        right: 0;
+      }
+
+      &:nth-child(2) ~ span,
+      &:nth-child(2)[aria-selected="true"] ~ span {
+        height: 0.27em;
+        width: 4em;
+        right: -230px;
+      }
+
+      &:before {
+        @include h5p-hub-icon($icon-radio-unselected, $gutter);
+      }
+
+      &[aria-selected='true']:before {
+        content: $icon-radio-selected;
+      }
+    }
+
+    [role="tabpanel"] {
+      .tab-panel-inner {
+        padding: $gutter;
+      }
     }
   }
 }

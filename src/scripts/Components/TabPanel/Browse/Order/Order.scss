@@ -2,11 +2,13 @@
 .h5p-hub {
   .navbar {
     background-color: transparent;
+    list-style: none;
     color: #020202;
     border: 0;
     padding: 1.2em 1.2em 0.975422574em 2.292em;
     margin: 0;
     font-size: 1em;
+    overflow: auto;
   }
 }
 
