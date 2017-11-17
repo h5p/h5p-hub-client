@@ -104,7 +104,7 @@ class ContentType extends React.Component {
       .catch(reason => {
         // Install failed
         this.setState({
-          installed: false,
+          updating: false,
           installing: false,
           errorMessage: reason
         });
