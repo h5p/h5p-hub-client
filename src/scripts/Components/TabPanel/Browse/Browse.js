@@ -13,6 +13,8 @@ class Browse extends React.Component {
   constructor(props) {
     super(props);
 
+    console.log(JSON.stringify(props.contentTypes));
+
     const defaultOrderBy = 'recently';
     this.state = {
       orderBy: defaultOrderBy,
