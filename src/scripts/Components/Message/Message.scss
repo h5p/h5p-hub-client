@@ -53,9 +53,12 @@
 
   .get-help {
     margin-left: 0.5em;
+    color: #c62c15;
+    text-decoration: none;
   }
   .get-help:before {
-    @include icon($icon-info-circle);
+    @include icon($icon-question);
+    font-size: 0.9em;
     margin-right: 0.3em;
     display: inline-block;
   }
