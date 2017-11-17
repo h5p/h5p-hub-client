@@ -22,7 +22,7 @@
     width: 100%;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
                 0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
-    height: 100%;
+    height: calc(100% - 5.996455834em);
     position: absolute;
     pointer-events: none;
   }
@@ -53,6 +53,10 @@
   li[tabindex="0"] {
     background-color: lighten($ac1, 55%);
   }
+}
+
+.h5p-hub .filtering .content-type-list:before {
+  height: calc(100% - 3.536668484em);
 }
 
 .no-results {

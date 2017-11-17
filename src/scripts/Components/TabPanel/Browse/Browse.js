@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Message from '../../Message/Message';
 import Search from './Search/Search';
 import Order from './Order/Order';
 import List from './List/List';
@@ -150,7 +151,7 @@ class Browse extends React.Component {
           />
         }
 
-        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '')}>
+        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '') + (this.state.filterOn ? ' filtering' : '')}>
           <Order hits={this.state.contentTypes.length}
             selected={this.state.orderBy}
             onChange={this.handleOrderBy}
