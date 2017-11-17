@@ -50,10 +50,8 @@
     }
     [role="tab"] {
       display: inline-block;
-      padding: $gutter;
       text-decoration: none;
       text-align: center;
-      cursor: pointer;
       transition: all .5s ease;
       color: $c3;
       outline-color: lighten($ac1, 10%);
@@ -72,11 +70,21 @@
         right: -230px;
       }
 
-      &:before {
-        @include h5p-hub-icon($icon-radio-unselected, $gutter);
+      & > a {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        padding: $gutter;
+
+        &:before {
+          @include h5p-hub-icon($icon-radio-unselected, $gutter);
+        }
+        &:focus:before {
+          box-shadow: 0 0 1px 1px #1a93f4;
+        }
       }
 
-      &[aria-selected='true']:before {
+      &[aria-selected='true'] > a:before {
         content: $icon-radio-selected;
       }
     }

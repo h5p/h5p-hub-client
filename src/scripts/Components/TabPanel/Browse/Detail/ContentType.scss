@@ -95,13 +95,13 @@ $color-back-button: #474f5a;
       background: transparent;
       border: none;
       text-decoration: none;
+      outline: none;
 
-      &:hover,
-      &:focus {
-        color: lighten($color-back-button, 20%);
+      &:hover {
+        color: darken(#1f2227, 30%);
       }
-      &:active {
-        color: darken($color-back-button, 20%);
+      &:focus {
+        box-shadow: 0 0 1px 1px #1a93f4;
       }
 
       &.icon-arrow-thick:before {
