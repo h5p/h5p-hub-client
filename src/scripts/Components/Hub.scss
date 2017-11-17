@@ -7,13 +7,13 @@
 }
 
 .h5p-hub {
-  background: #fff;
   font-family: 'Open Sans', sans-serif;
   margin-bottom: $gutter;
   position: relative;
 
   .panel {
     border: 1px solid $c1;
+    background: #fff;
 
     &.h5p-section-content-types {
       @include section($color-section-content-types);

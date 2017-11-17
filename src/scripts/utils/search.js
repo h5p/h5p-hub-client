@@ -31,9 +31,12 @@ const propertyScoring = [
 /* Map order by id to a property name */
 const orderByMap = {
   'recently': 'recently',
-  'newest': 'updatedAt',
+  'newest': 'createdAt',
   'a-to-z': 'title'
 };
+
+// Some properties are usually ordered desc.
+const reverseProps = ['createdAt', 'updatedAt'];
 
 /**
  *
@@ -224,11 +227,12 @@ const sortOnProperty = (firstContentType, secondContentType, property, sortOrder
   }
 
   // Sort on property
+  const reverse = (reverseProps.indexOf(property) === -1 ? 1 : -1);
   if (firstContentType.contentType[property] > secondContentType.contentType[property]) {
-    return 1;
+    return 1 * reverse;
   }
   else if (firstContentType.contentType[property] < secondContentType.contentType[property]) {
-    return -1;
+    return -1 * reverse;
   }
   else {
     if (sortOrder.length) {

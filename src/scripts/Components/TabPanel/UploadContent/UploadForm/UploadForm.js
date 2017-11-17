@@ -18,6 +18,9 @@ class UploadForm extends React.Component {
     else {
       this.fileField.value = "";
     }
+    if (this.props.setFocus) {
+      this.uploadButton.focus();
+    }
   }
 
   clickFileField() {
@@ -47,6 +50,7 @@ class UploadForm extends React.Component {
             onChange={this.props.onValidate}
           />
           <button type="button"
+            ref={el => this.uploadButton = el}
             className="button upload-button"
             onClick={this.clickFileField}
             disabled={this.props.fileUploading}
@@ -62,6 +66,7 @@ UploadForm.propTypes = {
   fileSelected: PropTypes.bool.isRequired,
   fileUploading: PropTypes.bool.isRequired,
   filePath: PropTypes.string.isRequired,
+  setFocus: PropTypes.bool.isRequired,
   onValidate: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
 };

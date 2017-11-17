@@ -1,5 +1,17 @@
 .h5p-hub .content-type-detail {
-  .part-one, .part-two {
+  .text-details span {
     outline: none;
+  }
+
+  .read-more {
+    color: #1f2227;
+
+    &:hover,
+    &:focus {
+      color: lighten(#1f2227, 30%);
+    }
+    &:active {
+      color: darken(#1f2227, 30%);
+    }
   }
 }

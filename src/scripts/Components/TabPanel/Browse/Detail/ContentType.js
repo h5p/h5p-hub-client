@@ -29,7 +29,7 @@ class ContentType extends React.Component {
       installed: false,
       canInstall: false,
       updatable: false,
-      omstalling: false,
+      installing: false,
       showImageSlider: true,
       message: undefined
     };
@@ -85,10 +85,10 @@ class ContentType extends React.Component {
       infoMessage: null
     });
 
-    fetchJSON(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), 'POST')
+    fetchJSON(this.props.getAjaxUrl('library-install', {id: this.props.library.machineName}), '')
       .then(response => {
         // Install success, update parent
-        this.props.onInstall(response);
+        this.props.onInstall(response.data);
 
         const installMessageKey = this.props.installed ? 'contentTypeUpdateSuccess' : 'contentTypeInstallSuccess';
         const title = this.props.library.title || this.props.library.machineName;
@@ -97,21 +97,22 @@ class ContentType extends React.Component {
           installing: false,
           infoMessage: {
             title: Dictionary.get(installMessageKey, {':contentType': title}),
-            details: response.details
+            message: response.data.details
           }
         });
       })
       .catch(reason => {
         // Install failed
         this.setState({
-          installed: false,
+          updating: false,
           installing: false,
           errorMessage: reason
         });
       });
   }
 
-  close = () => {
+  handleClose = (event) => {
+    event.preventDefault();
     this.props.onClose();
   }
 
@@ -230,13 +231,10 @@ class ContentType extends React.Component {
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
       >
-        <button
-          type="button"
+        <a href="#"
           className="back-button icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
-          tabIndex="0"
-          onClick={this.close}
-        />
+          onClick={this.handleClose}/>
         <div className="container">
           <div className="image-wrapper">
             <img
@@ -278,17 +276,15 @@ class ContentType extends React.Component {
         {
           !!this.state.errorMessage &&
           <Message
+            {...this.state.errorMessage}
             severity='error'
-            title={this.state.errorMessage.title}
-            message={this.state.errorMessage.details}
             onClose={this.handleErrorDismiss}/>
         }
         {
           !!this.state.infoMessage &&
           <Message
+            {...this.state.infoMessage}
             severity='info'
-            title={this.state.infoMessage.title}
-            message={this.state.infoMessage.details}
             onClose={this.handleInfoDismiss}/>
         }
         <ButtonBar

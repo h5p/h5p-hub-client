@@ -1,12 +1,11 @@
-@import "~h5p-sdk/src/styles/components/reset";
-@import "~h5p-sdk/src/styles/components/typography";
-@import "~h5p-sdk/src/styles/components/button";
-@import "~h5p-sdk/src/styles/components/images";
-@import "~h5p-sdk/src/styles/components/input-field";
-@import "~h5p-sdk/src/styles/components/tab-panel";
-@import "~h5p-sdk/src/styles/components/media";
-@import "~h5p-sdk/src/styles/components/navbar";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
-@import "base/colors";
-@import "components/hub";
-@import "components/icons";
+@import './base/colors';
+@import './base/mixins';
+@import './base/variables';
+
+@import './components/reset';
+@import "./components/typography";
+@import "./components/button";
+@import "./components/images";
+@import "./components/icons";

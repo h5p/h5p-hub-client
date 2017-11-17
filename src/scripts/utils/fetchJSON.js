@@ -1,24 +1,25 @@
 import './fetch';
+import Dictionary from './dictionary';
 
-const fetchJSON = (url, method) =>
+const fetchJSON = (url, data) =>
   fetch(url, {
-    method: !method ? 'GET' : method,
+    method: data === undefined ? 'GET' : 'POST',
     credentials: 'include',
-    body: method === 'POST' ? '' : undefined
+    body: data
   })
     .then(response => {
       return response.json().catch(() => {
         throw {
           title: response.statusText + ' (' + response.status + ')',
-          details: ['Unable to interpret response.', 'Please check your error log.'] // TODO: l10n
+          message: [Dictionary.get('unableToInterpretError'), Dictionary.get('unableToInterpretSolution')]
         };
       });
     })
     .then(response => {
       if (response.success === false) {
         throw {
-          title: response.message + ' (' + response.errorCode  + ')',
-          details: response.details
+          title: response.message,
+          message: response.details
         };
       }
       return response;
