@@ -12,7 +12,7 @@ class TabPanel extends React.Component {
     };
   }
 
-  handleSelect(id) {
+  handleSelect = (id) => {
     this.setState({selected: id});
     this.props.onSelect(id);
   }
@@ -20,21 +20,20 @@ class TabPanel extends React.Component {
   render() {
     const tabButtons = React.Children.map(this.props.children, child => (
       <li id={child.props.id}
-          className='tab-button'
-          aria-selected={this.state.selected === child.props.id}
-          aria-controls={`tab-panel-${child.props.id}`}
-          role='tab'
-          key={child.props.id}
-      >
+        className='tab-button'
+        aria-selected={this.state.selected === child.props.id}
+        aria-controls={`tab-panel-${child.props.id}`}
+        role='tab'
+        key={child.props.id}>
         {child.props.title}
       </li>
     ));
 
     const tabContent = React.Children.map(this.props.children, child => (
       <div className={`tabpanel${this.state.selected === child.props.id ? '' : ' hidden'}`}
-           id={`tab-panel-${child.props.id}`}
-           aria-labelledby={child.props.id}
-           role='tabpanel'>
+        id={`tab-panel-${child.props.id}`}
+        aria-labelledby={child.props.id}
+        role='tabpanel'>
         {child}
       </div>
     ));
@@ -45,8 +44,7 @@ class TabPanel extends React.Component {
           <ul role='tablist'>
             <Choose
               selected={this.props.children[0].props.id}
-              onChange={id => this.handleSelect(id)}
-            >
+              onChange={this.handleSelect}>
               {tabButtons}
             </Choose>
           </ul>

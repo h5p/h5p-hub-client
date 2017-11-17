@@ -111,7 +111,8 @@ class ContentType extends React.Component {
       });
   }
 
-  close = () => {
+  handleClose = (event) => {
+    event.preventDefault();
     this.props.onClose();
   }
 
@@ -230,13 +231,10 @@ class ContentType extends React.Component {
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
       >
-        <button
-          type="button"
+        <a href="#"
           className="back-button icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
-          tabIndex="0"
-          onClick={this.close}
-        />
+          onClick={this.handleClose}/>
         <div className="container">
           <div className="image-wrapper">
             <img
