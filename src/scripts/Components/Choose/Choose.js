@@ -51,6 +51,9 @@ class Choose extends React.Component {
   handleClick(event, id) {
     if (!event.defaultPrevented) {
       this.select(id);
+      if (event.target.tagName === 'A') {
+        event.preventDefault();
+      }
     }
   }
 
@@ -100,18 +103,19 @@ class Choose extends React.Component {
     }
   }
 
+  cloneChild = (child) => !child ? null : React.cloneElement(child, child.props.id ? {
+    className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'hightlight' : '') : (!this.count ? 'highlight' : '')),
+    tabIndex: (this.state.focused ? (child.props.id === this.state.focused ? 0 : -1) : (!this.count++ ? 0 : -1)),
+    role: ['a', 'button'].indexOf(child.type) !== -1 ? undefined : child.props.role || 'button',
+    onClick: event => this.handleClick(event, child.props.id),
+    onKeyDown: event => this.handleKeyDown(event, child.props.id),
+    ref: item => item ? this.items.push(item) : undefined
+  } : undefined, !child.props.id && child.props.children ? React.Children.map(child.props.children, this.cloneChild) : child.props.children);
+
   render() {
     this.items = []; // Array to preserve order
-    return React.Children.map(this.props.children, (child, i) =>
-      child ? React.cloneElement(child, {
-        className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'hightlight' : '') : (i === 0 ? 'hightlight' : '')),
-        tabIndex: (this.state.focused ? (child.props.id === this.state.focused ? 0 : -1) : (i === 0 ? 0 : -1)),
-        role: child.props.role || 'button',
-        onClick: event => this.handleClick(event, child.props.id),
-        onKeyDown: event => this.handleKeyDown(event, child.props.id),
-        ref: item => item ? this.items.push(item) : undefined
-      }) : null
-    );
+    this.count = 0;
+    return React.Children.map(this.props.children, this.cloneChild);
   }
 }
 
