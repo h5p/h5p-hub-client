@@ -150,14 +150,13 @@ class Browse extends React.Component {
           />
         }
 
-        <Order hits={this.state.contentTypes.length}
-          selected={this.state.orderBy}
-          onChange={this.handleOrderBy}
-          hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
-          searching={!!this.state.filterOn}
-          visible={!this.state.detailViewActive}/>
-
         <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '')}>
+          <Order hits={this.state.contentTypes.length}
+            selected={this.state.orderBy}
+            onChange={this.handleOrderBy}
+            hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
+            searching={!!this.state.filterOn}
+            visible={!this.state.detailViewActive}/>
           <List contentTypes={this.state.contentTypes}
             focused={this.state.focused}
             setFocus={!this.state.setFocus}
