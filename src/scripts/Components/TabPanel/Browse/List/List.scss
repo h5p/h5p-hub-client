@@ -3,8 +3,6 @@
 @import "../../../../../styles/base/variables";
 
 .h5p-hub .content-type-list {
-  padding: 1.25em 0;
-  margin: 0;
   overflow: auto;
   height: 39.122137405em;
   opacity: 1;
@@ -24,15 +22,13 @@
     width: 100%;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
                 0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
-    height: 100%;
+    height: calc(100% - 5.996455834em);
     position: absolute;
-    top: 0;
-    left: 0;
     pointer-events: none;
   }
 
   ol {
-    margin: 0;
+    margin: 1.25em 0;
     padding: 0;
     list-style: none;
   }
@@ -63,6 +59,10 @@
 
     }
   }
+}
+
+.h5p-hub .filtering .content-type-list:before {
+  height: calc(100% - 3.536668484em);
 }
 
 .no-results {

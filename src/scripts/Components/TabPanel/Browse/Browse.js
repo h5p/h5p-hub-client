@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Message from '../../Message/Message';
 import Search from './Search/Search';
 import Order from './Order/Order';
 import List from './List/List';
@@ -45,7 +46,7 @@ class Browse extends React.Component {
     }));
   }
 
-  handleOnLibrarySelect = (library) => {
+  handleListSelect = (library) => {
     this.setState({
       library: library,
       detailViewActive: true
@@ -93,11 +94,16 @@ class Browse extends React.Component {
     }
   }
 
-  handleSelect = () => {
+  handleSearchSelect = () => {
     // Use highlighted item
     const selected = this.state.focused || this.state.contentTypes[0];
     if (selected) {
-      this.props.onUse(selected);
+      if (selected.installed) {
+        this.props.onUse(selected);
+      }
+      else {
+        this.handleListSelect(selected);
+      }
     }
   }
 
@@ -133,7 +139,7 @@ class Browse extends React.Component {
           setFocus={this.props.setFocus}
           onFilter={this.handleFilterOn}
           onNavigate={this.handleFocusMove}
-          onSelect={this.handleSelect}/>
+          onSelect={this.handleSearchSelect}/>
 
         {
           !!this.state.warnOutdated &&
@@ -145,20 +151,19 @@ class Browse extends React.Component {
           />
         }
 
-        <Order hits={this.state.contentTypes.length}
-          selected={this.state.orderBy}
-          onChange={this.handleOrderBy}
-          hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
-          searching={!!this.state.filterOn}
-          visible={!this.state.detailViewActive}/>
-
-        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '')}>
+        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '') + (this.state.filterOn ? ' filtering' : '')}>
+          <Order hits={this.state.contentTypes.length}
+            selected={this.state.orderBy}
+            onChange={this.handleOrderBy}
+            hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
+            searching={!!this.state.filterOn}
+            visible={!this.state.detailViewActive}/>
           <List contentTypes={this.state.contentTypes}
             focused={this.state.focused}
             setFocus={!this.state.setFocus}
             visible={!this.state.detailViewActive}
             onUse={this.props.onUse}
-            onSelect={this.handleOnLibrarySelect}
+            onSelect={this.handleListSelect}
             onFocus={this.handleFocus}/>
           <ContentType
             library={this.state.library}
