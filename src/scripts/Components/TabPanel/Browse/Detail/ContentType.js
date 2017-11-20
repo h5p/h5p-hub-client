@@ -117,7 +117,6 @@ class ContentType extends React.Component {
   }
 
   handleUse = () => {
-    this.close();
     this.props.onUse(this.props.library);
   }
 

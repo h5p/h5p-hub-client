@@ -46,6 +46,11 @@ class Browse extends React.Component {
     }));
   }
 
+  handleDetailUse = (contentType) => {
+    this.handleDetailClose();
+    this.props.onUse(contentType);
+  }
+
   handleListSelect = (library) => {
     this.setState({
       library: library,
@@ -168,7 +173,7 @@ class Browse extends React.Component {
           <ContentType
             library={this.state.library}
             visible={this.state.detailViewActive}
-            onUse={this.props.onUse}
+            onUse={this.handleDetailUse}
             onClose={this.handleDetailClose}
             getAjaxUrl={this.props.getAjaxUrl}
             onInstall={this.props.onInstall}/>
