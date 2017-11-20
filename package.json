@@ -4,13 +4,12 @@
   "description": "H5P Content Hub and H5P Content Type Hub",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env DEV_ENV=1 karma start",
+    "test": "cross-env DEV_ENV=1 karma start && eslint src",
     "build": "webpack",
     "lint": "./node_modules/.bin/eslint src",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "watch": "cross-env DEV_ENV=1 webpack --watch",
-    "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch",
-    "dev": "lite-server"
+    "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -33,12 +32,10 @@
     "babel-preset-stage-2": "^6.24.1",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
-    "es6-promise": "^4.1.1",
     "eslint": "^4.10.0",
     "eslint-plugin-babel": "^4.1.2",
     "eslint-plugin-react": "^7.4.0",
     "extract-text-webpack-plugin": "^3.0.2",
-    "file-loader": "^1.1.5",
     "jasmine-core": "^2.8.0",
     "json-loader": "^0.5.7",
     "karma": "^1.7.1",
@@ -46,7 +43,6 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^2.0.5",
-    "lite-server": "^2.3.0",
     "node-sass": "^4.5.3",
     "prettier": "1.7.4",
     "resolve-url-loader": "^2.2.0",
@@ -54,11 +50,9 @@
     "style-loader": "^0.19.0",
     "susy": "^2.2.12",
     "url-loader": "^0.6.2",
-    "webpack": "^3.8.1",
-    "whatwg-fetch": "^2.0.3"
+    "webpack": "^3.8.1"
   },
   "dependencies": {
-    "babel-plugin-add-module-exports": "^0.2.1",
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

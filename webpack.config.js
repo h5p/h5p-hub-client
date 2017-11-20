@@ -13,7 +13,7 @@ const polyfillPromise = new webpack.ProvidePlugin({
 });
 
 const config = {
-  entry: "./src/entries/" + (isDevMode ? (isDist ? 'dist' : 'dev') : 'dist') + '.js',
+  entry: "./src/entries/dist.js",
   devtool: 'inline-source-map',
   output: {
     path: path.join(__dirname, 'dist'),
