@@ -19,8 +19,8 @@ class Message extends React.Component {
       messages = [messages];
     }
     const messageDetails = messages.map((message, index) => {
-      let text = (typeof message === 'object' ? message.message : message);
-      let getHelpUrl = (typeof message === 'object' ? this.createTroubleshootingURL(message.code) : undefined);
+      let text = message.message || message;
+      let getHelpUrl = this.createTroubleshootingURL(message.code);
 
       return (
         <p key={index} className="message-body">
