@@ -8,8 +8,7 @@
     "build": "webpack",
     "lint": "./node_modules/.bin/eslint src",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
-    "watch": "cross-env DEV_ENV=1 webpack --watch",
-    "watch-dist": "cross-env DEV_ENV=1 DIST_ENTRY=1 webpack --watch"
+    "watch": "cross-env DEV_ENV=1 webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -43,7 +42,6 @@
     "karma-jasmine": "^1.1.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^2.0.5",
-    "node-sass": "^4.5.3",
     "prettier": "1.7.4",
     "resolve-url-loader": "^2.2.0",
     "sass-loader": "^6.0.6",

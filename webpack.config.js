@@ -1,7 +1,6 @@
 var webpack = require('webpack');
 var path = require('path');
 var isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
-var isDist = JSON.parse(process.env.DIST_ENTRY || 0) == 1;
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
