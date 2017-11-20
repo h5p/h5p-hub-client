@@ -15,7 +15,7 @@ describe('sorting', () => {
       .map(res => {
         return (res.popularity !== undefined ? res.popularity : 99999999);
       });
-    expect(isMonotinic(results)).toEqual(true);
+    expect(isMonotonic(results)).toEqual(true);
     done();
   });
 });
@@ -27,8 +27,8 @@ describe('searching', () => {
     done();
   });
 
-  it('should give heighest weighting to the title even for unintsalled content types', (done) => {
-    let results = search(apiContentTypes, null, 'accord');
+  it('should give the highest weighting to the title even for unintsalled content types', (done) => {
+    let results = search(apiContentTypes, 'accord');
     expect(results[0].machineName).toEqual('H5P.Accordion');
     done();
   });
@@ -47,7 +47,7 @@ describe('searching', () => {
   });
 });
 
-function isMonotinic(arr) {
+function isMonotonic(arr) {
   return arr.every(function(e, i, a) {
     if (i) {
       return e >= a[i-1];

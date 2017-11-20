@@ -51,7 +51,6 @@ export default function search(list, filterBy, orderBy) {
       score: getSearchScore(filterBy, contentType)
     })).filter(result => result.score > 0 && !isUnavailable(result.contentType, list.apiVersion));
 
-    console.log(filtered);
     return multiSort(filtered);
   }
 
