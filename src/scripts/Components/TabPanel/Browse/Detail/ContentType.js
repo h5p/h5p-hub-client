@@ -167,6 +167,12 @@ class ContentType extends React.Component {
     });
   }
 
+  handleBackKeyPress = (event) => {
+    if (event.which === 32) {
+      this.handleClose(event);
+    }
+  }
+
   render() {
     const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-type-detail-view-title';
@@ -234,7 +240,8 @@ class ContentType extends React.Component {
         <a href="#"
           className="back-button icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
-          onClick={this.handleClose}/>
+          onClick={this.handleClose}
+          onKeyPress={this.handleBackKeyPress}/>
         <div className="container">
           <div className="image-wrapper">
             <img

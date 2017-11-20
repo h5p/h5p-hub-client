@@ -38,16 +38,31 @@ ul.sort-by-list {
   & > li {
     float: left;
     margin-left: 0.5em;
-    cursor: pointer;
-    color: #808080;
     user-select: none;
-    font-size: 0.9em;
-    padding: 0.25em 0.75em;
-    outline-color: #1a93f4;
 
-    &.hightlight {
-      font-weight: 600;
-      color: #020202;
+    & > a {
+      display: block;
+      color: #808080;
+      padding: 0.25em 0.75em;
+      font-size: 0.9em;
+      text-decoration: none;
+
+      &:hover {
+        color: darken(#808080, 20%);
+      }
+      &:focus {
+        box-shadow: 0 0 1px 1px #1a93f4;
+        outline: none;
+      }
+
+      &.hightlight {
+        font-weight: 600;
+        color: #020202;
+
+        &:hover {
+          color: darken(#020202, 20%);
+        }
+      }
     }
   }
 }

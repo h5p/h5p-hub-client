@@ -18,6 +18,12 @@ class ReadMore extends React.Component {
     this.setState({expanded: !this.state.expanded});
   }
 
+  handleKeyPress = (event) => {
+    if (event.which === 32) {
+      this.handleToggle(event);
+    }
+  }
+
   render() {
     const text = this.props.text;
 
@@ -40,7 +46,8 @@ class ReadMore extends React.Component {
             <a href="#"
               key="button"
               className={'link ' + (this.state.expanded ? 'read-less' : 'read-more')}
-              onClick={this.handleToggle}>
+              onClick={this.handleToggle}
+              onKeyPress={this.handleKeyPress}>
               {Dictionary.get(this.state.expanded ? 'readLess' : 'readMore')}
             </a>
           ]

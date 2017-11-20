@@ -19,13 +19,13 @@ class TabPanel extends React.Component {
 
   render() {
     const tabButtons = React.Children.map(this.props.children, child => (
-      <li id={child.props.id}
+      <li
         className='tab-button'
         aria-selected={this.state.selected === child.props.id}
         aria-controls={`tab-panel-${child.props.id}`}
         role='tab'
         key={child.props.id}>
-        {child.props.title}
+        <a id={child.props.id} href="#">{child.props.title}</a>
       </li>
     ));
 
