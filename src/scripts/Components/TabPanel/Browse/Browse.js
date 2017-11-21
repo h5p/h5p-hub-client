@@ -74,7 +74,6 @@ class Browse extends React.Component {
       orderBy: property,
       filterOn: '',
       focused: null,
-      setFocus: !this.state.setFocus, // Toggle to trigger focus
     });
   }
 
