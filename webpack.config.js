@@ -14,7 +14,7 @@ const polyfillPromise = new webpack.ProvidePlugin({
 
 const config = {
   entry: "./src/entries/" + (isDevMode ? (isDist ? 'dist' : 'dev') : 'dist') + '.js',
-  devtool: 'inline-source-map',
+  devtool: isDevMode ? 'inline-source-map' : undefined,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js",
@@ -37,7 +37,10 @@ const config = {
         use: extractSass.extract({
           use: [
             {
-              loader: "css-loader"
+              loader: "css-loader",
+              options: {
+                minimize: !isDevMode
+              }
             },
             {
               loader: "resolve-url-loader"
@@ -67,7 +70,9 @@ const config = {
 };
 
 if (!isDevMode) {
-  //config.devtool = 'eval';
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
+  }));
 
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
