@@ -34,8 +34,13 @@ class List extends React.Component {
 
   handleSelect = (id) => {
     const contentType = this.getLibrary(id);
-    this.props.onSelect(contentType);
-    this.props.onFocus(contentType);
+    if (contentType.installed) {
+      this.props.onUse(contentType);
+    }
+    else {
+      this.props.onSelect(contentType);
+      this.props.onFocus(contentType);
+    }
   }
 
   componentDidUpdate() {
@@ -52,7 +57,7 @@ class List extends React.Component {
       <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
         <ListItem contentType={contentType}
           tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
-          onUse={this.props.onUse}/>
+          onSelect={this.props.onSelect}/>
       </li>
     ));
 
