@@ -80,7 +80,8 @@
           @include h5p-hub-icon($icon-radio-unselected, $gutter);
         }
         &:focus:before {
-          box-shadow: 0 0 1px 1px #1a93f4;
+          border-radius: 50%;
+          box-shadow: 0 0 0.6em 0.1em #7bc1f9;
         }
       }
 
