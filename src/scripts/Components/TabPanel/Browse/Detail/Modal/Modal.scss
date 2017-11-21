@@ -49,6 +49,9 @@
 .lightbox-close:hover {
   background: rgba(132, 143, 158, 0.8);
 }
+.license .lightbox-close:hover {
+  background: rgba(165, 175, 189, 0.43);
+}
 .lightbox-close:before {
   @include icon($icon-close);
   font-size: 0.6em;

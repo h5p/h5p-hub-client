@@ -14,6 +14,7 @@ $color-back-button: #474f5a;
     top: 0;
     left: 0;
     visibility: hidden;
+    outline: none;
     overflow: auto;
     width: 100%;
     height: 100%;
@@ -93,9 +94,14 @@ $color-back-button: #474f5a;
       display: inline-block;
       background: transparent;
       border: none;
+      text-decoration: none;
+      outline: none;
 
       &:hover {
-        color: lighten($color-back-button, 20%);
+        color: darken(#1f2227, 30%);
+      }
+      &:focus {
+        box-shadow: 0 0 1px 1px #1a93f4;
       }
 
       &.icon-arrow-thick:before {

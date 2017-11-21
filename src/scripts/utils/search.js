@@ -258,13 +258,7 @@ const sortOnProperty = (firstContentType, secondContentType, property, sortOrder
  * @return {number}
  */
 const sortSearchResults = (a,b) => {
-  if (!a.contentType.installed && b.contentType.installed) {
-    return 1;
-  }
-  if (a.contentType.installed && !b.contentType.installed) {
-    return -1;
-  }
-  else if (b.score !== a.score) {
+  if (b.score !== a.score) {
     return b.score - a.score;
   }
   else {

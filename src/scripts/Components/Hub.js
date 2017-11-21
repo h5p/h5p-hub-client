@@ -85,6 +85,12 @@ class Hub extends React.Component {
     });
   }
 
+  handleTabPanelSelect = (id) => {
+    this.setState({
+      section: id
+    });
+  }
+
   render() {
     return (
       <section className="h5p-hub">
@@ -96,11 +102,11 @@ class Hub extends React.Component {
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
-            <TabPanel selected={this.state.section} onSelect={id => this.setState({section: id})}>
+            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}
-                setFocus={this.state.expanded}
+                setFocus={this.state.expanded && this.state.section === 'content-types'}
                 getAjaxUrl={this.props.getAjaxUrl}
                 error={this.state.error}
                 onUse={this.handleUse}
@@ -110,6 +116,7 @@ class Hub extends React.Component {
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
+                setFocus={this.state.expanded && this.state.section === 'upload'}
                 onUpload={this.handleUpload} />
             </TabPanel>
           </div>

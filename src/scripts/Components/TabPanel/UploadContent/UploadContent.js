@@ -113,6 +113,7 @@ class UploadContent extends React.Component {
           fileSelected={this.state.fileSelected}
           fileUploading={this.state.fileUploading}
           filePath={this.state.filePath}
+          setFocus={this.props.setFocus}
           onValidate={this.handleValidation}
           onUpload={this.handleUpload}
         />
@@ -128,6 +129,7 @@ UploadContent.propTypes = {
   contentId: PropTypes.number.isRequired,
   onUpload: PropTypes.func.isRequired,
   getAjaxUrl: PropTypes.func.isRequired,
+  setFocus: PropTypes.bool.isRequired
 };
 
 export default UploadContent;

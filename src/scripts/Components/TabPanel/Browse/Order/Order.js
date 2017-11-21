@@ -25,11 +25,21 @@ const Order = ({hits, selected, onChange, hasRecentlyUsed, searching, visible}) 
         !searching &&
         <ul className="sort-by-list" aria-labelledby="sort-by">
           <Choose selected={selected} onChange={onChange}>
-            <li id="recently">
-              {Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst')}
+            <li>
+              <a href="#" id="recently">
+                {Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst')}
+              </a>
             </li>
-            <li id="newest">{Dictionary.get('newestFirst')}</li>
-            <li id="a-to-z">{Dictionary.get('aToZ')}</li>
+            <li>
+              <a href="#" id="newest">
+                {Dictionary.get('newestFirst')}
+              </a>
+            </li>
+            <li>
+              <a href="#" id="a-to-z">
+                {Dictionary.get('aToZ')}
+              </a>
+            </li>
           </Choose>
         </ul>
       }

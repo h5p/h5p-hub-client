@@ -111,12 +111,12 @@ class ContentType extends React.Component {
       });
   }
 
-  close = () => {
+  handleClose = (event) => {
+    event.preventDefault();
     this.props.onClose();
   }
 
   handleUse = () => {
-    this.close();
     this.props.onUse(this.props.library);
   }
 
@@ -164,6 +164,12 @@ class ContentType extends React.Component {
     this.setState({
       infoMessage: null
     });
+  }
+
+  handleBackKeyPress = (event) => {
+    if (event.which === 32) {
+      this.handleClose(event);
+    }
   }
 
   render() {
@@ -230,13 +236,11 @@ class ContentType extends React.Component {
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
       >
-        <button
-          type="button"
+        <a href="#"
           className="back-button icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
-          tabIndex="0"
-          onClick={this.close}
-        />
+          onClick={this.handleClose}
+          onKeyPress={this.handleBackKeyPress}/>
         <div className="container">
           <div className="image-wrapper">
             <img
