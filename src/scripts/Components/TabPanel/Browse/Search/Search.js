@@ -25,6 +25,9 @@ class Search extends React.Component {
 
   handleInput = (event) => {
     const input = event.target;
+    if (input.value === this.state.value) {
+      return;
+    }  
     this.setState({value: input.value});
 
     // Automatically search/filter after input
