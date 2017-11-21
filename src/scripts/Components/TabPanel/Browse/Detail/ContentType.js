@@ -59,6 +59,7 @@ class ContentType extends React.Component {
   }
 
   onTransitionEnd = () => {
+    this.setState({focusUseButton: this.state.visible});
     if (!this.state.visible && this.state.showImageSlider) {
       this.setState({showImageSlider: false});
     }
@@ -300,6 +301,7 @@ class ContentType extends React.Component {
           installing={this.state.installing}
           onInstall={this.handleInstall}
           onUse={this.handleUse}
+          focus={this.state.focusUseButton}
         />
         {
           this.props.library.license &&
