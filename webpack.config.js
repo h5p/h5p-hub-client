@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-var isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
+const webpack = require('webpack');
+const path = require('path');
+const isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
@@ -72,6 +72,10 @@ if (!isDevMode) {
     compress: {
       warnings: false
     }
+  }));
+
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
   }));
 }
 
