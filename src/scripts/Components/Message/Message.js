@@ -15,10 +15,10 @@ class Message extends React.Component {
     const className = `h5p-hub-message ${this.props.severity}` + (this.props.onClose ? ' dismissible' : '');
 
     let messages = this.props.message;
-    if (!Array.isArray(messages)) {
+    if (messages && !Array.isArray(messages)) {
       messages = [messages];
     }
-    const messageDetails = messages.map((message, index) => {
+    const messageDetails = messages ? messages.map((message, index) => {
       let text = message.message || message;
       let getHelpUrl = this.createTroubleshootingURL(message.code);
 
@@ -31,7 +31,7 @@ class Message extends React.Component {
           }
         </p>
       );
-    });
+    }) : null;
 
     return (
       <div className={className} role="alert">
