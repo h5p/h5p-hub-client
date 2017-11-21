@@ -1,6 +1,6 @@
-var webpack = require('webpack');
-var path = require('path');
-var isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
+const webpack = require('webpack');
+const path = require('path');
+const isDevMode = JSON.parse(process.env.DEV_ENV || 0) == 1;
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 const extractSass = new ExtractTextPlugin({
@@ -13,7 +13,7 @@ const polyfillPromise = new webpack.ProvidePlugin({
 
 const config = {
   entry: "./src/entries/dist.js",
-  devtool: 'inline-source-map',
+  devtool: isDevMode ? 'inline-source-map' : undefined,
   output: {
     path: path.join(__dirname, 'dist'),
     filename: "h5p-hub-client.js",
@@ -36,7 +36,10 @@ const config = {
         use: extractSass.extract({
           use: [
             {
-              loader: "css-loader"
+              loader: "css-loader",
+              options: {
+                minimize: !isDevMode
+              }
             },
             {
               loader: "resolve-url-loader"
@@ -66,12 +69,14 @@ const config = {
 };
 
 if (!isDevMode) {
-  //config.devtool = 'eval';
-
   config.plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
       warnings: false
     }
+  }));
+
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env.NODE_ENV': JSON.stringify('production')
   }));
 }
 
