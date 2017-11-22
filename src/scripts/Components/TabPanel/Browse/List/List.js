@@ -44,7 +44,7 @@ class List extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.state.resetScroll) {
+    if (this.state && this.state.resetScroll) {
       delete this.state.resetScroll;
 
       // Reset list scrolling
@@ -54,20 +54,11 @@ class List extends React.Component {
 
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
-      <li
-        key={i}
-        id={contentType.machineName.toLocaleLowerCase().replace('.', '-')}
-        className="media">
-
-        <ListItem
-          contentType={contentType}
+      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
+        <ListItem contentType={contentType}
           apiVersion={this.props.apiVersion}
-          tabindex={
-            this.props.focused
-              ? (this.props.focused === contentType ? 0 : -1
-              ) : (i === 0 ? 0 : -1)}
-          onSelect={this.props.onSelect}
-        />
+          tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
+          onSelect={this.props.onSelect}/>
       </li>
     ));
 
