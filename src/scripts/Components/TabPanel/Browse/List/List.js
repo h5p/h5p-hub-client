@@ -65,8 +65,7 @@ class List extends React.Component {
           tabindex={
             this.props.focused
               ? (this.props.focused === contentType ? 0 : -1
-             ) : (i === 0 ? 0 : -1)}
-
+              ) : (i === 0 ? 0 : -1)}
           onSelect={this.props.onSelect}
         />
       </li>
