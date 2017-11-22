@@ -32,22 +32,31 @@ class ReadMore extends React.Component {
     }
 
     const needMore = text.length > this.props.maxLength;
-    const partOne = needMore ? text.substr(0, this.props.maxLength) : text;
+    let partOne = needMore ? text.substr(0, this.props.maxLength) : text;
     const partTwo = needMore ? text.substr(this.props.maxLength) : '';
+
+    if (needMore && !this.state.expanded) {
+      partOne += '…';
+    }
 
     return (
       <p className="small">
-
-        <span className="part-one" tabIndex="-1">{partOne}</span>
+        <span tabIndex="-1">{partOne}</span>
         {
           needMore && [
-            <span key="ellipsis" className={!this.state.expanded ? '' : 'hidden'}>… </span>,
-            <span key="part-two" className="part-two" tabIndex="-1" className={!this.state.expanded ? 'hidden' : ''}>{partTwo} </span>,
+            <span
+              key="part-two"
+              tabIndex="-1"
+              className={!this.state.expanded ? 'hidden' : ''}
+            >
+              {partTwo}
+            </span>,
             <a href="#"
               key="button"
               className={'link ' + (this.state.expanded ? 'read-less' : 'read-more')}
               onClick={this.handleToggle}
-              onKeyPress={this.handleKeyPress}>
+              onKeyPress={this.handleKeyPress}
+            >
               {Dictionary.get(this.state.expanded ? 'readLess' : 'readMore')}
             </a>
           ]
