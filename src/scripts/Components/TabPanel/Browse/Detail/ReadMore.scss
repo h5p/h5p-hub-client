@@ -6,6 +6,7 @@
   .text-details .link {
     color: #1f2227;
     outline: none;
+    margin-left: 0.5em;
 
     &:hover {
       color: darken(#1f2227, 30%);
