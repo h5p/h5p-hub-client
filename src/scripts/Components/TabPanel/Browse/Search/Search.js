@@ -9,26 +9,26 @@ class Search extends React.Component {
     super(props);
 
     this.state = {
-      value: ''
+      value: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
     // Allow search input to be reset from the parent
     if (nextProps.value !== this.state.value) {
-      this.setState({value: nextProps.value});
+      this.setState({ value: nextProps.value });
     }
     if (nextProps.setFocus !== this.props.setFocus) {
-      this.setState({focusOnRender: nextProps.setFocus});
+      this.setState({ focusOnRender: nextProps.setFocus });
     }
   }
 
-  handleInput = (event) => {
+  handleInput = event => {
     const input = event.target;
     if (input.value === this.state.value) {
       return;
-    }  
-    this.setState({value: input.value});
+    }
+    this.setState({ value: input.value });
 
     // Automatically search/filter after input
     // Use timer to prevent filtering more than once per 40ms
@@ -38,7 +38,7 @@ class Search extends React.Component {
         this.searchTimer = null;
       }, 40);
     }
-  }
+  };
 
   componentDidUpdate() {
     if (this.state.focusOnRender) {
@@ -47,7 +47,7 @@ class Search extends React.Component {
     }
   }
 
-  handleKeyDown = (event) => {
+  handleKeyDown = event => {
     // Allow quick selecting from the list while typing
     switch (event.which) {
       case 38: // Up
@@ -64,15 +64,14 @@ class Search extends React.Component {
         if (!this.props.auto) {
           // Trigger filter/earch
           this.props.onFilter(event.target.value);
-        }
-        else {
+        } else {
           // Select highlighted
           this.props.onSelect();
         }
         event.preventDefault();
         break;
     }
-  }
+  };
 
   render() {
     let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
@@ -80,15 +79,17 @@ class Search extends React.Component {
     return (
       <div className="search-wrapper" role="search">
         <div className="border-wrap">
-          <input id="hub-search-bar"
+          <input
+            id="hub-search-bar"
             type="text"
             value={this.state.value || ''}
             aria-label={searchLabel}
             placeholder={searchLabel}
             onInput={this.handleInput}
             onKeyDown={event => this.handleKeyDown(event)}
-            ref={el => this.input = el}/>
-          <div className="icon-search"/>
+            ref={el => (this.input = el)}
+          />
+          <div className="icon-search" />
         </div>
       </div>
     );
@@ -100,7 +101,7 @@ Search.propTypes = {
   auto: PropTypes.bool.isRequired,
   onFilter: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
 };
 
 export default Search;

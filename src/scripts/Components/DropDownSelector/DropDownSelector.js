@@ -2,9 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './DropDownSelector.scss';
 
-const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
-
-  const onPanelKeyUp = (e) => {
+const DropDownSelector = ({ togglePanel, isExpanded, sectionId, title }) => {
+  const onPanelKeyUp = e => {
     if (e.which === 13 || e.which === 32) {
       togglePanel();
     }

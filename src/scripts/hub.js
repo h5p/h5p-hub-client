@@ -26,7 +26,7 @@ export default class HubClient {
     /**
      * @private
      */
-    const render = function () {
+    const render = function() {
       // Render react into root element
       ReactDOM.render(
         <Hub
@@ -47,7 +47,7 @@ export default class HubClient {
     /**
      * @return {HTMLElement} Container with the Hub
      */
-    this.setPanelTitle = function (title) {
+    this.setPanelTitle = function(title) {
       state.title = title;
       render(); // Re-render
     };
@@ -55,7 +55,7 @@ export default class HubClient {
     /**
      * @return {HTMLElement} Container with the Hub
      */
-    this.getElement = function () {
+    this.getElement = function() {
       return container;
     };
 

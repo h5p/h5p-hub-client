@@ -21,8 +21,8 @@ export const Eventful = () => ({
      * @property {object} scope
      */
     const trigger = {
-      'listener': listener,
-      'scope': scope
+      listener: listener,
+      scope: scope,
     };
 
     this.listeners[type] = this.listeners[type] || [];
@@ -57,6 +57,8 @@ export const Eventful = () => ({
    */
   propagate: function(types, eventful, newType) {
     let self = this;
-    types.forEach(type => eventful.on(type, event => self.trigger(newType || type, event)));
-  }
+    types.forEach(type =>
+      eventful.on(type, event => self.trigger(newType || type, event))
+    );
+  },
 });
