@@ -1,37 +1,38 @@
+
 /* Used to determine separate scoring for the different content type properties */
 const propertyScoring = [
   {
     name: 'title',
     max: 1000,
-    min: 100,
+    min: 100
   },
   {
     name: 'summary',
     max: 50,
-    min: 25,
+    min: 25
   },
   {
     name: 'description',
     max: 50,
-    min: 25,
+    min: 25
   },
   {
     name: 'keywords',
     max: 50,
-    min: 25,
+    min: 25
   },
   {
     name: 'machineName',
     max: 1,
-    min: 0.5,
-  },
+    min: 0.5
+  }
 ];
 
 /* Map order by id to a property name */
 const orderByMap = {
-  recently: 'recently',
-  newest: 'createdAt',
-  'a-to-z': 'title',
+  'recently': 'recently',
+  'newest': 'createdAt',
+  'a-to-z': 'title'
 };
 
 // Some properties are usually ordered desc.
@@ -45,26 +46,22 @@ const reverseProps = ['createdAt', 'updatedAt'];
  */
 export default function search(list, filterBy, orderBy) {
   if (filterBy) {
-    const filtered = list.libraries
-      .map(contentType => ({
-        contentType: contentType,
-        score: getSearchScore(filterBy, contentType),
-      }))
-      .filter(
-        result =>
-          result.score > 0 &&
-          !isUnavailable(result.contentType, list.apiVersion)
-      );
+    const filtered = list.libraries.map(contentType => ({
+      contentType: contentType,
+      score: getSearchScore(filterBy, contentType)
+    })).filter(result => result.score > 0 && !isUnavailable(result.contentType, list.apiVersion));
 
     return multiSort(filtered);
   }
 
   let sortOn = [orderByMap[orderBy]];
   if (orderBy === 'recently') {
+
     if (!list.recentlyUsed || !list.recentlyUsed.length) {
       // Switch to popularity
       sortOn = ['popularity'];
-    } else {
+    }
+    else {
       // Add recently value to content types
       for (let i = 0; i < list.recentlyUsed.length; i++) {
         let machineName = list.recentlyUsed[i];
@@ -79,16 +76,12 @@ export default function search(list, filterBy, orderBy) {
       }
       sortOn.push('popularity'); // Alternative/second order by
     }
-  } else if (orderBy === 'newest') {
+  }
+  else if (orderBy === 'newest') {
     sortOn.splice(0, 0, 'installed');
   }
 
-  return multiSort(
-    list.libraries.filter(
-      contentType => !isUnavailable(contentType, list.apiVersion)
-    ),
-    sortOn
-  );
+  return multiSort(list.libraries.filter(contentType => !isUnavailable(contentType, list.apiVersion)), sortOn);
 }
 
 /**
@@ -101,11 +94,9 @@ export default function search(list, filterBy, orderBy) {
  */
 const isUnavailable = (contentType, apiVersion) => {
   // Determine if the content type is using an API version that is not yet supported
-  const apiNotSupported = !(
-    apiVersion.major > contentType.h5pMajorVersion ||
-    (apiVersion.major === contentType.h5pMajorVersion &&
-      apiVersion.minor >= contentType.h5pMinorVersion)
-  );
+  const apiNotSupported = !(apiVersion.major > contentType.h5pMajorVersion ||
+                           (apiVersion.major === contentType.h5pMajorVersion &&
+                            apiVersion.minor >= contentType.h5pMinorVersion));
 
   // If the content type is restricted or requires a newer API, skip showing it
   return contentType.restricted || (!contentType.installed && apiNotSupported);
@@ -121,9 +112,7 @@ const isUnavailable = (contentType, apiVersion) => {
  */
 const getSearchScore = function(query, contentType) {
   let queries = query.split(' ').filter(query => query !== '');
-  let queryScores = queries.map(query =>
-    getScoreForEachQuery(query, contentType)
-  );
+  let queryScores = queries.map(query => getScoreForEachQuery(query, contentType));
   if (queryScores.indexOf(0) > -1) {
     return 0;
   }
@@ -137,18 +126,13 @@ const getSearchScore = function(query, contentType) {
  * @param  {ContentType}  contentType
  * @return {number}
  */
-const getScoreForEachQuery = function(query, contentType) {
+const getScoreForEachQuery = function (query, contentType) {
   query = query.trim();
 
   for (let i = 0; i < propertyScoring.length; i++) {
     let ps = propertyScoring[i];
 
-    let score = determinePropertyScore(
-      query,
-      contentType[ps.name],
-      ps.max,
-      ps.min
-    );
+    let score = determinePropertyScore(query, contentType[ps.name], ps.max, ps.min);
     if (score !== -1) {
       return score;
     }
@@ -185,7 +169,7 @@ const determinePropertyScore = function(query, property, max, min) {
 
   // Calculate and return score
   const p = (property.length - strPos) / property.length;
-  return (max - min) * p + min;
+  return ((max - min) * p) + min;
 };
 
 /**
@@ -199,17 +183,14 @@ const determinePropertyScore = function(query, property, max, min) {
 export const multiSort = (contentTypes, sortOrder) => {
   // Make sure all sorted instances are mixed content type
   const mixedContentTypes = contentTypes.map(contentType => {
-    if (
-      contentType.hasOwnProperty('score') &&
-      contentType.hasOwnProperty('contentType')
-    ) {
+    if (contentType.hasOwnProperty('score') && contentType.hasOwnProperty('contentType')) {
       return contentType;
     }
 
     // Return a mixed content type with score 1 to survive filtering
     return {
       contentType: contentType,
-      score: 0.1,
+      score: 0.1
     };
   });
 
@@ -218,13 +199,13 @@ export const multiSort = (contentTypes, sortOrder) => {
       return !sortOrder
         ? sortSearchResults(firstContentType, secondContentType)
         : sortOnProperty(
-          firstContentType,
-          secondContentType,
-          sortOrder[0],
-          sortOrder.slice(1)
-        );
-    })
-    .map(mixedContentType => mixedContentType.contentType);
+            firstContentType,
+            secondContentType,
+            sortOrder[0],
+            sortOrder.slice(1)
+
+    );
+    }).map(mixedContentType => mixedContentType.contentType);
 };
 
 /**
@@ -240,12 +221,7 @@ export const multiSort = (contentTypes, sortOrder) => {
  *
  * @return {number} A value indicating the comparison between the two content types
  */
-const sortOnProperty = (
-  firstContentType,
-  secondContentType,
-  property,
-  sortOrder
-) => {
+const sortOnProperty = (firstContentType, secondContentType, property, sortOrder) => {
   // Property does not exist, move to bottom
   if (!firstContentType.contentType.hasOwnProperty(property)) {
     return 1;
@@ -255,18 +231,14 @@ const sortOnProperty = (
   }
 
   // Sort on property
-  const reverse = reverseProps.indexOf(property) === -1 ? 1 : -1;
-  if (
-    firstContentType.contentType[property] >
-    secondContentType.contentType[property]
-  ) {
+  const reverse = (reverseProps.indexOf(property) === -1 ? 1 : -1);
+  if (firstContentType.contentType[property] > secondContentType.contentType[property]) {
     return 1 * reverse;
-  } else if (
-    firstContentType.contentType[property] <
-    secondContentType.contentType[property]
-  ) {
+  }
+  else if (firstContentType.contentType[property] < secondContentType.contentType[property]) {
     return -1 * reverse;
-  } else {
+  }
+  else {
     if (sortOrder.length) {
       return sortOnProperty(
         firstContentType,
@@ -274,7 +246,8 @@ const sortOnProperty = (
         sortOrder[0],
         sortOrder.slice(1)
       );
-    } else {
+    }
+    else {
       return 0;
     }
   }
@@ -288,10 +261,11 @@ const sortOnProperty = (
  * @param {MixedContentType} b Second content type
  * @return {number}
  */
-const sortSearchResults = (a, b) => {
+const sortSearchResults = (a,b) => {
   if (b.score !== a.score) {
     return b.score - a.score;
-  } else {
+  }
+  else {
     return b.contentType.popularity - a.contentType.popularity;
   }
 };

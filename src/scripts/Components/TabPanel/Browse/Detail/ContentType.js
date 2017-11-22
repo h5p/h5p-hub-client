@@ -20,6 +20,7 @@ import './ContentType.scss';
 const licenseCache = {};
 
 class ContentType extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {

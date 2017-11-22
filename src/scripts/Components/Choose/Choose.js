@@ -7,30 +7,30 @@ class Choose extends React.Component {
 
     this.state = {
       selected: props.selected,
-      focused: props.selected,
+      focused: props.selected
     };
   }
 
   componentWillReceiveProps(nextProps) {
     this.setState({
       selected: nextProps.selected,
-      focused: nextProps.selected,
+      focused: nextProps.selected
     });
     if (nextProps.setFocus !== this.props.setFocus) {
       this.setState({
-        focusOnRender: true,
+        focusOnRender: true
       });
     }
   }
 
   select(id) {
     this.props.onChange(id);
-    this.setState({ selected: id });
+    this.setState({selected: id});
   }
 
   focus(id, preventFocus) {
     if (id) {
-      this.setState({ focused: id, focusOnRender: !preventFocus });
+      this.setState({focused: id, focusOnRender: !preventFocus});
       if (this.props.onFocus) {
         this.props.onFocus(id);
       }
@@ -62,7 +62,7 @@ class Choose extends React.Component {
       return;
     }
 
-    switch (event.which) {
+    switch(event.which) {
       case 37: // Left
       case 38: // Up
         this.focus(this.getSiblingIdFor(id, -1));
@@ -91,7 +91,8 @@ class Choose extends React.Component {
         if (this.items[0]) {
           this.items[0].focus();
         }
-      } else {
+      }
+      else {
         // Find highlighted item and give focus
         for (let i = 0; i < this.items.length; i++) {
           if (this.state.focused === this.items[i].id) {
@@ -102,32 +103,34 @@ class Choose extends React.Component {
     }
   }
 
-  cloneChild = child =>
-    !child ? null : React.cloneElement(
-      child,
-      child.props.id
-        ? {
-          className:
-          (child.props.className ? child.props.className + ' ' : '') +
-          (this.state.selected
-            ? child.props.id === this.state.selected ? 'hightlight' : ''
-            : !this.count ? 'highlight' : ''),
-          tabIndex: this.state.focused
-            ? child.props.id === this.state.focused ? 0 : -1
-            : !this.count++ ? 0 : -1,
-          role:
-            ['a', 'button'].indexOf(child.type) !== -1
-              ? undefined
-              : child.props.role || 'button',
-          onClick: event => this.handleClick(event, child.props.id),
-          onKeyDown: event => this.handleKeyDown(event, child.props.id),
-          ref: item => (item ? this.items.push(item) : undefined),
-        }
-        : undefined,
-      !child.props.id && child.props.children
-        ? React.Children.map(child.props.children, this.cloneChild)
-        : child.props.children
-    );
+  cloneChild = (child) =>
+    !child
+      ? null
+      : React.cloneElement(
+          child,
+          child.props.id? {
+
+                className:
+                  (child.props.className ? child.props.className + ' ' : '') +
+                  (this.state.selected
+                    ? (child.props.id === this.state.selected ? 'hightlight' : ''
+                   ) : (!this.count ? 'highlight' : '')),
+                tabIndex: (this.state.focused
+                  ? (child.props.id === this.state.focused ? 0 : -1
+                 ) : (!this.count++ ? 0 : -1)),
+                role:
+                  ['a', 'button'].indexOf(child.type) !== -1
+                    ? undefined
+                    : child.props.role || 'button',
+                onClick: event => this.handleClick(event, child.props.id),
+                onKeyDown: event => this.handleKeyDown(event, child.props.id),
+                ref: item => item ? this.items.push(item) : undefined
+              }
+            : undefined,
+          !child.props.id && child.props.children
+            ? React.Children.map(child.props.children, this.cloneChild)
+            : child.props.children
+        );
 
   render() {
     this.items = []; // Array to preserve order
@@ -140,7 +143,7 @@ Choose.propTypes = {
   selected: PropTypes.string,
   setFocus: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
-  onFocus: PropTypes.func,
+  onFocus: PropTypes.func
 };
 
 export default Choose;

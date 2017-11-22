@@ -6,37 +6,28 @@ import Dictionary from '../../../../utils/dictionary';
 
 import './Order.scss';
 
-const Order = ({
-  hits,
-  selected,
-  onChange,
-  hasRecentlyUsed,
-  searching,
-  visible,
-}) => {
+const Order = ({hits, selected, onChange, hasRecentlyUsed, searching, visible}) => {
   return (
     <div className={'navbar' + (visible ? '' : ' hidden')}>
       <div className="result-header">
-        {searching
-          ? Dictionary.get('searchResults')
-          : Dictionary.get('contentTypeSectionAll')}
+        {searching ? Dictionary.get('searchResults') : Dictionary.get('contentTypeSectionAll')}
         <span className="result-hits">
           ({Dictionary.get('numResults').replace(':num', hits)})
         </span>
       </div>
-      {!searching && (
+      {
+        !searching &&
         <div id="sort-by" className="sort-by-header">
           {Dictionary.get('show')}:
         </div>
-      )}
-      {!searching && (
+      }
+      {
+        !searching &&
         <ul className="sort-by-list" aria-labelledby="sort-by">
           <Choose selected={selected} onChange={onChange}>
             <li>
               <a href="#" id="recently">
-                {Dictionary.get(
-                  hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst'
-                )}
+                {Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst')}
               </a>
             </li>
             <li>
@@ -51,7 +42,7 @@ const Order = ({
             </li>
           </Choose>
         </ul>
-      )}
+      }
     </div>
   );
 };
@@ -62,7 +53,7 @@ Order.propTypes = {
   onChange: PropTypes.func.isRequired,
   hasRecentlyUsed: PropTypes.bool.isRequired,
   searching: PropTypes.bool.isRequired,
-  visible: PropTypes.bool.isRequired,
+  visible: PropTypes.bool.isRequired
 };
 
 export default Order;

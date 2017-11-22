@@ -55,7 +55,7 @@ ListItem.propTypes = {
   contentType: PropTypes.object.isRequired,
   apiVersion: PropTypes.object.isRequired,
   tabindex: PropTypes.number.isRequired,
-  onSelect: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired
 };
 
 export default ListItem;

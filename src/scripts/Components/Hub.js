@@ -12,6 +12,7 @@ import Message from './Message/Message';
 import './Hub.scss';
 
 class Hub extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -20,7 +21,7 @@ class Hub extends React.Component {
       section: 'content-types',
       selected: props.selected,
       title: props.title,
-      contentTypes: props.contentTypes,
+      contentTypes: props.contentTypes
     };
   }
 
@@ -36,17 +37,14 @@ class Hub extends React.Component {
     this.props.onResize();
   }
 
-  handleUse = contentType => {
+  handleUse = (contentType) => {
     // Collapse Hub
-    this.setState({
-      expanded: false,
-      title: contentType.title || contentType.machineName,
-    });
+    this.setState({expanded: false, title: contentType.title || contentType.machineName});
 
     this.props.onUse(contentType);
-  };
+  }
 
-  handleUpload = data => {
+  handleUpload = (data) => {
     let panelTitle = data.h5p.mainLibrary;
     data.contentTypes.libraries.forEach(library => {
       if (library.machineName === data.h5p.mainLibrary) {
@@ -60,97 +58,76 @@ class Hub extends React.Component {
       contentTypes: data.contentTypes,
       infoMessage: {
         title: Dictionary.get('uploadSuccess').replace(':title', panelTitle),
-        message: data.contentTypes.details,
-      },
+        message: data.contentTypes.details
+      }
     });
 
     this.props.onUpload(data);
-  };
+  }
 
-  handleUpdate = contentTypes => {
+  handleUpdate = (contentTypes) => {
     // Handles updates to the content type cache
     this.props.onUpdate(contentTypes);
     this.setState({
-      contentTypes: contentTypes,
+      contentTypes: contentTypes
     });
-  };
+  }
 
   handleReload = () => {
     fetchJSON(this.props.getAjaxUrl('content-type-cache'))
       .then(response => this.handleUpdate(response))
-      .catch(reason => this.setState({ error: reason }));
+      .catch(reason => this.setState({error: reason}));
   };
 
   handleInfoDismiss = () => {
     this.setState({
-      infoMessage: null,
+      infoMessage: null
     });
-  };
+  }
 
-  handleTabPanelSelect = id => {
+  handleTabPanelSelect = (id) => {
     this.setState({
-      section: id,
+      section: id
     });
-  };
+  }
 
   render() {
     return (
       <section className="h5p-hub">
-        <div
-          className={`panel h5p-section-${this.state.section}${this.state
-            .expanded
-            ? ' open'
-            : ''}`}
-        >
+        <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`}>
           <DropDownSelector
             title={this.state.title || Dictionary.get('hubPanelLabel')}
             sectionId={this.state.section}
             isExpanded={this.state.expanded}
-            togglePanel={() =>
-              this.setState({ expanded: !this.state.expanded })}
+            togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
-          <div
-            id={`panel-body-${this.state.section}`}
-            role="region"
-            className={this.state.expanded ? '' : 'hidden'}
-          >
-            <TabPanel
-              selected={this.state.section}
-              onSelect={this.handleTabPanelSelect}
-            >
-              <Browse
-                id="content-types"
+          <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
+            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect}>
+              <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}
-                setFocus={
-                  this.state.expanded && this.state.section === 'content-types'
-                }
+                setFocus={this.state.expanded && this.state.section === 'content-types'}
                 getAjaxUrl={this.props.getAjaxUrl}
                 error={this.state.error}
                 onUse={this.handleUse}
                 onInstall={this.handleUpdate}
-                onReload={this.handleReload}
-              />
-              <UploadContent
-                id="upload"
+                onReload={this.handleReload}/>
+              <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
-                setFocus={
-                  this.state.expanded && this.state.section === 'upload'
-                }
-                onUpload={this.handleUpload}
-              />
+                setFocus={this.state.expanded && this.state.section === 'upload'}
+                onUpload={this.handleUpload} />
             </TabPanel>
           </div>
         </div>
-        {!!this.state.infoMessage && (
+        {
+          !!this.state.infoMessage &&
           <Message
             {...this.state.infoMessage}
-            severity="info"
-            onClose={this.handleInfoDismiss}
-          />
-        )}
+            severity='info'
+            onClose={this.handleInfoDismiss}/>
+        }
       </section>
     );
   }
@@ -164,7 +141,7 @@ Hub.propTypes = {
   getAjaxUrl: PropTypes.func.isRequired,
   onResize: PropTypes.func.isRequired,
   onUse: PropTypes.func.isRequired,
-  onUpload: PropTypes.func.isRequired,
+  onUpload: PropTypes.func.isRequired
 };
 
 export default Hub;

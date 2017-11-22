@@ -5,16 +5,13 @@ const fetchJSON = (url, data) =>
   fetch(url, {
     method: data === undefined ? 'GET' : 'POST',
     credentials: 'include',
-    body: data,
+    body: data
   })
     .then(response => {
       return response.json().catch(() => {
         throw {
           title: response.statusText + ' (' + response.status + ')',
-          message: [
-            Dictionary.get('unableToInterpretError'),
-            Dictionary.get('unableToInterpretSolution'),
-          ],
+          message: [Dictionary.get('unableToInterpretError'), Dictionary.get('unableToInterpretSolution')]
         };
       });
     })
@@ -22,7 +19,7 @@ const fetchJSON = (url, data) =>
       if (response.success === false) {
         throw {
           title: response.message,
-          message: response.details,
+          message: response.details
         };
       }
       return response;

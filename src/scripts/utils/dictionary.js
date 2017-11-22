@@ -2,6 +2,7 @@
  * Class responsible for providing translations
  */
 export default class Dictionary {
+
   /**
    * Initialize the dictionary
    *

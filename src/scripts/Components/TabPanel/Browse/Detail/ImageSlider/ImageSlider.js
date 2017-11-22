@@ -2,11 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../../utils/dictionary';
-import { nonEmptyString } from '../../../../../utils/helpers';
+import {nonEmptyString} from '../../../../../utils/helpers';
+
 
 import './ImageSlider.scss';
 
 class ImageSlider extends React.Component {
+
   constructor(props) {
     super(props);
 
@@ -15,7 +17,7 @@ class ImageSlider extends React.Component {
       offset: this.props.selected || 0,
       selected: this.props.selected || 0,
       modalIsOpen: false,
-      focusOnRender: false,
+      focusOnRender: false
     };
   }
 
@@ -56,28 +58,28 @@ class ImageSlider extends React.Component {
       this.setState({
         imagesToShow: imagesToShow,
         offset: 0,
-        selected: 0,
+        selected: 0
       });
     }
-  };
+  }
 
-  handleImageSelected = index => {
+  handleImageSelected = (index) => {
     if (this.props.onImageSelect) {
       this.props.onImageSelect(index);
     }
-  };
+  }
 
   previousSlide = () => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       const index = prevState.offset - 1;
       if (index >= 0) {
         return {
           offset: index,
-          selected: index,
+          selected: index
         };
       }
     });
-  };
+  }
 
   nextSlide = () => {
     this.setState((prevState, props) => {
@@ -85,28 +87,30 @@ class ImageSlider extends React.Component {
       if (index < props.images.length) {
         return {
           offset: index,
-          selected: index,
+          selected: index
         };
       }
     });
-  };
+  }
 
   moveFocus(increment) {
-    this.setState(prevState => {
+    this.setState((prevState) => {
+
       const index = prevState.selected + increment;
 
       if (index >= 0 && index < this.props.images.length) {
         let newOffset = prevState.offset;
-        if (index < prevState.offset) {
+        if(index < prevState.offset) {
           newOffset = prevState.offset - 1;
-        } else if (index >= prevState.offset + prevState.imagesToShow) {
+        }
+        else if (index >= prevState.offset + prevState.imagesToShow) {
           newOffset = prevState.offset + 1;
         }
 
         return {
           selected: index,
           focusOnRender: true,
-          offset: newOffset,
+          offset: newOffset
         };
       }
     });
@@ -115,7 +119,7 @@ class ImageSlider extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       selected: nextProps.selected || 0,
-      offset: 0,
+      offset: 0
     });
   }
 
@@ -125,7 +129,7 @@ class ImageSlider extends React.Component {
       this.scroller.scrollLeft = 0;
 
       this.setState({
-        focusOnRender: false,
+        focusOnRender: false
       });
     }
   }
@@ -137,7 +141,7 @@ class ImageSlider extends React.Component {
 
     let swallowEvent = false;
 
-    switch (event.which) {
+    switch(event.which) {
       case 37: // Left
       case 38: // Up
         this.moveFocus(-1);
@@ -163,15 +167,16 @@ class ImageSlider extends React.Component {
     }
   }
 
-  handleGlobalKeyDown = event => {
+  handleGlobalKeyDown = (event) => {
     if (event.which === 39) {
       // Right
       this.nextSlide();
-    } else if (event.which === 37) {
+    }
+    else if (event.which === 37) {
       // Left
       this.previousSlide();
     }
-  };
+  }
 
   render() {
     const images = this.props.images;
@@ -182,73 +187,64 @@ class ImageSlider extends React.Component {
     const imagesToShow = this.state.imagesToShow;
     const numSlides = images.length;
     const slideStyle = {
-      width: 100 / numSlides + '%',
+      width: (100/numSlides) + '%'
     };
-    const totalWidth = numSlides * 100 / imagesToShow;
+    const totalWidth = numSlides*100/imagesToShow;
     const sliderStyle = {
       width: `${totalWidth}%`,
-      marginLeft: `-${this.state.offset * (totalWidth / numSlides)}%`,
+      marginLeft: `-${this.state.offset * (totalWidth/numSlides)}%`
     };
 
     this.items = []; // Array to preserve order
     const slides = images.map((image, idx) => {
-      return (
+      return(
         <li
           key={idx}
           style={slideStyle}
           tabIndex={idx === this.state.selected ? 0 : -1}
           onKeyDown={event => this.handleKeyDown(event, idx)}
           onClick={() => this.handleImageSelected(idx)}
-          ref={item => (item ? this.items.push(item) : undefined)}
+          ref={item => item ? this.items.push(item) : undefined}
         >
           <img
             src={image.url}
             alt={image.alt}
-            className={this.props.onImageSelect ? 'selectable' : ''}
-          />
+            className={this.props.onImageSelect ? 'selectable' : ''}/>
         </li>
       );
     });
 
     const disablePrev = this.state.offset === 0;
-    const disableNext =
-      this.state.imagesToShow + this.state.offset >= numSlides;
-    const navigationNeeded = numSlides > this.state.imagesToShow;
+    const disableNext = (this.state.imagesToShow + this.state.offset) >= numSlides;
+    const navigationNeeded = (numSlides > this.state.imagesToShow);
 
     return (
       <div
         className="carousel"
         role="region"
         aria-label={Dictionary.get('screenshots')}
-        ref={carousel => (this.carousel = carousel)}
-        onKeyDown={this.handleGlobalKeyDown}
-      >
-        {navigationNeeded && (
-          <NavigationButton
-            type="prev"
-            label={Dictionary.get('previousImage')}
-            onClick={this.previousSlide}
-            disabled={disablePrev}
-          />
-        )}
-        <nav className="scroller" ref={scroller => (this.scroller = scroller)}>
-          <ul style={sliderStyle}>{slides}</ul>
+        ref={carousel => this.carousel = carousel}
+        onKeyDown={this.handleGlobalKeyDown}>
+        {
+          navigationNeeded &&
+          <NavigationButton type="prev" label={Dictionary.get('previousImage')} onClick={this.previousSlide} disabled={disablePrev}/>
+        }
+        <nav className="scroller" ref={scroller => this.scroller = scroller}>
+          <ul style={sliderStyle}>
+            {slides}
+          </ul>
         </nav>
-        {navigationNeeded && (
-          <NavigationButton
-            type="next"
-            label={Dictionary.get('nextImage')}
-            onClick={this.nextSlide}
-            disabled={disableNext}
-          />
-        )}
-        {this.props.showProgress && (
+        {
+          navigationNeeded &&
+          <NavigationButton type="next" label={Dictionary.get('nextImage')} onClick={this.nextSlide} disabled={disableNext}/>
+        }
+        {
+          this.props.showProgress &&
           <div className="progress" role="alert">
-            {Dictionary.get('imageLightBoxProgress')
-              .replace(':num', this.state.offset + 1)
-              .replace(':total', numSlides)}
+            {Dictionary.get('imageLightBoxProgress').replace(':num', this.state.offset+1).replace(':total', numSlides)}
           </div>
-        )}
+        }
+
       </div>
     );
   }
@@ -260,19 +256,19 @@ class ImageSlider extends React.Component {
 const breakpoints = [
   {
     breakpoint: 576,
-    imagesToShow: 2,
+    imagesToShow: 2
   },
   {
     breakpoint: 768,
-    imagesToShow: 3,
+    imagesToShow: 3
   },
   {
     breakpoint: 992,
-    imagesToShow: 4,
-  },
+    imagesToShow: 4
+  }
 ];
 
-const NavigationButton = ({ onClick, type, disabled, label }) => {
+const NavigationButton = ({onClick, type, disabled, label}) => {
   return (
     <button
       className={'navigation ' + type}
@@ -289,12 +285,10 @@ ImageSlider.propTypes = {
   imagesToShow: PropTypes.number,
   showProgress: PropTypes.bool.isRequired,
   selected: PropTypes.number,
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      url: nonEmptyString,
-      alt: nonEmptyString,
-    })
-  ).isRequired,
+  images: PropTypes.arrayOf(PropTypes.shape({
+    url: nonEmptyString,
+    alt: nonEmptyString
+  })).isRequired
 };
 
 export default ImageSlider;

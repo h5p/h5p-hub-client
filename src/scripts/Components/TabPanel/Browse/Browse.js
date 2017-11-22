@@ -168,8 +168,7 @@ class Browse extends React.Component {
             hasRecentlyUsed={!!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length)}
             searching={!!this.state.filterOn}
             visible={!this.state.detailViewActive}/>
-          <List
-            contentTypes={this.state.contentTypes}
+          <List contentTypes={this.state.contentTypes}
             apiVersion={this.props.contentTypes.apiVersion}
             focused={this.state.focused}
             setFocus={!this.state.setFocus}

@@ -21,7 +21,7 @@ class UploadContent extends React.Component {
   }
 
   handleValidation(event) {
-    this.setState({ error: undefined });
+    this.setState({error: undefined});
 
     if (event.target.files.length === 0) {
       return; // Do nothing if the file has not been changed
@@ -35,10 +35,11 @@ class UploadContent extends React.Component {
         filePath: '',
         error: {
           title: Dictionary.get('h5pFileWrongExtensionTitle'),
-          message: Dictionary.get('h5pFileWrongExtensionContent'),
-        },
+          message: Dictionary.get('h5pFileWrongExtensionContent')
+        }
       });
-    } else {
+    }
+    else {
       this.setState({
         fileSelected: true,
         filePath,
@@ -52,13 +53,14 @@ class UploadContent extends React.Component {
   handleUpload() {
     this.setState({
       fileSelected: true,
-      fileUploading: true,
+      fileUploading: true
     });
 
     // Add the H5P file to a form, ready for transportation
     let data = new FormData();
     data.append('h5p', this.state.uploadData);
     data.append('contentId', this.props.contentId);
+
 
     fetchJSON(this.props.getAjaxUrl('library-upload'), data)
       .then(response => {
@@ -79,7 +81,7 @@ class UploadContent extends React.Component {
           fileUploading: false,
           error: reason,
           filePath: '',
-          uploadData: {},
+          uploadData: {}
         });
       });
   }
@@ -90,29 +92,23 @@ class UploadContent extends React.Component {
 
   handleErrorDismiss = () => {
     this.setState({
-      error: null,
+      error: null
     });
-  };
+  }
 
   render() {
     return (
       <div className="upload-wrapper">
-        {!!this.state.error && (
+        {
+          !!this.state.error &&
           <Message
             {...this.state.error}
-            severity="error"
-            onClose={this.handleErrorDismiss}
-          />
-        )}
-        <div
-          className={
-            'upload-throbber' + (this.state.fileUploading ? '' : ' hidden')
-          }
-          aria-label={Dictionary.get('uploadingThrobber')}
-        />
-        <h1 className="upload-instruction-header">
-          {Dictionary.get('uploadInstructionsTitle')}
-        </h1>
+            severity='error'
+            onClose={this.handleErrorDismiss}/>
+        }
+        <div className={"upload-throbber" + (this.state.fileUploading ? '' : ' hidden')}
+          aria-label={Dictionary.get('uploadingThrobber')}/>
+        <h1 className="upload-instruction-header">{Dictionary.get('uploadInstructionsTitle')}</h1>
         <UploadForm
           fileSelected={this.state.fileSelected}
           fileUploading={this.state.fileUploading}
@@ -121,11 +117,8 @@ class UploadContent extends React.Component {
           onValidate={this.handleValidation}
           onUpload={this.handleUpload}
         />
-        <p
-          className="upload-instruction-description"
-          dangerouslySetInnerHTML={{
-            __html: Dictionary.get('uploadInstructionsContent'),
-          }}
+        <p className="upload-instruction-description"
+          dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}
         />
       </div>
     );
@@ -136,7 +129,7 @@ UploadContent.propTypes = {
   contentId: PropTypes.number.isRequired,
   onUpload: PropTypes.func.isRequired,
   getAjaxUrl: PropTypes.func.isRequired,
-  setFocus: PropTypes.bool.isRequired,
+  setFocus: PropTypes.bool.isRequired
 };
 
 export default UploadContent;

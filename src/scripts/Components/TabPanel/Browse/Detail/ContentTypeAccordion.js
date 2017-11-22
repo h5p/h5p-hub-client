@@ -7,7 +7,7 @@ import License from './License';
 
 import './ContentTypeAccordion.scss';
 
-const ContentTypeAccordion = ({ id, attributes, onShowLicenseDetails }) => {
+const ContentTypeAccordion = ({id, attributes, onShowLicenseDetails}) => {
   return (
     <Accordion>
       <License
@@ -30,8 +30,8 @@ ContentTypeAccordion.propTypes = {
     distributable: PropTypes.bool,
     sublicensable: PropTypes.bool,
     mustIncludeCopyright: PropTypes.bool,
-    mustIncludeLicense: PropTypes.bool,
-  }),
+    mustIncludeLicense: PropTypes.bool
+  })
 };
 
 export default ContentTypeAccordion;

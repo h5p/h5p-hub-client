@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import Message from '../../../Message/Message';
 import Dictionary from '../../../../utils/dictionary';
 
-const NoContentTypesError = ({ throbbing, details, onRetry }) => {
+const NoContentTypesError = ({throbbing, details, onRetry}) => {
+
   // Start by adding human understandable title
   let messages = [Dictionary.get('noContentTypesAvailableDesc')];
 
@@ -18,17 +19,11 @@ const NoContentTypesError = ({ throbbing, details, onRetry }) => {
 
   return (
     <Message
-      severity="error"
+      severity='error'
       title={Dictionary.get('noContentTypesAvailable')}
-      message={messages}
-    >
-      <button
-        type="button"
-        className="button button-primary retry-button"
-        tabIndex="0"
-        onClick={onRetry}
-        disabled={throbbing}
-      >
+      message={messages}>
+      <button type="button" className="button button-primary retry-button"
+        tabIndex="0" onClick={onRetry} disabled={throbbing}>
         {Dictionary.get('tryAgain')}
       </button>
     </Message>
@@ -38,7 +33,7 @@ const NoContentTypesError = ({ throbbing, details, onRetry }) => {
 NoContentTypesError.propTypes = {
   throbbing: PropTypes.bool,
   details: PropTypes.object,
-  onRetry: PropTypes.func.isRequired,
+  onRetry: PropTypes.func.isRequired
 };
 
 NoContentTypesError.defaultProps = {
