@@ -23,20 +23,20 @@ class Message extends React.Component {
     }
     const messageDetails = messages
       ? messages.map((message, index) => {
-          let text = message.message || message;
-          let getHelpUrl = this.createTroubleshootingURL(message.code);
+        let text = message.message || message;
+        let getHelpUrl = this.createTroubleshootingURL(message.code);
 
-          return (
-            <p key={index} className="message-body">
-              <span dangerouslySetInnerHTML={{ __html: text }} />
-              {getHelpUrl && (
-                <a className="get-help" target="_blank" href={getHelpUrl}>
-                  Get help
-                </a>
-              )}
-            </p>
-          );
-        })
+        return (
+          <p key={index} className="message-body">
+            <span dangerouslySetInnerHTML={{__html: text}}/>
+            {getHelpUrl && (
+              <a className="get-help" target="_blank" href={getHelpUrl}>
+                Get help
+              </a>
+            )}
+          </p>
+        );
+      })
       : null;
 
     return (

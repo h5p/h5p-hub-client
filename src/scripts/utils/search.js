@@ -218,11 +218,11 @@ export const multiSort = (contentTypes, sortOrder) => {
       return !sortOrder
         ? sortSearchResults(firstContentType, secondContentType)
         : sortOnProperty(
-            firstContentType,
-            secondContentType,
-            sortOrder[0],
-            sortOrder.slice(1)
-          );
+          firstContentType,
+          secondContentType,
+          sortOrder[0],
+          sortOrder.slice(1)
+        );
     })
     .map(mixedContentType => mixedContentType.contentType);
 };
