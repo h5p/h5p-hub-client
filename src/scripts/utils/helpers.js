@@ -3,3 +3,5 @@ export const nonEmptyString = (props, propName, componentName) => {
     return new Error(`Non empty string for prop ${propName} in ${componentName}`);
   }
 };
+
+export const stopPropagation = event => event.stopPropagation();

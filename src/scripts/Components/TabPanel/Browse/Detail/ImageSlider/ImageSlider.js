@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../../utils/dictionary';
-import {nonEmptyString} from '../../../../../utils/helpers';
+import {nonEmptyString, stopPropagation} from '../../../../../utils/helpers';
 
 
 import './ImageSlider.scss';
@@ -230,7 +230,7 @@ class ImageSlider extends React.Component {
           <NavigationButton type="prev" label={Dictionary.get('previousImage')} onClick={this.previousSlide} disabled={disablePrev}/>
         }
         <nav className="scroller" ref={scroller => this.scroller = scroller}>
-          <ul style={sliderStyle}>
+          <ul style={sliderStyle} onTransitionEnd={stopPropagation}>
             {slides}
           </ul>
         </nav>
