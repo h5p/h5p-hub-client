@@ -43,12 +43,40 @@ class List extends React.Component {
     }
   }
 
+  scrollIntoView = (element) => {
+    const compensation = this.choose.items[0].offsetTop;
+
+    // Scroll given element into view
+    if (element.offsetTop - compensation < this.list.scrollTop) {
+      // Scroll up to show element
+      this.list.scrollTop = element.offsetTop - compensation;
+      return;
+    }
+
+    const elementBottom = element.offsetTop - compensation + element.clientHeight;
+    if (elementBottom > this.list.scrollTop + this.list.clientHeight) {
+      // Scroll down to show element
+      const computedStyles = window.getComputedStyle(this.listElement);
+      this.list.scrollTop = elementBottom - this.list.clientHeight + parseFloat(computedStyles.marginTop) + parseFloat(computedStyles.marginBottom);
+    }
+  }
+
   componentDidUpdate() {
     if (this.state && this.state.resetScroll) {
       delete this.state.resetScroll;
 
       // Reset list scrolling
       this.list.scrollTop = 0;
+    }
+    else if (this.choose && this.choose.items) {
+      // Find highlighted element and scroll into view
+      const focused = this.props.focused.machineName.toLocaleLowerCase().replace('.','-');
+      for (let i = 0; i < this.choose.items.length; i++) {
+        if (focused === this.choose.items[i].id) {
+          this.scrollIntoView(this.choose.items[i]);
+          break;
+        }
+      }
     }
   }
 
@@ -68,11 +96,13 @@ class List extends React.Component {
         ref={el => this.list = el}>
 
         {this.props.contentTypes.length ? (
-          <ol>
+          <ol
+            ref={el => this.listElement = el}>
             <Choose selected={this.props.focused ? this.props.focused.machineName.toLocaleLowerCase().replace('.','-') : null}
               setFocus={this.props.setFocus}
               onChange={this.handleSelect}
-              onFocus={this.handleFocus}>
+              onFocus={this.handleFocus}
+              ref={comp => this.choose = comp}>
               {listItems}
             </Choose>
           </ol>
