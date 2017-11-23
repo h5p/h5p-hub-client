@@ -68,7 +68,7 @@ class List extends React.Component {
       // Reset list scrolling
       this.list.scrollTop = 0;
     }
-    else if (this.choose && this.choose.items) {
+    else if (this.props.focused && this.choose && this.choose.items) {
       // Find highlighted element and scroll into view
       const focused = this.props.focused.machineName.toLocaleLowerCase().replace('.','-');
       for (let i = 0; i < this.choose.items.length; i++) {
