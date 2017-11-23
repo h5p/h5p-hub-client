@@ -40,10 +40,6 @@ class ButtonBar extends React.Component {
       secondButtonType = this.props.installing ? 'Updating' : 'Update';
       secondButtonDisabled = this.props.installing;
     }
-    else if (this.props.canInstall === false) {
-      secondButtonType = 'Install';
-      secondButtonDisabled = true;
-    }
     else if (!this.props.installed) {
       secondButtonType = this.props.installing ? 'Installing': 'Install';
       secondButtonDisabled = this.props.installing;
