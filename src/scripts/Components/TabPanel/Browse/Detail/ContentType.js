@@ -60,9 +60,11 @@ class ContentType extends React.Component {
   }
 
   onTransitionEnd = () => {
-    this.setState({focusUseButton: this.state.visible});
     if (!this.state.visible && this.state.showImageSlider) {
       this.setState({showImageSlider: false});
+    }
+    else if (this.state.visible) {
+      this.setState({focusUseButton: this.state.visible});
     }
   }
 

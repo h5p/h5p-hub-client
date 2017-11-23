@@ -9,10 +9,9 @@ class ButtonBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.focusUseButton = this.focusUseButton.bind(this);
   }
 
-  focusUseButton() {
+  focusUseButton = () => {
     if (this.useButton) {
       this.useButton.focus();
     }
@@ -57,7 +56,7 @@ class ButtonBar extends React.Component {
             className={`button button-inverse-primary button-${secondButtonType.toLowerCase()}`}
             disabled={secondButtonDisabled}
             onClick={this.props.installing ? undefined : this.props.onInstall}
-            ref={(button) => {this.installButton = button; }}
+            ref={button => this.installButton = button}
           >
             {Dictionary.get(`contentType${secondButtonType}ButtonLabel`)}
           </button>
@@ -67,7 +66,7 @@ class ButtonBar extends React.Component {
           <button type="button"
             className={"button button-primary button-use"}
             onClick={this.props.onUse}
-            ref={(button) => {this.useButton = button; }}
+            ref={button => this.useButton = button}
           >
             {Dictionary.get("contentTypeUseButtonLabel")}
           </button>
