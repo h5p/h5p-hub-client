@@ -284,6 +284,7 @@ class ContentType extends React.Component {
         </div>
         {
           this.state.showImageSlider &&
+          this.props.library.screenshots && 
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
