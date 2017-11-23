@@ -32,7 +32,8 @@ class ContentType extends React.Component {
       updatable: false,
       installing: false,
       showImageSlider: true,
-      message: undefined
+      message: undefined,
+      opened: false
     };
   }
 
@@ -47,6 +48,13 @@ class ContentType extends React.Component {
         errorMessage: null,
         infoMessage: null
       });
+    }
+
+    if (!this.props.visible && props.visible) {
+      this.setState({opened: true});
+    }
+    else {
+      this.setState({opened: false});
     }
 
     this.setState({
@@ -304,7 +312,7 @@ class ContentType extends React.Component {
           installing={this.state.installing}
           onInstall={this.handleInstall}
           onUse={this.handleUse}
-          focus={this.state.focusUseButton}
+          opened={this.state.opened}
         />
         {
           this.props.library.license &&
