@@ -9,6 +9,7 @@ import fetchJSON from '../../../../utils/fetchJSON';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
+import Button from '../../../Button/Button';
 import Modal from './Modal/Modal';
 import ContentTypeAccordion from './ContentTypeAccordion';
 import ImageSlider from './ImageSlider/ImageSlider';
@@ -273,18 +274,24 @@ class ContentType extends React.Component {
               text={this.props.library.description}
               maxLength={285}
             />
-            <a
-              className="button demo-button"
-              target="_blank"
-              href={this.props.library.example || '#'}
-            >
-              {Dictionary.get("contentTypeDemoButtonLabel")}
-            </a>
+            {
+              this.props.library.example &&
+              <Button
+                buttonProps={{
+                  className: "button demo-button",
+                  target: "_blank",
+                  href: this.props.library.example
+                }}
+                type='a'
+              >
+                {Dictionary.get("contentTypeDemoButtonLabel")}
+              </Button>
+            }
           </div>
         </div>
         {
           this.state.showImageSlider &&
-          this.props.library.screenshots && 
+          this.props.library.screenshots &&
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
