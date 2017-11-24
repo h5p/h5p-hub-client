@@ -9,21 +9,29 @@ class ButtonBar extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {focusOnRender: true};
   }
 
-  focusUseButton = () => {
-    if (this.useButton) {
-      this.useButton.focus();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.opened !== this.props.opened) {
+      this.setState({focusOnRender: true});
     }
-    else {
-      this.installButton.focus();
-    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return this.state === nextState; // Stop unecessary re-rendering
   }
 
   componentDidUpdate() {
-    if (this.props.focus) {
-      this.focusUseButton();
+    if (this.state.focusOnRender) {
+      if (this.useButton) {
+        this.useButton.focus();
+      }
+      else {
+        this.installButton.focus();
+      }
     }
+    delete this.state.focusOnRender;
   }
 
   render() {
@@ -38,10 +46,6 @@ class ButtonBar extends React.Component {
     if (this.props.installed && this.props.updatable) {
       secondButtonType = this.props.installing ? 'Updating' : 'Update';
       secondButtonDisabled = this.props.installing;
-    }
-    else if (this.props.canInstall === false) {
-      secondButtonType = 'Install';
-      secondButtonDisabled = true;
     }
     else if (!this.props.installed) {
       secondButtonType = this.props.installing ? 'Installing': 'Install';
@@ -83,7 +87,8 @@ ButtonBar.propTypes = {
   installing: PropTypes.bool.isRequired,
   updatable: PropTypes.bool.isRequired,
   onInstall: PropTypes.func.isRequired,
-  onUse: PropTypes.func.isRequired
+  onUse: PropTypes.func.isRequired,
+  opened: PropTypes.bool.isRequired
 };
 
 export default ButtonBar;
