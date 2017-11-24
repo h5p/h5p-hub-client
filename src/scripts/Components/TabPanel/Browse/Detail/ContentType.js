@@ -254,7 +254,7 @@ class ContentType extends React.Component {
           </div>
           <div className="text-details">
             <h2
-              id="{titleId}"
+              id={titleId}
               className="title"
               tabIndex="-1"
             >
