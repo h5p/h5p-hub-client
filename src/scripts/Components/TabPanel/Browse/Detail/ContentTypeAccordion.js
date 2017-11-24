@@ -21,10 +21,10 @@ const ContentTypeAccordion = ({id, attributes, onShowLicenseDetails}) => {
 };
 
 ContentTypeAccordion.propTypes = {
-  id: PropTypes.string.isRequired,
-  onShowLicenseDetails: PropTypes.func.isRequired,
+  id: PropTypes.string,
+  onShowLicenseDetails: PropTypes.func,
   attributes: PropTypes.shape({
-    canHoldLiable: PropTypes.bool.isRequired,
+    canHoldLiable: PropTypes.bool,
     useCommercially: PropTypes.bool,
     modifiable: PropTypes.bool,
     distributable: PropTypes.bool,

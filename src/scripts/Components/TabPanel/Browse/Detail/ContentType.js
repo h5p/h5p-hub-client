@@ -284,7 +284,7 @@ class ContentType extends React.Component {
         </div>
         {
           this.state.showImageSlider &&
-          this.props.library.screenshots && 
+          this.props.library.screenshots &&
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
@@ -315,14 +315,11 @@ class ContentType extends React.Component {
           onUse={this.handleUse}
           opened={this.state.opened}
         />
-        {
-          this.props.library.license &&
-          <ContentTypeAccordion
-            id={this.props.library.license.id}
-            attributes={this.props.library.license.attributes}
-            onShowLicenseDetails={this.handleShowLicenseDetails}
-          />
-        }
+        <ContentTypeAccordion
+          id={(this.props.library.license ? this.props.library.license.id : 'Unspecified' )}
+          attributes={(this.props.library.license ? this.props.library.license.attributes : undefined )}
+          onShowLicenseDetails={this.handleShowLicenseDetails}
+        />
         <Modal
           visible={this.state.modalType !== undefined}
           onClose={this.onModalClose}
