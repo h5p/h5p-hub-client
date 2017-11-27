@@ -5,3 +5,10 @@ export const nonEmptyString = (props, propName, componentName) => {
 };
 
 export const stopPropagation = event => event.stopPropagation();
+
+export const onSpaceOrEnterEvent = (event, callback) => {
+  if ([32,13].indexOf(event.which) !== -1) {
+    event.preventDefault();
+    callback();
+  }
+};

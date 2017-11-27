@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 import updatable from '../../../../utils/updatable';
-import {nonEmptyString} from '../../../../utils/helpers';
+import {nonEmptyString, onSpaceOrEnterEvent} from '../../../../utils/helpers';
 import '../../../../utils/fetch';
 import fetchJSON from '../../../../utils/fetchJSON';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
@@ -184,6 +184,10 @@ class ContentType extends React.Component {
     }
   }
 
+  openExampleUrl = () => {
+    window.open(this.props.library.example, '_blank');
+  }
+
   render() {
     const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-type-detail-view-title';
@@ -273,18 +277,22 @@ class ContentType extends React.Component {
               text={this.props.library.description}
               maxLength={285}
             />
-            <a
-              className="button demo-button"
-              target="_blank"
-              href={this.props.library.example || '#'}
-            >
-              {Dictionary.get("contentTypeDemoButtonLabel")}
-            </a>
+            {
+              this.props.library.example &&
+              <a
+                className="button demo-button"
+                target="_blank"
+                href={this.props.library.example || '#'}
+                onKeyPress={event => onSpaceOrEnterEvent(event, this.openExampleUrl)}
+              >
+                {Dictionary.get("contentTypeDemoButtonLabel")}
+              </a>
+            }
           </div>
         </div>
         {
           this.state.showImageSlider &&
-          this.props.library.screenshots && 
+          this.props.library.screenshots &&
           <ImageSlider
             images={this.props.library.screenshots}
             onImageSelect={this.onImageSelect}
