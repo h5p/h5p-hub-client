@@ -39,7 +39,11 @@ class Hub extends React.Component {
 
   handleUse = (contentType) => {
     // Collapse Hub
-    this.setState({expanded: false, title: contentType.title || contentType.machineName});
+    this.setState({
+      expanded: false,
+      title: contentType.title || contentType.machineName,
+      infoMessage: null
+    });
 
     this.props.onUse(contentType);
   }
