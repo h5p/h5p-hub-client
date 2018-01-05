@@ -28,7 +28,7 @@ class Message extends React.Component {
             <span dangerouslySetInnerHTML={{__html: text}}/>
             {getHelpUrl &&
             <a className="get-help" target="_blank" href={getHelpUrl}>
-              Dictionary.get('getHelp')
+              {Dictionary.get('getHelp')}
             </a>
             }
           </p>
