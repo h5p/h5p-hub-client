@@ -28,7 +28,7 @@ class Message extends React.Component {
             <span dangerouslySetInnerHTML={{__html: text}}/>
             {getHelpUrl &&
             <a className="get-help" target="_blank" href={getHelpUrl}>
-              Get help
+              Dictionary.get('getHelp')
             </a>
             }
           </p>
@@ -43,7 +43,7 @@ class Message extends React.Component {
           <button
             className="message-close"
             tabIndex="0"
-            aria-label={Dictionary.get('closeButtonLabel')}
+            aria-label={Dictionary.get('Close')}
             onClick={this.props.onClose}
           />
         }
