@@ -17,7 +17,7 @@ class Hub extends React.Component {
     super(props);
 
     this.state = {
-      expanded: false,
+      expanded: !props.title,
       section: 'content-types',
       selected: props.selected,
       title: props.title,
