@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './TabPanel.scss';
 import Choose from '../Choose/Choose';
+import Dictionary from '../../utils/dictionary';
 
 class TabPanel extends React.Component {
   constructor(props) {
@@ -41,6 +42,12 @@ class TabPanel extends React.Component {
     return (
       <div className='tab-panel'>
         <nav>
+          {
+            !!window.localStorage &&
+            <div class="h5peditor-copypaste-wrap">
+              <button class="h5peditor-paste-button" disabled={!this.props.canPaste} onClick={this.props.onPaste}>{Dictionary.get('pasteButton')}</button>
+            </div>
+          }
           <ul role='tablist'>
             <Choose
               selected={this.props.children[0].props.id}

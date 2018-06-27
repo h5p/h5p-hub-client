@@ -31,6 +31,8 @@ export default class HubClient {
       ReactDOM.render(
         <Hub
           title={state.title}
+          expanded={state.expanded}
+          canPaste={state.canPaste}
           contentId={parseInt(state.contentId)}
           contentTypes={state.contentTypes}
           selected={state.selected}
@@ -39,6 +41,7 @@ export default class HubClient {
           onUse={self.trigger.bind(self, 'select')}
           onUpload={self.trigger.bind(self, 'upload')}
           onUpdate={self.trigger.bind(self, 'update')}
+          onPaste={self.trigger.bind(self, 'paste')}
         />,
         container
       );
@@ -47,9 +50,18 @@ export default class HubClient {
     /**
      * @return {HTMLElement} Container with the Hub
      */
-    this.setPanelTitle = function (title) {
+    this.setPanelTitle = function (title, expanded) {
       state.title = title;
+      state.expanded = expanded;
       render(); // Re-render
+    };
+
+    /**
+     * Enable/disable the paste button in the Hub
+     */
+    this.setCanPaste = function (canPaste) {
+      state.canPaste = canPaste;
+      render();
     };
 
     /**

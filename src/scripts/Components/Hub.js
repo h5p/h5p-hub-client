@@ -17,7 +17,7 @@ class Hub extends React.Component {
     super(props);
 
     this.state = {
-      expanded: !props.title,
+      expanded: props.expanded,
       section: 'content-types',
       selected: props.selected,
       title: props.title,
@@ -26,10 +26,13 @@ class Hub extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props.title) {
+    if (nextProps.title !== this.state.title) {
       // Recieve updates to panel title
       this.state.title = nextProps.title;
-      this.state.expanded = true; // Open panel
+    }
+    if (nextProps.expanded !== this.state.expanded) {
+      // Recieve updates to panel title
+      this.state.expanded = nextProps.expanded;
     }
   }
 
@@ -106,7 +109,7 @@ class Hub extends React.Component {
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
-            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect}>
+            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} onPaste={this.props.onPaste}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}
