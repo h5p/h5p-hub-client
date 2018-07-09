@@ -98,7 +98,12 @@ class Hub extends React.Component {
     });
   }
 
+  handleRender = (title, expanded) => {
+    this.props.onRender(title, expanded)
+  }
+
   render() {
+    this.handleRender(this.state.title, this.state.expanded);
     return (
       <section className="h5p-hub">
         <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`}>
