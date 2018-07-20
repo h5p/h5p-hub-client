@@ -45,7 +45,7 @@ class TabPanel extends React.Component {
           {
             !!window.localStorage &&
             <div class="h5peditor-copypaste-wrap">
-              <button class="h5peditor-paste-button" title={Dictionary.get('pasteFromClipboard')} disabled={!this.props.canPaste} onClick={this.props.onPaste}>{Dictionary.get('pasteButton')}</button>
+              <button id="h5peditor-hub-paste-button" class={`h5peditor-paste-button ${!this.props.canPaste ? 'disabled' : ''}`} title={Dictionary.get('pasteFromClipboard')} onClick={this.props.onPaste}>{Dictionary.get('pasteButton')}</button>
             </div>
           }
           <ul role='tablist'>
