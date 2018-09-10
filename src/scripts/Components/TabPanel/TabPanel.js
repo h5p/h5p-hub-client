@@ -44,10 +44,10 @@ class TabPanel extends React.Component {
         <nav>
           {
             !!window.localStorage &&
-            <div class="h5peditor-copypaste-wrap">
+            <div className="h5peditor-copypaste-wrap">
               <button
                 id="h5peditor-hub-paste-button"
-                class={`h5peditor-paste-button ${!this.props.canPaste ? 'disabled' : ''}`}
+                className={`h5peditor-paste-button ${!this.props.canPaste ? 'disabled' : ''}`}
                 title={Dictionary.get('pasteFromClipboard')}
                 onClick={this.props.onPaste}
               >
