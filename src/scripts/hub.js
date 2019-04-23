@@ -33,7 +33,7 @@ export default class HubClient {
           title={state.title}
           expanded={state.expanded}
           canPaste={state.canPaste}
-          contentId={parseInt(state.contentId)}
+          contentId={parseInt(state.contentId)} // TODO: contentId can be as string as well...
           contentTypes={state.contentTypes}
           selected={state.selected}
           getAjaxUrl={state.getAjaxUrl}
