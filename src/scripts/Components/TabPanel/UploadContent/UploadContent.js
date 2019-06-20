@@ -126,7 +126,6 @@ class UploadContent extends React.Component {
 }
 
 UploadContent.propTypes = {
-  contentId: PropTypes.number.isRequired,
   onUpload: PropTypes.func.isRequired,
   getAjaxUrl: PropTypes.func.isRequired,
   setFocus: PropTypes.bool.isRequired

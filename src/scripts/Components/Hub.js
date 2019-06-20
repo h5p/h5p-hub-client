@@ -53,11 +53,12 @@ class Hub extends React.Component {
 
   handleUpload = (data) => {
     let panelTitle = data.h5p.mainLibrary;
-    data.contentTypes.libraries.forEach(library => {
-      if (library.machineName === data.h5p.mainLibrary) {
-        panelTitle = library.title;
+    for (let i = 0; i < data.contentTypes.libraries.length; i++) {
+      if (data.contentTypes.libraries[i].machineName === panelTitle) {
+        panelTitle = data.contentTypes.libraries[i].title;
+        break;
       }
-    });
+    }
     // Collapse Hub, update title and content type cache
     this.setState({
       expanded: false,
@@ -147,7 +148,6 @@ class Hub extends React.Component {
 
 Hub.propTypes = {
   title: PropTypes.string,
-  contentId: PropTypes.number,
   contentTypes: PropTypes.object.isRequired,
   selected: PropTypes.string,
   getAjaxUrl: PropTypes.func.isRequired,
