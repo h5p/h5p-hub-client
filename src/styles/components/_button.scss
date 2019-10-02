@@ -16,11 +16,6 @@
     background-color: darken($background-color, 10%);
     border-color: darken($background-color, 10%);
   }
-
-  &[disabled] {
-    background-color: lighten($background-color, 40%);
-    border-color: lighten($background-color, 40%);
-  }
 }
 
 @mixin button-inverse($background-color, $color) {
@@ -29,19 +24,13 @@
   border-color: $color;
 
   &:hover {
-    color: lighten($color, 10%);
-    border-color: lighten($color, 10%);
-  }
-
-  &:active {
     color: darken($color, 10%);
     border-color: darken($color, 10%);
   }
 
-  &[disabled],
-  &[aria-disabled] {
-    color: lighten($color, 40%);
-    border-color: lighten($color, 40%);
+  &:active {
+    color: darken($color, 20%);
+    border-color: darken($color, 20%);
   }
 }
 
@@ -64,8 +53,9 @@
     transition: background-color .35s ease;
 
     // For disabled buttons, don't care about mouse events
-    &[disabled] {
-      pointer-events: none;
+    &[disabled],
+    &[aria-disabled] {
+      cursor: not-allowed;
     }
 
     &:focus {

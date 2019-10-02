@@ -24,7 +24,7 @@ $color-back-button: #474f5a;
     box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
         0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
 
-    @include scroll-bar($c3, lighten($c1, 20%));
+    @include scroll-bar(#ffffff, #5f6979);
 
     &.show {
       transform: translateX(0);
