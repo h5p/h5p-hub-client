@@ -115,7 +115,7 @@ class Hub extends React.Component {
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
           <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
-            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} onPaste={this.props.onPaste}>
+            <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} canPasteTitle={this.props.canPasteTitle} onPaste={this.props.onPaste}>
               <Browse id="content-types"
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}

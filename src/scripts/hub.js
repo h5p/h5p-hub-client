@@ -33,6 +33,7 @@ export default class HubClient {
           title={state.title}
           expanded={state.expanded}
           canPaste={state.canPaste}
+          canPasteTitle={state.canPasteTitle}
           contentId={state.contentId}
           contentTypes={state.contentTypes}
           selected={state.selected}
@@ -60,8 +61,9 @@ export default class HubClient {
     /**
      * Enable/disable the paste button in the Hub
      */
-    this.setCanPaste = function (canPaste) {
+    this.setCanPaste = function (canPaste, title) {
       state.canPaste = canPaste;
+      state.canPasteTitle = title;
       render();
     };
 

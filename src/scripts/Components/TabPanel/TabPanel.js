@@ -48,7 +48,8 @@ class TabPanel extends React.Component {
               <button
                 id="h5peditor-hub-paste-button"
                 className={`h5peditor-paste-button ${!this.props.canPaste ? 'disabled' : ''}`}
-                title={Dictionary.get('pasteFromClipboard')}
+                disabled={!this.props.canPaste}
+                title={this.props.canPaste ? Dictionary.get('pasteFromClipboard') : this.props.canPasteTitle}
                 onClick={this.props.onPaste}
               >
                 {Dictionary.get('pasteButton')}
