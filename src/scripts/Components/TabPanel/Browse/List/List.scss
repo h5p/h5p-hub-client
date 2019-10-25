@@ -15,7 +15,7 @@
     transition: opacity 0.2s, visibility 0s linear 0.2s;
   }
 
-  @include scroll-bar(#ffffff, #5e6978);
+  @include scroll-bar(#F3F3F3, #5e6978);
 
   &:before {
     content: " ";
