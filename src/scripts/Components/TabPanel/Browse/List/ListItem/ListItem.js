@@ -22,6 +22,10 @@ const ListItem = ({contentType, apiVersion, tabindex, onSelect}) => {
     }
   };
 
+  const textIcons = contentType.icons ? contentType.icons.map((icon, i) => (
+    <img key={i} className="media-text-icon" src={ icon.src } alt={ icon.alt } title={ icon.alt }/>
+  )) : null;
+
   return (
     <div>
       <div className="media-left">
@@ -30,6 +34,7 @@ const ListItem = ({contentType, apiVersion, tabindex, onSelect}) => {
 
       <div className="media-body">
         <div className="h4 media-heading">{title}</div>
+        { textIcons }
 
         {contentType.installed ? (
           <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleSelect} onKeyDown={handleKeyDown}>

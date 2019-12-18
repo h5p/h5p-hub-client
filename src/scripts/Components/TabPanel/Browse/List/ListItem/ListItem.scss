@@ -32,7 +32,12 @@ $content-type-list-image-size: 100px;
   .media-heading {
     margin-top: 0;
     float: left;
-    margin-right: $gutter;
+    margin-right: 0.5em;
+  }
+
+  .media-text-icon {
+    float: left;
+    height: 15px;
   }
 
   .button {
