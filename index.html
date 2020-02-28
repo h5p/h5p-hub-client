@@ -4,23 +4,23 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="test/test.css" />
   <link rel="stylesheet" href="dist/h5p-hub-client.css" />
-  <link rel="stylesheet" href="test/mock/styles/fonts.css" />
+  <script type="text/javascript">
+    H5P = {};
+    H5PEditor = {};
+    H5PEditor.language = {};
+  </script>
+  <script type="text/javascript" src="test/mock/api/content-types.js"></script>
+  <script type="text/javascript" src="test/language/en.js"></script>
+  <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <style>
     #hub-client {
-      max-width: 1000px;
-      margin-right: auto;
+      max-width: 1090px;
+      margin: 0 auto;
     }
-
-    @media (min-width: 1150px) {
-      #hub-client {
-        margin-left: 100px;
-      }
-    }
-
-    .test-tool-options {
-      margin-bottom: 2em;
-      font-size: 1.1em;
+    body > h1 {
+      text-align: center;
     }
   </style>
   <title>H5P Hub Client</title>
@@ -28,99 +28,23 @@
 <body>
   <h1>H5P Hub Client</h1>
 
-  <div class="test-tool-options">
-    <label for="language">Language</label>
-    <select name="language" id="language">
-      <option value="en">English</option>
-      <option value="nb">Norwegian</option>
-    </select>
+  <div id="hub-client"></div>
 
-    <label for="test-mode">Test mode</label>
-    <select name="test-mode" id="test-mode">
-      <option value="normal">Normal</option>
-      <option value="fail-fetch-content-types">Fail fetching content types</option>
-      <option value="fail-installing">Fail installing</option>
-      <option value="fail-updating">Fail updating</option>
-      <option value="fail-fetch-license">Fail fetching license</option>
-      <option value="fail-uploading">Fail uploading</option>
-      <option value="fail-uploading-validation">Fail uploading validation</option>
-    </select>
-  </div>
-
-  <div>
-    <div id="hub-client"></div>
-
-    <h2>Other stuff</h2>
-    <p>Lorem ipsum dolor sit amet, case solum pri ex, sed te feugiat legimus. Sea doming alterum necessitatibus id, ipsum putent disputando ei pri. Docendi electram ei cum, usu ea meis tractatos dignissim. An eos putent tamquam postulant, falli periculis nam et. Ne mel hinc scaevola probatus.</p>
-  </div>
-
-  <script type="text/javascript">H5P = {};</script>
-  <script type="text/javascript" src="dist/h5p-hub-client.js"></script>
   <script type="text/javascript">
-    H5PEditor = {};
-    H5PEditor.language = {};
+    const state = {
+      contentId: 0,
+      contentTypes: H5P.contentTypes,
+      descriptionExpanded: true,
+      getAjaxUrl: () => {
 
-    var language = 'en';
-    var mode = 'normal';
-
-    var inputs = window.location.search.substr(1).split('&');
-
-    for(var i=0; i<inputs.length; i++) {
-      var k = inputs[i].split('=');
-      if (k[0] == 'language') {
-        language = k[1];
-      }
-      else if(k[0] == 'mode') {
-        mode = k[1];
-      }
-    }
-
-    function changeSetup() {
-      window.location.href = window.location.origin + '?language=' + language + '&mode=' + mode;
-    }
-
-    var languageSelector = document.querySelector('#language');
-    languageSelector.value = language;
-    languageSelector.onchange = function () {
-      language = this.options[this.selectedIndex].value;
-      changeSetup();
+      },
+      expanded: true,
+      canPaste: true
     };
 
-    var modeSelector = document.querySelector('#test-mode');
-    modeSelector.value = mode;
-    modeSelector.onchange = function () {
-      mode = this.options[this.selectedIndex].value;
-      changeSetup();
-    };
+    var hubClient = new H5P.HubClient(state, H5PEditor.language.core);
 
-    // Load language:
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        eval(this.responseText);
-
-        var config = {
-          apiRootUrl: '/test/mock/api/'
-        };
-
-        var services = mode === 'normal' ?
-          new H5P.HubServices(config) :
-          H5P.HubServicesFactory.get(mode, config);
-
-        var hubClient = new H5P.HubClient({
-          expanded: true,
-          descriptionExpanded: true,
-          apiVersion: {
-            major: 1,
-            minor: 12
-          }
-        }, services, H5PEditor.language.core);
-
-        document.getElementById('hub-client').appendChild(hubClient.getElement());
-      }
-    };
-    xhttp.open("GET", '/test/language/' + language + '.js', true);
-    xhttp.send();
+    document.getElementById('hub-client').appendChild(hubClient.getElement());
   </script>
 </body>
 </html>
