@@ -5,6 +5,7 @@ import fetchJSON from '../utils/fetchJSON';
 
 import DropDownSelector from './DropDownSelector/DropDownSelector';
 import TabPanel from './TabPanel/TabPanel';
+import ReuseContent from './TabPanel/Reuse/ReuseContent';
 import Browse from './TabPanel/Browse/Browse';
 import UploadContent from './TabPanel/UploadContent/UploadContent';
 import Message from './Message/Message';
@@ -125,6 +126,9 @@ class Hub extends React.Component {
                 onUse={this.handleUse}
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
+              <ReuseContent id="reuse"
+                title="Get Shared Content"
+              />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
