@@ -1,0 +1,31 @@
+.no-content{
+    display: flex;
+
+    .no-results-img{
+        width: 17.31em;
+        padding: 2em;
+        height: 6.75em;
+    }
+
+    .right-text{
+        padding: 2em;
+        height: 6.75em;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        .header{
+            font-size: 2.0447em;
+            color: #242424;
+            text-decoration: none solid rgb(36, 36, 36);
+        }
+        .suggestion-text{
+            font-size: 1.2950em;
+            color: #72757c;
+            text-decoration: none solid rgb(114, 117, 124);
+        }
+        .url{
+            font-size: 1.2950em;
+            color: rgb(6, 156, 207);;
+        }
+    }
+}
