@@ -143,7 +143,16 @@ class Browse extends React.Component {
 
     const hasRecentlyUsed = !!(this.props.contentTypes.recentlyUsed && this.props.contentTypes.recentlyUsed.length);
 
-    const orderVariables = [{ id: "recently", text: Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst') }, { id: "newest", text: Dictionary.get('newestFirst') }, { id: "a-to-z", text: Dictionary.get('aToZ') }];
+    const orderVariables = [{
+      id: "recently",
+      text: Dictionary.get(hasRecentlyUsed ? 'recentlyUsedFirst' : 'popularFirst')
+    }, {
+      id: "newest",
+      text: Dictionary.get('newestFirst')
+    }, {
+      id: "a-to-z",
+      text: Dictionary.get('aToZ')
+    }];
 
     return (
       <div className="content-type-section-view loaded">

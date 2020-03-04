@@ -6,7 +6,7 @@ import Dictionary from '../../utils/dictionary';
 
 import './Order.scss';
 
-const Order = ({ hits, selected, onChange, orderVisible, visible, orderVariables, headerLabel }) => {
+const Order = ({ hits, selected, onChange, orderVisible = true, visible, orderVariables, headerLabel }) => {
 
   const listElement = orderVariables.map((orderVariable) =>
     <li key={orderVariable.id}>
@@ -48,7 +48,7 @@ Order.propTypes = {
   onChange: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
   orderVariables: PropTypes.array.isRequired,
-  orderVisible: PropTypes.bool.isRequired,
+  orderVisible: PropTypes.bool,
   headerLabel: PropTypes.string.isRequired
 };
 
