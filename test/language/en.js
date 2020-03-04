@@ -218,5 +218,6 @@ H5PEditor.language.core = {
   exitFullscreenButtonLabel: 'Exit fullscreen',
   noContentHeader: 'No Fitting Content?',
   noContentSuggestion: 'Create one yourself!',
-  tutorials: 'Tutorials'
+  tutorials: 'Tutorials',
+  contentSectionAll: 'All shared content'
 };
