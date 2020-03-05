@@ -11,6 +11,7 @@ Run `build` to concatenate *JavaScript* files and compile scss files to css. Res
 ```bash
 npm run build
 ```
+
 Run `watch` to continually watch for changes to JavaScript and scss, and rebuild.
 
 ```bash
