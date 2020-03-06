@@ -62,7 +62,7 @@ class ReuseContent extends React.Component {
           itemsPromise={this.state.newContent}
           title={Dictionary.get('newOnTheHub')}
           actionLabel={Dictionary.get('allNew')} />
-        
+
       </div>
     );
   }

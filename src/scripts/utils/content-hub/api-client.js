@@ -7,7 +7,13 @@ export default class ApiClient {
 
   static init(language) {
     if (!ApiClient.instance) {
-      ApiClient.instance = new ApiClient(language);
+      const instance = ApiClient.instance = new ApiClient(language);
+      
+      ApiClient.levels = instance.get(endpoints.levels);
+      ApiClient.disciplines = instance.get(endpoints.disciplines);
+      ApiClient.languages = instance.get(endpoints.languages);
+      ApiClient.licenses = instance.get(endpoints.licenses);
+      ApiClient.contentTypes = instance.get(endpoints.contentTypes);
     }
   }
 
@@ -36,25 +42,5 @@ export default class ApiClient {
       limit: limit,
       page: page
     });
-  }
-
-  static getDisciplines() {
-    return ApiClient.instance.get(endpoints.disciplines);
-  }
-
-  static getContentTypes() {
-    return ApiClient.instance.get(endpoints.contentTypes);
-  }
-
-  static getLicenses() {
-    return ApiClient.instance.get(endpoints.licenses);
-  }
-
-  static getLanguages() {
-    return ApiClient.instance.get(endpoints.languages);
-  }
-
-  static getLevels() {
-    return ApiClient.instance.get(endpoints.levels);
   }
 }
