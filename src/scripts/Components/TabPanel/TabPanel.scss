@@ -5,12 +5,8 @@
 // General color scheme for each section
 @mixin section($color) {
   .tab-button {
-    border-bottom: $height-menuitem-underline solid transparent;
-    transition: border-bottom 1s;
-
     &[aria-selected="true"] {
       border-bottom: $height-menuitem-underline solid $color;
-      transition: border-bottom 1s;
     }
   }
 }
@@ -21,8 +17,8 @@
       @include section($color-section-content-types);
     }
 
-    &.h5p-section-content {
-      @include section($color-section-content);
+    &.h5p-section-reuse {
+      @include section($color-section-reuse);
     }
 
     &.h5p-section-upload {
@@ -55,6 +51,8 @@
       transition: all .5s ease;
       color: $c3;
       outline-color: lighten($ac1, 10%);
+      border-bottom: $height-menuitem-underline solid transparent;
+      transition: border-bottom 0.4s;
 
       &:nth-child(1) ~ span,
       &:nth-child(1)[aria-selected="true"] ~ span {

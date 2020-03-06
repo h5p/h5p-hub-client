@@ -219,5 +219,9 @@ H5PEditor.language.core = {
   noContentHeader: 'No Fitting Content?',
   noContentSuggestion: 'Create one yourself!',
   tutorials: 'Tutorials',
-  contentSectionAll: 'All shared content'
+  contentSectionAll: 'All shared content',
+  popularContent: 'Popular Content',
+  allPopular: 'All Popular',
+  newOnTheHub: 'New on the Hub',
+  allNew: 'All New',
 };

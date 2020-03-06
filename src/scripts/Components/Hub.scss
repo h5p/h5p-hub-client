@@ -20,8 +20,8 @@
       @include section($color-section-content-types);
     }
 
-    &.h5p-section-content {
-      @include section($color-section-content);
+    &.h5p-section-reuse {
+      @include section($color-section-reuse);
     }
 
     &.h5p-section-upload {

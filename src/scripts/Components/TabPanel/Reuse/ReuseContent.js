@@ -4,17 +4,21 @@ import NoContent from './NoContent/NoContent';
 //import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
+import { search } from '../../../utils/content-hub';
+import SelectionsList from './Selections/AsyncList';
 
 const defaultOrderBy = 'popular';
 
 class ReuseContent extends React.Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       orderBy: defaultOrderBy,
       hasSearchResults: false,
-      detailViewActive: false
+      detailViewActive: false,
+      newContent: search('1'),
+      popularContent: search('2')
     };
   }
 
@@ -35,6 +39,7 @@ class ReuseContent extends React.Component {
 
     return (
       <div className="reuse-view loaded">
+
         <Order
           hits={22930} //Get from api
           selected={this.state.orderBy}
@@ -42,13 +47,24 @@ class ReuseContent extends React.Component {
           headerLabel={Dictionary.get('contentSectionAll')}
           visible={!this.state.detailViewActive}
           orderVariables={orderBySettings} />
+
         <NoContent
           tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
           suggestionText={Dictionary.get('noContentSuggestion')}
           headerText={Dictionary.get('noContentHeader')} />
+        
+        <SelectionsList 
+          itemsPromise={this.state.popularContent}
+          title={Dictionary.get('popularContent')}
+          actionLabel={Dictionary.get('allPopular')} />
+        
+        <SelectionsList
+          itemsPromise={this.state.newContent}
+          title={Dictionary.get('newOnTheHub')}
+          actionLabel={Dictionary.get('allNew')} />
+        
       </div>
     );
-
   }
 }
 
