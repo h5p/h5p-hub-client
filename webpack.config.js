@@ -10,8 +10,10 @@ const config = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        include: path.resolve(__dirname, 'src'),
-        exclude: /node_modules/,
+        include: [
+          path.resolve(__dirname, 'node_modules/react-async'),
+          path.resolve(__dirname, 'src')
+        ],
         use: 'babel-loader'
       },
       {
