@@ -101,7 +101,7 @@ class Hub extends React.Component {
   }
 
   handleRender = (title, expanded) => {
-    this.props.onRender(title, expanded)
+    this.props.onRender(title, expanded);
   }
 
   render() {

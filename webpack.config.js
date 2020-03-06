@@ -39,6 +39,7 @@ const config = {
 module.exports = (env, argv) => {
   if (argv.mode === 'development') {
     config.devtool = 'inline-source-map';
+    config.entry = "./src/entries/dev.js";
   }
 
   return config;

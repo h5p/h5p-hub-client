@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Hub from './Components/Hub';
 import Dictionary from './utils/dictionary';
 import { Eventful } from './mixins/eventful';
+import ApiClient from './utils/content-hub/api-client';
 
 /**
  * @class
@@ -13,7 +14,7 @@ export default class HubClient {
    * @param {Object} state
    * @param {Object} dictionary
    */
-  constructor(state, dictionary) {
+  constructor(state, dictionary, language = 'en') {
     // add event system
     Object.assign(this, Eventful());
 
@@ -22,6 +23,7 @@ export default class HubClient {
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
+    ApiClient.init(language);
 
     /**
      * @private

@@ -4,7 +4,7 @@ import NoContent from './NoContent/NoContent';
 //import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
-import { search } from '../../../utils/content-hub';
+import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
 
 const defaultOrderBy = 'popular';
@@ -12,13 +12,13 @@ const defaultOrderBy = 'popular';
 class ReuseContent extends React.Component {
   constructor(props) {
     super(props);
-    
+
     this.state = {
       orderBy: defaultOrderBy,
       hasSearchResults: false,
       detailViewActive: false,
-      newContent: search('1'),
-      popularContent: search('2')
+      newContent: ContentApiClient.search({orderBy: 'newest'}),
+      popularContent: ContentApiClient.search({orderBy: 'popularity'})
     };
   }
 

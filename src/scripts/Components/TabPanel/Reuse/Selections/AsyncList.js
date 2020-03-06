@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import Layout from '../../../Layouts/Grid/Layout';
 import Item from '../../../Layouts/Grid/Item';
-import AsyncLoading from './AsyncLoading';
+import Message from '../../../Message/Message';
 
 const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
 
@@ -25,10 +25,17 @@ const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
         <a href="#" onClick={onAction}>{actionLabel}</a>
       </div>
       <Async promiseFn={itemsPromise}>
-        <AsyncLoading/>
+        <Async.Pending>
+          Loading...
+        </Async.Pending>
         
-        <Async.Rejected>
-          Rejected
+        <Async.Rejected>{(a, data) =>
+          <Message 
+            title='Failed fetching data'
+            severity='error'
+            message={data.error.message}
+          />
+        }
         </Async.Rejected>
 
         <Async.Fulfilled>{items =>
