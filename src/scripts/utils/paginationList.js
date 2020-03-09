@@ -23,14 +23,21 @@ export const paginationList = (selectedString, pages, ) => {
 
   const numberElement = (page) => (
     <li key={page.toString()} className="list-element">
-      <a href="#" id={page.toString()} aria-label={`Page ${page} ${page == selected ? ", current page" : ''}`} aria-current={page == selected}>
+      <a href="#"
+        id={page.toString()}
+        aria-label={`Page ${page} ${page == selected ? ", current page" : ''}`}
+        aria-current={page == selected}
+      >
         {page}
       </a>
     </li>);
 
   const arrow = (direction, active) => (
     <li key={direction} className={`list-element ${active ? '' : "disabled"}`} >
-      <a disabled={!active} href="#" id={direction} aria-label={`Go to ${direction == '-1' ? 'previous' : 'next'} page`}>
+      <a href="#" id={direction}
+        disabled={!active}
+        aria-label={`Go to ${direction == '-1' ? 'previous' : 'next'} page`}
+      >
         {direction == '-1' ? '<' : '>'}
       </a>
     </li>
