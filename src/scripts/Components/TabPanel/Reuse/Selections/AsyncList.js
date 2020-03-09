@@ -6,6 +6,8 @@ import Layout from '../../../Layouts/Grid/Layout';
 import Item from '../../../Layouts/Grid/Item';
 import Message from '../../../Message/Message';
 
+import './AsyncList.scss';
+
 const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
 
   const createItems = (items) => items.map(item => {
@@ -13,16 +15,17 @@ const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
       <Item 
         key={item.id}
         title={item.title}
+        image={item.image}
         actionLabel="Details"
       />
     );
   });
 
   return (
-    <div className="">
-      <div>
-        <div>{title}</div>
-        <a href="#" onClick={onAction}>{actionLabel}</a>
+    <div className="content-selection-list">
+      <div className="header">
+        <div className="title">{title}</div>
+        <a className="action" href="#" onClick={onAction}>{actionLabel}</a>
       </div>
       <Async promiseFn={itemsPromise}>
         <Async.Pending>

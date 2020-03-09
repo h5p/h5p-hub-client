@@ -1,0 +1,17 @@
+.content-selection-list {
+  padding: 2em;
+
+  .header {
+    position: relative;
+    margin-bottom: 1em;
+    padding: 0 1.5em;
+  }
+  .title {
+    font-size: 1.2em;
+  }
+  .action {
+    position: absolute;
+    right: 1.5em;
+    top: 0;
+  }
+}
