@@ -38,9 +38,9 @@ const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
         }
         </Async.Rejected>
 
-        <Async.Fulfilled>{items =>
+        <Async.Fulfilled>{result =>
           <Layout>
-            {createItems(items)}
+            {createItems(result.content)}
           </Layout>
         }
         </Async.Fulfilled>

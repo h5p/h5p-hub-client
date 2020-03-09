@@ -21,7 +21,6 @@ export default class ApiClient {
     return () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
-          console.log('GETTING HERE');
           reject(new Error('not implemented'));
         }, 2000);
       });
