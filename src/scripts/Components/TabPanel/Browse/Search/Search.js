@@ -82,7 +82,7 @@ class Search extends React.Component {
         <div className="border-wrap">
           <input id="hub-search-bar"
             type="text"
-            value={this.state.value || ''}
+            defaultValue={this.state.value}
             aria-label={searchLabel}
             placeholder={searchLabel}
             onInput={this.handleInput}

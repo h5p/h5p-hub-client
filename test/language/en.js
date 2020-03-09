@@ -215,5 +215,13 @@ H5PEditor.language.core = {
   unknownLibrary: 'Unfortunately, the selected content type \'%lib\' isn\'t installed on this system.',
   proceedButtonLabel: 'Proceed to save',
   enterFullscreenButtonLabel: 'Enter fullscreen',
-  exitFullscreenButtonLabel: 'Exit fullscreen'
+  exitFullscreenButtonLabel: 'Exit fullscreen',
+  noContentHeader: 'No Fitting Content?',
+  noContentSuggestion: 'Create one yourself!',
+  tutorials: 'Tutorials',
+  contentSectionAll: 'All shared content',
+  popularContent: 'Popular Content',
+  allPopular: 'All Popular',
+  newOnTheHub: 'New on the Hub',
+  allNew: 'All New',
 };
