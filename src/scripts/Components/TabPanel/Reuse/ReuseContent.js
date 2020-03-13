@@ -6,6 +6,7 @@ import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
+import Search from '../../Search/Search';
 
 const defaultOrderBy = 'popular';
 
@@ -28,6 +29,10 @@ class ReuseContent extends React.Component {
     });
   }
 
+  handleSearch = (query) => {
+    console.log('Lets search for: ' + query);
+  }
+
   render() {
     const orderBySettings = [{
       id: "popular",
@@ -38,7 +43,11 @@ class ReuseContent extends React.Component {
     }];
 
     return (
-      <div className="reuse-view loaded">
+      <div className="reuse-view loaded">        
+
+        <Search
+          placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
+          onSearch={this.handleSearch} />
 
         <Order
           hits={22930} //Get from api

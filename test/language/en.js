@@ -224,4 +224,5 @@ H5PEditor.language.core = {
   allPopular: 'All Popular',
   newOnTheHub: 'New on the Hub',
   allNew: 'All New',
+  contentSearchFieldPlaceholder: 'Search for Content',
 };
