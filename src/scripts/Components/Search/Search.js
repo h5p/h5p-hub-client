@@ -95,7 +95,7 @@ class Search extends React.Component {
 Search.propTypes = {
   value: PropTypes.string,
   auto: PropTypes.bool.isRequired,
-  setFocus: PropTypes.func,
+  setFocus: PropTypes.bool,
   onSearch: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
@@ -107,7 +107,8 @@ Search.defaultProps = {
   instantSearch: false,
   onNavigate: () => {},
   onSelect: () => {},
-  auto: false
+  auto: false,
+  setFocus: false
 };
 
 export default Search;
