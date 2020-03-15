@@ -225,4 +225,6 @@ H5PEditor.language.core = {
   newOnTheHub: 'New on the Hub',
   allNew: 'All New',
   contentSearchFieldPlaceholder: 'Search for Content',
+  loadingContentTitle: 'We are loading content for you...',
+  loadingContentSubtitle: 'Please wait',
 };

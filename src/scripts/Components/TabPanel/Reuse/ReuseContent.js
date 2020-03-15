@@ -7,6 +7,7 @@ import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
 import Search from '../../Search/Search';
+import Loader from '../../Loader/Loader';
 
 const defaultOrderBy = 'popular';
 
@@ -56,6 +57,10 @@ class ReuseContent extends React.Component {
           headerLabel={Dictionary.get('contentSectionAll')}
           visible={!this.state.detailViewActive}
           orderVariables={orderBySettings} />
+
+        <Loader
+          title={Dictionary.get('loadingContentTitle')}
+          subtitle={Dictionary.get('loadingContentSubtitle')} />
 
         <NoContent
           tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
