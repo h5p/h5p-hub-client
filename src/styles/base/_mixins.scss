@@ -15,6 +15,11 @@ $icon-hub: '\e900';
 $icon-info-circle: '\e918';
 $icon-search: '\e920';
 $icon-question: '\e903';
+$icon-check: '\e905';
+$icon-remove: '\e904';
+$icon-filters: '\e90f';
+$icon-checkbox-check: '\e91c';
+$icon-check-empty: '\e91e';
 
 @mixin scroll-bar($background-color, $button-color) {
   &::-webkit-scrollbar {

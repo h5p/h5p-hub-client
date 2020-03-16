@@ -13,16 +13,6 @@ class Lightbox extends React.Component {
     super(props);
 
     Modal.setAppElement('.h5p-section-content-types');
-
-    this.state = {
-      modalIsOpen: false
-    };
-  }
-
-  componentWillReceiveProps(props) {
-    this.setState({
-      modalIsOpen: props.visible
-    });
   }
 
   closeModal = () => {
@@ -42,7 +32,7 @@ class Lightbox extends React.Component {
 
     return (
       <Modal
-        isOpen={this.state.modalIsOpen}
+        isOpen={this.props.visible}
         onRequestClose={this.closeModal}
         contentLabel={this.props.label}
         parentSelector={this.getParent}
@@ -67,6 +57,10 @@ Lightbox.propTypes = {
     describedby: PropTypes.string
   }),
   className: PropTypes.string.isRequired
+};
+
+Lightbox.defaultProps ={
+  visible: false
 };
 
 export default Lightbox;

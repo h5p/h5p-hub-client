@@ -1,0 +1,49 @@
+@import "../../../../../../styles/base/mixins";
+@import "../../../../../../styles/base/variables";
+
+.lightbox {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+}
+.filter-open {
+  position: absolute; 
+  width: 50%; 
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 0.340785em;
+  padding: 2em;
+
+  @media (max-width: $screen-medium) {
+    width: 100%;
+  }
+}
+
+.apply-filters-button {
+  &::before {
+    @include icon($icon-filters);
+    font-style: normal;
+    font-size: 0.8em;
+    margin: 0 0.4em 0 0.4em;
+    margin-right: 1em;
+  }
+  background-color: $c1;
+  text-align: center;
+  width: 100%;
+  color: #ffffff;
+  font-size: 1.36314em;
+  border-radius: 0.25em;
+  margin-top: 1em !important;
+  padding: 1.06145em !important;
+}
+
+.header-text {
+  color: #000000;
+  font-size: 1.4313em;
+  margin-bottom: 1em;
+}
+
+.loading:after {
+  @include throbber();
+  width: 1em;
+  margin: 0 auto;
+}

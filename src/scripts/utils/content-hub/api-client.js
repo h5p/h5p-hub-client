@@ -14,6 +14,7 @@ export default class ApiClient {
       ApiClient.languages = instance.get(endpoints.languages);
       ApiClient.licenses = instance.get(endpoints.licenses);
       ApiClient.contentTypes = instance.get(endpoints.contentTypes);
+      ApiClient.reviewed = instance.get(endpoints.reviewed);
     }
   }
 
