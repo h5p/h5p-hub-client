@@ -240,5 +240,8 @@ H5PEditor.language.core = {
   applyReviewedFilter: 'Show only reviewed content',
   filterReviewed: 'Filter',
   selectReviewed: 'Reviewed Content',
-  clearFilters: 'Clear all filters'
+  clearFilters: 'Clear all filters',
+  contentSearchFieldPlaceholder: 'Search for Content',
+  loadingContentTitle: 'We are loading content for you...',
+  loadingContentSubtitle: 'Please wait',
 };

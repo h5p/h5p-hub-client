@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Message from '../../Message/Message';
-import Search from './Search/Search';
+import Search from '../../Search/Search';
 import Order from '../../Order/Order';
 import List from './List/List';
 import ContentType from './Detail/ContentType';
@@ -160,10 +160,12 @@ class Browse extends React.Component {
         <Search value={this.state.filterOn}
           auto={!this.state.detailViewActive}
           setFocus={this.props.setFocus}
-          onFilter={this.handleFilterOn}
+          onSearch={this.handleFilterOn}
           onNavigate={this.handleFocusMove}
-          onSelect={this.handleSearchSelect} />
-
+          onSelect={this.handleSearchSelect} 
+          instantSearch={true}
+          placeholder={Dictionary.get('contentTypeSearchFieldPlaceholder')}
+        />
         {
           !!this.state.warnOutdated &&
           <Message

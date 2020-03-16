@@ -7,7 +7,7 @@ $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
   margin-left: 1em;
 
   .button-filter-open {
-    //background-image: $open-state;
+    background-image: $open-state;
   }
   .button-filter-checked {
     background-image: $ative-state;

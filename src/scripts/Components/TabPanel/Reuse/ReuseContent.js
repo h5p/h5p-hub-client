@@ -3,11 +3,12 @@ import NoContent from './NoContent/NoContent';
 //import PropTypes from 'prop-types';
 import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
-import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
 import FilterBar from './FilterBar/FilterBar';
 import ApiClient from '../../../utils/content-hub/api-client';
+import Search from '../../Search/Search';
+import Loader from '../../Loader/Loader';
 
 const defaultOrderBy = 'popular';
 
@@ -31,6 +32,10 @@ class ReuseContent extends React.Component {
     });
   }
 
+  handleSearch = (query) => {
+    console.log('Lets search for: ' + query);
+  }
+
   render() {
     const orderBySettings = [{
       id: "popular",
@@ -47,35 +52,43 @@ class ReuseContent extends React.Component {
 
     return (
       <div className="reuse-view loaded">
+        <Search
+          placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
+          onSearch={this.handleSearch} />
+
         <FilterBar
           label={Dictionary.get('filterBy')}
           filters={filters}
         />
-        <div className="reuse-content-result">
-          <Order
-            hits={22930} //Get from api
-            selected={this.state.orderBy}
-            onChange={this.handleOrderBy}
-            headerLabel={Dictionary.get('contentSectionAll')}
-            visible={!this.state.detailViewActive}
-            orderVariables={orderBySettings} />
+        <NoContent
+          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+          suggestionText={Dictionary.get('noContentSuggestion')}
+          headerText={Dictionary.get('noContentHeader')} />
 
-          <NoContent
-            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-            suggestionText={Dictionary.get('noContentSuggestion')}
-            headerText={Dictionary.get('noContentHeader')} />
+        <Loader
+          title={Dictionary.get('loadingContentTitle')}
+          subtitle={Dictionary.get('loadingContentSubtitle')} />
 
-          <SelectionsList
-            itemsPromise={this.state.popularContent}
-            title={Dictionary.get('popularContent')}
-            actionLabel={Dictionary.get('allPopular')} />
+        <NoContent
+          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+          suggestionText={Dictionary.get('noContentSuggestion')}
+          headerText={Dictionary.get('noContentHeader')} />
 
-          <SelectionsList
-            itemsPromise={this.state.newContent}
-            title={Dictionary.get('newOnTheHub')}
-            actionLabel={Dictionary.get('allNew')} />
-        </div>
-      </div>
+        <SelectionsList
+          itemsPromise={this.state.popularContent}
+          title={Dictionary.get('popularContent')}
+          actionLabel={Dictionary.get('allPopular')} />
+
+        <SelectionsList
+          itemsPromise={this.state.newContent}
+          title={Dictionary.get('newOnTheHub')}
+          actionLabel={Dictionary.get('allNew')} />
+
+        <SelectionsList
+          itemsPromise={this.state.newContent}
+          title={Dictionary.get('newOnTheHub')}
+          actionLabel={Dictionary.get('allNew')} />
+      </div >
     );
   }
 }
