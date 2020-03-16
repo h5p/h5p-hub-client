@@ -60,34 +60,32 @@ class ReuseContent extends React.Component {
           label={Dictionary.get('filterBy')}
           filters={filters}
         />
-        <NoContent
-          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-          suggestionText={Dictionary.get('noContentSuggestion')}
-          headerText={Dictionary.get('noContentHeader')} />
+        <div className='reuse-content-result'>
 
-        <Loader
-          title={Dictionary.get('loadingContentTitle')}
-          subtitle={Dictionary.get('loadingContentSubtitle')} />
+          <Loader
+            title={Dictionary.get('loadingContentTitle')}
+            subtitle={Dictionary.get('loadingContentSubtitle')} />
 
-        <NoContent
-          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-          suggestionText={Dictionary.get('noContentSuggestion')}
-          headerText={Dictionary.get('noContentHeader')} />
+          <NoContent
+            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+            suggestionText={Dictionary.get('noContentSuggestion')}
+            headerText={Dictionary.get('noContentHeader')} />
 
-        <SelectionsList
-          itemsPromise={this.state.popularContent}
-          title={Dictionary.get('popularContent')}
-          actionLabel={Dictionary.get('allPopular')} />
+          <SelectionsList
+            itemsPromise={this.state.popularContent}
+            title={Dictionary.get('popularContent')}
+            actionLabel={Dictionary.get('allPopular')} />
 
-        <SelectionsList
-          itemsPromise={this.state.newContent}
-          title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')} />
+          <SelectionsList
+            itemsPromise={this.state.newContent}
+            title={Dictionary.get('newOnTheHub')}
+            actionLabel={Dictionary.get('allNew')} />
 
-        <SelectionsList
-          itemsPromise={this.state.newContent}
-          title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')} />
+          <SelectionsList
+            itemsPromise={this.state.newContent}
+            title={Dictionary.get('newOnTheHub')}
+            actionLabel={Dictionary.get('allNew')} />
+        </div>
       </div >
     );
   }
