@@ -228,4 +228,9 @@ H5PEditor.language.core = {
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
   by: 'by',
+  paginationNavigation: 'Pagination navigation',
+  page: 'Page',
+  currentPage: 'Current page',
+  nextPage: 'Go to next page',
+  previousPage: 'Go to previous page',
 };
