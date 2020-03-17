@@ -27,6 +27,20 @@ export default class Dictionary {
       return `Key not found in dictionary: ${key}`;
     }
 
+    if (replacements) {
+      translation = Dictionary.replace(translation, replacements);
+    }
+    
+    return translation;
+  }
+
+  /**
+   * Replace variables in translation strings
+   * 
+   * @param {string} translation 
+   * @param {Object} replacements 
+   */
+  static replace(translation, replacements) {
     // Replace placeholder with variables.
     for (let placeholder in replacements) {
       if (!replacements[placeholder]) {
