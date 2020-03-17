@@ -31,8 +31,7 @@ const FilterButton = ({ checked, id, onClick, open, data,dropdownLabel }) => {
         tabIndex='-1'
         id={id}
         className={className()}
-        onClick={() => onClick(id)}
-        aria-label={Dictionary.get(`filter${id.charAt(0).toUpperCase() + id.slice(1)}`)}>
+        onClick={() => onClick(id)}>
 
         {dropdownLabel}
         
