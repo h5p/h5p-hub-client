@@ -18,14 +18,20 @@ class FilterBar extends React.Component {
       selected: this.props.filters[0].id,
     };
 
+    this.filterButtons = {};
+
     this.props.filters.forEach(filter => {
+
+      this.filterButtons[filter.id] = React.createRef();
+
       filter.promise.then(data => {
         this.setState({
           filterData: { ...this.state.filterData, [filter.id]: data }
         });
       });
-      return;
     });
+
+    
   }
 
   anyChecked = () => {
@@ -76,6 +82,7 @@ class FilterBar extends React.Component {
           checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
           open={this.state.openFilter == filter.id}
           data={this.state.filterData[filter.id]}
+          ref={this.filterButtons[filter.id]}
         />
       </li>
     );
@@ -91,6 +98,7 @@ class FilterBar extends React.Component {
         openFilter={this.handleFilterButtonClicked}
         checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
         handleChecked={this.handleChecked}
+        toggleButtonRef={this.filterButtons[filter.id]}
       />
     );
 

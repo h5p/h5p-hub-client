@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dictionary from '../../../../../utils/dictionary';
 
 import './FilterButton.scss';
 
-const FilterButton = ({ checked, id, onClick, open, data,dropdownLabel }) => {
+const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropdownLabel }, ref) => {
 
   const oneChecked = checked.length == 1 && data.length == 1;
 
@@ -31,7 +30,8 @@ const FilterButton = ({ checked, id, onClick, open, data,dropdownLabel }) => {
         tabIndex='-1'
         id={id}
         className={className()}
-        onClick={() => onClick(id)}>
+        onClick={() => onClick(id)}
+        ref={ref}>
 
         {dropdownLabel}
         
@@ -42,7 +42,8 @@ const FilterButton = ({ checked, id, onClick, open, data,dropdownLabel }) => {
       </button>
     </div>
   );
-};
+});
+
 FilterButton.propTypes = {
   checked: PropTypes.array,
   id: PropTypes.string.isRequired,
