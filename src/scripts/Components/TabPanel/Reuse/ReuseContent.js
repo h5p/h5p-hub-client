@@ -1,4 +1,5 @@
 import React from 'react';
+import Pagination from '../../Pagiantion/Pagination';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
 //import PropTypes from 'prop-types';
@@ -19,39 +20,61 @@ class ReuseContent extends React.Component {
     super(props);
 
     this.state = {
+      page: 1,
+      pages: 10, // TODO - Get from API call
       orderBy: defaultOrderBy,
+      filters: {},
       hasSearchResults: false,
       detailViewActive: false,
+      focusOnRender: false,
       newContent: ContentApiClient.search({ orderBy: 'newest' }),
       popularContent: ContentApiClient.search({ orderBy: 'popularity' }),
       search: ContentApiClient.search({}),
     };
   }
 
-  runSearch = () => {
+  handlePageChange = (setFocus, page) => {
+    if (page !== this.state.page) {
+      //Do something with selected page
+      this.setState({ 
+        page: page,
+        focusOnRender: setFocus
+      });
+      this.runSearch({page: page});
+    }
+  }
+
+  runSearch = ({query, filters, orderBy, page}) => {
     this.setState({
       search: ContentApiClient.search({
-        query: this.state.query,
-        orderBy: this.state.orderBy,
+        query: query || this.state.query,
+        filters: filters || this.state.filters,
+        orderBy: orderBy || this.state.orderBy,
+        page: page || this.state.page,
       })
     });
   }
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({
-        orderBy: orderBy
-      });
-      this.runSearch();
+      this.setState({orderBy: orderBy});
+      this.runSearch({orderBy: orderBy});
     }
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({
-        query: query
-      });
-      this.runSearch();
+      this.setState({query: query});
+      this.runSearch({query: query});
+    }
+  }
+
+  handleFilters = (filters) => {
+    // TODO - check if it has changed in a better way. Now order matters
+    // Also check why this is invoked too much
+    if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
+      this.setState({filters: filters});
+      this.runSearch({filters: filters});
     }
   }
 
@@ -84,6 +107,7 @@ class ReuseContent extends React.Component {
         <FilterBar
           label={Dictionary.get('filterBy')}
           filters={filters}
+          onChange={this.handleFilters}
         />
         <div className='reuse-content-result'>
           <Order
@@ -97,6 +121,12 @@ class ReuseContent extends React.Component {
           <ContentList 
             itemsPromise={this.state.search}
             onSelect={this.showContentDetails} />
+
+          <Pagination
+            selectedPage={this.state.page}
+            pages={this.state.pages}
+            onChange={this.handlePageChange}
+            setFocus={this.state.focusOnRender} />
         
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"

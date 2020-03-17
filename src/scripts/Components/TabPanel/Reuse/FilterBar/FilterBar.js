@@ -41,6 +41,7 @@ class FilterBar extends React.Component {
 
   clearFilters = () => {
     this.setState({ checked: {}, showClearFilters: false });
+    this.props.onChange({});
   }
 
   handleFilterButtonClicked = (id) => {
@@ -51,6 +52,7 @@ class FilterBar extends React.Component {
 
   handleApplyFilters = () => {
     this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
+    this.props.onChange(this.state.checked);
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
@@ -124,7 +126,8 @@ class FilterBar extends React.Component {
 
 FilterBar.propTypes = {
   label: PropTypes.string.isRequired,
-  filters: PropTypes.array.isRequired
+  filters: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default FilterBar;
