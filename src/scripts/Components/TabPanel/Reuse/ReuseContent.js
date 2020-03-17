@@ -18,7 +18,6 @@ class ReuseContent extends React.Component {
 
     this.state = {
       page: 1,
-      pageSelected: 'paginator-page-1',
       pages: 10, // TODO - Get from API call
       orderBy: defaultOrderBy,
       hasSearchResults: false,
@@ -29,9 +28,9 @@ class ReuseContent extends React.Component {
     };
   }
 
-  handlePageChange = (id, setFocus, page) => {
+  handlePageChange = (setFocus, page) => {
     //Do something with selected page
-    this.setState({ pageSelected: id,page: page, focusOnRender: setFocus });
+    this.setState({ page: page, focusOnRender: setFocus });
   }
 
   handleOrderBy = (property) => {
@@ -70,7 +69,6 @@ class ReuseContent extends React.Component {
 
         <Pagination
           selectedPage={this.state.page}
-          selectedId={this.state.pageSelected}
           pages={this.state.pages}
           onChange={this.handlePageChange}
           setFocus={this.state.focusOnRender}

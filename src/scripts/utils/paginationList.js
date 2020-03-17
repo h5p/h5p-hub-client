@@ -2,9 +2,11 @@ import React from 'react';
 import variables from '../../styles/base/_variables.scss';
 import Dictionary from './dictionary';
 
+export const pageNumToId = (num) => {
+  return `paginator-page-${num}`;
+};
 
-
-export const paginationList = (selected, pages,screenWidth ) => {
+export const paginationList = (selected, pages, screenWidth) => {
 
   const listElements = [];
 
@@ -24,13 +26,13 @@ export const paginationList = (selected, pages,screenWidth ) => {
   const numberElement = (page) => (
     <li key={page.toString()} className="list-element">
       <a href="#"
-        id={`paginator-page-${page}`}
+        id={pageNumToId(page)}
         data-page={page}
         aria-label={Dictionary.get('page') + ' ' + page + (page == selected && ', ' + Dictionary.get('currentPage'))}
         aria-current={page == selected}
       >
         {page}
-      </a>
+      </a>  
     </li>);
 
   const arrow = (direction, active) => (
@@ -67,7 +69,6 @@ export const paginationList = (selected, pages,screenWidth ) => {
         if (i > 0 && i <= pages) {
           listElements.push(numberElement(i));
         }
-
       }
     }
 
