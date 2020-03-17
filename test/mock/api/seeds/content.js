@@ -38,7 +38,8 @@ const create = function(content) {
     title: content.title || chance.sentence({ words: 5 }),
     owner: content.owner || chance.name(),
     contentType: content.contentType || randomContentType(),
-    image: content.image || randomImage()
+    image: content.image || randomImage(),
+    summary: content.summary || chance.sentence({ words: 12 }),
   };
 };
 
@@ -53,14 +54,18 @@ const get = function (params, settings) {
 
   let content = [];
 
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < 5; i++) {
     content.push(create({}));
   }
 
-  // Add a long one to test wrapping in the UI
-  content.push(create({
-    title: chance.sentence({ words: 40 })
-  }));
+  // A long summary
+  content[0].summary = chance.sentence({ words: 30 });
+
+  // A long name
+  content[1].owner = "Adolph Blaine Charles David Earl Frederick Gerald Hubert Irvin John Kenneth Lloyd Martin Nero Oliver Paul Quincy Randolph Sherman Thomas Uncas Victor William Xerxes Yancy Zeus";
+
+  // A long title
+  content[2].title = chance.sentence({ words: 40 });
   
   return {
     numResults: 1000,

@@ -12,3 +12,7 @@ export const onSpaceOrEnterEvent = (event, callback) => {
     callback();
   }
 };
+
+export const minimizeLongText = (text, threshold = 90) => {
+  return (text.length > threshold) ? (text.substr(0, threshold-3) + '...') : text;
+};
