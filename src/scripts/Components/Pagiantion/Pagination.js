@@ -22,6 +22,10 @@ class Pagination extends React.Component {
     window.addEventListener('resize', this.resize);
   }
 
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.resize);
+  }
+
   resize = () => {
     this.setState({
       screenWidth: document.documentElement.clientWidth

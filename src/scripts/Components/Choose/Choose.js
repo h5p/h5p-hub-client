@@ -28,6 +28,7 @@ class Choose extends React.Component {
     for (let i = 0; i < this.items.length; i++) {
       if (id === this.items[i].id) {
         item = this.items[i];
+        break;
       }
     }
     this.props.onChange(id, item && item.attributes);
@@ -103,6 +104,7 @@ class Choose extends React.Component {
         for (let i = 0; i < this.items.length; i++) {
           if (this.state.focused === this.items[i].id) {
             this.items[i].focus();
+            break;
           }
         }
       }
