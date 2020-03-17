@@ -5,45 +5,47 @@
   position: absolute;
   background: rgba(0, 0, 0, 0.8);
 }
-.filter-open {
+.filter-dialog {
   position: absolute; 
   width: 40em; 
   box-sizing: border-box;
   background-color: #ffffff;
   border-radius: 0.340785em;
   padding: 2em;
+    
+  .apply-filters-button {
+    &::before {
+      @include icon($icon-filters);
+      font-style: normal;
+      font-size: 0.8em;
+      margin: 0 0.4em 0 0.4em;
+      margin-right: 1em;
+    }
+
+    background-color: $c1;
+    text-align: center;
+    width: 100%;
+    color: #ffffff;
+    font-size: 1.36314em;
+    border-radius: 0.25em;
+    margin-top: 1em;
+    padding: 1.06145em;
+    cursor: pointer;
+  }
+
+  .header-text {
+    color: #000000;
+    font-size: 1.4313em;
+    margin-bottom: 1em;
+  }
+
+  .loading:after {
+    @include throbber();
+    width: 1em;
+    margin: 0 auto;
+  }
 
   @media (max-width: $screen-medium) {
     width: 100%;
   }
-}
-
-.apply-filters-button {
-  &::before {
-    @include icon($icon-filters);
-    font-style: normal;
-    font-size: 0.8em;
-    margin: 0 0.4em 0 0.4em;
-    margin-right: 1em;
-  }
-  background-color: $c1;
-  text-align: center;
-  width: 100%;
-  color: #ffffff;
-  font-size: 1.36314em;
-  border-radius: 0.25em;
-  margin-top: 1em !important;
-  padding: 1.06145em !important;
-}
-
-.header-text {
-  color: #000000;
-  font-size: 1.4313em;
-  margin-bottom: 1em;
-}
-
-.loading:after {
-  @include throbber();
-  width: 1em;
-  margin: 0 auto;
 }

@@ -21,7 +21,7 @@ class Filter extends React.Component {
   }
 
   render() {
-    const modalAria = { labelledby: Dictionary.get(`${this.props.id}Dropdown`) };
+    const modalAria = { label: Dictionary.get(`${this.props.id}Dropdown`) };
     const filterIdUpperCase = this.props.id.charAt(0).toUpperCase() + this.props.id.slice(1);
     const filterText = Dictionary.get(`filter${filterIdUpperCase}`);
     const applyFilterText = Dictionary.get(`apply${filterIdUpperCase}Filter`);
@@ -33,7 +33,7 @@ class Filter extends React.Component {
         contentLabel={this.props.id}
         onClose={() => this.props.handleApplyFilters(this.props.id)}
         parentSelector={this.getParent}
-        className='filter-open'
+        className='filter-dialog'
         overlayClassName='lightbox'
         aria={modalAria}
       >
