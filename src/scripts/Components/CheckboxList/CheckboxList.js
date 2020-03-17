@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './CheckBoxList.scss';
+import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
 
 const CheckboxList = ({ items, onChecked, checked, filter }) => {
