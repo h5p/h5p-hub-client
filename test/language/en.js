@@ -226,20 +226,23 @@ H5PEditor.language.core = {
   allNew: 'All New',
   filterBy: 'Filter by',
   filter: 'Filter',
-  selectLanguage: 'Select language(s)',
-  selectLevel: 'Select level of education',
-  filterLanguage: 'Filter languages',
-  filterLevel: 'Filter level of education',
-  level: 'Level',
-  languageDropdown: 'Languge filter dropdown',
-  levelDropdown: 'Level filter dropdown',
-  applyLanguageFilter: 'Apply languages filter',
-  applyLevelFilter: 'Apply level filter',
-  reviewed: 'Reviewed',
-  reviewedDropdown: 'Reviewed dropdown',
-  applyReviewedFilter: 'Show only reviewed content',
-  filterReviewed: 'Filter',
-  selectReviewed: 'Reviewed Content',
+  filters: {
+    level: {
+      dropdownLabel: 'Level',
+      dialogHeader: 'Select level of education',
+      dialogButtonLabel: 'Filter level of education'
+    },
+    language: {
+      dropdownLabel: 'Language',
+      dialogHeader: 'Select language(s)',
+      dialogButtonLabel: 'Filter languages'
+    },
+    reviewed: {
+      dropdownLabel: 'Reviewed',
+      dialogHeader: 'Reviewed Content',
+      dialogButtonLabel: 'Filter'
+    }
+  },
   clearFilters: 'Clear all filters',
   contentSearchFieldPlaceholder: 'Search for Content',
   loadingContentTitle: 'We are loading content for you...',

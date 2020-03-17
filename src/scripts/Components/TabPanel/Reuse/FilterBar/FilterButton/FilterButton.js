@@ -4,7 +4,7 @@ import Dictionary from '../../../../../utils/dictionary';
 
 import './FilterButton.scss';
 
-const FilterButton = ({ checked, id, onClick, open, data }) => {
+const FilterButton = ({ checked, id, onClick, open, data,dropdownLabel }) => {
 
   const oneChecked = checked.length == 1 && data.length == 1;
 
@@ -34,7 +34,7 @@ const FilterButton = ({ checked, id, onClick, open, data }) => {
         onClick={() => onClick(id)}
         aria-label={Dictionary.get(`filter${id.charAt(0).toUpperCase() + id.slice(1)}`)}>
 
-        {Dictionary.get(id)}
+        {dropdownLabel}
         
         <div className={oneChecked ? 'icon check' : 'icon' }>
           {filterNumberShown && `(${checked.length})`}
@@ -49,7 +49,8 @@ FilterButton.propTypes = {
   id: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  data: PropTypes.array
+  data: PropTypes.array,
+  dropdownLabel: PropTypes.string.isRequired
 };
 
 export default FilterButton;

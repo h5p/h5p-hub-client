@@ -44,10 +44,12 @@ class ReuseContent extends React.Component {
       id: "newest",
       text: Dictionary.get('newestFirst')
     }];
+    
+    const filterTrans = Dictionary.get('filters');
 
     const filters = [
-      { id: 'level', promise: ApiClient.levels() },
-      { id: 'reviewed', promise: ApiClient.reviewed() },
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level },
+      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed },
     ];
 
     return (

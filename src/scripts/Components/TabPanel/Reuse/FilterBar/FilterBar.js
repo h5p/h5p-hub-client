@@ -69,6 +69,7 @@ class FilterBar extends React.Component {
       <li key={filter.id} id={filter.id}>
         <FilterButton
           id={filter.id}
+          dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
           checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
           open={this.state.openFilter == filter.id}
@@ -81,6 +82,7 @@ class FilterBar extends React.Component {
       <Filter
         id={filter.id}
         key={filter.id}
+        dictionary={filter.dictionary}
         data={this.state.filterData[filter.id]}
         handleApplyFilters={this.handleApplyFilters}
         open={this.state.openFilter == filter.id}

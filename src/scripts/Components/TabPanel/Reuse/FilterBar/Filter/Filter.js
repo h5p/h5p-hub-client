@@ -22,9 +22,6 @@ class Filter extends React.Component {
 
   render() {
     const modalAria = { labelledby: Dictionary.get(`${this.props.id}Dropdown`) };
-    const filterIdUpperCase = this.props.id.charAt(0).toUpperCase() + this.props.id.slice(1);
-    const filterText = Dictionary.get(`filter${filterIdUpperCase}`);
-    const applyFilterText = Dictionary.get(`apply${filterIdUpperCase}Filter`);
 
     return (
       <>
@@ -41,7 +38,7 @@ class Filter extends React.Component {
           >
 
             <div className="header-text">
-              {Dictionary.get(`select${this.props.id.charAt(0).toUpperCase() + this.props.id.slice(1)}`)}
+              {this.props.dictionary.dialogHeader}
             </div>
 
             {this.props.data && this.props.data.length !== undefined ?
@@ -56,9 +53,8 @@ class Filter extends React.Component {
             <button
               className="apply-filters-button"
               onClick={this.props.handleApplyFilters}
-              aria-label={applyFilterText}
             >
-              {filterText}
+              {this.props.dictionary.dialogButtonLabel}
             </button>
 
           </Modal>
@@ -75,7 +71,8 @@ Filter.propTypes = {
   handleApplyFilters: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   checked: PropTypes.array.isRequired,
-  handleChecked: PropTypes.func.isRequired
+  handleChecked: PropTypes.func.isRequired,
+  dictionary: PropTypes.object.isRequired
 };
 
 export default Filter;
