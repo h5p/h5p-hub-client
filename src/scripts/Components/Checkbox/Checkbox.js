@@ -7,6 +7,7 @@ const Checkbox = ({ id, label, checked, filter, onChecked }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key == ' ') {
       onChecked(filter, id, !checked);
+      e.preventDefault();
     }
   };
 

@@ -23,45 +23,40 @@ class Filter extends React.Component {
   render() {
     const modalAria = { labelledby: this.props.dropdownLabel};
 
-    return (
-      <>
-        {this.props.open &&
-          <Modal
-            isOpen={this.props.open}
-            onRequestClose={this.closeModal}
-            contentLabel={this.props.id}
-            onClose={() => this.props.handleApplyFilters(this.props.id)}
-            parentSelector={this.getParent}
-            className='filter-open'
-            overlayClassName='lightbox'
-            aria={modalAria}
-          >
+    return this.props.open ? (
+      <Modal
+        isOpen={this.props.open}
+        onRequestClose={this.closeModal}
+        contentLabel={this.props.id}
+        onClose={() => this.props.handleApplyFilters(this.props.id)}
+        parentSelector={this.getParent}
+        className='filter-dialog'
+        overlayClassName='lightbox'
+        aria={modalAria}
+      >
 
-            <div className="header-text">
-              {this.props.dictionary.dialogHeader}
-            </div>
+        <div className="header-text">
+          {this.props.dictionary.dialogHeader}
+        </div>
 
-            {this.props.data && this.props.data.length !== undefined ?
-              <CheckboxList
-                onChecked={this.props.handleChecked}
-                items={this.props.data}
-                checked={this.props.checked}
-                filter={this.props.id}
-              /> : <div className="loading" />
-            }
-
-            <button
-              className="apply-filters-button"
-              onClick={this.props.handleApplyFilters}
-            >
-              {this.props.dictionary.dialogButtonLabel}
-            </button>
-
-          </Modal>
+        {this.props.data && this.props.data.length !== undefined ?
+          <CheckboxList
+            onChecked={this.props.handleChecked}
+            items={this.props.data}
+            checked={this.props.checked}
+            filter={this.props.id}
+          /> : <div className="loading" />
         }
-      </>
 
-    );
+        <button
+          className="apply-filters-button"
+          onClick={this.props.handleApplyFilters}
+        >
+          {this.props.dictionary.dialogButtonLabel}
+        </button>
+
+      </Modal> 
+    ) : null;       
   }
 }
 

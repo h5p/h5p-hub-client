@@ -94,20 +94,20 @@ class ReuseContent extends React.Component {
             visible={!this.state.detailViewActive}
             orderVariables={orderBySettings} />
 
-          <ContentList
+          <ContentList 
             itemsPromise={this.state.search}
             onSelect={this.showContentDetails} />
-
+        
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
             suggestionText={Dictionary.get('noContentSuggestion')}
             headerText={Dictionary.get('noContentHeader')} />
-
-          <SelectionsList
+          
+          <SelectionsList 
             itemsPromise={this.state.popularContent}
             title={Dictionary.get('popularContent')}
             actionLabel={Dictionary.get('allPopular')} />
-
+          
           <SelectionsList
             itemsPromise={this.state.newContent}
             title={Dictionary.get('newOnTheHub')}
