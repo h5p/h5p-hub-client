@@ -26,18 +26,10 @@ const ContentItemTabular = ({content, onSelect, focused}) => {
           <span className='owner'>{minimizeLongText(content.owner, 50)}</span>
         </div>
         <div className='content-type'>{content.contentType}</div>
-        <div className='summary'>{minimizeLongText(content.summary, 120)}</div>
+        <div className='summary'>{content.summary}</div>
       </div>
       
-      <div className='right'>
-        <Button
-          buttonProps={buttonProps}
-          type="button"
-          onButtonClick={() => onSelect(content)}
-        >
-          {Dictionary.get('contentTypeDetailButtonLabel')}
-        </Button>
-      </div>
+      <div className='right'></div>
     </>
   );
 };
