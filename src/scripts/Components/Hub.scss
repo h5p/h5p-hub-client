@@ -1,11 +1,6 @@
 @import '../../styles/base/variables';
 @import '../../styles/base/mixins';
 
-// General color scheme for each section
-@mixin section($color) {
-  border: 1px solid $color;
-}
-
 .h5p-hub {
   font-family: 'Open Sans', sans-serif;
   padding-top: 1px;
@@ -17,15 +12,15 @@
     background: #fff;
 
     &.h5p-section-content-types {
-      @include section($color-section-content-types);
+      border-color: $color-section-content-types;
     }
 
     &.h5p-section-reuse {
-      @include section($color-section-reuse);
+      border-color: $color-section-reuse;
     }
 
     &.h5p-section-upload {
-      @include section($color-section-upload);
+      border-color: $color-section-upload;
     }
   }
 

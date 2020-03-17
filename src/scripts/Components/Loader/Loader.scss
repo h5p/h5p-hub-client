@@ -1,0 +1,36 @@
+@import '../../../styles/base/colors';
+@import '../../../styles/base/variables';
+@import '../../../styles/base/mixins';
+
+.loader {
+  text-align: center;
+
+  .spinner {
+    font-family: 'h5p-hub';
+    display: inline-block;
+    font-size: 6.25em;
+    animation: spin 2s linear infinite;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.05;
+    width: 1em;
+    height: 1em;
+    
+    &:after {
+      content: $icon-throbber;
+      box-sizing: border-box;
+      color: #b8b8b8;
+    }
+  }
+
+  .loader-title {
+    margin-top: 0.5em;
+    color: #242424;
+    font-size: 2em;
+    margin-bottom: 0.2em;
+  }
+
+  .loader-subtitle {
+    color: #72757c;
+    font-size: 1.1em;
+  }
+}

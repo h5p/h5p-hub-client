@@ -24,14 +24,13 @@ class Choose extends React.Component {
   }
 
   select(id) {
-    //If you come to an end using arrows the focus wil be moved there
-    if (id == '-1' && this.items[1].id == (parseInt(this.state.selected) - 1).toString()) {
-      this.focus(this.items[1].id);
+    let item = null;
+    for (let i = 0; i < this.items.length; i++) {
+      if (id === this.items[i].id) {
+        item = this.items[i];
+      }
     }
-    else if (id == '+1' && this.items[this.items.length - 2].id == (parseInt(this.state.selected) + 1).toString()) {
-      this.focus(this.items[this.items.length - 1].id);
-    }
-    this.props.onChange(id);
+    this.props.onChange(id, item && item.attributes);
     this.setState({ selected: id });
   }
 

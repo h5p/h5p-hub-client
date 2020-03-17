@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dictionary from '../../../../utils/dictionary';
 
 import './Search.scss';
 
@@ -34,7 +33,7 @@ class Search extends React.Component {
     // Use timer to prevent filtering more than once per 40ms
     if (this.props.auto && !this.searchTimer) {
       this.searchTimer = setTimeout(() => {
-        this.props.onFilter(input.value);
+        this.props.onSearch(input.value);
         this.searchTimer = null;
       }, 40);
     }
@@ -63,7 +62,7 @@ class Search extends React.Component {
       case 13: // Enter
         if (!this.props.auto) {
           // Trigger filter/earch
-          this.props.onFilter(event.target.value);
+          this.props.onSearch(event.target.value);
         }
         else {
           // Select highlighted
@@ -75,17 +74,15 @@ class Search extends React.Component {
   }
 
   render() {
-    let searchLabel = Dictionary.get('contentTypeSearchFieldPlaceholder');
-
     return (
       <div className="search-wrapper" role="search">
         <div className="border-wrap">
           <input id="hub-search-bar"
             type="text"
             defaultValue={this.state.value}
-            aria-label={searchLabel}
-            placeholder={searchLabel}
-            onInput={this.handleInput}
+            aria-label={this.props.placeholder}
+            placeholder={this.props.placeholder}
+            onInput={this.props.instantSearch ? this.handleInput : () => {}}
             onKeyDown={event => this.handleKeyDown(event)}
             ref={el => this.input = el}/>
           <div className="icon-search"/>
@@ -98,9 +95,20 @@ class Search extends React.Component {
 Search.propTypes = {
   value: PropTypes.string,
   auto: PropTypes.bool.isRequired,
-  onFilter: PropTypes.func.isRequired,
+  setFocus: PropTypes.bool,
+  onSearch: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired
+  onSelect: PropTypes.func.isRequired,
+  instantSearch: PropTypes.bool,
+  placeholder: PropTypes.string.isRequired
+};
+
+Search.defaultProps = {
+  instantSearch: false,
+  onNavigate: () => {},
+  onSelect: () => {},
+  auto: false,
+  setFocus: false
 };
 
 export default Search;

@@ -224,4 +224,12 @@ H5PEditor.language.core = {
   allPopular: 'All Popular',
   newOnTheHub: 'New on the Hub',
   allNew: 'All New',
+  contentSearchFieldPlaceholder: 'Search for Content',
+  loadingContentTitle: 'We are loading content for you...',
+  loadingContentSubtitle: 'Please wait',
+  paginationNavigation: 'Pagination navigation',
+  page: 'Page',
+  currentPage: 'Current page',
+  nextPage: 'Go to next page',
+  previousPage: 'Go to previous page'
 };

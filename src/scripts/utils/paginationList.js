@@ -1,11 +1,11 @@
 import React from 'react';
 import variables from '../../styles/base/_variables.scss';
+import Dictionary from './dictionary';
 
 
 
-export const paginationList = (selectedString, pages, ) => {
+export const paginationList = (selected, pages,screenWidth ) => {
 
-  const selected = parseInt(selectedString);
   const listElements = [];
 
   const screenSmall = parseInt(variables.screenSmall);
@@ -15,7 +15,7 @@ export const paginationList = (selectedString, pages, ) => {
   const numbersInEnd = 3; //How close to the end the selected page must be to show selected-1 and to end. 
 
   const dots = (key) => (
-    <li id='dots' disabled={true} key={'dots: ' + key} className="dots">
+    <li id='paginator-dots' disabled={true} key={'dots: ' + key} className="dots">
       <div className="dots-text">
         ...
       </div>
@@ -24,8 +24,9 @@ export const paginationList = (selectedString, pages, ) => {
   const numberElement = (page) => (
     <li key={page.toString()} className="list-element">
       <a href="#"
-        id={page.toString()}
-        aria-label={`Page ${page} ${page == selected ? ", current page" : ''}`}
+        id={`paginator-page-${page}`}
+        data-page={page}
+        aria-label={Dictionary.get('page') + ' ' + page + (page == selected && ', ' + Dictionary.get('currentPage'))}
         aria-current={page == selected}
       >
         {page}
@@ -34,9 +35,12 @@ export const paginationList = (selectedString, pages, ) => {
 
   const arrow = (direction, active) => (
     <li key={direction} className={`list-element ${active ? '' : "disabled"}`} >
-      <a href="#" id={direction}
+      <a href="#"
+        id={direction}
+        data-page={direction}
+        id={`paginator-${direction == '-1' ? 'previous' : 'next'}`}
         disabled={!active}
-        aria-label={`Go to ${direction == '-1' ? 'previous' : 'next'} page`}
+        aria-label={Dictionary.get(`${direction == '-1' ? 'previous' : 'next'}Page`)}
       >
         {direction == '-1' ? '<' : '>'}
       </a>
@@ -44,17 +48,13 @@ export const paginationList = (selectedString, pages, ) => {
   );
 
   //Previous button
-  if (selected > 1) {
-    listElements.push(arrow('-1', true));
-  }
-  else {
-    listElements.push(arrow('-1', false));
-  }
+  listElements.push(arrow('-1', selected > 1));
+
 
   //Pages
 
   //Don't have enough pages to create dots
-  if (pages <= noDotsLimit && window.screen.width > screenSmall) {
+  if (pages <= noDotsLimit && screenWidth > screenSmall) {
     for (let i = 1; i <= pages; i++) {
       listElements.push(numberElement(i));
     }
@@ -62,7 +62,7 @@ export const paginationList = (selectedString, pages, ) => {
 
   else {
     //Small screen
-    if (window.screen.width < screenSmall) {
+    if (screenWidth < screenSmall) {
       for (let i = selected - 1; i < (selected + 2); i++) {
         if (i > 0 && i <= pages) {
           listElements.push(numberElement(i));
@@ -101,10 +101,6 @@ export const paginationList = (selectedString, pages, ) => {
     }
   }
   //Next button
-  if (selected < pages) {
-    listElements.push(arrow('+1', true));
-  } else {
-    listElements.push(arrow('+1', false));
-  }
+  listElements.push(arrow('+1', selected < pages));
   return listElements;
 };
