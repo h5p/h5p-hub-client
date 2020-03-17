@@ -1,0 +1,17 @@
+.h5p-hub-list {
+  &:before {
+    content: " ";
+    width: 100%;
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset,
+                0 -0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+    height: calc(100% - 5.996455834em);
+    position: absolute;
+    pointer-events: none;
+  }
+
+  ol {
+    margin: 1.25em 0;
+    padding: 0;
+    list-style: none;
+  }
+}

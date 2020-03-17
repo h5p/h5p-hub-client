@@ -1,5 +1,6 @@
 import React from 'react';
 import NoContent from './NoContent/NoContent';
+import ContentList from './ContentList/ContentList';
 //import PropTypes from 'prop-types';
 //import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
@@ -7,7 +8,6 @@ import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
 import Search from '../../Search/Search';
-import Loader from '../../Loader/Loader';
 
 const defaultOrderBy = 'popular';
 
@@ -20,18 +20,40 @@ class ReuseContent extends React.Component {
       hasSearchResults: false,
       detailViewActive: false,
       newContent: ContentApiClient.search({orderBy: 'newest'}),
-      popularContent: ContentApiClient.search({orderBy: 'popularity'})
+      popularContent: ContentApiClient.search({orderBy: 'popularity'}),
+      search: ContentApiClient.search({}),
     };
   }
 
-  handleOrderBy = (property) => {
+  runSearch = () => {
     this.setState({
-      orderBy: property
+      search: ContentApiClient.search({
+        query: this.state.query,
+        orderBy: this.state.orderBy,
+      })
     });
   }
 
+  handleOrderBy = (orderBy) => {
+    if (orderBy !== this.state.orderBy) {
+      this.setState({
+        orderBy: orderBy
+      });
+      this.runSearch();
+    }
+  }
+
   handleSearch = (query) => {
-    console.log('Lets search for: ' + query);
+    if (query !== this.state.query) {
+      this.setState({
+        query: query
+      });
+      this.runSearch();
+    }
+  }
+
+  showContentDetails = (content) => {
+    console.log("TODO - show details for: ", content);
   }
 
   render() {
@@ -58,9 +80,9 @@ class ReuseContent extends React.Component {
           visible={!this.state.detailViewActive}
           orderVariables={orderBySettings} />
 
-        <Loader
-          title={Dictionary.get('loadingContentTitle')}
-          subtitle={Dictionary.get('loadingContentSubtitle')} />
+        <ContentList 
+          itemsPromise={this.state.search}
+          onSelect={this.showContentDetails} />
 
         <NoContent
           tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"

@@ -227,4 +227,5 @@ H5PEditor.language.core = {
   contentSearchFieldPlaceholder: 'Search for Content',
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
+  by: 'by',
 };
