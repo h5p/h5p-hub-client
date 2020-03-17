@@ -26,46 +26,41 @@ class Filter extends React.Component {
     const filterText = Dictionary.get(`filter${filterIdUpperCase}`);
     const applyFilterText = Dictionary.get(`apply${filterIdUpperCase}Filter`);
 
-    return (
-      <>
-        {this.props.open &&
-          <Modal
-            isOpen={this.props.open}
-            onRequestClose={this.closeModal}
-            contentLabel={this.props.id}
-            onClose={() => this.props.handleApplyFilters(this.props.id)}
-            parentSelector={this.getParent}
-            className='filter-open'
-            overlayClassName='lightbox'
-            aria={modalAria}
-          >
+    return this.props.open ? (
+      <Modal
+        isOpen={this.props.open}
+        onRequestClose={this.closeModal}
+        contentLabel={this.props.id}
+        onClose={() => this.props.handleApplyFilters(this.props.id)}
+        parentSelector={this.getParent}
+        className='filter-open'
+        overlayClassName='lightbox'
+        aria={modalAria}
+      >
 
-            <div className="header-text">
-              {Dictionary.get(`select${this.props.id.charAt(0).toUpperCase() + this.props.id.slice(1)}`)}
-            </div>
+        <div className="header-text">
+          {Dictionary.get(`select${this.props.id.charAt(0).toUpperCase() + this.props.id.slice(1)}`)}
+        </div>
 
-            {this.props.data && this.props.data.length !== undefined ?
-              <CheckboxList
-                onChecked={this.props.handleChecked}
-                items={this.props.data}
-                checked={this.props.checked}
-                filter={this.props.id}
-              /> : <div className="loading" />
-            }
-
-            <button
-              className="apply-filters-button"
-              onClick={this.props.handleApplyFilters}
-              aria-label={applyFilterText}
-            >
-              {filterText}
-            </button>
-
-          </Modal>
+        {this.props.data && this.props.data.length !== undefined ?
+          <CheckboxList
+            onChecked={this.props.handleChecked}
+            items={this.props.data}
+            checked={this.props.checked}
+            filter={this.props.id}
+          /> : <div className="loading" />
         }
-      </>
 
-    );
+        <button
+          className="apply-filters-button"
+          onClick={this.props.handleApplyFilters}
+          aria-label={applyFilterText}
+        >
+          {filterText}
+        </button>
+
+      </Modal> 
+    ) : null;       
   }
 }
 

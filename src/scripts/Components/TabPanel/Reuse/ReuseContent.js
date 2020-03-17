@@ -94,7 +94,7 @@ class ReuseContent extends React.Component {
           <ContentList 
             itemsPromise={this.state.search}
             onSelect={this.showContentDetails} />
-
+        
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
             suggestionText={Dictionary.get('noContentSuggestion')}
