@@ -21,7 +21,7 @@ class Filter extends React.Component {
   }
 
   render() {
-    const modalAria = { labelledby: Dictionary.get(`${this.props.id}Dropdown`) };
+    const modalAria = { labelledby: this.props.dropdownLabel};
 
     return (
       <>
