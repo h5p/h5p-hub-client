@@ -88,8 +88,6 @@ class FilterBar extends React.Component {
         checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
         handleChecked={this.handleChecked}
       />
-
-
     );
 
     return (
@@ -113,7 +111,8 @@ class FilterBar extends React.Component {
           <div className="clear-filters">
             <div className="button-content">
               <button onClick={this.clearFilters} aria-label={Dictionary.get('clearFilters')}>
-                Clear all filters</button>
+                {Dictionary.get('clearFilters')}
+              </button>
             </div>
           </div>}
       </div>
