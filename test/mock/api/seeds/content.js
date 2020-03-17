@@ -40,6 +40,7 @@ const create = function(content) {
     contentType: content.contentType || randomContentType(),
     image: content.image || randomImage(),
     summary: content.summary || chance.sentence({ words: 12 }),
+    reviewed: content.reviewed || chance.bool(),
   };
 };
 
@@ -55,7 +56,7 @@ const get = function (params, settings) {
   let content = [];
 
   for (let i = 0; i < 5; i++) {
-    content.push(create({}));
+    content.push(create());
   }
 
   // A long summary

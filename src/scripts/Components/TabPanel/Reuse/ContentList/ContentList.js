@@ -18,8 +18,6 @@ const ContentList = ({itemsPromise, type = 'tabular', onSelect}) => {
           content={item}
           key={item.id}
           id={item.id}
-          onSelect={onSelect}
-          focused={i==1}
         />
       </li>
     ) : (

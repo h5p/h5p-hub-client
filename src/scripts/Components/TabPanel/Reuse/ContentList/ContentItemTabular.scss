@@ -16,6 +16,7 @@
     flex-shrink: 10;
     margin-left: 1em;
     overflow: hidden;
+    min-width: 0;
   }
 
   .image {
@@ -27,12 +28,22 @@
   }
 
   .headline {
-    line-height: 1;
+    line-height: 1.2;
   }
 
   .title {
     font-size: 1.5625em;
     letter-spacing: -0.5px;
+
+    &.reviewed:after {
+      font-size: 0.8em;
+      font-family: 'h5p-hub';
+      content: '\e90b';
+      color: #359d94;
+      position: relative;
+      top: -0.2em;
+      margin-left: 0.3em;
+    }
   }
 
   .by {

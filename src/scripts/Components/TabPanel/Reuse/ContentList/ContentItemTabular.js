@@ -3,16 +3,10 @@ import PropTypes from 'prop-types';
 
 import './ContentItemTabular.scss';
 import Dictionary from '../../../../utils/dictionary';
-import Button from '../../../Button/Button';
 
 import { minimizeLongText } from '../../../../utils/helpers';
 
-const ContentItemTabular = ({content, onSelect, focused}) => {
-
-  const buttonProps = {
-    className: "button details-button",
-  };
-
+const ContentItemTabular = ({content}) => {
   return (
     <>
       <div className='left'>
@@ -21,7 +15,9 @@ const ContentItemTabular = ({content, onSelect, focused}) => {
 
       <div className='middle'>
         <div className='headline'>
-          <span className='title'>{minimizeLongText(content.title)}</span>
+          <span className={`title ${content.reviewed ? 'reviewed' : ''}`}>
+            {minimizeLongText(content.title)}
+          </span>
           <span className='by'>{Dictionary.get('by')}</span>
           <span className='owner'>{minimizeLongText(content.owner, 50)}</span>
         </div>
@@ -35,8 +31,7 @@ const ContentItemTabular = ({content, onSelect, focused}) => {
 };
 
 ContentItemTabular.propTypes = {
-  content: PropTypes.object.isRequired,
-  onSelect: PropTypes.func.isRequired,
+  content: PropTypes.object.isRequired
 };
 
 export default ContentItemTabular;
