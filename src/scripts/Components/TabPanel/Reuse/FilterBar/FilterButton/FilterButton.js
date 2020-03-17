@@ -8,17 +8,17 @@ const FilterButton = ({ checked, id, onClick, open, data }) => {
 
   const oneChecked = checked.length == 1 && data.length == 1;
 
-  const filterNumberShown = checked.length > 0 && !open && !oneChecked;
+  const filterNumberShown = checked.length > 0 && !oneChecked;
 
   const className = () => {
     if (open) {
-      return 'button-filter-open';
+      return 'open';
     }
     else if (oneChecked) {
-      return 'button-one-checked';
+      return 'one-checked';
     }
     else if (filterNumberShown) {
-      return 'button-filter-checked';
+      return 'filter-checked';
     }
     else {
       return '';
@@ -26,7 +26,7 @@ const FilterButton = ({ checked, id, onClick, open, data }) => {
   };
 
   return (
-    <div id={id} className="filter-button" >
+    <div id={id} className='filter-button'>
       <button
         tabIndex='-1'
         id={id}
@@ -36,7 +36,7 @@ const FilterButton = ({ checked, id, onClick, open, data }) => {
 
         {Dictionary.get(id)}
         
-        <div className="icons">
+        <div className={oneChecked ? 'icon check' : 'icon' }>
           {filterNumberShown && `(${checked.length})`}
         </div>
 

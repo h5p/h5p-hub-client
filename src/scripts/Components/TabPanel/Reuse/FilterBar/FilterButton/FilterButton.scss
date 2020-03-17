@@ -6,26 +6,6 @@ $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
 .filter-button {
   margin-left: 1em;
 
-  .button-filter-open {
-    background-image: $open-state;
-  }
-  .button-filter-checked {
-    background-image: $ative-state;
-  }
-  .button-one-checked {
-    background-image: $ative-state;
-
-    .icons {
-      &::before {
-        @include icon($icon-check);
-        font-style: normal;
-        font-size: 0.7em;
-        margin: 0 0.4em 0 0.4em;
-  
-      }
-    }
-  }
-
   button {
     -ms-user-select: none;
     user-select: none;
@@ -37,7 +17,23 @@ $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
     border-radius: 2px;
     background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
 
-    .icons {
+    &.open {
+      background-image: $open-state;
+    }
+
+    &.filter-checked {
+      background-image: $ative-state;
+    }
+
+    &.one-checked {
+      background-image: $ative-state;
+    }
+
+    &:hover {
+      background-image: $open-state;
+      cursor: pointer;
+    }
+    .icon {
       &::after {
         content: "\e565";
         font-family: "h5p";
@@ -45,11 +41,14 @@ $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
         font-size: 0.8em;
         margin-left: 0.6em;
       }
-    }
-
-    &:hover {
-      background-image: $open-state;
-      cursor: pointer;
+      &.check {
+        &::before {
+          @include icon($icon-check);
+          font-style: normal;
+          font-size: 0.7em;
+          margin: 0 0.4em 0 0.4em;
+        }
+      }
     }
   }
 }
