@@ -20,14 +20,20 @@ class FilterBar extends React.Component {
       selected: this.props.filters[0].id,
     };
 
+    this.filterButtons = {};
+
     this.props.filters.forEach(filter => {
+
+      this.filterButtons[filter.id] = React.createRef();
+
       filter.promise.then(data => {
         this.setState({
           filterData: { ...this.state.filterData, [filter.id]: data }
         });
       });
-      return;
     });
+
+
   }
 
   anyChecked = () => {
@@ -43,6 +49,7 @@ class FilterBar extends React.Component {
 
   clearFilters = () => {
     this.setState({ checked: {}, showClearFilters: false });
+    this.props.onChange({});
   }
 
   handleFilterButtonClicked = (id) => {
@@ -53,6 +60,7 @@ class FilterBar extends React.Component {
 
   handleApplyFilters = () => {
     this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
+    this.props.onChange(this.state.checked);
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
@@ -76,6 +84,7 @@ class FilterBar extends React.Component {
           checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
           open={this.state.openFilter == filter.id}
           data={this.state.filterData[filter.id]}
+          ref={this.filterButtons[filter.id]}
         />
       </li>
     );
@@ -90,8 +99,9 @@ class FilterBar extends React.Component {
         open={this.state.openFilter == filter.id}
         openFilter={this.handleFilterButtonClicked}
         checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
-        handleChecked={this.handleChecked}>
-
+        handleChecked={this.handleChecked}
+        handleChecked={this.handleChecked}
+        toggleButtonRef={this.filterButtons[filter.id]}>
         {filter.type == 'checkboxList' &&
           <CheckboxList
             onChecked={this.handleChecked}
@@ -109,6 +119,7 @@ class FilterBar extends React.Component {
           </SearchFilter>
         }
       </Filter>
+
     );
 
 
@@ -146,7 +157,8 @@ class FilterBar extends React.Component {
 
 FilterBar.propTypes = {
   label: PropTypes.string.isRequired,
-  filters: PropTypes.array.isRequired
+  filters: PropTypes.array.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default FilterBar;

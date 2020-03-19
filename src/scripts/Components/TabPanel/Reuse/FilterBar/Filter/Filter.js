@@ -21,6 +21,13 @@ class Filter extends React.Component {
   render() {
     const modalAria = { labelledby: this.props.dropdownLabel};
 
+    const style = {
+      content: {
+        // TODO - must probably be smarter!
+        left: Math.max(this.props.toggleButtonRef.current.offsetLeft-50) + 'px'
+      }
+    };
+
     return this.props.open ? (
       <Modal
         isOpen={this.props.open}
@@ -31,6 +38,7 @@ class Filter extends React.Component {
         className='filter-dialog'
         overlayClassName='lightbox'
         aria={modalAria}
+        style={style}
       >
 
         <div className="header-text">
@@ -61,7 +69,8 @@ Filter.propTypes = {
   open: PropTypes.bool.isRequired,
   checked: PropTypes.array.isRequired,
   handleChecked: PropTypes.func.isRequired,
-  dictionary: PropTypes.object.isRequired
+  dictionary: PropTypes.object.isRequired,
+  toggleButtonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
 };
 
 export default Filter;

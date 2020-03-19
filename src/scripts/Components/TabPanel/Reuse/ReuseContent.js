@@ -23,6 +23,7 @@ class ReuseContent extends React.Component {
       page: 1,
       pages: 10, // TODO - Get from API call
       orderBy: defaultOrderBy,
+      filters: {},
       hasSearchResults: false,
       detailViewActive: false,
       focusOnRender: false,
@@ -33,36 +34,47 @@ class ReuseContent extends React.Component {
   }
 
   handlePageChange = (setFocus, page) => {
-    //Do something with selected page
-    this.setState({ page: page, focusOnRender: setFocus });
-    this.runSearch();
+    if (page !== this.state.page) {
+      //Do something with selected page
+      this.setState({ 
+        page: page,
+        focusOnRender: setFocus
+      });
+      this.runSearch({page: page});
+    }
   }
 
-  runSearch = () => {
+  runSearch = ({query, filters, orderBy, page}) => {
     this.setState({
       search: ContentApiClient.search({
-        query: this.state.query,
-        orderBy: this.state.orderBy,
-        page: this.state.page,
+        query: query || this.state.query,
+        filters: filters || this.state.filters,
+        orderBy: orderBy || this.state.orderBy,
+        page: page || this.state.page,
       })
     });
   }
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({
-        orderBy: orderBy
-      });
-      this.runSearch();
+      this.setState({orderBy: orderBy});
+      this.runSearch({orderBy: orderBy});
     }
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({
-        query: query
-      });
-      this.runSearch();
+      this.setState({query: query});
+      this.runSearch({query: query});
+    }
+  }
+
+  handleFilters = (filters) => {
+    // TODO - check if it has changed in a better way. Now order matters
+    // Also check why this is invoked too much
+    if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
+      this.setState({filters: filters});
+      this.runSearch({filters: filters});
     }
   }
 
@@ -96,6 +108,7 @@ class ReuseContent extends React.Component {
         <FilterBar
           label={Dictionary.get('filterBy')}
           filters={filters}
+          onChange={this.handleFilters}
         />
         <div className='reuse-content-result'>
           <Order

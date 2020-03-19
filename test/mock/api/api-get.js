@@ -18,6 +18,10 @@ endpointsToData[endpoints.levels] = levels;
 endpointsToData[endpoints.reviewed] = reviewed;
 
 ApiClient.prototype.get = function(endpoint, params) {
+
+  console.log('SEARCH APPLIED', endpoint, params);
+  
+
   return function() {
     return new Promise(function(resolve, reject) {
       setTimeout(function() {
