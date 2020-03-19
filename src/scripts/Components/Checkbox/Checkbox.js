@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Checkbox.scss';
 
-const Checkbox = React.forwardRef (({ id, label, checked, filter, onChecked },ref) => {
+const Checkbox = ({ id, label, checked, filter, onChecked, focused }) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key == ' ') {
@@ -13,10 +13,9 @@ const Checkbox = React.forwardRef (({ id, label, checked, filter, onChecked },re
 
   return (
     <li
-      ref={ref}
       id={id}
       key={id}
-      className={`checkbox ${checked ? 'checked' : 'unChecked'}`}
+      className={`checkbox ${checked ? 'checked ' : 'unChecked '}${focused && 'highlighted'}`}
       role='checkbox'
       aria-checked={checked}
       onClick={() => onChecked(filter, id, !checked)}
@@ -29,7 +28,7 @@ const Checkbox = React.forwardRef (({ id, label, checked, filter, onChecked },re
       </div>
     </li>
   );
-});
+};
 
 Checkbox.propTypes = {
   id: PropTypes.string.isRequired,
@@ -37,6 +36,7 @@ Checkbox.propTypes = {
   onChecked: PropTypes.func.isRequired,
   checked: PropTypes.bool.isRequired,
   filter: PropTypes.string.isRequired,
+  focused: PropTypes.bool
 };
 
 export default Checkbox;

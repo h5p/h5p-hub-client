@@ -9,7 +9,7 @@
   .icon-arrow {
     position: absolute;
     font-size: 1.30353em;
-    top: 0.8em;
+    top: 1em;
     right: 1em;
     cursor: pointer;
     color: #000000;
@@ -18,19 +18,6 @@
       content: "\e565";
       font-family: "h5p";
       font-style: normal;
-    }
-  }
-  .clear-button {
-    background: none;
-    position: absolute;
-    top: 0em;
-    right: 3.5em;
-    padding: 1.35em;
-    color: #757575;
-    &::before {
-      @include icon($icon-remove);
-      font-style: normal;
-      font-size: 0.7em;
     }
   }
 }

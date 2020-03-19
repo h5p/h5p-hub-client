@@ -14,14 +14,10 @@ class SearchFilter extends React.Component {
       searchValue: '',
       dropdownOpen: false,
       setFocus: false,
-      focused: null
+      focused: null,
+
     };
-
-    this.checkboxRefs = {};
-
-    this.props.items.forEach(checkbox => {
-      this.checkboxRefs[checkbox.id] = React.createRef();
-    });
+    this.searchRef = React.createRef();
   }
 
   compare = (a, b) => {
@@ -53,6 +49,7 @@ class SearchFilter extends React.Component {
       checkboxElements: this.props.items.sort(this.compare),
       searchValue: ''
     });
+    this.searchRef.current.focus();
   }
 
   handleSearchClick = () => {
@@ -60,34 +57,36 @@ class SearchFilter extends React.Component {
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
-    this.setState({ setFocus: true , focused: checkbox});
-    this.props.handleChecked(filter, checkbox, checkedOf);
+    if (!this.state.dropdownOpen) {
+      this.setState({ dropdownOpen: true });
+    }
+    else {
+      this.setState({ setFocus: true, focused: checkbox });
+      this.props.handleChecked(filter, checkbox, checkedOf);
+      this.searchRef.current.focus();
+    }
   }
 
   handleKeyEvent = (direction) => {
-    const index = (Object.keys(this.checkboxRefs).indexOf(this.state.focused) + direction);
-    const newChild = Object.keys(this.checkboxRefs)[index];
-    this.setState({focused:newChild});
-    this.checkboxRefs[newChild].current.focus();
-  }
-
-  getSiblingIdFor(id, dir) {
-    for (let i = 0; i < this.items.length; i++) {
-      if (id === this.items[i].id) {
-        const sibling = this.items[i + dir];
-        if (sibling) {
-          return sibling.id;
-        }
-      }
+    const index = (this.state.checkboxElements.map(element => element.id).indexOf(this.state.focused) + direction);
+    const sibling = this.state.checkboxElements[index];
+    if (sibling == undefined) {
+      this.setState({ focused: this.state.checkboxElements.map(element => element.id)[0] });
+    } else {
+      this.setState({ focused: sibling.id });
     }
   }
-  
+
+  checkedOf(id) {
+    return this.props.checked.indexOf(id) != -1;
+  }
 
   render() {
-    console.log(this.checkboxRefs);
+
     return (
       <div className="search-filter">
         <SearchField
+          ref={this.searchRef}
           value={this.state.searchValue}
           onSearch={this.handleOnSearch}
           instantSearch={true}
@@ -97,14 +96,18 @@ class SearchFilter extends React.Component {
           onClick={this.handleSearchClick}
           setFocus={this.state.setFocus}
           onNavigate={this.handleKeyEvent}
+          onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !this.checkedOf(this.state.focused))}
         ></SearchField>
+        {this.state.searchValue.length > 0
+            && <button onClick={this.clearSearch} className="clear-button" />
+          }
         {this.state.dropdownOpen &&
           <CheckboxList
             onChecked={this.handleChecked}
             items={this.state.checkboxElements}
             checked={this.props.checked}
             filter={this.props.filter}
-            ref={this.checkboxRefs}
+            focused={this.state.focused}
           />
         }
 

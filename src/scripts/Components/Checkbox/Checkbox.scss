@@ -16,11 +16,11 @@
   color: #4d5057;
   width: 100%;
 
-  .content{
+  .content {
     display: flex;
   }
 
-  .content-text{
+  .content-text {
     margin-left: 2em;
   }
 
@@ -35,6 +35,12 @@
         color: $c1;
       }
     }
+  }
+
+  &.highlighted {
+    border: 0.06815em solid #3ba0f2;
+    background-color: #fff;
+    box-shadow: none;
   }
 
   &.unChecked {

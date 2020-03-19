@@ -4,117 +4,77 @@ import PropTypes from 'prop-types';
 import './SearchField.scss';
 import Dictionary from '../../../../../../../utils/dictionary';
 
-class SearchField extends React.Component {
-  constructor(props) {
-    super(props);
+const SearchField = React.forwardRef(({
+  value,
+  onSearch,
+  onNavigate,
+  onSelect,
+  instantSearch,
+  placeholder,
+  onClick }, ref) => {
 
-    this.state = {
-      value: '',
-    };
-  }
-
-  componentDidUpdate() {
-    if (this.props.setFocus == true) {
-      this.input.focus();
-    }
-  }
-
-  handleInput = (event) => {
+  const handleInput = (event) => {
     const input = event.target;
-    if (input.value === this.state.value) {
-      return;
-    }
-    this.setState({ value: input.value });
 
-    // Automatically search/filter after input
-    // Use timer to prevent filtering more than once per 40ms
-    if (this.props.auto && !this.searchTimer) {
-      this.searchTimer = setTimeout(() => {
-        this.props.onSearch(input.value);
-        this.searchTimer = null;
-      }, 40);
-    }
-  }
+    onSearch(input.value);
+  };
 
-  clearSearch = () => {
-    this.setState({ value: '' });
-    this.input.value = '';
-    this.props.clearSearch();
-    this.input.focus();
-  }
-
-  handleKeyDown = (event) => {
+  const handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
     switch (event.which) {
       case 38: // Up
-        this.props.onNavigate(-1);
+        onNavigate(-1);
         event.preventDefault();
         break;
 
       case 40: // Down
-        this.props.onNavigate(1);
+        onNavigate(1);
         event.preventDefault();
         break;
 
       case 13: // Enter
-        if (!this.props.auto) {
-          // Trigger filter/earch
-          this.props.onSearch(event.target.value);
-        }
-        else {
-          // Select highlighted
-          this.props.onSelect();
-        }
+        // Select highlighted
+        onSelect();
         event.preventDefault();
         break;
     }
   }
 
+  return (
+    <div onClick={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
 
-  render() {
-    return (
-      <div onClick={this.props.onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
-
-        <div className="search-field" role="search">
-          <input id="filter-search-bar"
-            type="text"
-            defaultValue={this.state.value}
-            aria-label={this.props.placeholder}
-            placeholder={this.props.placeholder}
-            onInput={this.props.instantSearch ? this.handleInput : () => { }}
-            ref={el => this.input = el}
-            onKeyDown={event => this.handleKeyDown(event)}>
-          </input>
-          <div className="icon-arrow" />
-          {this.state.value.length > 0
-            && <button onClick={this.clearSearch} className="clear-button" />
-          }
-
-
-        </div>
+      <div className="search-field" role="search">
+        <input id="filter-search-bar"
+          type="text"
+          value={value}
+          aria-label={placeholder}
+          placeholder={placeholder}
+          onInput={instantSearch ? handleInput : () => { }}
+          ref={ref}
+          onKeyDown={event => handleKeyDown(event)}
+          onChange={handleInput}>
+        </input>
+        <div className="icon-arrow" />
       </div>
-    );
-  }
-}
+    </div>
+  );
+
+});
 
 SearchField.propTypes = {
   value: PropTypes.string,
-  auto: PropTypes.bool.isRequired,
-  setFocus: PropTypes.bool,
   onSearch: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   instantSearch: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
-  clearInput: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 };
 
 SearchField.defaultProps = {
   instantSearch: false,
   onNavigate: () => { },
   onSelect: () => { },
-  auto: false,
-  setFocus: false
 };
 
 export default SearchField;

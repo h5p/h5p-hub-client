@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
 
-const CheckboxList = React.forwardRef (({ items, onChecked, checked, filter }, ref) => {
+const CheckboxList = ({ items, onChecked, checked, filter, focused })=> {
 
-  const isChecked = (id) =>{
+  const isChecked = (id) => {
     return checked.indexOf(id) != -1;
-  };  
+  };
 
   return (
     <ul
@@ -25,18 +25,19 @@ const CheckboxList = React.forwardRef (({ items, onChecked, checked, filter }, r
             checked={isChecked(element.id)}
             filter={filter}
             onChecked={onChecked}
-            ref={ref[element.id]}
+            focused={focused == element.id}
           />
         );
       })}
     </ul>
   );
-});
+};
 CheckboxList.propTypes = {
   items: PropTypes.array.isRequired,
   onChecked: PropTypes.func.isRequired,
   checked: PropTypes.array,
   filter: PropTypes.string.isRequired,
+  focused: PropTypes.string
 };
 
 export default CheckboxList;

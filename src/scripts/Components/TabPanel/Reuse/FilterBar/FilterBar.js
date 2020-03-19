@@ -64,17 +64,17 @@ class FilterBar extends React.Component {
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
-    if (this.state.checked[filter] == undefined) {
+    //checkedOf is the next state of the checkbox
+    if (this.state.checked[filter] == undefined &&checkbox !=null) {
       this.setState({ checked: { ...this.state.checked, [filter]: [checkbox] } });
     }
-    else {
+    else if(checkbox !=null){
       const newList = checkedOf ? [...this.state.checked[filter], checkbox] : this.state.checked[filter].filter(id => id != checkbox);
       this.setState({ checked: { ...this.state.checked, [filter]: newList } });
     }
   }
 
   render() {
-
     const filterButtons = this.props.filters.map(filter =>
       <li key={filter.id} id={filter.id}>
         <FilterButton
