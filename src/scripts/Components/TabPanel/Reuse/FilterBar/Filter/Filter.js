@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Dictionary from '../../../../../utils/dictionary';
-import CheckboxList from '../../../../CheckboxList/CheckboxList';
 import './Filter.scss';
 import Modal from 'react-modal';
 
@@ -40,12 +38,8 @@ class Filter extends React.Component {
         </div>
 
         {this.props.data && this.props.data.length !== undefined ?
-          <CheckboxList
-            onChecked={this.props.handleChecked}
-            items={this.props.data}
-            checked={this.props.checked}
-            filter={this.props.id}
-          /> : <div className="loading" />
+          //The actually checkboxes/filtering
+          this.props.children : <div className="loading" />
         }
 
         <button

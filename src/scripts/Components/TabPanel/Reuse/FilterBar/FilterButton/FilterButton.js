@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Dictionary from '../../../../../utils/dictionary';
 
 import './FilterButton.scss';
 

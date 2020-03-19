@@ -1,0 +1,42 @@
+@import "../../../../../../../styles/base/mixins";
+@import "../../../../../../../styles/base/colors";
+
+.search-filter {
+  outline: 1px solid #bebdcd;
+
+  .checkbox-list {
+    overflow: hidden;
+    overflow-y: scroll;
+
+    height: 10em;
+
+    li {
+      border: 1px solid #e6e6e8;
+      .content {
+        padding: 0.3em;
+        .label-text {
+          margin-right: 1em;
+        }
+      }
+      &:focus {
+        border: 1px solid #3ba0f2;
+        background-color: #fff;
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    &::-webkit-scrollbar {
+      background-color: rgba(105, 117, 133, 0.25);
+      width: 0.54525em;
+      border-radius: 5.45256em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #697585;
+      background-size: 24px 100%;
+      border-radius: 5.45256em;
+    }
+
+    //@include scroll-bar(#F3F3F3, #5e6978);
+  }
+}

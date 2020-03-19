@@ -235,7 +235,8 @@ H5PEditor.language.core = {
     language: {
       dropdownLabel: 'Language',
       dialogHeader: 'Select language(s)',
-      dialogButtonLabel: 'Filter languages'
+      dialogButtonLabel: 'Filter languages',
+      searchPlaceholder: 'Select one or more languages'
     },
     reviewed: {
       dropdownLabel: 'Reviewed',
@@ -248,4 +249,5 @@ H5PEditor.language.core = {
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
   by: 'by',
+  dropdownButton: 'Open dropdown'
 };

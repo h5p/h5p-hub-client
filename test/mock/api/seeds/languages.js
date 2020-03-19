@@ -11,6 +11,22 @@ const get = function() {
     {
       id: 'ss',
       label: 'A strange language with a long name to make the UI a little harder to implement :)'
+    },
+    {
+      id: "da",
+      label:"Danish"
+    },
+    {
+      id: "nl",
+      label:"Dutch"
+    },
+    {
+      id: "fr",
+      label:"French"
+    },
+    {
+      id: "it",
+      label:"Italian"
     }
   ];
 };

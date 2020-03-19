@@ -5,6 +5,8 @@ import Filter from './Filter/Filter';
 import Choose from '../../../../Components/Choose/Choose';
 import FilterButton from './FilterButton/FilterButton';
 import Dictionary from '../../../../utils/dictionary';
+import CheckboxList from '../../../CheckboxList/CheckboxList';
+import SearchFilter from './Filter/SearchFilter/SeachFilter';
 
 class FilterBar extends React.Component {
   constructor(props) {
@@ -30,8 +32,8 @@ class FilterBar extends React.Component {
 
   anyChecked = () => {
     let anyChecked = false;
-    Object.keys(this.state.checked).forEach((filter) =>{
-      if((this.state.checked[filter]).length>0){
+    Object.keys(this.state.checked).forEach((filter) => {
+      if ((this.state.checked[filter]).length > 0) {
         anyChecked = true;
         return;
       }
@@ -46,7 +48,7 @@ class FilterBar extends React.Component {
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter == id;
     this.handleApplyFilters(this.state.openFilter);
-    this.setState({ openFilter: close ? '' : id});
+    this.setState({ openFilter: close ? '' : id });
   }
 
   handleApplyFilters = () => {
@@ -88,9 +90,29 @@ class FilterBar extends React.Component {
         open={this.state.openFilter == filter.id}
         openFilter={this.handleFilterButtonClicked}
         checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
-        handleChecked={this.handleChecked}
-      />
+        handleChecked={this.handleChecked}>
+
+        {filter.type == 'checkboxList' &&
+          <CheckboxList
+            onChecked={this.handleChecked}
+            items={this.state.filterData[filter.id]}
+            checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+            filter={filter.id}
+          />}
+        {filter.type == 'search' &&
+          <SearchFilter
+            handleChecked={this.handleChecked}
+            items={this.state.filterData[filter.id]}
+            checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+            filter={filter.id}
+            dictionary={filter.dictionary}>
+          </SearchFilter>
+        }
+      </Filter>
     );
+
+
+
 
     return (
       <div className="filter-bar">
@@ -99,7 +121,7 @@ class FilterBar extends React.Component {
           {this.props.label}
         </div>
 
-        <ul className="filters">
+        <ul className="filter-buttons">
           <Choose
             selected={this.open}
             onChange={this.handleFilterButtonClicked}>

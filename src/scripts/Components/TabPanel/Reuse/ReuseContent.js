@@ -71,8 +71,9 @@ class ReuseContent extends React.Component {
     const filterTrans = Dictionary.get('filters');
 
     const filters = [
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level },
-      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed },
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed, type: 'checkboxList' },
+      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search'} 
     ];
 
     return (
