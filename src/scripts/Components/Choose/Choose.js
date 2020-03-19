@@ -24,13 +24,20 @@ class Choose extends React.Component {
   }
 
   select(id) {
-    this.props.onChange(id);
-    this.setState({selected: id});
+    let item = null;
+    for (let i = 0; i < this.items.length; i++) {
+      if (id === this.items[i].id) {
+        item = this.items[i];
+        break;
+      }
+    }
+    this.props.onChange(id, item && item.attributes);
+    this.setState({ selected: id });
   }
 
   focus(id, preventFocus) {
     if (id) {
-      this.setState({focused: id, focusOnRender: !preventFocus});
+      this.setState({ focused: id, focusOnRender: !preventFocus });
       if (this.props.onFocus) {
         this.props.onFocus(id);
       }
@@ -62,7 +69,7 @@ class Choose extends React.Component {
       return;
     }
 
-    switch(event.which) {
+    switch (event.which) {
       case 37: // Left
       case 38: // Up
         this.focus(this.getSiblingIdFor(id, -1));
@@ -97,19 +104,21 @@ class Choose extends React.Component {
         for (let i = 0; i < this.items.length; i++) {
           if (this.state.focused === this.items[i].id) {
             this.items[i].focus();
+            break;
           }
         }
       }
     }
   }
 
+
   cloneChild = (child) => !child ? null : React.cloneElement(child, child.props.id ? {
-    className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'hightlight' : '') : (!this.count ? 'highlight' : '')),
+    className: (child.props.className ? child.props.className + ' ' : '') + (this.state.selected ? (child.props.id === this.state.selected ? 'highlight' : '') : (!this.count ? 'highlight' : '')),
     tabIndex: (this.state.focused ? (child.props.id === this.state.focused ? 0 : -1) : (!this.count++ ? 0 : -1)),
     role: ['a', 'button'].indexOf(child.type) !== -1 ? undefined : child.props.role || 'button',
     onClick: event => this.handleClick(event, child.props.id),
     onKeyDown: event => this.handleKeyDown(event, child.props.id),
-    ref: item => item ? this.items.push(item) : undefined
+    ref: item => item && !child.props.disabled ? this.items.push(item) : undefined //If disabled then you can't navigate to that element
   } : undefined, !child.props.id && child.props.children ? React.Children.map(child.props.children, this.cloneChild) : child.props.children)
 
   render() {

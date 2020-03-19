@@ -249,5 +249,10 @@ H5PEditor.language.core = {
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
   by: 'by',
-  dropdownButton: 'Open dropdown'
+  dropdownButton: 'Open dropdown',
+  paginationNavigation: 'Pagination navigation',
+  page: 'Page',
+  currentPage: 'Current page',
+  nextPage: 'Go to next page',
+  previousPage: 'Go to previous page',
 };
