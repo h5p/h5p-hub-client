@@ -61,7 +61,7 @@ $color-back-button: #474f5a;
 
       h2 {
         margin-top: 0;
-        font-size: 2.3167em;
+        font-size: 1.458em;
       }
     }
 
@@ -99,20 +99,16 @@ $color-back-button: #474f5a;
 
     .button-bar {
       text-align: right;
+      margin: 1.666em 0;
     }
-    .button-download-content {
-      font-size: 1.25em;
-
-      &:before {
-        font-family: 'h5p-hub';
-        font-size: 0.7em;
-        content: '\e90c';
-        display: inline-block;
-        margin-right: 1em;
-        transform: rotate(-90deg) translateX(2px);
-        line-height: 1;
-        
-      }
+    .button-download-content:before {
+      font-family: 'h5p-hub';
+      font-size: 0.7em;
+      content: '\e90c';
+      display: inline-block;
+      margin-right: 1em;
+      transform: rotate(-90deg) translateX(2px);
+      line-height: 1;
     }
   }
 
