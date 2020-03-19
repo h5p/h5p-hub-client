@@ -241,6 +241,11 @@ H5PEditor.language.core = {
       dropdownLabel: 'Reviewed',
       dialogHeader: 'Reviewed Content',
       dialogButtonLabel: 'Filter'
+    },
+    licenses: {
+      dropdownLabel: 'License',
+      dialogHeader: 'Select preferred rights of use',
+      dialogButtonLabel: 'Filter licenses'
     }
   },
   clearFilters: 'Clear all filters',

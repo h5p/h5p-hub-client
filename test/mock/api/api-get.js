@@ -4,6 +4,7 @@ import content from './seeds/content';
 import languages from './seeds/languages';
 import levels from './seeds/levels';
 import reviewed from './seeds/reviewed';
+import licenses from './seeds/licenses';
 
 const settings = window.HubSimulations || {
   latency: 2000,
@@ -16,6 +17,7 @@ endpointsToData[endpoints.search] = content;
 endpointsToData[endpoints.languages] = languages;
 endpointsToData[endpoints.levels] = levels;
 endpointsToData[endpoints.reviewed] = reviewed;
+endpointsToData[endpoints.licenses] = licenses;
 
 ApiClient.prototype.get = function(endpoint, params) {
 
