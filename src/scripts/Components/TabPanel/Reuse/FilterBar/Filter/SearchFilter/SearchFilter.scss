@@ -24,6 +24,9 @@
         outline: none;
         box-shadow: none;
       }
+      &:hover{
+        background-color: #f2f2f2;
+      }
     }
     &::-webkit-scrollbar {
       background-color: rgba(105, 117, 133, 0.25);
