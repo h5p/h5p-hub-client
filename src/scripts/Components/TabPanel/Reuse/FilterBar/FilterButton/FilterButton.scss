@@ -33,6 +33,7 @@ $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
       background-image: $open-state;
       cursor: pointer;
     }
+
     .icon {
       &::after {
         content: "\e565";

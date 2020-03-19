@@ -43,6 +43,34 @@ class SearchField extends React.Component {
     this.input.focus();
   }
 
+  handleKeyDown = (event) => {
+    // Allow quick selecting from the list while typing
+    switch (event.which) {
+      case 38: // Up
+        this.props.onNavigate(-1);
+        event.preventDefault();
+        break;
+
+      case 40: // Down
+        this.props.onNavigate(1);
+        event.preventDefault();
+        break;
+
+      case 13: // Enter
+        if (!this.props.auto) {
+          // Trigger filter/earch
+          this.props.onSearch(event.target.value);
+        }
+        else {
+          // Select highlighted
+          this.props.onSelect();
+        }
+        event.preventDefault();
+        break;
+    }
+  }
+
+
   render() {
     return (
       <div onClick={this.props.onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
@@ -54,8 +82,8 @@ class SearchField extends React.Component {
             aria-label={this.props.placeholder}
             placeholder={this.props.placeholder}
             onInput={this.props.instantSearch ? this.handleInput : () => { }}
-            ref={el => this.input = el}>
-
+            ref={el => this.input = el}
+            onKeyDown={event => this.handleKeyDown(event)}>
           </input>
           <div className="icon-arrow" />
           {this.state.value.length > 0

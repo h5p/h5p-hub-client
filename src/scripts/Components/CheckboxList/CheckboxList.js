@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
 
-const CheckboxList = ({ items, onChecked, checked, filter }) => {
+const CheckboxList = React.forwardRef (({ items, onChecked, checked, filter }, ref) => {
 
   const isChecked = (id) =>{
     return checked.indexOf(id) != -1;
@@ -25,12 +25,13 @@ const CheckboxList = ({ items, onChecked, checked, filter }) => {
             checked={isChecked(element.id)}
             filter={filter}
             onChecked={onChecked}
+            ref={ref[element.id]}
           />
         );
       })}
     </ul>
   );
-};
+});
 CheckboxList.propTypes = {
   items: PropTypes.array.isRequired,
   onChecked: PropTypes.func.isRequired,

@@ -50,7 +50,7 @@ FilterButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   data: PropTypes.array,
-  dropdownLabel: PropTypes.string.isRequired
+  dropdownLabel: PropTypes.string.isRequired,
 };
 
 export default FilterButton;

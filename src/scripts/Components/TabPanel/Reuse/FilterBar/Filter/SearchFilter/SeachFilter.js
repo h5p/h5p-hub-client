@@ -14,7 +14,14 @@ class SearchFilter extends React.Component {
       searchValue: '',
       dropdownOpen: false,
       setFocus: false,
+      focused: null
     };
+
+    this.checkboxRefs = {};
+
+    this.props.items.forEach(checkbox => {
+      this.checkboxRefs[checkbox.id] = React.createRef();
+    });
   }
 
   compare = (a, b) => {
@@ -53,13 +60,31 @@ class SearchFilter extends React.Component {
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
-    this.setState({ setFocus: true });
+    this.setState({ setFocus: true , focused: checkbox});
     this.props.handleChecked(filter, checkbox, checkedOf);
   }
 
+  handleKeyEvent = (direction) => {
+    const index = (Object.keys(this.checkboxRefs).indexOf(this.state.focused) + direction);
+    const newChild = Object.keys(this.checkboxRefs)[index];
+    this.setState({focused:newChild});
+    this.checkboxRefs[newChild].current.focus();
+  }
 
+  getSiblingIdFor(id, dir) {
+    for (let i = 0; i < this.items.length; i++) {
+      if (id === this.items[i].id) {
+        const sibling = this.items[i + dir];
+        if (sibling) {
+          return sibling.id;
+        }
+      }
+    }
+  }
+  
 
   render() {
+    console.log(this.checkboxRefs);
     return (
       <div className="search-filter">
         <SearchField
@@ -71,6 +96,7 @@ class SearchFilter extends React.Component {
           clearSearch={this.clearSearch}
           onClick={this.handleSearchClick}
           setFocus={this.state.setFocus}
+          onNavigate={this.handleKeyEvent}
         ></SearchField>
         {this.state.dropdownOpen &&
           <CheckboxList
@@ -78,14 +104,15 @@ class SearchFilter extends React.Component {
             items={this.state.checkboxElements}
             checked={this.props.checked}
             filter={this.props.filter}
+            ref={this.checkboxRefs}
           />
         }
 
       </div>
     );
   }
+}
 
-};
 SearchFilter.propTypes = {
   items: PropTypes.array,
   handleChecked: PropTypes.func.isRequired,

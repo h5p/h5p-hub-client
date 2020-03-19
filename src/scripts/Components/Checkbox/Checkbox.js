@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Checkbox.scss';
 
-const Checkbox = ({ id, label, checked, filter, onChecked }) => {
+const Checkbox = React.forwardRef (({ id, label, checked, filter, onChecked },ref) => {
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' || e.key == ' ') {
@@ -13,6 +13,7 @@ const Checkbox = ({ id, label, checked, filter, onChecked }) => {
 
   return (
     <li
+      ref={ref}
       id={id}
       key={id}
       className={`checkbox ${checked ? 'checked' : 'unChecked'}`}
@@ -28,7 +29,7 @@ const Checkbox = ({ id, label, checked, filter, onChecked }) => {
       </div>
     </li>
   );
-};
+});
 
 Checkbox.propTypes = {
   id: PropTypes.string.isRequired,
