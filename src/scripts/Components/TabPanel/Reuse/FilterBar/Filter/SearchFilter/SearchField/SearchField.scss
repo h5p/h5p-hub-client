@@ -37,10 +37,10 @@
 }
 
 #filter-search-bar {
-  border: 1px solid #e6e6e8;
+  border: 0.04545em solid #e6e6e8;
   padding: 0.7em;
   font-style: italic;
-  font-size: 1.30353em;
+  font-size: 1.65004em;
   width: 100%;
   box-sizing: border-box;
 
@@ -49,7 +49,7 @@
   }
 
   &:focus {
-    border: 1px solid #3ba0f2;
+    border: 0.04545em solid #3ba0f2;
     background-color: #fff;
     outline: none;
   }

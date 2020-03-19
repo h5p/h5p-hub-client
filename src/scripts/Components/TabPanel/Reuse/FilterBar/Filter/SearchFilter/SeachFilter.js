@@ -49,32 +49,29 @@ class SearchFilter extends React.Component {
   }
 
   handleSearchClick = () => {
-    this.setState({dropdownOpen: !this.state.dropdownOpen});
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
 
-  handleChecked =(filter, checkbox, checkedOf) => {
-    this.setState({setFocus:true});
+  handleChecked = (filter, checkbox, checkedOf) => {
+    this.setState({ setFocus: true });
     this.props.handleChecked(filter, checkbox, checkedOf);
   }
 
-  
+
 
   render() {
     return (
       <div className="search-filter">
-        <div >
-          <SearchField
-            value={this.state.searchValue}
-            onSearch={this.handleOnSearch}
-            instantSearch={true}
-            auto={true}
-            placeholder={this.props.dictionary.searchPlaceholder}
-            clearSearch={this.clearSearch}
-            onClick={this.handleSearchClick}
-            setFocus={this.state.setFocus}
-          ></SearchField>
-
-        </div>
+        <SearchField
+          value={this.state.searchValue}
+          onSearch={this.handleOnSearch}
+          instantSearch={true}
+          auto={true}
+          placeholder={this.props.dictionary.searchPlaceholder}
+          clearSearch={this.clearSearch}
+          onClick={this.handleSearchClick}
+          setFocus={this.state.setFocus}
+        ></SearchField>
         {this.state.dropdownOpen &&
           <CheckboxList
             onChecked={this.handleChecked}

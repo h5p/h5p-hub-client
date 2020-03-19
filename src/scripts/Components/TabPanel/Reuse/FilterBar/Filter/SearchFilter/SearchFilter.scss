@@ -2,16 +2,16 @@
 @import "../../../../../../../styles/base/colors";
 
 .search-filter {
-  outline: 1px solid #bebdcd;
+  outline: 0.06815em solid #bebdcd;
 
   .checkbox-list {
     overflow: hidden;
     overflow-y: scroll;
 
-    height: 10em;
+    height: 25em;
 
     li {
-      border: 1px solid #e6e6e8;
+      border: 0.06815em solid #e6e6e8;
       .content {
         padding: 0.3em;
         .label-text {
@@ -19,7 +19,7 @@
         }
       }
       &:focus {
-        border: 1px solid #3ba0f2;
+        border: 0.06815em solid #3ba0f2;
         background-color: #fff;
         outline: none;
         box-shadow: none;
@@ -36,7 +36,5 @@
       background-size: 24px 100%;
       border-radius: 5.45256em;
     }
-
-    //@include scroll-bar(#F3F3F3, #5e6978);
   }
 }
