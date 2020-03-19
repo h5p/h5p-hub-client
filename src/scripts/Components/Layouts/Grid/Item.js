@@ -8,7 +8,7 @@ const Item = ({image, title, buttonLabel, onAction}) => {
 
       <div
         className='image'
-        style={{backgroundImage: `url("${image.src}")`}}>
+        style={{backgroundImage: `url("${image}")`}}>
       </div>
 
       <div className="grid-item-title">

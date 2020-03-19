@@ -253,4 +253,6 @@ H5PEditor.language.core = {
   currentPage: 'Current page',
   nextPage: 'Go to next page',
   previousPage: 'Go to previous page',
+  contentPreviewButtonLabel: 'Preview',
+  contentDownloadButtonLabel: 'Get Content',
 };

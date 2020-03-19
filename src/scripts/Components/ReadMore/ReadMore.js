@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dictionary from '../../../../utils/dictionary';
+import Dictionary from '../../utils/dictionary';
 import './ReadMore.scss';
 
 class ReadMore extends React.Component {
@@ -40,7 +40,7 @@ class ReadMore extends React.Component {
     }
 
     return (
-      <p className="small">
+      <p className="small h5p-read-more">
         <span tabIndex="-1">{partOne}</span>
         {
           needMore && [
