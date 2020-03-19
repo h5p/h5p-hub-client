@@ -4,7 +4,8 @@ const endpoints = {
   contentTypes: 'content-types',
   licenses: 'licenses',
   languages: 'languages',
-  levels: 'levels'
+  levels: 'levels',
+  reviewed: 'reviewed'
 };
 
 export default endpoints;

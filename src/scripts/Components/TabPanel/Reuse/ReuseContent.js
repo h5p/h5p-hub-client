@@ -3,12 +3,15 @@ import Pagination from '../../Pagiantion/Pagination';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
 //import PropTypes from 'prop-types';
-//import './ReuseContent.scss';
+import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/AsyncList';
+import FilterBar from './FilterBar/FilterBar';
+import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
+
 
 const defaultOrderBy = 'popular';
 
@@ -20,6 +23,7 @@ class ReuseContent extends React.Component {
       page: 1,
       pages: 10, // TODO - Get from API call
       orderBy: defaultOrderBy,
+      filters: {},
       hasSearchResults: false,
       detailViewActive: false,
       focusOnRender: false,
@@ -30,36 +34,47 @@ class ReuseContent extends React.Component {
   }
 
   handlePageChange = (setFocus, page) => {
-    //Do something with selected page
-    this.setState({ page: page, focusOnRender: setFocus });
-    this.runSearch();
+    if (page !== this.state.page) {
+      //Do something with selected page
+      this.setState({ 
+        page: page,
+        focusOnRender: setFocus
+      });
+      this.runSearch({page: page});
+    }
   }
 
-  runSearch = () => {
+  runSearch = ({query, filters, orderBy, page}) => {
     this.setState({
       search: ContentApiClient.search({
-        query: this.state.query,
-        orderBy: this.state.orderBy,
-        page: this.state.page,
+        query: query || this.state.query,
+        filters: filters || this.state.filters,
+        orderBy: orderBy || this.state.orderBy,
+        page: page || this.state.page,
       })
     });
   }
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({
-        orderBy: orderBy
-      });
-      this.runSearch();
+      this.setState({orderBy: orderBy});
+      this.runSearch({orderBy: orderBy});
     }
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({
-        query: query
-      });
-      this.runSearch();
+      this.setState({query: query});
+      this.runSearch({query: query});
+    }
+  }
+
+  handleFilters = (filters) => {
+    // TODO - check if it has changed in a better way. Now order matters
+    // Also check why this is invoked too much
+    if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
+      this.setState({filters: filters});
+      this.runSearch({filters: filters});
     }
   }
 
@@ -76,46 +91,58 @@ class ReuseContent extends React.Component {
       text: Dictionary.get('newestFirst')
     }];
 
+    const filterTrans = Dictionary.get('filters');
+
+    const filters = [
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level },
+      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed },
+    ];
+
     return (
       <div className="reuse-view loaded">
-
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch} />
 
-        <Order
-          hits={22930} //Get from api
-          selected={this.state.orderBy}
-          onChange={this.handleOrderBy}
-          headerLabel={Dictionary.get('contentSectionAll')}
-          visible={!this.state.detailViewActive}
-          orderVariables={orderBySettings} />
+        <FilterBar
+          label={Dictionary.get('filterBy')}
+          filters={filters}
+          onChange={this.handleFilters}
+        />
+        <div className='reuse-content-result'>
+          <Order
+            hits={22930} //Get from api
+            selected={this.state.orderBy}
+            onChange={this.handleOrderBy}
+            headerLabel={Dictionary.get('contentSectionAll')}
+            visible={!this.state.detailViewActive}
+            orderVariables={orderBySettings} />
 
-        <ContentList 
-          itemsPromise={this.state.search}
-          onSelect={this.showContentDetails} />
-       
-        <Pagination
-          selectedPage={this.state.page}
-          pages={this.state.pages}
-          onChange={this.handlePageChange}
-          setFocus={this.state.focusOnRender} />
+          <ContentList 
+            itemsPromise={this.state.search}
+            onSelect={this.showContentDetails} />
 
-        <NoContent
-          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-          suggestionText={Dictionary.get('noContentSuggestion')}
-          headerText={Dictionary.get('noContentHeader')} />
-
-        <SelectionsList
-          itemsPromise={this.state.popularContent}
-          title={Dictionary.get('popularContent')}
-          actionLabel={Dictionary.get('allPopular')} />
-
-        <SelectionsList
-          itemsPromise={this.state.newContent}
-          title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')} />
-
+          <Pagination
+            selectedPage={this.state.page}
+            pages={this.state.pages}
+            onChange={this.handlePageChange}
+            setFocus={this.state.focusOnRender} />
+        
+          <NoContent
+            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+            suggestionText={Dictionary.get('noContentSuggestion')}
+            headerText={Dictionary.get('noContentHeader')} />
+          
+          <SelectionsList 
+            itemsPromise={this.state.popularContent}
+            title={Dictionary.get('popularContent')}
+            actionLabel={Dictionary.get('allPopular')} />
+          
+          <SelectionsList
+            itemsPromise={this.state.newContent}
+            title={Dictionary.get('newOnTheHub')}
+            actionLabel={Dictionary.get('allNew')} />
+        </div>
       </div>
     );
   }
