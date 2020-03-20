@@ -65,10 +65,10 @@ class FilterBar extends React.Component {
 
   handleChecked = (filter, checkbox, checkedOf) => {
     //checkedOf is the next state of the checkbox
-    if (this.state.checked[filter] == undefined &&checkbox !=null) {
+    if (this.state.checked[filter] == undefined && checkbox != null) {
       this.setState({ checked: { ...this.state.checked, [filter]: [checkbox] } });
     }
-    else if(checkbox !=null){
+    else if (checkbox != null) {
       const newList = checkedOf ? [...this.state.checked[filter], checkbox] : this.state.checked[filter].filter(id => id != checkbox);
       this.setState({ checked: { ...this.state.checked, [filter]: newList } });
     }
@@ -110,6 +110,15 @@ class FilterBar extends React.Component {
             filter={filter.id}
           />}
         {filter.type == 'search' &&
+          <SearchFilter
+            handleChecked={this.handleChecked}
+            items={this.state.filterData[filter.id]}
+            checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+            filter={filter.id}
+            dictionary={filter.dictionary}>
+          </SearchFilter>
+        }
+        {filter.type == 'hierarchicalSearch' &&
           <SearchFilter
             handleChecked={this.handleChecked}
             items={this.state.filterData[filter.id]}

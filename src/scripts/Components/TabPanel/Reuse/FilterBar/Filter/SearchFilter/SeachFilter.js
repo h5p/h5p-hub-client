@@ -62,13 +62,24 @@ class SearchFilter extends React.Component {
     }
     else {
       this.setState({ setFocus: true, focused: checkbox });
-      this.props.handleChecked(filter, checkbox, checkedOf);
+      const children = this.state.checkboxElements[this.indexOfId(checkbox)].children;
+      if (children) {
+        children.forEach(child => {
+          this.props.handleChecked(filter, child.id, checkedOf);
+        });
+      } else {
+        this.props.handleChecked(filter, checkbox, checkedOf);
+      }
       this.searchRef.current.focus();
     }
   }
 
+  indexOfId = (id) => {
+    return this.state.checkboxElements.map(element => element.id).indexOf(id);
+  }
+
   handleKeyEvent = (direction) => {
-    const index = (this.state.checkboxElements.map(element => element.id).indexOf(this.state.focused) + direction);
+    const index = this.indexOfId + direction;
     const sibling = this.state.checkboxElements[index];
     if (sibling == undefined) {
       this.setState({ focused: this.state.checkboxElements.map(element => element.id)[0] });
@@ -99,8 +110,8 @@ class SearchFilter extends React.Component {
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !this.checkedOf(this.state.focused))}
         ></SearchField>
         {this.state.searchValue.length > 0
-            && <button onClick={this.clearSearch} className="clear-button" />
-          }
+          && <button onClick={this.clearSearch} className="clear-button" />
+        }
         {this.state.dropdownOpen &&
           <CheckboxList
             onChecked={this.handleChecked}

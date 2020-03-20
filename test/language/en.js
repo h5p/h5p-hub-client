@@ -242,6 +242,12 @@ H5PEditor.language.core = {
       dropdownLabel: 'Reviewed',
       dialogHeader: 'Reviewed Content',
       dialogButtonLabel: 'Filter'
+    },
+    contentTypes: {
+      dropdownLabel: 'Content types',
+      dialogHeader: 'Select Content type(s)',
+      dialogButtonLabel: 'Filter Content Types',
+      searchPlaceholder: 'Select one or more content types'
     }
   },
   clearFilters: 'Clear all filters',
@@ -255,4 +261,6 @@ H5PEditor.language.core = {
   currentPage: 'Current page',
   nextPage: 'Go to next page',
   previousPage: 'Go to previous page',
+  contentPreviewButtonLabel: 'Preview',
+  contentDownloadButtonLabel: 'Get Content',
 };

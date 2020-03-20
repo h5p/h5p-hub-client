@@ -16,15 +16,15 @@ const randomContentType = function () {
 const randomImage = function () {
   return randomFromArray([
     {      
-      'src': 'test/images/1.png', 
+      'url': 'test/images/1.png', 
       'alt': 'test/images/1.png'
     },
     {      
-      'src': 'test/images/2.jpg', 
+      'url': 'test/images/2.jpg', 
       'alt': 'test/images/2.jpg'
     },
     {      
-      'src': 'test/images/3.jpg', 
+      'url': 'test/images/3.jpg', 
       'alt': 'test/images/3.jpg'
     }
   ]);
@@ -40,16 +40,24 @@ const create = function(content) {
     contentType: content.contentType || randomContentType(),
     image: content.image || randomImage(),
     summary: content.summary || chance.sentence({ words: 12 }),
+    description: content.description || chance.sentence({ words: 50 }),
     reviewed: content.reviewed || chance.bool(),
+    preview_url: content.preview_url || chance.url(),
+    screenshots: content.screenshots || [randomImage(), randomImage(), randomImage()],
   };
 };
 
 const get = function (params, settings) {
 
+  const page = params.page || 1;
+  const pages = 25;
+
   if (settings.noResults) {
     return {
       numResults: 0,
-      content: []
+      content: [],
+      page: page,
+      pages: pages
     };
   }
 
@@ -70,7 +78,9 @@ const get = function (params, settings) {
   
   return {
     numResults: 1000,
-    content: content
+    content: content,
+    pages: pages,
+    page: page
   };
 };
 

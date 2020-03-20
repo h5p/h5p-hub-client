@@ -3,23 +3,23 @@
 
 .filter-bar {
   background-color: $c1;
-  padding: 1em;
-  font-size: 1.22683em;
+  font-size: 1em;
+  padding: 0 0.833em 0.833em 1.125em;
   display: flex;
 
-  @media (max-width: $screen-small) {
+ .filter-label {
+    color: #ffffff;
+    align-self: center;
+  }
+
+  @media (max-width: $screen-medium) {
     flex-direction: column;
     justify-content: center;
 
-    .filter-label{
+    .filter-label {
       align-self: start;
       margin-left: 1em;
     }
-  }
-
-  .filter-label {
-    color: #ffffff;
-    align-self: center;
   }
 }
 
@@ -34,15 +34,19 @@
   li:focus {
     .filter-button {
       box-shadow: $box-shadow-blue;
+      margin-left: 0.85em;
       button {
         background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+        font-family: "Open Sans", sans-serif;
+        font-weight: 600;
+        padding: 0.25em 0.426em;
       }
     }
   }
 
-  @media (max-width: $screen-small) {
-    flex-direction: column;
-    li{
+  @media (max-width: $screen-medium) {
+    flex-wrap: wrap;
+    li {
       margin: 0.5em 0 0.5em 0;
     }
   }
@@ -53,6 +57,7 @@
   align-self: center;
 
   button {
+    font-family: 'Open Sans', sans-serif;
     align-items: center;
     float: right;
     display: flex;
