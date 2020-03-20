@@ -1,4 +1,6 @@
 .h5p-hub-list {
+  overflow: auto;
+
   &:before {
     content: " ";
     width: 100%;
