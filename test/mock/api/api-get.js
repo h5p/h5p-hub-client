@@ -4,6 +4,8 @@ import content from './seeds/content';
 import languages from './seeds/languages';
 import levels from './seeds/levels';
 import reviewed from './seeds/reviewed';
+import contentTypes from './seeds/content-types';
+import disciplines from './seeds/disciplines';
 
 const settings = window.HubSimulations || {
   latency: 2000,
@@ -15,12 +17,12 @@ const endpointsToData = {};
 endpointsToData[endpoints.search] = content;
 endpointsToData[endpoints.languages] = languages;
 endpointsToData[endpoints.levels] = levels;
+endpointsToData[endpoints.contentTypes] = contentTypes;
+endpointsToData[endpoints.disciplines] = disciplines;
 endpointsToData[endpoints.reviewed] = reviewed;
 
 ApiClient.prototype.get = function(endpoint, params) {
-
   console.log('SEARCH APPLIED', endpoint, params);
-  
 
   return function() {
     return new Promise(function(resolve, reject) {
