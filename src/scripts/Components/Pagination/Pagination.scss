@@ -1,7 +1,8 @@
 @import "../../../styles/base/variables";
+@import "../../../styles/base/mixins";
 
 ul.list-of-numbers {
-  margin-top: 0.7844743em;
+  margin-top: 1.5em;
   display: flex;
   flex-direction: row;
   border-radius: 0.15146em;
@@ -19,7 +20,8 @@ ul.list-of-numbers {
 
     a {
       padding: 0.25em 0.75em;
-      font-size: 1.09051em;
+      font-size: 1em;
+      font-weight: bold;
       text-decoration: none;
       outline: none;
       border-radius: 0.15146em;
@@ -51,7 +53,24 @@ ul.list-of-numbers {
       }
     }
   }
-
+  .previous-arrow {
+    &::after {
+      @include icon($icon-arrow-line);
+      transform: rotate(90deg);
+      font-style: normal;
+      font-size: 0.7em;
+      display: inline-block;
+    }
+  }
+  .next-arrow {
+    &::before {
+      @include icon($icon-arrow-line);
+      transform: rotate(-90deg);
+      font-style: normal;
+      font-size: 0.7em;
+      display: inline-block;
+    }
+  }
   .dots {
     padding: 0.17039em;
     pointer-events: none;
