@@ -49,6 +49,17 @@ $color-back-button: #474f5a;
 
     .title {
       outline: 0;
+
+      &.reviewed:after {
+        font-size: 0.8em;
+        font-family: 'h5p-hub';
+        font-weight: normal;
+        content: '\e90b';
+        color: #359d94;
+        position: relative;
+        top: -0.2em;
+        margin-left: 0.3em;
+      }
     }
 
     .by {

@@ -159,7 +159,7 @@ class Content extends React.Component {
           <div className="text-details">
             <h2
               id={titleId}
-              className="title"
+              className={`title ${content.reviewed ? 'reviewed' : ''}`}
               tabIndex="-1"
               ref={element => this.title = element}
             >
