@@ -78,6 +78,7 @@ class Content extends React.Component {
       this.setState({
         visible: true
       });
+      this.title.focus();
     }, 1);
   }
 
@@ -146,7 +147,8 @@ class Content extends React.Component {
           className="back-button icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
           onClick={this.handleClose}
-          onKeyPress={this.handleBackKeyPress}/>
+          onKeyPress={this.handleBackKeyPress}
+        />
         <div className="container">
           <div className="image-wrapper">
             <img
@@ -159,6 +161,7 @@ class Content extends React.Component {
               id={titleId}
               className="title"
               tabIndex="-1"
+              ref={element => this.title = element}
             >
               {content.title}
             </h2>
