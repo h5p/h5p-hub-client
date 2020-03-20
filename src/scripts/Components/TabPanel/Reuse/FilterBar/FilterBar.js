@@ -100,7 +100,6 @@ class FilterBar extends React.Component {
         openFilter={this.handleFilterButtonClicked}
         checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
         handleChecked={this.handleChecked}
-        handleChecked={this.handleChecked}
         toggleButtonRef={this.filterButtons[filter.id]}>
         {filter.type == 'checkboxList' &&
           <CheckboxList
@@ -119,11 +118,7 @@ class FilterBar extends React.Component {
           </SearchFilter>
         }
       </Filter>
-
     );
-
-
-
 
     return (
       <div className="filter-bar">

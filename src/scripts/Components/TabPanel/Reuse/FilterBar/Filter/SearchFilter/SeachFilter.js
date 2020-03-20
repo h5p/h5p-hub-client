@@ -30,6 +30,7 @@ class SearchFilter extends React.Component {
       return 1;
     }
   }
+
   search = (list, value) => {
     return list
       .sort(this.compare)
@@ -42,7 +43,7 @@ class SearchFilter extends React.Component {
       searchValue: value,
       dropdownOpen: true
     });
-  };
+  }
 
   clearSearch = () => {
     this.setState({
@@ -82,7 +83,6 @@ class SearchFilter extends React.Component {
   }
 
   render() {
-
     return (
       <div className="search-filter">
         <SearchField
@@ -97,11 +97,13 @@ class SearchFilter extends React.Component {
           setFocus={this.state.setFocus}
           onNavigate={this.handleKeyEvent}
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !this.checkedOf(this.state.focused))}
-        ></SearchField>
-        {this.state.searchValue.length > 0
-            && <button onClick={this.clearSearch} className="clear-button" />
-          }
-        {this.state.dropdownOpen &&
+        />
+        {
+          this.state.searchValue.length > 0 && 
+          <button onClick={this.clearSearch} className="clear-button" />
+        }
+        {
+          this.state.dropdownOpen &&
           <CheckboxList
             onChecked={this.handleChecked}
             items={this.state.checkboxElements}
@@ -110,7 +112,6 @@ class SearchFilter extends React.Component {
             focused={this.state.focused}
           />
         }
-
       </div>
     );
   }

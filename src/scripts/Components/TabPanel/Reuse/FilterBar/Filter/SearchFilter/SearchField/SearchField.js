@@ -38,7 +38,7 @@ const SearchField = React.forwardRef(({
         event.preventDefault();
         break;
     }
-  }
+  };
 
   return (
     <div onClick={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
@@ -58,7 +58,6 @@ const SearchField = React.forwardRef(({
       </div>
     </div>
   );
-
 });
 
 SearchField.propTypes = {
