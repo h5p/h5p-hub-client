@@ -5,10 +5,14 @@
   background-color: $c1;
   font-size: 1em;
   padding: 0 0.833em 0.833em 1.125em;
-
   display: flex;
 
-  @media (max-width: $screen-small) {
+ .filter-label {
+    color: #ffffff;
+    align-self: center;
+  }
+
+  @media (max-width: $screen-medium) {
     flex-direction: column;
     justify-content: center;
 
@@ -16,11 +20,6 @@
       align-self: start;
       margin-left: 1em;
     }
-  }
-
-  .filter-label {
-    color: #ffffff;
-    align-self: center;
   }
 }
 
@@ -45,8 +44,8 @@
     }
   }
 
-  @media (max-width: $screen-small) {
-    flex-direction: column;
+  @media (max-width: $screen-medium) {
+    flex-wrap: wrap;
     li {
       margin: 0.5em 0 0.5em 0;
     }
