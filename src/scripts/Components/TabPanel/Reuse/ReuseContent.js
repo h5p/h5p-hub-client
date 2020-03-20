@@ -141,10 +141,13 @@ class ReuseContent extends React.Component {
               onClose={() => {this.setState({detailViewVisible: false});}} />
           }
         </div>
-        <NoContent
-          tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-          suggestionText={Dictionary.get('noContentSuggestion')}
-          headerText={Dictionary.get('noContentHeader')} />
+        { 
+          this.state.contentListVisible &&
+          <NoContent
+            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+            suggestionText={Dictionary.get('noContentSuggestion')}
+            headerText={Dictionary.get('noContentHeader')} />
+        }
 
         <SelectionsList
           itemsPromise={this.state.popularContent}
