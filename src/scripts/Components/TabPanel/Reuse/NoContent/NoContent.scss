@@ -1,3 +1,5 @@
+@import '../../../../../styles/base/variables';
+
 .no-content {
   display: flex;
   box-shadow: 0 -0.4em 0.4em -0.2em rgba(79, 87, 99, 0.2) inset;
@@ -6,6 +8,11 @@
     width: 12.7em;
     height: 4.95em;
     padding: 3em 2em;
+
+    @media (max-width: $screen-small) {
+      width: 8em;
+      padding: 3em 1em;
+    }
   }
 
   .right-text {
@@ -14,6 +21,10 @@
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+
+    @media (max-width: $screen-small) {
+      padding: 3em 1em;
+    }
 
     .header {
       font-size: 1.2em;

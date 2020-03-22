@@ -30,6 +30,9 @@ class Content extends React.Component {
     if (!this.state.visible) {
       this.props.onClose();
     }
+    else {
+      this.title.focus();
+    }
   }
 
   onImageSelect = (index) => {
@@ -73,12 +76,11 @@ class Content extends React.Component {
   }
 
   componentDidMount = () => {
-    // TODO - probably a smarter way to do this!
+    // TODO - probably a smarter way to do this?
     setTimeout(() => {
       this.setState({
         visible: true
       });
-      this.title.focus();
     }, 1);
   }
 
@@ -153,7 +155,7 @@ class Content extends React.Component {
           <div className="image-wrapper">
             <img
               className="img-responsive content-type-image"
-              src={content.image.url || noIcon}
+              src={content.icon || noIcon}
             />
           </div>
           <div className="text-details">

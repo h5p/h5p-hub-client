@@ -9,41 +9,35 @@ const randomContentType = function () {
     'Interactive Video',
     'Course Presentation',
     'Fill in the blanks',
-    'Multiple Choice'
-  ]);
-};
-
-const randomImage = function () {
-  return randomFromArray([
-    {      
-      'url': 'test/images/1.png', 
-      'alt': 'test/images/1.png'
-    },
-    {      
-      'url': 'test/images/2.jpg', 
-      'alt': 'test/images/2.jpg'
-    },
-    {      
-      'url': 'test/images/3.jpg', 
-      'alt': 'test/images/3.jpg'
-    }
+    'Multiple Choice',
+    'Branching scenario'
   ]);
 };
 
 const create = function(content) {
   content = content || {};
 
+  const num = 2 + Math.floor(Math.random()*8);
+  const screenshots = [];
+
+  for (let i = 0; i < num; i++) {
+    screenshots[i] = {
+      'url': `test/images/image.jpg`,
+      'alt': `Alt text`
+    };
+  }
+
   return {
     id: content.id || chance.guid(),
     title: content.title || chance.sentence({ words: 5 }),
     owner: content.owner || chance.name(),
     contentType: content.contentType || randomContentType(),
-    image: content.image || randomImage(),
+    icon: content.image || `test/images/image.jpg`,
     summary: content.summary || chance.sentence({ words: 12 }),
     description: content.description || chance.sentence({ words: 50 }),
     reviewed: content.reviewed || chance.bool(),
     preview_url: content.preview_url || chance.url(),
-    screenshots: content.screenshots || [randomImage(), randomImage(), randomImage()],
+    screenshots: screenshots,
   };
 };
 
