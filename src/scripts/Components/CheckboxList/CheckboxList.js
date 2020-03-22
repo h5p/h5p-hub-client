@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
 
-const CheckboxList = ({ items, onChecked, checked, filter, focused })=> {
+const CheckboxList = ({ items, onChecked, checked, filter, focused, tabIndex })=> {
 
   const isChecked = (id) => {
     return checked.indexOf(id) != -1;
@@ -26,6 +26,7 @@ const CheckboxList = ({ items, onChecked, checked, filter, focused })=> {
             filter={filter}
             onChecked={onChecked}
             focused={focused == element.id}
+            tabIndex={tabIndex}
           />
         );
       })}
@@ -37,7 +38,8 @@ CheckboxList.propTypes = {
   onChecked: PropTypes.func.isRequired,
   checked: PropTypes.array,
   filter: PropTypes.string.isRequired,
-  focused: PropTypes.string
+  focused: PropTypes.string,
+  tabIndex: PropTypes.string
 };
 
 export default CheckboxList;

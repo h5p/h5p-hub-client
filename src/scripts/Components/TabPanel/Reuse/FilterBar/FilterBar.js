@@ -32,8 +32,12 @@ class FilterBar extends React.Component {
         });
       });
     });
+  }
 
-
+  componentDidUpdate(prevProps){
+    if(this.props.tabShown==false && prevProps.tabShown ==true ){
+      this.setState({openFilter: ''});
+    }
   }
 
   anyChecked = () => {
@@ -154,6 +158,7 @@ FilterBar.propTypes = {
   label: PropTypes.string.isRequired,
   filters: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
+  tabShown: PropTypes.bool
 };
 
 export default FilterBar;

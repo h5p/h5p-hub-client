@@ -15,9 +15,9 @@ class SearchFilter extends React.Component {
       dropdownOpen: false,
       setFocus: false,
       focused: null,
-
     };
     this.searchRef = React.createRef();
+    this.click = null;
   }
 
   compare = (a, b) => {
@@ -53,8 +53,29 @@ class SearchFilter extends React.Component {
     this.searchRef.current.focus();
   }
 
+
+  /**
+    Open list with checkbox if search field is fouced on. 
+  */
+  handleSearchFocus = () => {
+    if (!this.click && !this.state.dropdownOpen) {
+      this.click = setTimeout(() => {
+        this.setState((prevState) => ({ dropdownOpen: prevState.dropdownOpen ? prevState.dropdownOpen : true }));
+        this.click = null;
+      }, 100);
+    }
+  }
+  /**
+    Open and close checkboxlist
+  */
   handleSearchClick = () => {
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+    if (!this.click) {
+      this.click = setTimeout(() => {
+        this.setState((prevState) => ({ dropdownOpen: !prevState.dropdownOpen }));
+        this.click = null;
+      }, 100);
+    }
+
   }
 
   handleChecked = (filter, checkbox, checkedOf) => {
@@ -97,9 +118,11 @@ class SearchFilter extends React.Component {
           setFocus={this.state.setFocus}
           onNavigate={this.handleKeyEvent}
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !this.checkedOf(this.state.focused))}
+          onFocus={this.handleSearchFocus}
+          onMouseDown={this.onMouseDown}
         />
         {
-          this.state.searchValue.length > 0 && 
+          this.state.searchValue.length > 0 &&
           <button onClick={this.clearSearch} className="clear-button" />
         }
         {
@@ -110,6 +133,7 @@ class SearchFilter extends React.Component {
             checked={this.props.checked}
             filter={this.props.filter}
             focused={this.state.focused}
+            tabIndex='-1'
           />
         }
       </div>

@@ -7,6 +7,15 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     Modal.setAppElement('.reuse-content-result');
+
+  }
+
+  componentDidMount() {
+    //document.addEventListener('click', this.closeModal);
+  }
+
+  componentWillUnmount() {
+    //document.removeEventListener('click', this.closeModal);
   }
 
   closeModal = () => {
@@ -18,13 +27,17 @@ class Filter extends React.Component {
     return document.querySelector('.reuse-content-result');
   }
 
+  onClick = (event) => {
+    event.stopPropagation();
+  }
+
   render() {
-    const modalAria = { labelledby: this.props.dropdownLabel};
+    const modalAria = { labelledby: this.props.dropdownLabel };
 
     const style = {
       content: {
         // TODO - must probably be smarter!
-        left: Math.max(this.props.toggleButtonRef.current.offsetLeft-50) + 'px'
+        left: Math.max(this.props.toggleButtonRef.current.offsetLeft - 50) + 'px'
       }
     };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import Pagination from '../../Pagiantion/Pagination';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
-//import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import './ReuseContent.scss';
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
@@ -109,6 +109,7 @@ class ReuseContent extends React.Component {
           label={Dictionary.get('filterBy')}
           filters={filters}
           onChange={this.handleFilters}
+          tabShown={this.props.tabShown}
         />
         <div className='reuse-content-result'>
           <Order
@@ -149,7 +150,8 @@ class ReuseContent extends React.Component {
   }
 }
 
-/*ReuseContent.propTypes = {
-};*/
+ReuseContent.propTypes = {
+  tabShown: PropTypes.bool.isRequired
+};
 
 export default ReuseContent;

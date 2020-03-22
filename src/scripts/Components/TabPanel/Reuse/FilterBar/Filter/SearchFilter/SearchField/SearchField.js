@@ -11,7 +11,8 @@ const SearchField = React.forwardRef(({
   onSelect,
   instantSearch,
   placeholder,
-  onClick }, ref) => {
+  onClick,
+  onFocus,}, ref) => {
 
   const handleInput = (event) => {
     const input = event.target;
@@ -41,7 +42,7 @@ const SearchField = React.forwardRef(({
   };
 
   return (
-    <div onClick={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
+    <div onMouseDown={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
 
       <div className="search-field" role="search">
         <input id="filter-search-bar"
@@ -52,7 +53,9 @@ const SearchField = React.forwardRef(({
           onInput={instantSearch ? handleInput : () => { }}
           ref={ref}
           onKeyDown={event => handleKeyDown(event)}
-          onChange={handleInput}>
+          onChange={handleInput}
+          onFocus={onFocus}
+        >
         </input>
         <div className="icon-arrow" />
       </div>
@@ -68,6 +71,7 @@ SearchField.propTypes = {
   instantSearch: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  onFocus: PropTypes.func,
 };
 
 SearchField.defaultProps = {
