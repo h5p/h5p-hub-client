@@ -9,6 +9,7 @@ import Message from '../../../Message/Message';
 import Modal from '../../../Modal/Modal';
 import ImageSlider from '../../../ImageSlider/ImageSlider';
 import ReadMore from '../../../ReadMore/ReadMore';
+import ContentAccordion from './ContentAccordion';
 
 import './Content.scss';
 
@@ -219,6 +220,8 @@ class Content extends React.Component {
             {Dictionary.get(`contentDownloadButtonLabel`)}
           </button>
         </div>
+
+        <ContentAccordion />
         { 
           this.state.modalType !== undefined &&
           <Modal
