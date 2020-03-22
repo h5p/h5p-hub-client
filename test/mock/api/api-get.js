@@ -7,12 +7,6 @@ import reviewed from './seeds/reviewed';
 import contentTypes from './seeds/content-types';
 import disciplines from './seeds/disciplines';
 
-const settings = window.HubSimulations || {
-  latency: 2000,
-  fail: false,
-  noResults: false
-};
-
 const endpointsToData = {};
 endpointsToData[endpoints.search] = content;
 endpointsToData[endpoints.languages] = languages;
@@ -21,19 +15,40 @@ endpointsToData[endpoints.contentTypes] = contentTypes;
 endpointsToData[endpoints.disciplines] = disciplines;
 endpointsToData[endpoints.reviewed] = reviewed;
 
+const urlParams = new URLSearchParams(window.location.search);
+const latency = urlParams.get('latency') || 2000;
+const loadingForever = urlParams.get('loading') !== null;
+const errorLoading = urlParams.get('error') !== null;
+const emptyResults = urlParams.get('empty') !== null;
+
 ApiClient.prototype.get = function(endpoint, params) {
   console.log('SEARCH APPLIED', endpoint, params);
 
+  if (loadingForever) {
+    return function() {
+      return new Promise(function () {});
+    };
+  }
+  else if (errorLoading) {
+    return function() {
+      return new Promise(function (resolve, reject) {
+        reject(new Error('Failed fetching data'));
+      });
+    };
+  }
+  else if (emptyResults) {
+    return function() {
+      return new Promise(function (resolve) {
+        resolve(endpointsToData[endpoint](params, true));
+      });
+    };
+  }
+
   return function() {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function(resolve) {
       setTimeout(function() {
-        if (settings.fail) {
-          reject(new Error('Failed fetching'));
-        }
-        else {
-          resolve(endpointsToData[endpoint](params, settings));
-        }
-      }, settings.latency);
+        resolve(endpointsToData[endpoint](params));
+      }, latency);
     });
   };
 };

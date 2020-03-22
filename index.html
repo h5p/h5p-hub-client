@@ -31,10 +31,10 @@
   <label>
     Simulations
     <select id="settings">
-      <option value="none">None</option>
-      <option value="failing">Fail fetching data</option>
-      <option value="no-results">Empty results</option>
+      <option value="error">Fail fetching data</option>
+      <option value="empty">Empty results</option>
       <option value="slow">Slow network (10 seconds)</option>
+      <option value="loading">Loading forever</option>
     </select>
   </label>
 
@@ -58,18 +58,7 @@
 
     const settings = document.getElementById('settings');
     settings.addEventListener('change', function () {
-      const value = settings.value;
-
-      if (value === 'none')  {
-        delete window.HubSimulations;
-      }
-      else {
-        window.HubSimulations = {
-          latency: value === 'slow' ? 10000 : 2000,
-          fail: value === 'failing',
-          noResults: value === 'no-results'
-        }
-      }
+      window.location.search = settings.value === 'slow' ? 'latency=10000' : settings.value;
     });
   </script>
 </body>

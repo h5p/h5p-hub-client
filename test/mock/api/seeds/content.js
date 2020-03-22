@@ -47,12 +47,12 @@ const create = function(content) {
   };
 };
 
-const get = function (params, settings) {
+const get = function (params, noResults) {
 
   const page = params.page || 1;
   const pages = 25;
 
-  if (settings.noResults) {
+  if (noResults) {
     return {
       numResults: 0,
       content: [],
