@@ -115,9 +115,13 @@ class ReuseContent extends React.Component {
 
     const filterTrans = Dictionary.get('filters');
 
+    const reviewedPromise = new Promise(function(resolve) {
+      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
+    });
+
     const filters = [
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level },
-      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed },
     ];
 
     return (
