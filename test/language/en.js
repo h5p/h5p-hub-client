@@ -255,4 +255,5 @@ H5PEditor.language.core = {
   previousPage: 'Go to previous page',
   contentPreviewButtonLabel: 'Preview',
   contentDownloadButtonLabel: 'Get Content',
+  reuseContentTabLabel: 'Get Shared Content',
 };

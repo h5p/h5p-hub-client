@@ -127,7 +127,7 @@ class Hub extends React.Component {
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
               <ReuseContent id="reuse"
-                title="Get Shared Content"
+                title={Dictionary.get('reuseContentTabLabel')}
               />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
