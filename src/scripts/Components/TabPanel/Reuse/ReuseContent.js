@@ -6,7 +6,7 @@ import ContentList from './ContentList/ContentList';
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
-import SelectionsList from './Selections/AsyncList';
+import SelectionsList from './Selections/SelectionsList';
 import FilterBar from './FilterBar/FilterBar';
 import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
@@ -29,8 +29,8 @@ class ReuseContent extends React.Component {
       contentListVisible: true,
       detailViewVisible: false,
       focusOnRender: false,
-      newContent: ContentApiClient.search({ orderBy: 'newest' }),
-      popularContent: ContentApiClient.search({ orderBy: 'popularity' }),
+      newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
+      popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
     };
   }
@@ -90,6 +90,20 @@ class ReuseContent extends React.Component {
     });
   }
 
+  showAllOrderedBy = (orderBy) => {
+    // TODO - clear filters in Filterbar
+
+    const newState = {
+      orderBy: orderBy,
+      filters: {},
+      query: '',
+      page: 1
+    };
+
+    this.setState(newState);
+    this.runSearch(newState);
+  }
+
   render() {
     const orderBySettings = [{
       id: "popular",
@@ -110,7 +124,8 @@ class ReuseContent extends React.Component {
       <div className="reuse-view loaded">
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
-          onSearch={this.handleSearch} />
+          onSearch={this.handleSearch} 
+          value={this.state.query}/>
 
         <FilterBar
           label={Dictionary.get('filterBy')}
@@ -152,12 +167,16 @@ class ReuseContent extends React.Component {
         <SelectionsList
           itemsPromise={this.state.popularContent}
           title={Dictionary.get('popularContent')}
-          actionLabel={Dictionary.get('allPopular')} />
+          actionLabel={Dictionary.get('allPopular')}
+          onAction={() => this.showAllOrderedBy('popular')} 
+          onSelect={this.showContentDetails} />
 
         <SelectionsList
           itemsPromise={this.state.newContent}
           title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')} />
+          actionLabel={Dictionary.get('allNew')}
+          onAction={() => this.showAllOrderedBy('newest')}
+          onSelect={this.showContentDetails} />
 
       </div>
     );

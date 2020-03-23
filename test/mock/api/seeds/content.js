@@ -57,7 +57,7 @@ const get = function (params, noResults) {
 
   let content = [];
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < params.limit; i++) {
     content.push(create());
   }
 
