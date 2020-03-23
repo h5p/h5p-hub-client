@@ -70,8 +70,8 @@ class Filter extends React.Component {
           {this.props.dictionary.dialogButtonLabel}
         </button>
 
-      </Modal> 
-    ) : null;       
+      </Modal>
+    ) : null;
   }
 }
 

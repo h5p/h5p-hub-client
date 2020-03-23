@@ -20,6 +20,11 @@ class SearchFilter extends React.Component {
     this.click = null;
   }
 
+  /**
+   * Used to sort alfabetic
+   * @param  {object} a
+   * @param  {object} b
+   */
   compare = (a, b) => {
     let nameA = a.label.toUpperCase();
     let nameB = b.label.toUpperCase();
@@ -31,12 +36,21 @@ class SearchFilter extends React.Component {
     }
   }
 
+  /**
+   * Return a list that is filtered by a value
+   * @param  {array} list
+   * @param  {string} value
+   */
   search = (list, value) => {
     return list
       .sort(this.compare)
       .filter(element => RegExp(value.toUpperCase()).test(element.label.toUpperCase()));
   }
 
+  /**
+   * Set a new list of checkboxes that are filtered by a search value
+   * @param  {string} value
+   */
   handleOnSearch = (value) => {
     this.setState({
       checkboxElements: this.search(this.props.items, value),
@@ -45,6 +59,9 @@ class SearchFilter extends React.Component {
     });
   }
 
+  /**
+   * Removes search value from field
+   */
   clearSearch = () => {
     this.setState({
       checkboxElements: this.props.items.sort(this.compare),
@@ -52,7 +69,6 @@ class SearchFilter extends React.Component {
     });
     this.searchRef.current.focus();
   }
-
 
   /**
     Open list with checkbox if search field is fouced on. 
@@ -65,6 +81,7 @@ class SearchFilter extends React.Component {
       }, 100);
     }
   }
+
   /**
     Open and close checkboxlist
   */
@@ -78,6 +95,12 @@ class SearchFilter extends React.Component {
 
   }
 
+  /**
+   * Updates state and use callbacks with a checkbox being switched on or off
+   * @param  {string} filter
+   * @param  {string} checkbox id
+   * @param  {boolean} checkedOf
+   */
   handleChecked = (filter, checkbox, checkedOf) => {
     if (!this.state.dropdownOpen) {
       this.setState({ dropdownOpen: true });
@@ -89,6 +112,10 @@ class SearchFilter extends React.Component {
     }
   }
 
+  /**
+   * Handles navigation with arrow keys. Set a new focused object.
+   * @param  {number} direction
+   */
   handleKeyEvent = (direction) => {
     const index = (this.state.checkboxElements.map(element => element.id).indexOf(this.state.focused) + direction);
     const sibling = this.state.checkboxElements[index];
@@ -99,6 +126,10 @@ class SearchFilter extends React.Component {
     }
   }
 
+  /**
+   * Check if checkbox is currently checked of
+   * @param  {string} id
+   */
   checkedOf(id) {
     return this.props.checked.indexOf(id) != -1;
   }

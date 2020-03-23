@@ -34,12 +34,19 @@ class FilterBar extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps){
-    if(this.props.tabShown==false && prevProps.tabShown ==true ){
-      this.setState({openFilter: ''});
+  /**
+   * Close filters if you change tab
+   * @param  {object} prevProps
+   */
+  componentDidUpdate(prevProps) {
+    if (this.props.tabShown == false && prevProps.tabShown == true) {
+      this.setState({ openFilter: '' });
     }
   }
 
+  /**
+   * Test if there is any checked checkboxes
+   */
   anyChecked = () => {
     let anyChecked = false;
     Object.keys(this.state.checked).forEach((filter) => {
@@ -51,34 +58,51 @@ class FilterBar extends React.Component {
     return anyChecked;
   }
 
+  /**
+   *Unchecks all checkboxes.
+   */
   clearFilters = () => {
     this.setState({ checked: {}, showClearFilters: false });
     this.props.onChange({});
   }
 
+  /**
+   * Handles opening and closing of the filter dropdown
+   * @param  {string} id
+   */
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter == id;
     this.handleApplyFilters(this.state.openFilter);
     this.setState({ openFilter: close ? '' : id });
   }
 
+  /**
+   *Called when filter dropdown is closed 
+   *Updates states and calls the onChange with the new state of checked checkboxes
+   */
   handleApplyFilters = () => {
     this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
     this.props.onChange(this.state.checked);
   }
 
+  /**
+   * Updates state each time a checkbox is checked on or off
+   * @param  {string} filter
+   * @param  {array} checkbox
+   * @param  {bool} checkedOf true if new state of checkbox is checked
+   */
   handleChecked = (filter, checkbox, checkedOf) => {
-    //checkedOf is the next state of the checkbox
-    if (this.state.checked[filter] == undefined &&checkbox !=null) {
+    if (this.state.checked[filter] == undefined && checkbox != null) {
       this.setState({ checked: { ...this.state.checked, [filter]: [checkbox] } });
     }
-    else if(checkbox !=null){
+    else if (checkbox != null) {
       const newList = checkedOf ? [...this.state.checked[filter], checkbox] : this.state.checked[filter].filter(id => id != checkbox);
       this.setState({ checked: { ...this.state.checked, [filter]: newList } });
     }
   }
 
   render() {
+
     const filterButtons = this.props.filters.map(filter =>
       <li key={filter.id} id={filter.id}>
         <FilterButton

@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
 
-const CheckboxList = ({ items, onChecked, checked, filter, focused, tabIndex })=> {
+const CheckboxList = ({ items, onChecked, checked, filter, focused, tabIndex }) => {
 
+  /**
+   * Check if a checkbox is in list of the checked checkboxes
+   * @param  {string} id
+   */
   const isChecked = (id) => {
     return checked.indexOf(id) != -1;
   };

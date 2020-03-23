@@ -12,14 +12,20 @@ const SearchField = React.forwardRef(({
   instantSearch,
   placeholder,
   onClick,
-  onFocus,}, ref) => {
+  onFocus, }, ref) => {
 
+  /**
+   * Search for each time a letter is typed
+   * @param  {InputEvent} event
+   */
   const handleInput = (event) => {
     const input = event.target;
-
     onSearch(input.value);
   };
 
+  /**
+   * @param  {KeyboardEvent} event
+   */
   const handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
     switch (event.which) {

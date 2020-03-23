@@ -5,6 +5,7 @@ import './FilterButton.scss';
 
 const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropdownLabel }, ref) => {
 
+  //Check if the check symbol on the filterButton should be shown
   const oneChecked = checked.length == 1 && data.length == 1;
 
   const filterNumberShown = checked.length > 0 && !oneChecked;

@@ -31,6 +31,23 @@ class ReuseContent extends React.Component {
       popularContent: ContentApiClient.search({ orderBy: 'popularity' }),
       search: ContentApiClient.search({}),
     };
+
+    this.orderBySettings = [{
+      id: "popular",
+      text: Dictionary.get('popularFirst')
+    }, {
+      id: "newest",
+      text: Dictionary.get('newestFirst')
+    }];
+
+    this.filterTrans = Dictionary.get('filters');
+
+    this.filters = [
+      { id: 'level', promise: ApiClient.levels(), dictionary: this.filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: this.filterTrans.reviewed, type: 'checkboxList' },
+      { id: 'language', promise: ApiClient.languages(), dictionary: this.filterTrans.language, type: 'search' }
+    ];
+
   }
 
   handlePageChange = (setFocus, page) => {
@@ -83,22 +100,7 @@ class ReuseContent extends React.Component {
   }
 
   render() {
-    const orderBySettings = [{
-      id: "popular",
-      text: Dictionary.get('popularFirst')
-    }, {
-      id: "newest",
-      text: Dictionary.get('newestFirst')
-    }];
-
-    const filterTrans = Dictionary.get('filters');
-
-    const filters = [
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' }
-    ];
-
+   
     return (
       <div className="reuse-view loaded">
         <Search
@@ -107,7 +109,7 @@ class ReuseContent extends React.Component {
 
         <FilterBar
           label={Dictionary.get('filterBy')}
-          filters={filters}
+          filters={this.filters}
           onChange={this.handleFilters}
           tabShown={this.props.tabShown}
         />
@@ -118,7 +120,7 @@ class ReuseContent extends React.Component {
             onChange={this.handleOrderBy}
             headerLabel={Dictionary.get('contentSectionAll')}
             visible={!this.state.detailViewActive}
-            orderVariables={orderBySettings} />
+            orderVariables={this.orderBySettings} />
 
           <ContentList
             itemsPromise={this.state.search}
