@@ -240,7 +240,8 @@ H5PEditor.language.core = {
     reviewed: {
       dropdownLabel: 'Reviewed',
       dialogHeader: 'Reviewed Content',
-      dialogButtonLabel: 'Filter'
+      dialogButtonLabel: 'Filter',
+      optionLabel: 'Show only reviewed content'
     }
   },
   clearFilters: 'Clear all filters',

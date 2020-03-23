@@ -3,7 +3,6 @@ import endpoints from '../../../src/scripts/utils/content-hub/endpoints';
 import content from './seeds/content';
 import languages from './seeds/languages';
 import levels from './seeds/levels';
-import reviewed from './seeds/reviewed';
 import contentTypes from './seeds/content-types';
 import disciplines from './seeds/disciplines';
 
@@ -13,7 +12,6 @@ endpointsToData[endpoints.languages] = languages;
 endpointsToData[endpoints.levels] = levels;
 endpointsToData[endpoints.contentTypes] = contentTypes;
 endpointsToData[endpoints.disciplines] = disciplines;
-endpointsToData[endpoints.reviewed] = reviewed;
 
 const urlParams = new URLSearchParams(window.location.search);
 const latency = urlParams.get('latency') || 2000;
