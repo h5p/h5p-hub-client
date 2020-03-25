@@ -51,8 +51,9 @@ class ReuseContent extends React.Component {
     });
 
     this.filters = [
+      { id: 'licence', promise: ApiClient.licenses(), dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' }
     ];
   }
