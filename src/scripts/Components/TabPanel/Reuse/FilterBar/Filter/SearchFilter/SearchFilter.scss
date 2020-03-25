@@ -7,9 +7,9 @@
   .clear-button {
     background: none;
     position: absolute;
-    top: 6em;
+    top: 5em;
     right: 5.5em;
-    padding: 1.8em;
+    padding: 1.5em;
     color: #757575;
     &::before {
       @include icon($icon-remove);
