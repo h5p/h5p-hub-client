@@ -107,7 +107,6 @@ class FilterBar extends React.Component {
   }
 
   render() {
-
     const filterButtons = this.props.filters.map(filter =>
       <li key={filter.id} id={filter.id}>
         <FilterButton

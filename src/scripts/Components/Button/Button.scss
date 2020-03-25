@@ -1,0 +1,19 @@
+.h5p-hub .button {
+  &.button-orange {
+    background: transparent;
+    color: #d16b17;
+    border: 0.125em solid #d16b17;
+
+    &:hover {
+      color: #fff;
+      background-color: #d16b17;
+      border-color: #d16b17;
+    }
+
+    &:active {
+      color: #fff;
+      background-color: #c26d13;
+      border-color: #c26d13;
+    }
+  }
+}

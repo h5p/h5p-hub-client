@@ -241,7 +241,8 @@ H5PEditor.language.core = {
     reviewed: {
       dropdownLabel: 'Reviewed',
       dialogHeader: 'Reviewed Content',
-      dialogButtonLabel: 'Filter'
+      dialogButtonLabel: 'Filter',
+      optionLabel: 'Show only reviewed content'
     }
   },
   clearFilters: 'Clear all filters',
@@ -255,4 +256,7 @@ H5PEditor.language.core = {
   currentPage: 'Current page',
   nextPage: 'Go to next page',
   previousPage: 'Go to previous page',
+  contentPreviewButtonLabel: 'Preview',
+  contentDownloadButtonLabel: 'Get Content',
+  reuseContentTabLabel: 'Get Shared Content',
 };

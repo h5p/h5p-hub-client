@@ -1,10 +1,11 @@
 @import "../../../styles/base/mixins";
 @import "../../../styles/base/colors";
 
+
 .h5p-hub {
   .checkbox {
-    font-size: 1.36314em;
-
+    font-size: 1.05em;
+    
     &:focus {
       box-shadow: 0 0 0.4em 0.01em RGBA(26, 147, 244, 0.7);
       outline: none;

@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import {onSpaceOrEnterEvent} from '../../utils/helpers';
+
+import './Button.scss';
 
 class Button extends React.Component {
   render() {

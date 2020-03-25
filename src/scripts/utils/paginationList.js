@@ -47,8 +47,8 @@ export const paginationList = (selected, pages, screenWidth) => {
         id={`paginator-${direction == '-1' ? 'previous' : 'next'}`}
         disabled={!active}
         aria-label={Dictionary.get(`${direction == '-1' ? 'previous' : 'next'}Page`)}
+        className={direction=='-1' ? 'previous-arrow' : 'next-arrow'}
       >
-        {direction == '-1' ? '<' : '>'}
       </a>
     </li>
   );

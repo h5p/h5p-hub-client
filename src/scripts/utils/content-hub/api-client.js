@@ -14,7 +14,6 @@ export default class ApiClient {
       ApiClient.languages = instance.get(endpoints.languages);
       ApiClient.licenses = instance.get(endpoints.licenses);
       ApiClient.contentTypes = instance.get(endpoints.contentTypes);
-      ApiClient.reviewed = instance.get(endpoints.reviewed);
     }
   }
 
@@ -32,7 +31,7 @@ export default class ApiClient {
     query = '',
     orderBy = '',
     filters = [],
-    limit = 10,
+    limit = 8,
     page = 0
   }) {
     return ApiClient.instance.get(endpoints.search, {

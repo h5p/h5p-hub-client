@@ -47,8 +47,7 @@ const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropd
         ref={ref}>
 
         {dropdownLabel}
-        
-        <div className={oneChecked ? 'icon check' : 'icon' }>
+        <div className={oneChecked ? 'icon check' : 'icon'}>
           {filterNumberShown && `(${checked.length})`}
         </div>
 

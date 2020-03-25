@@ -4,8 +4,8 @@
 .h5p-hub {
   .filter-bar {
     background-color: $c1;
-    padding: 1em;
-    font-size: 1.22683em;
+    font-size: 1em;
+    padding: 0 0.833em 0.833em 1.125em;
     display: flex;
 
     @media (max-width: $screen-small) {
@@ -35,8 +35,12 @@
     li:focus {
       .filter-button {
         box-shadow: $box-shadow-blue;
+        margin-left: 0.85em;
         button {
           background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+          font-family: "Open Sans", sans-serif;
+          font-weight: 600;
+          padding: 0.25em 0.426em;
         }
       }
     }
@@ -54,6 +58,7 @@
     align-self: center;
 
     button {
+      font-family: 'Open Sans', sans-serif;
       align-items: center;
       float: right;
       display: flex;

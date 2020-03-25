@@ -2,8 +2,11 @@
 @import "../../../../../../styles/base/variables";
 
 .h5p-hub {
+  .lightbox {
+    background: rgba(71, 79, 90, 0.6);
+  }
   .filter-dialog-content {
-    padding: 2em;
+    padding: 1.5em;
   }
   .filter-dialog {
     position: absolute;
@@ -11,7 +14,8 @@
     max-width: 100%;
     box-sizing: border-box;
     background-color: #ffffff;
-    border-radius: 0.340785em;
+    border-radius: 0.25em;
+    box-shadow: 2px 5px 5px 1px rgba(0, 0, 0, 0.1);
 
     .apply-filters-button {
       &::before {
@@ -26,16 +30,17 @@
       text-align: center;
       width: 100%;
       color: #ffffff;
-      font-size: 1.36314em;
+      font-size: 1.15em;
+      padding: 1em;
       border-radius: 0.25em;
       margin-top: 1em;
-      padding: 1.06145em;
       cursor: pointer;
     }
 
     .header-text {
       color: #000000;
-      font-size: 1.4313em;
+      font-size: 1.25em;
+      font-weight: bold;
       margin-bottom: 1em;
     }
 

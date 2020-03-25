@@ -1,22 +1,21 @@
 import React from 'react';
-import Modal from 'react-modal';
+import ReactModal from 'react-modal';
 import PropTypes from 'prop-types';
 
-import Button from '../../../../Button/Button';
-import Dictionary from '../../../../../utils/dictionary';
+import Button from '../Button/Button';
+import Dictionary from '../../utils/dictionary';
 
 import './Modal.scss';
 
-class Lightbox extends React.Component {
+class Modal extends React.Component {
 
   constructor(props) {
     super(props);
-
-    Modal.setAppElement('.h5p-section-content-types');
+    ReactModal.setAppElement(this.props.parent);
   }
 
   closeModal = () => {
-    document.querySelector('.h5p-section-content-types').removeAttribute('aria-hidden');
+    document.querySelector(this.props.parent).removeAttribute('aria-hidden');
     this.props.onClose();
   }
 
@@ -31,36 +30,34 @@ class Lightbox extends React.Component {
     };
 
     return (
-      <Modal
-        isOpen={this.props.visible}
+      <ReactModal
+        isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.label}
         parentSelector={this.getParent}
         className={`lightbox-inner ${this.props.className}`}
         overlayClassName='lightbox'
         aria={this.props.aria}
+        parentSelector={() => document.querySelector(this.props.parent)}
       >
         <Button
           buttonProps={closeButtonProps}
           onButtonClick={this.closeModal}/>
         {this.props.children}
-      </Modal>
+      </ReactModal>
     );
   }
 }
 
-Lightbox.propTypes = {
+Modal.propTypes = {
   onClose: PropTypes.func.isRequired,
   aria: PropTypes.shape({
     label: PropTypes.string,
     labelledby: PropTypes.string,
     describedby: PropTypes.string
   }),
-  className: PropTypes.string.isRequired
+  className: PropTypes.string.isRequired,
+  parent: PropTypes.string.isRequired
 };
 
-Lightbox.defaultProps ={
-  visible: false
-};
-
-export default Lightbox;
+export default Modal;
