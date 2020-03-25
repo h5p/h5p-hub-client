@@ -3,6 +3,8 @@ import React from 'react';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
 
+import PropTypes from 'prop-types';
+
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
@@ -34,6 +36,28 @@ class ReuseContent extends React.Component {
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
     };
+
+    this.orderBySettings = [{
+      id: "popular",
+      text: Dictionary.get('popularFirst')
+    }, {
+      id: "newest",
+      text: Dictionary.get('newestFirst')
+    }];
+
+    const filterTrans = Dictionary.get('filters');
+
+    const reviewedPromise = new Promise(function(resolve) {
+      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
+    });
+
+    this.filters = [
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
+      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
+      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'}
+    ];
+
   }
 
   handlePageChange = (setFocus, page) => {
@@ -106,27 +130,7 @@ class ReuseContent extends React.Component {
   }
 
   render() {
-    const orderBySettings = [{
-      id: "popular",
-      text: Dictionary.get('popularFirst')
-    }, {
-      id: "newest",
-      text: Dictionary.get('newestFirst')
-    }];
-
-    const filterTrans = Dictionary.get('filters');
-
-    const reviewedPromise = new Promise(function(resolve) {
-      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
-    });
-
-    const filters = [
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
-      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'}
-    ];
-
+   
     return (
       <div className="reuse-view loaded">
         <Search
@@ -136,7 +140,7 @@ class ReuseContent extends React.Component {
 
         <FilterBar
           label={Dictionary.get('filterBy')}
-          filters={filters}
+          filters={this.filters}
           onChange={this.handleFilters}
         />
         <div className='reuse-content-result'>
@@ -146,7 +150,7 @@ class ReuseContent extends React.Component {
             onChange={this.handleOrderBy}
             headerLabel={Dictionary.get('contentSectionAll')}
             visible={this.state.contentListVisible}
-            orderVariables={orderBySettings} />
+            orderVariables={this.orderBySettings} />
 
           <ContentList
             itemsPromise={this.state.search}
@@ -190,7 +194,7 @@ class ReuseContent extends React.Component {
   }
 }
 
-/*ReuseContent.propTypes = {
-};*/
+ReuseContent.propTypes = {
+};
 
 export default ReuseContent;

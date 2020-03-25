@@ -1,67 +1,73 @@
 @import "../../../../../../../styles/base/mixins";
 @import "../../../../../../../styles/base/colors";
 
-.search-filter {
-  outline: 0.06815em solid #bebdcd;
+.h5p-hub {
+  .search-filter {
+    outline: 0.06815em solid #bebdcd;
 
-  .clear-button {
-    background: none;
-    position: absolute;
-    top: 5em;
-    right: 5.5em;
-    padding: 1.5em;
-    color: #757575;
-    &::before {
-      @include icon($icon-remove);
-      font-style: normal;
-      font-size: 0.7em;
+    .clear-button {
+      background: none;
+      position: absolute;
+      top: 5em;
+      right: 5.5em;
+      padding: 1.5em;
+      color: #757575;
+      &::before {
+        @include icon($icon-remove);
+        font-style: normal;
+        font-size: 0.7em;
+      }
     }
-  }
+    .navigate-parent {
+      width: 100%;
+      font-size: 1.36314em;
+      padding: 0.5em;
+      background-color: #ffffff;
+      display: flex;
 
-  .navigate-parent {
-    width: 100%;
-    font-size: 1.36314em;
-    padding: 0.5em;
-    background-color: #ffffff;
-    display: flex;
-
-    &::before {
-      content: "🡢";
-      transform: rotate(180deg);
-      font-style: normal;
-      font-size: 0.7em;
-      display: inline-block;
-      align-self: center;
-      margin-right: 0.7em;
+      &::before {
+        content: "🡢";
+        transform: rotate(180deg);
+        font-style: normal;
+        font-size: 0.7em;
+        display: inline-block;
+        align-self: center;
+        margin-right: 0.7em;
+      }
     }
-  }
 
-  .checkbox-list {
-    overflow: hidden;
-    overflow-y: scroll;
-    height: 25em;
+    .checkbox-list {
+      overflow: hidden;
+      overflow-y: scroll;
+      height: 25em;
 
-    li {
-      border: 0.06815em solid #e6e6e8;
-      .content {
-        padding: 0.3em;
-        .label-text {
-          margin-right: 1em;
+      li {
+        border: 0.06815em solid #e6e6e8;
+        .content {
+          padding: 0.3em;
+          .label-text {
+            margin-right: 1em;
+          }
+        }
+        &:focus {
+          border: 0.06815em solid #3ba0f2;
+          background-color: #fff;
+          outline: none;
+          box-shadow: none;
+        }
+        &.highlighted {
+          border: 0.06815em solid #3ba0f2;
+          background-color: #fff;
+          box-shadow: none;
+        }
+        &:hover {
+          background-color: rgba(230, 230, 232, 0.25);
         }
       }
-      &:focus {
-        border: 0.06815em solid #3ba0f2;
-        background-color: #fff;
-        outline: none;
-        box-shadow: none;
-      }
-      &.highlighted {
-        border: 0.06815em solid #3ba0f2;
-        background-color: #fff;
-        box-shadow: none;
-      }
-      &:hover {
-        background-color: rgba(230, 230, 232, 0.25);
+      &::-webkit-scrollbar {
+        background-color: rgba(105, 117, 133, 0.25);
+        width: 0.54525em;
+        border-radius: 5.45256em;
       }
     }
 

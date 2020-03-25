@@ -1,53 +1,53 @@
 @import "../../../../../../styles/base/mixins";
 @import "../../../../../../styles/base/variables";
 
-.lightbox {
-  position: absolute;
-  background: rgba(71, 79, 90, 0.6);
-}
-.filter-dialog {
-  position: absolute;
-  width: 40em;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  padding: 1.5em;
-  border-radius: 0.25em;
-  box-shadow: 2px 5px 5px 1px rgba(0, 0, 0, 0.1);
+.h5p-hub {
+  .lightbox {
+    background: rgba(71, 79, 90, 0.6);
+  }
+  .filter-dialog-content {
+    padding: 1.5em;
+  }
+  .filter-dialog {
+    position: absolute;
+    width: 40em;
+    max-width: 100%;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    border-radius: 0.25em;
+    box-shadow: 2px 5px 5px 1px rgba(0, 0, 0, 0.1);
 
-  .apply-filters-button {
-    &::before {
-      @include icon($icon-filters);
-      font-style: normal;
-      font-size: 0.8em;
-      margin: 0 0.4em 0 0.4em;
-      margin-right: 1em;
+    .apply-filters-button {
+      &::before {
+        @include icon($icon-filters);
+        font-style: normal;
+        font-size: 0.8em;
+        margin: 0 0.4em 0 0.4em;
+        margin-right: 1em;
+      }
+
+      background-color: $c1;
+      text-align: center;
+      width: 100%;
+      color: #ffffff;
+      font-size: 1.15em;
+      padding: 1em;
+      border-radius: 0.25em;
+      margin-top: 1em;
+      cursor: pointer;
     }
 
-    background-color: $c1;
-    text-align: center;
-    width: 100%;
-    color: #ffffff;
-    font-size: 1.15em;
-    padding: 1em;
-    border-radius: 0.25em;
-    margin-top: 1em;
-    cursor: pointer;
-  }
+    .header-text {
+      color: #000000;
+      font-size: 1.25em;
+      font-weight: bold;
+      margin-bottom: 1em;
+    }
 
-  .header-text {
-    color: #000000;
-    font-size: 1.25em;
-    font-weight: bold;
-    margin-bottom: 1em;
-  }
-
-  .loading:after {
-    @include throbber();
-    width: 1em;
-    margin: 0 auto;
-  }
-
-  @media (max-width: $screen-medium) {
-    width: 100%;
+    .loading:after {
+      @include throbber();
+      width: 1em;
+      margin: 0 auto;
+    }
   }
 }

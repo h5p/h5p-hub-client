@@ -12,7 +12,8 @@ const Checkbox = React.forwardRef(
     children,
     navigateToChildren,
     parent,
-    childrenChecked }, ref) => {
+    childrenChecked,
+    tabIndex }, ref) => {
 
     const handleKeyDown = (e) => {
       if (e.key === 'Enter' || e.key == ' ') {
@@ -37,7 +38,7 @@ const Checkbox = React.forwardRef(
         role='checkbox'
         aria-checked={checked}
         onClick={() => children ? navigateToChildren(id, children) : onChecked(filter, id, !checked, parent)}
-        tabIndex='0'
+        tabIndex={tabIndex ? tabIndex : '0'}
         onKeyDown={handleKeyDown}>
         <div className='content' key={'label' + id}>
           <div className='icon' onClick={(e) => children ? onlyChecked(filter, id, !checked, e) : {}} />
@@ -62,6 +63,7 @@ Checkbox.propTypes = {
   children: PropTypes.array,
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
+  tabIndex: PropTypes.string
 };
 
 export default Checkbox;

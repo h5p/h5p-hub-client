@@ -11,14 +11,21 @@ const SearchField = React.forwardRef(({
   onSelect,
   placeholder,
   onClick,
-  onNavigateSideway }, ref) => {
+  onNavigateSideway,
+  onFocus}, ref) => {
 
+  /**
+   * Search for each time a letter is typed
+   * @param  {InputEvent} event
+   */
   const handleInput = (event) => {
     const input = event.target;
-
     onSearch(input.value);
   };
 
+  /**
+   * @param  {KeyboardEvent} event
+   */
   const handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
     switch (event.key) {
@@ -51,7 +58,7 @@ const SearchField = React.forwardRef(({
   };
 
   return (
-    <div onClick={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
+    <div onMouseDown={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
 
       <div className="search-field" role="search">
         <input id="filter-search-bar"
@@ -61,13 +68,14 @@ const SearchField = React.forwardRef(({
           placeholder={placeholder}
           ref={ref}
           onKeyDown={event => handleKeyDown(event)}
-          onChange={handleInput}>
+          onChange={handleInput}
+          onFocus={onFocus}
+        >
         </input>
         <div className="icon-arrow" />
       </div>
     </div>
   );
-
 });
 
 SearchField.propTypes = {
@@ -77,7 +85,8 @@ SearchField.propTypes = {
   onNavigateSideway: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  onFocus: PropTypes.func,
 };
 
 SearchField.defaultProps = {

@@ -44,6 +44,9 @@ class SearchFilter extends React.Component {
     });
   }
 
+  /**
+   * Clears search value
+   */
   handleClearSearch = () => {
     this.setState({
       checkboxElements: this.props.items.sort(this.compare),
@@ -52,6 +55,10 @@ class SearchFilter extends React.Component {
     this.searchRef.current.focus();
   }
 
+  /**
+   * Filter the checkboxlist according to search value
+   * @param  {string} value
+   */
   handleOnSearch = (value) => {
     if (value == '') {
       this.handleClearSearch();
@@ -69,17 +76,37 @@ class SearchFilter extends React.Component {
   };
 
   /**
-   * Open dropdown when searchfilter is clicked on
-   */
-  handleSearchClick = () => {
-    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+    Open list with checkbox if search field is fouced on. 
+  */
+  handleSearchFocus = () => {
+    if (!this.click && !this.state.dropdownOpen) {
+      this.click = setTimeout(() => {
+        this.setState((prevState) => ({ dropdownOpen: prevState.dropdownOpen ? prevState.dropdownOpen : true }));
+        this.click = null;
+      }, 100);
+    }
   }
 
-  handleChecked = (filter, checkbox, checkedOf) => {
-    if (!this.state.dropdownOpen) {
-      this.setState({ dropdownOpen: true }); //TODO find out if this is needed when it opens on focus
+  /**
+    Open and close checkboxlist
+  */
+  handleSearchClick = () => {
+    if (!this.click) {
+      this.click = setTimeout(() => {
+        this.setState((prevState) => ({ dropdownOpen: !prevState.dropdownOpen }));
+        this.click = null;
+      }, 100);
     }
-    else if (checkbox && this.state.checkboxElements[this.indexOfId(checkbox)]) {
+  }
+
+  /**
+   * Updates state and use callbacks with a checkbox being switched on or off
+   * @param  {string} filter
+   * @param  {string} checkbox id
+   * @param  {boolean} checkedOf
+   */
+  handleChecked = (filter, checkbox, checkedOf) => {
+    if (this.state.dropdownOpen && checkbox && this.state.checkboxElements[this.indexOfId(checkbox)]) {
       this.setState({ setFocus: true, focused: checkbox });
       const children = this.state.checkboxElements[this.indexOfId(checkbox)].children;
 
@@ -137,6 +164,7 @@ class SearchFilter extends React.Component {
       this.checkboxRefs[this.listRefId].current.scrollTop = scrolltop;
     }
   }
+
   /**
    * Navigate to children or to the first level according to direction
    * @param  {number} direction 1 or -1
@@ -241,6 +269,7 @@ class SearchFilter extends React.Component {
           onNavigateVertical={this.handleNavigateVertical}
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !(this.checkedOf(this.state.focused)), this.state.parent)}
           onNavigateSideway={this.handleNavigateSideway}
+          onFocus={this.handleSearchFocus}
         ></SearchField>
         {this.state.parent && this.state.dropdownOpen &&
           <button onClick={this.navigateToParent} className='navigate-parent'>
@@ -261,6 +290,7 @@ class SearchFilter extends React.Component {
             parent={this.state.parent}
             ref={this.checkboxRefs}
             listRefId={this.listRefId}
+            tabIndex='-1'
           />
         }
       </div>

@@ -10,8 +10,13 @@ const CheckboxList = React.forwardRef(({
   focused,
   navigateToChildren,
   parent,
-  listRefId }, ref) => {
+  listRefId,
+  tabIndex }, ref) => {
 
+  /**
+   * Check if a checkbox is in list of the checked checkboxes
+   * @param  {string} id
+   */
   const isChecked = (id) => {
     return checked.indexOf(id) != -1;
   };
@@ -43,6 +48,7 @@ const CheckboxList = React.forwardRef(({
             parent={parent}
             childrenChecked={childrenChecked(element.children) > 0 && childrenChecked(element.children)}
             ref={ref && ref[element.id]}
+            tabIndex={tabIndex}
           />
         );
       })}
@@ -57,7 +63,8 @@ CheckboxList.propTypes = {
   focused: PropTypes.string,
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
-  listRefId: PropTypes.string
+  listRefId: PropTypes.string,
+  tabIndex: PropTypes.string
 };
 
 export default CheckboxList;
