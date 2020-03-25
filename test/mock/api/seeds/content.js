@@ -22,8 +22,8 @@ const create = function(content) {
 
   for (let i = 0; i < num; i++) {
     screenshots[i] = {
-      'url': `test/images/image.jpg`,
-      'alt': `Alt text`
+      'url': 'test/images/image.jpg',
+      'alt': 'Alt text'
     };
   }
 
@@ -32,7 +32,7 @@ const create = function(content) {
     title: content.title || chance.sentence({ words: 5 }),
     owner: content.owner || chance.name(),
     contentType: content.contentType || randomContentType(),
-    icon: content.image || `test/images/image.jpg`,
+    icon: content.image || 'test/images/image.jpg',
     summary: content.summary || chance.sentence({ words: 12 }),
     description: content.description || chance.sentence({ words: 50 }),
     reviewed: content.reviewed || chance.bool(),
@@ -57,7 +57,7 @@ const get = function (params, noResults) {
 
   let content = [];
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < params.limit; i++) {
     content.push(create());
   }
 

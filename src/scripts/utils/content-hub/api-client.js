@@ -31,7 +31,7 @@ export default class ApiClient {
     query = '',
     orderBy = '',
     filters = [],
-    limit = 10,
+    limit = 8,
     page = 0
   }) {
     return ApiClient.instance.get(endpoints.search, {

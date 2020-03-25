@@ -1,0 +1,43 @@
+@import '../../../../../styles/base/variables';
+
+.h5p-hub {
+  .content-item.grid {
+    display: inline-block;
+    width: 16.66%;
+    margin-top: 0.5em;
+
+    @media (max-width: $screen-medium) {
+      width: 33.33%;
+    }
+
+    @media (max-width: $screen-small) {
+      width: 50%;
+    }
+  }
+
+  .grid-item {
+    text-align: center;
+    padding: 0.3em;
+    border: 1px solid #ddd;
+    margin: 0 0.3em;
+
+    .grid-item-title {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 3em;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    button {
+      margin: 0.5em 0 0.75em;
+    }
+  }
+}
+
