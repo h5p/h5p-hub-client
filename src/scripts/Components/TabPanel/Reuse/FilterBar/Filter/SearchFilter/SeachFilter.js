@@ -17,6 +17,7 @@ class SearchFilter extends React.Component {
       focused: null,
       checkedParents: [],
       parent: null,
+      inSearch: false
     };
 
     this.searchRef = React.createRef();
@@ -40,7 +41,8 @@ class SearchFilter extends React.Component {
   componentWillUnmount() {
     this.setState({
       parent: null,
-      focused: null
+      focused: null,
+      inSearch: false
     });
   }
 
@@ -50,7 +52,8 @@ class SearchFilter extends React.Component {
   handleClearSearch = () => {
     this.setState({
       checkboxElements: this.props.items.sort(this.compare),
-      searchValue: ''
+      searchValue: '',
+      inSearch: false
     });
     this.searchRef.current.focus();
   }
@@ -70,7 +73,8 @@ class SearchFilter extends React.Component {
         checkboxElements: list,
         searchValue: value,
         dropdownOpen: true,
-        parent: null
+        parent: null,
+        inSearch: true
       });
     }
   };
@@ -270,6 +274,7 @@ class SearchFilter extends React.Component {
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !(this.checkedOf(this.state.focused)), this.state.parent)}
           onNavigateSideway={this.handleNavigateSideway}
           onFocus={this.handleSearchFocus}
+          inSearch={this.state.inSearch}
         ></SearchField>
         {this.state.parent && this.state.dropdownOpen &&
           <button onClick={this.navigateToParent} className='navigate-parent'>

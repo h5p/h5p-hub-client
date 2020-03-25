@@ -12,7 +12,8 @@ const SearchField = React.forwardRef(({
   placeholder,
   onClick,
   onNavigateSideway,
-  onFocus}, ref) => {
+  onFocus,
+  inSearch }, ref) => {
 
   /**
    * Search for each time a letter is typed
@@ -40,13 +41,18 @@ const SearchField = React.forwardRef(({
         break;
 
       case 'ArrowRight':
-        onNavigateSideway(1);
-        event.preventDefault();
+        if (!inSearch) {
+          onNavigateSideway(1);
+          event.preventDefault();
+        }
         break;
 
       case 'ArrowLeft':
-        onNavigateSideway(-1);
-        event.preventDefault();
+        if (!inSearch) {
+          onNavigateSideway(-1);
+          event.preventDefault();
+        }
+
         break;
 
       case 'Enter': // Enter
@@ -87,6 +93,7 @@ SearchField.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
+  inSearch: PropTypes.bool,
 };
 
 SearchField.defaultProps = {
