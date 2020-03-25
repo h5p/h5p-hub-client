@@ -61,4 +61,11 @@
     bottom: 4px;
     pointer-events: none;
   }
+
+  // Remove $MS clear icon from search input
+  &::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+  }
 }
