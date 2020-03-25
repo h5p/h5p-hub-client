@@ -9,7 +9,6 @@ const SearchField = React.forwardRef(({
   onSearch,
   onNavigate,
   onSelect,
-  instantSearch,
   placeholder,
   onClick,
   onFocus, }, ref) => {
@@ -56,7 +55,7 @@ const SearchField = React.forwardRef(({
           value={value}
           aria-label={placeholder}
           placeholder={placeholder}
-          onInput={instantSearch ? handleInput : () => { }}
+          onInput={handleInput}
           ref={ref}
           onKeyDown={event => handleKeyDown(event)}
           onChange={handleInput}
@@ -74,14 +73,12 @@ SearchField.propTypes = {
   onSearch: PropTypes.func.isRequired,
   onNavigate: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  instantSearch: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   onFocus: PropTypes.func,
 };
 
 SearchField.defaultProps = {
-  instantSearch: false,
   onNavigate: () => { },
   onSelect: () => { },
 };

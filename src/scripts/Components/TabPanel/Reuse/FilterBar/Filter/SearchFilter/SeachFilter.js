@@ -141,16 +141,11 @@ class SearchFilter extends React.Component {
           ref={this.searchRef}
           value={this.state.searchValue}
           onSearch={this.handleOnSearch}
-          instantSearch={true}
-          auto={true}
           placeholder={this.props.dictionary.searchPlaceholder}
-          clearSearch={this.clearSearch}
           onClick={this.handleSearchClick}
-          setFocus={this.state.setFocus}
           onNavigate={this.handleKeyEvent}
           onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !this.checkedOf(this.state.focused))}
           onFocus={this.handleSearchFocus}
-          onMouseDown={this.onMouseDown}
         />
         {
           this.state.searchValue.length > 0 &&
