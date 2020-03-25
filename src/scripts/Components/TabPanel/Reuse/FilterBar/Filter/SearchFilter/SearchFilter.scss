@@ -18,6 +18,24 @@
     }
   }
 
+  .navigate-parent {
+    width: 100%;
+    font-size: 1.36314em;
+    padding: 0.5em;
+    background-color: #ffffff;
+    display: flex;
+
+    &::before {
+      content: "🡢";
+      transform: rotate(180deg);
+      font-style: normal;
+      font-size: 0.7em;
+      display: inline-block;
+      align-self: center;
+      margin-right: 0.7em;
+    }
+  }
+
   .checkbox-list {
     overflow: hidden;
     overflow-y: scroll;
@@ -42,8 +60,11 @@
         background-color: #fff;
         box-shadow: none;
       }
-    
+      &:hover {
+        background-color: rgba(230, 230, 232, 0.25);
+      }
     }
+
     &::-webkit-scrollbar {
       background-color: rgba(105, 117, 133, 0.25);
       width: 0.54525em;

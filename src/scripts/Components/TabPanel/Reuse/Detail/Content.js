@@ -9,6 +9,7 @@ import Message from '../../../Message/Message';
 import Modal from '../../../Modal/Modal';
 import ImageSlider from '../../../ImageSlider/ImageSlider';
 import ReadMore from '../../../ReadMore/ReadMore';
+import ContentAccordion from './ContentAccordion';
 
 import './Content.scss';
 
@@ -29,6 +30,9 @@ class Content extends React.Component {
   onTransitionEnd = () => {
     if (!this.state.visible) {
       this.props.onClose();
+    }
+    else {
+      this.title.focus();
     }
   }
 
@@ -73,12 +77,11 @@ class Content extends React.Component {
   }
 
   componentDidMount = () => {
-    // TODO - probably a smarter way to do this!
+    // TODO - probably a smarter way to do this?
     setTimeout(() => {
       this.setState({
         visible: true
       });
-      this.title.focus();
     }, 1);
   }
 
@@ -153,13 +156,13 @@ class Content extends React.Component {
           <div className="image-wrapper">
             <img
               className="img-responsive content-type-image"
-              src={content.image.url || noIcon}
+              src={content.icon || noIcon}
             />
           </div>
           <div className="text-details">
             <h2
               id={titleId}
-              className="title"
+              className={`title ${content.reviewed ? 'reviewed' : ''}`}
               tabIndex="-1"
               ref={element => this.title = element}
             >
@@ -217,6 +220,8 @@ class Content extends React.Component {
             {Dictionary.get(`contentDownloadButtonLabel`)}
           </button>
         </div>
+
+        <ContentAccordion />
         { 
           this.state.modalType !== undefined &&
           <Modal

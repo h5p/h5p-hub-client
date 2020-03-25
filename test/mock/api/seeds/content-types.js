@@ -1,54 +1,86 @@
-const get = function () {
-  return [
+const get = function(params, noResults) {
+  return noResults ? [] : [
     {
-      id: 'games',
+      id: '1',
       label: 'Games',
       children: [
         {
-          id: 'flashcards',
-          label: 'Flashcars'
+          id: '10',
+          label: 'Interactive Video',
         },
         {
-          id: 'memoryGame',
-          label: 'Memory Game'
-        }
+          id: '11',
+          label: 'Course Presentation'
+        },
       ]
     },
     {
-      id: 'multimedia',
-      label: 'Multimedia',
-      children: [
-        {
-          id: 'flashcards',
-          label: 'Flashcards'
-        },
-        {
-          id: 'collage',
-          label: 'Collage'
-        },
-        {
-          id: 'hotspot',
-          label: 'Find the Hotspot'
-        }
-      ]
-    },
-    {
-      id: 'questions',
+      id: '2',
       label: 'Questions',
       children: [
         {
-          id: 'hotspot',
-          label: 'Find the hotspot'
+          id: '21',
+          label: 'Drag and Drop',
         },
         {
-          id: 'flashcards',
-          label: 'Flashcars'
+          id: '22',
+          label: 'Drag the words',
         },
         {
-          id: 'multipleChoice',
-          label: 'Multiple choice'
+          id: '23',
+          label: 'Fill in the blanks',
+        },
+        {
+          id: '24',
+          label: 'Mark the Words',
+        },
+        {
+          id: '25',
+          label: 'Multiple Choice',
+        },
+        {
+          id: '26',
+          label: 'Summary',
+        },
+        {
+          id: '27',
+          label: 'True/False',
+        },
+        {
+          id: '28',
+          label: 'Hit the right thing',
+        },
+        {
+          id: '29',
+          label: 'Blink',
+        },
+        {
+          id: '30',
+          label: 'Scroll to win!',
+        },
+      ]
+    },
+    {
+      id: '3',
+      label: 'Quizzes',
+      children: [
+        {
+          id: '31',
+          label: 'Question Set'
+        },
+        {
+          id: '32',
+          label: 'Single Choice Set'
+        },
+        {
+          id: '30',
+          label: 'Scroll to win!',
         }
       ]
+    },
+    {
+      id: '4',
+      label: 'Flashcards'
     }
   ];
 };

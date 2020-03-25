@@ -10,7 +10,7 @@ const ContentItemTabular = ({content}) => {
   return (
     <>
       <div className='left'>
-        <div className='image' style={{backgroundImage: `url("${content.image.url}")`}}/>
+        <div className='image' style={{backgroundImage: `url("${content.icon}")`}}/>
       </div>
 
       <div className='middle'>

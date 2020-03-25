@@ -15,7 +15,7 @@ const AsyncList = ({title, itemsPromise, actionLabel, onAction}) => {
       <Item 
         key={item.id}
         title={item.title}
-        image={item.image.url}
+        image={item.icon}
         actionLabel="Details"
       />
     );

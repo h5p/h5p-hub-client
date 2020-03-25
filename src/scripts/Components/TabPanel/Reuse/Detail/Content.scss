@@ -40,15 +40,47 @@ $color-back-button: #474f5a;
       margin-top: $gutter;
       margin-bottom: $gutter * 2;
       padding-bottom: 1em;
+      display: flex;
+
+      @media (max-width: $screen-small) {
+        flex-wrap: wrap;
+      }
     }
 
     // mobile first
     .image-wrapper {
-      @include span(1 of 1);
+      flex-shrink: 0;
+
+      @media (max-width: $screen-small) {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 1em;
+      }
+
+      img {
+        width: 22.5em;
+        height: 16.875em;
+
+        @media (max-width: $screen-medium) and (min-width: $screen-small) {
+          width: 11.5em;
+          height: 8.875em;
+        }
+      }
     }
 
     .title {
       outline: 0;
+
+      &.reviewed:after {
+        font-size: 0.8em;
+        font-family: 'h5p-hub';
+        font-weight: normal;
+        content: '\e90b';
+        color: #359d94;
+        position: relative;
+        top: -0.2em;
+        margin-left: 0.3em;
+      }
     }
 
     .by {
@@ -57,25 +89,14 @@ $color-back-button: #474f5a;
     }
 
     .text-details {
-      @include span(1 of 1);
+      margin-left: 2em;
 
       h2 {
         margin-top: 0;
         font-size: 1.458em;
       }
     }
-
-    // larger then mobile
-    @media (min-width: $screen-small) {
-      .image-wrapper {
-        @include span(first 4 of 12);
-      }
-
-      .text-details {
-        @include span(last 8 of 12);
-      }
-    }
-
+    
     .back-button {
       color: $color-back-button;
       font-size: 1.3em;

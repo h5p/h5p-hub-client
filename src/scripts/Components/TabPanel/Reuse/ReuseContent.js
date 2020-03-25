@@ -12,6 +12,7 @@ import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
 import Content from './Detail/Content';
 
+
 import './ReuseContent.scss';
 
 const defaultOrderBy = 'popular';
@@ -101,11 +102,15 @@ class ReuseContent extends React.Component {
 
     const filterTrans = Dictionary.get('filters');
 
+    const reviewedPromise = new Promise(function(resolve) {
+      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
+    });
+
     const filters = [
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
-      { id: 'contentTyppes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'hierarchicalSearch'}
+      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'}
     ];
 
     return (

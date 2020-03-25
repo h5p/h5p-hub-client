@@ -7,11 +7,11 @@ import Dictionary from '../../../../../../../utils/dictionary';
 const SearchField = React.forwardRef(({
   value,
   onSearch,
-  onNavigate,
+  onNavigateVertical,
   onSelect,
-  instantSearch,
   placeholder,
-  onClick }, ref) => {
+  onClick,
+  onNavigateSideway }, ref) => {
 
   const handleInput = (event) => {
     const input = event.target;
@@ -21,24 +21,34 @@ const SearchField = React.forwardRef(({
 
   const handleKeyDown = (event) => {
     // Allow quick selecting from the list while typing
-    switch (event.which) {
-      case 38: // Up
-        onNavigate(-1);
+    switch (event.key) {
+      case 'ArrowUp': // Up
+        onNavigateVertical(-1);
         event.preventDefault();
         break;
 
-      case 40: // Down
-        onNavigate(1);
+      case 'ArrowDown': // Down
+        onNavigateVertical(1);
         event.preventDefault();
         break;
 
-      case 13: // Enter
+      case 'ArrowRight':
+        onNavigateSideway(1);
+        event.preventDefault();
+        break;
+
+      case 'ArrowLeft':
+        onNavigateSideway(-1);
+        event.preventDefault();
+        break;
+
+      case 'Enter': // Enter
         // Select highlighted
         onSelect();
         event.preventDefault();
         break;
     }
-  }
+  };
 
   return (
     <div onClick={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
@@ -49,7 +59,6 @@ const SearchField = React.forwardRef(({
           value={value}
           aria-label={placeholder}
           placeholder={placeholder}
-          onInput={instantSearch ? handleInput : () => { }}
           ref={ref}
           onKeyDown={event => handleKeyDown(event)}
           onChange={handleInput}>
@@ -64,17 +73,17 @@ const SearchField = React.forwardRef(({
 SearchField.propTypes = {
   value: PropTypes.string,
   onSearch: PropTypes.func.isRequired,
-  onNavigate: PropTypes.func.isRequired,
+  onNavigateVertical: PropTypes.func.isRequired,
+  onNavigateSideway: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
-  instantSearch: PropTypes.bool,
   placeholder: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
 SearchField.defaultProps = {
-  instantSearch: false,
-  onNavigate: () => { },
-  onSelect: () => { },
+  onNavigateVertical: () => { },
+  onNavigateSideway: () => { },
+  onSelect: () => { }
 };
 
 export default SearchField;

@@ -1,6 +1,19 @@
 @import "../../../styles/base/mixins";
 @import "../../../styles/base/colors";
 
+
+@mixin arrow-right {
+  color: #121212;
+      @include icon($icon-arrow-line);
+      transform: rotate(-90deg);
+      font-style: normal;
+      font-size: 0.7em;
+      display: inline-block;
+      position: absolute;
+      left: 47em;
+      align-self: center;
+}
+
 .checkbox {
   font-size: 1.05em;
 
@@ -9,12 +22,23 @@
     outline: none;
   }
 
-  display: inline-block;
+  display: flex;
   cursor: pointer;
   align-self: start;
   padding: 0.2em 0;
   color: #4d5057;
   width: 100%;
+
+  &:hover {
+    &.parent:after {
+      @include arrow-right();
+    }
+  }
+  &.highlighted {
+    &.parent:after {
+      @include arrow-right();
+    }
+  }
 
   .content {
     display: flex;
@@ -26,32 +50,30 @@
 
   &.checked {
     .content {
-      &::before {
-        @include icon($icon-checkbox-check);
-        font-style: normal;
-        font-size: 0.8em;
-        margin: 0.4em 0.4em 0 0.4em;
-        margin-right: 1em;
-        color: $c1;
+      .icon {
+        &::before {
+          @include icon($icon-checkbox-check);
+          font-style: normal;
+          font-size: 0.8em;
+          margin: 0.4em 0.4em 0 0.4em;
+          margin-right: 1em;
+          color: $c1;
+        }
       }
     }
   }
 
-  &.highlighted {
-    border: 0.06815em solid #3ba0f2;
-    background-color: #fff;
-    box-shadow: none;
-  }
-
   &.unChecked {
     .content {
-      &::before {
-        @include icon($icon-check-empty);
-        font-style: normal;
-        font-size: 0.8em;
-        margin: 0.4em 0.4em 0 0.4em;
-        margin-right: 1em;
-        color: $c1;
+      .icon {
+        &::before {
+          @include icon($icon-check-empty);
+          font-style: normal;
+          font-size: 0.8em;
+          margin: 0.4em 0.4em 0 0.4em;
+          margin-right: 1em;
+          color: $c1;
+        }
       }
     }
   }
