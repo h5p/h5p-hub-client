@@ -6,13 +6,15 @@
     position: absolute;
     background: rgba(0, 0, 0, 0.8);
   }
+  .filter-dialog-content {
+    padding: 2em;
+  }
   .filter-dialog {
     position: absolute;
     width: 40em;
     box-sizing: border-box;
     background-color: #ffffff;
     border-radius: 0.340785em;
-    padding: 2em;
 
     .apply-filters-button {
       &::before {

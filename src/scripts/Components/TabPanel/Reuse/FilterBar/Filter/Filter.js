@@ -7,27 +7,26 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     Modal.setAppElement('.reuse-content-result');
-
   }
 
   componentDidMount() {
-    //document.addEventListener('click', this.closeModal);
+    window.addEventListener('click', this.closeModal);
   }
 
   componentWillUnmount() {
-    //document.removeEventListener('click', this.closeModal);
+    window.removeEventListener('click', this.closeModal);
   }
 
   closeModal = () => {
     document.querySelector('.reuse-content-result').removeAttribute('aria-hidden');
-    this.props.handleApplyFilters();
+    this.props.onFilterClosed(this.props.id);
   }
 
   getParent = () => {
     return document.querySelector('.reuse-content-result');
   }
 
-  onClick = (event) => {
+  swallowClicks(event) {
     event.stopPropagation();
   }
 
@@ -41,45 +40,44 @@ class Filter extends React.Component {
       }
     };
 
-    return this.props.open ? (
+    return (
       <Modal
-        isOpen={this.props.open}
+        isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.id}
-        onClose={() => this.props.handleApplyFilters(this.props.id)}
         parentSelector={this.getParent}
         className='filter-dialog'
         overlayClassName='lightbox'
         aria={modalAria}
         style={style}
+        shouldCloseOnOverlayClick={false}
       >
+        <div className="filter-dialog-content" onClick={this.swallowClicks}>
+          <div className="header-text">
+            {this.props.dictionary.dialogHeader}
+          </div>
 
-        <div className="header-text">
-          {this.props.dictionary.dialogHeader}
+          {this.props.data && this.props.data.length !== undefined ?
+            //The actually checkboxes/filtering
+            this.props.children : <div className="loading" />
+          }
+
+          <button
+            className="apply-filters-button"
+            onClick={this.closeModal}
+          >
+            {this.props.dictionary.dialogButtonLabel}
+          </button>
         </div>
-
-        {this.props.data && this.props.data.length !== undefined ?
-          //The actually checkboxes/filtering
-          this.props.children : <div className="loading" />
-        }
-
-        <button
-          className="apply-filters-button"
-          onClick={this.props.handleApplyFilters}
-        >
-          {this.props.dictionary.dialogButtonLabel}
-        </button>
-
       </Modal>
-    ) : null;
+    );
   }
 }
 
 Filter.propTypes = {
   id: PropTypes.string.isRequired,
   data: PropTypes.array,
-  handleApplyFilters: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
+  onFilterClosed: PropTypes.func.isRequired,
   checked: PropTypes.array.isRequired,
   handleChecked: PropTypes.func.isRequired,
   dictionary: PropTypes.object.isRequired,

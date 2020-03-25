@@ -111,7 +111,6 @@ class ReuseContent extends React.Component {
           label={Dictionary.get('filterBy')}
           filters={this.filters}
           onChange={this.handleFilters}
-          tabShown={this.props.tabShown}
         />
         <div className='reuse-content-result'>
           <Order
@@ -153,7 +152,6 @@ class ReuseContent extends React.Component {
 }
 
 ReuseContent.propTypes = {
-  tabShown: PropTypes.bool.isRequired
 };
 
 export default ReuseContent;
