@@ -1,5 +1,5 @@
-const get = function() {
-  return [
+const get = function(params, noResults) {
+  return noResults ? [] : [
     {
       id: 'beginner',
       label: 'Introductory/Beginner'

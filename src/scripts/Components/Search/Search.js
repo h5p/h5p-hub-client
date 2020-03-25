@@ -73,11 +73,18 @@ class Search extends React.Component {
     }
   }
 
+  /**
+   * Handle click on the search icon
+   */
+  handleClick = () => {
+    this.props.onSearch(this.input.value);
+  }
+
   render() {
     return (
       <div className="search-wrapper" role="search">
         <div className="border-wrap">
-          <input id="hub-search-bar"
+          <input className="hub-search-bar"
             type="text"
             defaultValue={this.state.value}
             aria-label={this.props.placeholder}
@@ -85,7 +92,8 @@ class Search extends React.Component {
             onInput={this.props.instantSearch ? this.handleInput : () => {}}
             onKeyDown={event => this.handleKeyDown(event)}
             ref={el => this.input = el}/>
-          <div className="icon-search"/>
+          <div className="icon-search" 
+            onClick={this.handleClick}/>
         </div>
       </div>
     );

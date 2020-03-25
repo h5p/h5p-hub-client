@@ -1,0 +1,60 @@
+@import "../../../../../../../styles/base/mixins";
+@import "../../../../../../../styles/base/colors";
+
+.h5p-hub {
+  .search-filter {
+    outline: 0.06815em solid #bebdcd;
+
+    .clear-button {
+      background: none;
+      position: absolute;
+      top: 6em;
+      right: 5.5em;
+      padding: 1.5em;
+      color: #757575;
+      &::before {
+        @include icon($icon-remove);
+        font-style: normal;
+        font-size: 0.7em;
+      }
+    }
+
+    .checkbox-list {
+      overflow: hidden;
+      overflow-y: scroll;
+      height: 25em;
+
+      li {
+        border: 0.06815em solid #e6e6e8;
+        .content {
+          padding: 0.3em;
+          .label-text {
+            margin-right: 1em;
+          }
+        }
+        &:focus {
+          border: 0.06815em solid #3ba0f2;
+          background-color: #fff;
+          outline: none;
+          box-shadow: none;
+        }
+        &.highlighted {
+          border: 0.06815em solid #3ba0f2;
+          background-color: #fff;
+          box-shadow: none;
+        }
+      }
+      &::-webkit-scrollbar {
+        background-color: rgba(105, 117, 133, 0.25);
+        width: 0.54525em;
+        border-radius: 5.45256em;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #697585;
+        background-size: 24px 100%;
+        border-radius: 5.45256em;
+      }
+    }
+  }
+}

@@ -1,52 +1,60 @@
 @import "../../../../../../styles/base/mixins";
+@import "../../../../../../styles/base/variables";
 
 $ative-state: linear-gradient(0deg, #f4ddcd 0%, #fbfffc 100%);
 $open-state: linear-gradient(0deg, #c2c6cf 0%, #dde2e6 100%);
 
-.filter-button {
-  margin-left: 1em;
 
-  button {
-    -ms-user-select: none;
-    user-select: none;
-    display: flex;
-    align-items: center;
-    font-size: 1em;
-    padding: 0.426em;
-    box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.1);
-    border-radius: 2px;
-    background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+.h5p-hub {
+  .filter-button {
+    margin-left: 1em;
 
-    &.open {
-      background-image: $open-state;
-    }
+    button {
+      -ms-user-select: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      font-size: 1em;
+      padding: 0.426em;
+      box-shadow: 2px 2px 3px 1px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
 
-    &.filter-checked {
-      background-image: $ative-state;
-    }
-
-    &.one-checked {
-      background-image: $ative-state;
-    }
-
-    &:hover {
-      background-image: $open-state;
-      cursor: pointer;
-    }
-    .icon {
-      &::after {
-        content: "\e565";
-        font-family: "h5p";
-        font-style: normal;
-        font-size: 0.8em;
-        margin-left: 0.6em;
+      &.open {
+        background-image: $open-state;
       }
-      &.check {
-        &::before {
-          @include icon($icon-check);
-          font-style: normal;
-          font-size: 0.7em;
-          margin: 0 0.4em 0 0.4em;
+
+      &.filter-checked {
+        background-image: $ative-state;
+      }
+
+      &.one-checked {
+        background-image: $ative-state;
+      }
+
+      &:hover {
+        background-image: $open-state;
+        cursor: pointer;
+      }
+
+      .icon {
+        margin-left: 0.3em;
+        @media (min-width: $screen-small) {
+          &::after {
+            content: "\e565";
+            font-family: "h5p";
+            font-style: normal;
+            font-size: 0.8em;
+            margin-left: 0.6em;
+          }
+        }
+        &.check {
+          &::before {
+            @include icon($icon-check);
+            font-style: normal;
+            font-size: 0.7em;
+            margin: 0 0.4em 0 0.4em;
+          }
         }
       }
     }

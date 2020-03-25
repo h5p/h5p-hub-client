@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dictionary from '../../../../../utils/dictionary';
-import {nonEmptyString, stopPropagation} from '../../../../../utils/helpers';
+import Dictionary from '../../utils/dictionary';
+import {nonEmptyString, stopPropagation} from '../../utils/helpers';
 
 
 import './ImageSlider.scss';

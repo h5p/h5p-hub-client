@@ -1,17 +1,20 @@
 import React from 'react';
-import Pagination from '../../Pagiantion/Pagination';
+
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
-//import PropTypes from 'prop-types';
-import './ReuseContent.scss';
+
+import PropTypes from 'prop-types';
+
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
-import SelectionsList from './Selections/AsyncList';
+import SelectionsList from './Selections/SelectionsList';
 import FilterBar from './FilterBar/FilterBar';
 import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
+import Content from './Detail/Content';
 
+import './ReuseContent.scss';
 
 const defaultOrderBy = 'popular';
 
@@ -25,12 +28,33 @@ class ReuseContent extends React.Component {
       orderBy: defaultOrderBy,
       filters: {},
       hasSearchResults: false,
-      detailViewActive: false,
+      contentListVisible: true,
+      detailViewVisible: false,
       focusOnRender: false,
-      newContent: ContentApiClient.search({ orderBy: 'newest' }),
-      popularContent: ContentApiClient.search({ orderBy: 'popularity' }),
+      newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
+      popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
     };
+
+    this.orderBySettings = [{
+      id: "popular",
+      text: Dictionary.get('popularFirst')
+    }, {
+      id: "newest",
+      text: Dictionary.get('newestFirst')
+    }];
+
+    const filterTrans = Dictionary.get('filters');
+
+    const reviewedPromise = new Promise(function(resolve) {
+      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
+    });
+
+    this.filters = [
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed },
+      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' }
+    ];
   }
 
   handlePageChange = (setFocus, page) => {
@@ -46,6 +70,8 @@ class ReuseContent extends React.Component {
 
   runSearch = ({query, filters, orderBy, page}) => {
     this.setState({
+      detailViewVisible: false,
+      contentListVisible: true,
       search: ContentApiClient.search({
         query: query || this.state.query,
         filters: filters || this.state.filters,
@@ -79,35 +105,38 @@ class ReuseContent extends React.Component {
   }
 
   showContentDetails = (content) => {
-    console.log("TODO - show details for: ", content);
+    this.setState({
+      detailViewVisible: true,
+      contentListVisible: false,
+      content: content
+    });
+  }
+
+  showAllOrderedBy = (orderBy) => {
+    // TODO - clear filters in Filterbar
+    const newState = {
+      orderBy: orderBy,
+      filters: {},
+      query: '',
+      page: 1
+    };
+
+    this.setState(newState);
+    this.runSearch(newState);
   }
 
   render() {
-    const orderBySettings = [{
-      id: "popular",
-      text: Dictionary.get('popularFirst')
-    }, {
-      id: "newest",
-      text: Dictionary.get('newestFirst')
-    },];
-
-    const filterTrans = Dictionary.get('filters');
-
-    const filters = [
-      { id: 'licence', promise: ApiClient.licenses(), dictionary: filterTrans.licenses },
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level },
-      { id: 'reviewed', promise: ApiClient.reviewed(), dictionary: filterTrans.reviewed },
-    ];
-
+   
     return (
       <div className="reuse-view loaded">
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
-          onSearch={this.handleSearch} />
+          onSearch={this.handleSearch} 
+          value={this.state.query}/>
 
         <FilterBar
           label={Dictionary.get('filterBy')}
-          filters={filters}
+          filters={this.filters}
           onChange={this.handleFilters}
         />
         <div className='reuse-content-result'>
@@ -116,40 +145,52 @@ class ReuseContent extends React.Component {
             selected={this.state.orderBy}
             onChange={this.handleOrderBy}
             headerLabel={Dictionary.get('contentSectionAll')}
-            visible={!this.state.detailViewActive}
-            orderVariables={orderBySettings} />
+            visible={this.state.contentListVisible}
+            orderVariables={this.orderBySettings} />
 
-          <ContentList 
+          <ContentList
             itemsPromise={this.state.search}
-            onSelect={this.showContentDetails} />
+            onSelect={this.showContentDetails}
+            visible={this.state.contentListVisible}
+            handlePageChange={this.handlePageChange} />
 
-          <Pagination
-            selectedPage={this.state.page}
-            pages={this.state.pages}
-            onChange={this.handlePageChange}
-            setFocus={this.state.focusOnRender} />
-        
+          { 
+            this.state.detailViewVisible &&
+            <Content 
+              content={this.state.content}
+              onDownload={(content) => {console.log('DOWNLOAD', content);}}
+              aboutToClose={() => this.setState({contentListVisible: true})}
+              onClose={() => {this.setState({detailViewVisible: false});}} />
+          }
+        </div>
+        { 
+          this.state.contentListVisible &&
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
             suggestionText={Dictionary.get('noContentSuggestion')}
             headerText={Dictionary.get('noContentHeader')} />
-          
-          <SelectionsList 
-            itemsPromise={this.state.popularContent}
-            title={Dictionary.get('popularContent')}
-            actionLabel={Dictionary.get('allPopular')} />
-          
-          <SelectionsList
-            itemsPromise={this.state.newContent}
-            title={Dictionary.get('newOnTheHub')}
-            actionLabel={Dictionary.get('allNew')} />
-        </div>
+        }
+
+        <SelectionsList
+          itemsPromise={this.state.popularContent}
+          title={Dictionary.get('popularContent')}
+          actionLabel={Dictionary.get('allPopular')}
+          onAction={() => this.showAllOrderedBy('popular')} 
+          onSelect={this.showContentDetails} />
+
+        <SelectionsList
+          itemsPromise={this.state.newContent}
+          title={Dictionary.get('newOnTheHub')}
+          actionLabel={Dictionary.get('allNew')}
+          onAction={() => this.showAllOrderedBy('newest')}
+          onSelect={this.showContentDetails} />
+
       </div>
     );
   }
 }
 
-/*ReuseContent.propTypes = {
-};*/
+ReuseContent.propTypes = {
+};
 
 export default ReuseContent;

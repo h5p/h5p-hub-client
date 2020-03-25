@@ -235,12 +235,14 @@ H5PEditor.language.core = {
     language: {
       dropdownLabel: 'Language',
       dialogHeader: 'Select language(s)',
-      dialogButtonLabel: 'Filter languages'
+      dialogButtonLabel: 'Filter languages',
+      searchPlaceholder: 'Select one or more languages'
     },
     reviewed: {
       dropdownLabel: 'Reviewed',
       dialogHeader: 'Reviewed Content',
-      dialogButtonLabel: 'Filter'
+      dialogButtonLabel: 'Filter',
+      optionLabel: 'Show only reviewed content'
     },
     licenses: {
       dropdownLabel: 'License',
@@ -253,9 +255,13 @@ H5PEditor.language.core = {
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
   by: 'by',
+  dropdownButton: 'Open dropdown',
   paginationNavigation: 'Pagination navigation',
   page: 'Page',
   currentPage: 'Current page',
   nextPage: 'Go to next page',
   previousPage: 'Go to previous page',
+  contentPreviewButtonLabel: 'Preview',
+  contentDownloadButtonLabel: 'Get Content',
+  reuseContentTabLabel: 'Get Shared Content',
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
-import Accordion from './Accordion/Accordion';
+import Accordion from '../../../Accordion/Accordion';
 import License from './License';
 
 import './ContentTypeAccordion.scss';
