@@ -247,7 +247,17 @@ H5PEditor.language.core = {
     licenses: {
       dropdownLabel: 'License',
       dialogHeader: 'Select preferred rights of use',
-      dialogButtonLabel: 'Filter licenses'
+      dialogButtonLabel: 'Filter licenses',
+      options: [
+        {
+          id: 'Modified',
+          label: 'Can be modified'
+        },
+        {
+          id: 'commercial',
+          label: ' Allows commercial use'
+        }
+      ]
     }
   },
   clearFilters: 'Clear all filters',
