@@ -13,7 +13,13 @@ endpointsToData[endpoints.levels] = levels;
 endpointsToData[endpoints.contentTypes] = contentTypes;
 endpointsToData[endpoints.disciplines] = disciplines;
 
-const urlParams = new URLSearchParams(window.location.search);
+
+
+const urlParams = window.URLSearchParams ? new URLSearchParams(window.location.search) : {
+  get: function () {
+    return null;
+  }
+};
 const latency = urlParams.get('latency') || 2000;
 const loadingForever = urlParams.get('loading') !== null;
 const errorLoading = urlParams.get('error') !== null;
