@@ -7,14 +7,19 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
     Modal.setAppElement('.reuse-content-result');
+    this.state = {
+      left: this.calculatePosition()
+    };
   }
 
   componentDidMount() {
     window.addEventListener('click', this.closeModal);
+    window.addEventListener('resize', this.handleResize);
   }
 
   componentWillUnmount() {
     window.removeEventListener('click', this.closeModal);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   closeModal = () => {
@@ -30,13 +35,41 @@ class Filter extends React.Component {
     event.stopPropagation();
   }
 
+  /**
+   * Calculates the position of the dialog
+   * 
+   * @returns {integer}
+   */
+  calculatePosition = () => {
+    const filterBar = this.props.filterBarRef.current;
+    // Font size of the dialog
+    const font = 14.672;
+    const filterBarWidth = filterBar.offsetWidth;
+    const dialogWidth = font * 40;
+
+    let left = Math.max(this.props.toggleButtonRef.current.offsetLeft - 50, 0);
+
+    // Will dialog overflow? If so, use whatever room we have
+    if (left + dialogWidth > filterBarWidth) {
+      left = Math.max(filterBarWidth - dialogWidth, 0);
+    }
+    
+    return left;
+  }
+
+  /**
+   * Handles window resizing
+   */
+  handleResize = () => {
+    this.setState({left: this.calculatePosition()});
+  }
+
   render() {
     const modalAria = { labelledby: this.props.dropdownLabel };
 
     const style = {
       content: {
-        // TODO - must probably be smarter!
-        left: Math.max(this.props.toggleButtonRef.current.offsetLeft - 50) + 'px'
+        left: this.state.left + 'px'
       }
     };
 
@@ -82,6 +115,7 @@ Filter.propTypes = {
   handleChecked: PropTypes.func.isRequired,
   dictionary: PropTypes.object.isRequired,
   toggleButtonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  filterBarRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
 };
 
 export default Filter;

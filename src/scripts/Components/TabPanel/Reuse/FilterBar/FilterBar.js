@@ -19,8 +19,9 @@ class FilterBar extends React.Component {
       showClearFilters: false
     };
 
+    this.filterBarRef = React.createRef();
     this.filterButtons = {};
-
+    
     this.props.filters.forEach(filter => {
 
       this.filterButtons[filter.id] = React.createRef();
@@ -124,7 +125,7 @@ class FilterBar extends React.Component {
     const filter = this.findFilterById(this.state.openFilter);
 
     return (
-      <div className="filter-bar">
+      <div className="filter-bar" ref={this.filterBarRef}>
 
         <div className="filter-label">
           {this.props.label}
@@ -148,7 +149,8 @@ class FilterBar extends React.Component {
             onFilterClosed={this.handleFilterClosed}
             checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
             handleChecked={this.handleChecked}
-            toggleButtonRef={this.filterButtons[filter.id]}>
+            toggleButtonRef={this.filterButtons[filter.id]}
+            filterBarRef={this.filterBarRef} >
             {filter.type == 'checkboxList' &&
               <CheckboxList
                 onChecked={this.handleChecked}

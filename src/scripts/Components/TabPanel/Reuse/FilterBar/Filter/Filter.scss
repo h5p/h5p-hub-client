@@ -2,16 +2,13 @@
 @import "../../../../../../styles/base/variables";
 
 .h5p-hub {
-  .lightbox {
-    position: absolute;
-    background: rgba(0, 0, 0, 0.8);
-  }
   .filter-dialog-content {
     padding: 2em;
   }
   .filter-dialog {
     position: absolute;
     width: 40em;
+    max-width: 100%;
     box-sizing: border-box;
     background-color: #ffffff;
     border-radius: 0.340785em;
@@ -46,10 +43,6 @@
       @include throbber();
       width: 1em;
       margin: 0 auto;
-    }
-
-    @media (max-width: $screen-medium) {
-      width: 100%;
     }
   }
 }
