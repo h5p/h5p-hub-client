@@ -3,8 +3,6 @@ import React from 'react';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
 
-import PropTypes from 'prop-types';
-
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
@@ -29,12 +27,12 @@ class ReuseContent extends React.Component {
       orderBy: defaultOrderBy,
       filters: {},
       hasSearchResults: false,
-      contentListVisible: true,
       detailViewVisible: false,
       focusOnRender: false,
       newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
+      containerMinHeight: null
     };
 
     this.orderBySettings = [{
@@ -81,7 +79,6 @@ class ReuseContent extends React.Component {
   runSearch = ({ query, filters, orderBy, page }) => {
     this.setState({
       detailViewVisible: false,
-      contentListVisible: true,
       search: ContentApiClient.search({
         query: query || this.state.query,
         filters: filters || this.state.filters,
@@ -117,7 +114,6 @@ class ReuseContent extends React.Component {
   showContentDetails = (content) => {
     this.setState({
       detailViewVisible: true,
-      contentListVisible: false,
       content: content
     });
   }
@@ -135,7 +131,17 @@ class ReuseContent extends React.Component {
     this.runSearch(newState);
   }
 
+  setMinContainerHeight = (height) => {
+    this.setState({
+      containerMinHeight: height
+    });
+  }
+
   render() {
+
+    const containerStyle = {
+      minHeight: this.state.containerMinHeight ? `${this.state.containerMinHeight}px` : 'auto'
+    };
 
     return (
       <div className="reuse-view loaded">
@@ -149,51 +155,53 @@ class ReuseContent extends React.Component {
           filters={this.filters}
           onChange={this.handleFilters}
         />
-        <div className='reuse-content-result'>
+        <div className='reuse-content-result' style={containerStyle}>
           <Order
             hits={22930} //Get from api
             selected={this.state.orderBy}
             onChange={this.handleOrderBy}
             headerLabel={Dictionary.get('contentSectionAll')}
-            visible={this.state.contentListVisible}
+            visible={true}
             orderVariables={this.orderBySettings} />
 
           <ContentList
             itemsPromise={this.state.search}
             onSelect={this.showContentDetails}
-            visible={this.state.contentListVisible}
+            visible={true}
             handlePageChange={this.handlePageChange} />
 
           {
             this.state.detailViewVisible &&
-            <Content
-              content={this.state.content}
-              onDownload={(content) => { console.log('DOWNLOAD', content); }}
-              aboutToClose={() => this.setState({ contentListVisible: true })}
-              onClose={() => { this.setState({ detailViewVisible: false }); }} />
+            <div className="content-list-overlay">
+              <Content
+                content={this.state.content}
+                onDownload={(content) => { console.log('DOWNLOAD', content); }}
+                aboutToClose={() => this.setState({ contentListVisible: true })}
+                onClose={() => this.setState({ detailViewVisible: false })}
+                setMinContainerHeight={this.setMinContainerHeight}
+              />
+            </div>
           }
-        </div>
-        {
-          this.state.contentListVisible &&
+            
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
             suggestionText={Dictionary.get('noContentSuggestion')}
             headerText={Dictionary.get('noContentHeader')} />
-        }
 
-        <SelectionsList
-          itemsPromise={this.state.popularContent}
-          title={Dictionary.get('popularContent')}
-          actionLabel={Dictionary.get('allPopular')}
-          onAction={() => this.showAllOrderedBy('popular')}
-          onSelect={this.showContentDetails} />
+          <SelectionsList
+            itemsPromise={this.state.popularContent}
+            title={Dictionary.get('popularContent')}
+            actionLabel={Dictionary.get('allPopular')}
+            onAction={() => this.showAllOrderedBy('popular')}
+            onSelect={this.showContentDetails} />
 
-        <SelectionsList
-          itemsPromise={this.state.newContent}
-          title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')}
-          onAction={() => this.showAllOrderedBy('newest')}
-          onSelect={this.showContentDetails} />
+          <SelectionsList
+            itemsPromise={this.state.newContent}
+            title={Dictionary.get('newOnTheHub')}
+            actionLabel={Dictionary.get('allNew')}
+            onAction={() => this.showAllOrderedBy('newest')}
+            onSelect={this.showContentDetails} />
+          </div>
 
       </div>
     );
