@@ -5,6 +5,7 @@ import './FilterButton.scss';
 
 const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropdownLabel }, ref) => {
 
+  //Check if the check symbol on the filterButton should be shown
   const oneChecked = checked.length == 1 && data.length == 1;
 
   const filterNumberShown = checked.length > 0 && !oneChecked;
@@ -24,18 +25,29 @@ const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropd
     }
   };
 
+  /**
+   * Handle filter button clicks
+   * 
+   * @param {Event} event 
+   */
+  const handleClick = (event) => {
+    // We don't want the event to propagate, since we are listening
+    // for clicks on window in Filter.js (to close the filter dialog)
+    event.stopPropagation();
+    onClick(id);
+  };
+
   return (
     <div id={id} className='filter-button'>
       <button
         tabIndex='-1'
         id={id}
         className={className()}
-        onClick={() => onClick(id)}
+        onClick={handleClick}
         ref={ref}>
 
         {dropdownLabel}
-        
-        <div className={oneChecked ? 'icon check' : 'icon' }>
+        <div className={oneChecked ? 'icon check' : 'icon'}>
           {filterNumberShown && `(${checked.length})`}
         </div>
 
@@ -50,7 +62,7 @@ FilterButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
   data: PropTypes.array,
-  dropdownLabel: PropTypes.string.isRequired
+  dropdownLabel: PropTypes.string.isRequired,
 };
 
 export default FilterButton;

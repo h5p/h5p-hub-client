@@ -9,11 +9,11 @@ import fetchJSON from '../../../../utils/fetchJSON';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
-import Modal from './Modal/Modal';
+import Modal from '../../../Modal/Modal';
 import ContentTypeAccordion from './ContentTypeAccordion';
-import ImageSlider from './ImageSlider/ImageSlider';
+import ImageSlider from '../../../ImageSlider/ImageSlider';
 import ButtonBar from './ButtonBar';
-import ReadMore from './ReadMore';
+import ReadMore from '../../../ReadMore/ReadMore';
 
 import './ContentType.scss';
 
@@ -328,14 +328,16 @@ class ContentType extends React.Component {
           attributes={(this.props.library.license ? this.props.library.license.attributes : undefined )}
           onShowLicenseDetails={this.handleShowLicenseDetails}
         />
-        <Modal
-          visible={this.state.modalType !== undefined}
-          onClose={this.onModalClose}
-          className={this.state.modalType || ''}
-          aria={modalAria}
-        >
-          <ModalContent/>
-        </Modal>
+        { this.state.modalType !== undefined &&
+          <Modal
+            onClose={this.onModalClose}
+            className={this.state.modalType || ''}
+            aria={modalAria}
+            parent=".h5p-section-content-types"
+          >
+            <ModalContent/>
+          </Modal>
+        }
       </div>
     );
   }

@@ -1,51 +1,60 @@
 @import "../../../styles/base/mixins";
 @import "../../../styles/base/colors";
 
-.checkbox {
-  font-size: 1.36314em;
 
-  &:focus {
-    box-shadow: 0 0 0.4em 0.01em RGBA(26, 147, 244, 0.7);
-    outline: none;
-  }
+.h5p-hub {
+  .checkbox {
+    font-size: 1.05em;
+    
+    &:focus {
+      box-shadow: 0 0 0.4em 0.01em RGBA(26, 147, 244, 0.7);
+      outline: none;
+    }
 
-  display: inline-block;
-  cursor: pointer;
-  align-self: start;
-  padding: 0.2em 0;
-  color: #4d5057;
-  width: 100%;
+    display: inline-block;
+    cursor: pointer;
+    align-self: start;
+    padding: 0.2em 0;
+    color: #4d5057;
+    width: 100%;
 
-  .content{
-    display: flex;
-  }
-
-  .content-text{
-    margin-left: 2em;
-  }
-
-  &.checked {
     .content {
-      &::before {
-        @include icon($icon-checkbox-check);
-        font-style: normal;
-        font-size: 0.8em;
-        margin: 0.4em 0.4em 0 0.4em;
-        margin-right: 1em;
-        color: $c1;
+      display: flex;
+    }
+
+    .content-text {
+      margin-left: 2em;
+    }
+
+    &.checked {
+      .content {
+        &::before {
+          @include icon($icon-checkbox-check);
+          font-style: normal;
+          font-size: 0.8em;
+          margin: 0.4em 0.4em 0 0.4em;
+          margin-right: 1em;
+          color: $c1;
+        }
       }
     }
-  }
 
-  &.unChecked {
-    .content {
-      &::before {
-        @include icon($icon-check-empty);
-        font-style: normal;
-        font-size: 0.8em;
-        margin: 0.4em 0.4em 0 0.4em;
-        margin-right: 1em;
-        color: $c1;
+    &.highlighted {
+      border: 0.06815em solid #3ba0f2;
+      background-color: #fff;
+      box-shadow: none;
+    }
+
+    &.unChecked {
+      .content {
+        &::before {
+          @include icon($icon-check-empty);
+          font-style: normal;
+          font-size: 0.8em;
+          margin: 0.4em 0.4em 0 0.4em;
+          margin-right: 1em;
+          color: $c1;
+        }
       }
     }
   }

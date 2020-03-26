@@ -31,6 +31,11 @@ class Pagination extends React.Component {
     });
   }
 
+  /**
+   * Find the new selected page and control if focus need to be changed
+   * @param  {string} id
+   * @param  {Object} attributes
+   */
   handlePageSelected = (id, attributes) => {
     let pageNumber = attributes.getNamedItem('data-page').value;
     let setFocus = this.props.setFocus;
@@ -42,6 +47,7 @@ class Pagination extends React.Component {
       pageNumber = this.props.selectedPage + 1;
     }
     //Toggle setFocus to force focus to change
+    //Make sure focus won't get stuck in arrows, when arrows are disabled in each end of numbers
     if (pageNumber == 1 || pageNumber == this.props.pages) {
       setFocus = !this.props.setFocus;
     }

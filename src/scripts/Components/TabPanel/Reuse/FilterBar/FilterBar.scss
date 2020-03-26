@@ -1,77 +1,80 @@
 @import "../../../../../styles/base/variables";
 @import "../../../../../styles/base/mixins";
 
-.filter-bar {
-  background-color: $c1;
-  padding: 1em;
-  font-size: 1.22683em;
-  display: flex;
+.h5p-hub {
+  .filter-bar {
+    background-color: $c1;
+    font-size: 1em;
+    padding: 0 0.833em 0.833em 1.125em;
+    display: flex;
 
-  @media (max-width: $screen-small) {
-    flex-direction: column;
-    justify-content: center;
+    @media (max-width: $screen-small) {
+      flex-direction: column;
+      justify-content: center;
 
-    .filter-label{
-      align-self: start;
-      margin-left: 1em;
+      .filter-label {
+        align-self: start;
+        margin-left: 1em;
+      }
+    }
+
+    .filter-label {
+      color: #ffffff;
+      align-self: center;
     }
   }
 
-  .filter-label {
-    color: #ffffff;
-    align-self: center;
-  }
-}
+  .filter-buttons {
+    display: flex;
+    flex-direction: row;
 
-.filter-buttons {
-  display: flex;
-  flex-direction: row;
+    li {
+      outline: none;
+    }
 
-  li {
-    outline: none;
-  }
+    li:focus {
+      .filter-button {
+        box-shadow: $box-shadow-blue;
+        button {
+          background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+        }
+      }
+    }
 
-  li:focus {
-    .filter-button {
-      box-shadow: $box-shadow-blue;
-      button {
-        background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+    @media (max-width: $screen-small) {
+      flex-direction: column;
+      li {
+        margin: 0.5em 0 0.5em 0;
       }
     }
   }
 
-  @media (max-width: $screen-small) {
-    flex-direction: column;
-    li{
-      margin: 0.5em 0 0.5em 0;
-    }
-  }
-}
+  .clear-filters {
+    flex-grow: 1;
+    align-self: center;
 
-.clear-filters {
-  flex-grow: 1;
-  align-self: center;
+    button {
+      font-family: 'Open Sans', sans-serif;
+      align-items: center;
+      float: right;
+      display: flex;
+      font-size: 1em;
+      background: none;
+      color: #ffffff;
+      font-size: 0.88889em;
+      cursor: pointer;
 
-  button {
-    align-items: center;
-    float: right;
-    display: flex;
-    font-size: 1em;
-    background: none;
-    color: #ffffff;
-    font-size: 0.88889em;
-    cursor: pointer;
+      &:focus {
+        box-shadow: $box-shadow-blue;
+        outline: none;
+      }
 
-    &:focus {
-      box-shadow: $box-shadow-blue;
-      outline: none;
-    }
-
-    &::before {
-      @include icon($icon-remove);
-      font-style: normal;
-      font-size: 0.7em;
-      margin-right: 0.7em;
+      &::before {
+        @include icon($icon-remove);
+        font-style: normal;
+        font-size: 0.7em;
+        margin-right: 0.7em;
+      }
     }
   }
 }

@@ -1,56 +1,45 @@
 @import "../../../../../../../../styles/base/mixins";
 @import "../../../../../../../../styles/base/variables";
 
-.search-button{
-  width: 100%;
-  .search-field {
-  position: relative;
+.h5p-hub {
+  .search-button {
+    width: 100%;
+    .search-field {
+      position: relative;
 
-  .icon-arrow {
-    position: absolute;
-    font-size: 1.30353em;
-    top: 0.8em;
-    right: 1em;
-    cursor: pointer;
-    color: #000000;
+      .icon-arrow {
+        position: absolute;
+        font-size: 1.30353em;
+        top: 1em;
+        right: 1em;
+        cursor: pointer;
+        color: #000000;
 
-    &::before {
-      content: "\e565";
-      font-family: "h5p";
-      font-style: normal;
+        &::before {
+          content: "\e565";
+          font-family: "h5p";
+          font-style: normal;
+        }
+      }
     }
   }
-  .clear-button {
-    background: none;
-    position: absolute;
-    top: 0em;
-    right: 3.5em;
-    padding: 1.35em;
-    color: #757575;
-    &::before {
-      @include icon($icon-remove);
-      font-style: normal;
-      font-size: 0.7em;
+
+  #filter-search-bar {
+    border: 0.04545em solid #e6e6e8;
+    padding: 0.7em;
+    font-style: italic;
+    font-size: 1.5em;
+    width: 100%;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: #b7b8ba;
     }
-  }
-}
-}
 
-#filter-search-bar {
-  border: 0.04545em solid #e6e6e8;
-  padding: 0.7em;
-  font-style: italic;
-  font-size: 1.65004em;
-  width: 100%;
-  box-sizing: border-box;
-
-  &::placeholder {
-    color: #b7b8ba;;
-  }
-
-  &:focus {
-    border: 0.04545em solid #3ba0f2;
-    background-color: #fff;
-    outline: none;
+    &:focus {
+      border: 0.04545em solid #3ba0f2;
+      background-color: #fff;
+      outline: none;
+    }
   }
 }

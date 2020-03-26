@@ -8,14 +8,18 @@ export const pageNumToId = (num) => {
 
 export const paginationList = (selected, pages, screenWidth) => {
 
-  const listElements = [];
+  const listElements = []; //Each element in the pagination
 
   const screenSmall = parseInt(variables.screenSmall);
 
   const noDotsLimit = 7; //If the number of pages are this number or below all numbers will be shown.
   const numbersInBeginning = 5; //If the selected page is below this number, all pages up and included this number will be shown.
   const numbersInEnd = 3; //How close to the end the selected page must be to show selected-1 and to end. 
-
+ 
+  /**
+   * Visual dots that can't be clicked on or naviagte to
+   * @param  {string} key
+   */
   const dots = (key) => (
     <li id='paginator-dots' disabled={true} key={'dots: ' + key} className="dots">
       <div className="dots-text">
@@ -32,7 +36,7 @@ export const paginationList = (selected, pages, screenWidth) => {
         aria-current={page == selected}
       >
         {page}
-      </a>  
+      </a>
     </li>);
 
   const arrow = (direction, active) => (
@@ -43,8 +47,8 @@ export const paginationList = (selected, pages, screenWidth) => {
         id={`paginator-${direction == '-1' ? 'previous' : 'next'}`}
         disabled={!active}
         aria-label={Dictionary.get(`${direction == '-1' ? 'previous' : 'next'}Page`)}
+        className={direction=='-1' ? 'previous-arrow' : 'next-arrow'}
       >
-        {direction == '-1' ? '<' : '>'}
       </a>
     </li>
   );

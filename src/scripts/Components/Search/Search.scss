@@ -23,7 +23,7 @@
   }
 }
 
-#hub-search-bar {
+.hub-search-bar {
   border: 1px solid #bfc0c0;
   padding: 0.5em 0.5em 0.5em 1.2em;
   font-style: italic;
@@ -60,5 +60,12 @@
     right: 4px;
     bottom: 4px;
     pointer-events: none;
+  }
+
+  // Remove $MS clear icon from search input
+  &::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
   }
 }

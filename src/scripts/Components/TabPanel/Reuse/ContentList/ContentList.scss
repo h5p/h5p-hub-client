@@ -1,0 +1,21 @@
+.h5p-hub .content-list {
+  transition: opacity 0.2s, visibility 0s linear 0s;
+
+  &[aria-hidden="true"] {
+    display: inherit;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0s linear 0.2s;
+  }
+
+  .h5p-hub-list.tabular {
+    &:before {
+      content: " ";
+      width: 100%;
+      box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
+      height: calc(100% - 5.996455834em);
+      position: absolute;
+      pointer-events: none;
+    }
+  }
+}

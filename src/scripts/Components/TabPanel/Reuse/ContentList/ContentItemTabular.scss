@@ -1,9 +1,10 @@
-.content-item.tabular {
+@import '../../../../../styles/base/variables';
 
+.h5p-hub .content-item.tabular {
   font-size: 16px;
   display: flex;
   padding: 1em;
-  border-bottom: 2px solid #d9d9d9;
+  border-bottom: 1px solid #ececec;
   align-items: center;
   cursor: pointer;
 
@@ -20,8 +21,8 @@
   }
 
   .image {
-    width: 140px;
-    height: 95px;
+    width: 7em;
+    height: 5.25em;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -32,12 +33,15 @@
   }
 
   .title {
-    font-size: 1.5625em;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: normal;
     letter-spacing: -0.5px;
 
     &.reviewed:after {
       font-size: 0.8em;
       font-family: 'h5p-hub';
+      font-weight: normal;
       content: '\e90b';
       color: #359d94;
       position: relative;
@@ -47,25 +51,25 @@
   }
 
   .by {
-    font-size: 1.25em;
+    font-size: 1em;
     color: #666;
     margin: 0 0.3em;
   }
 
   .owner {
-    font-size: 1.25em;
+    font-size: 1em;
   }
 
   .content-type {
-    font-size: 1.125em;
+    font-size: 0.9em;
     color: #303030;
     letter-spacing: 0.65px;
-    margin: 0.5em 0;
+    margin: 0.25em 0;
   }
 
   .summary {
     color: #72757c;
-    font-size: 1.1875em;
+    font-size: 0.95em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -76,7 +80,7 @@
     flex-shrink: 0;
     position: relative;
     font-size: 1.5em;
-    width: 4em;
+    width: 1.5em;
     height: 1em;
     text-align: center;
 
@@ -91,6 +95,10 @@
 
       position: relative;
       left: -0.2em;
+    }
+  
+    @media (max-width: $screen-small) {
+      display: none;
     }
   }
 
