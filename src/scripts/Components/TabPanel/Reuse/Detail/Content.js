@@ -25,8 +25,6 @@ class Content extends React.Component {
       showImageSlider: true,
       message: undefined
     };
-
-    this.modalRef = React.createRef();
   }
 
   onTransitionEnd = () => {
@@ -84,20 +82,7 @@ class Content extends React.Component {
       this.setState({
         visible: true
       });
-
-      this.setMinHeight();
     }, 1);
-
-    window.addEventListener('resize', this.setMinHeight);
-  }
-
-  componentWillUnmount = () => {
-    window.removeEventListener('resize', this.setMinHeight);
-    this.props.setMinContainerHeight();
-  }
-
-  setMinHeight = () => {
-    this.props.setMinContainerHeight(this.modalRef.current.offsetHeight + this.props.content.listNode.offsetTop);
   }
 
   /*openPreviewUrl = () => {
@@ -107,11 +92,7 @@ class Content extends React.Component {
   render() {
     const classNames = 'content-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-detail-view-title';
-    const content = this.props.content.item;
-
-    const style = {
-      top: (this.props.content.listNode.offsetTop) + 'px'
-    };
+    const content = this.props.content;
 
     // Modal content - image slider or license ?
     const ModalContent = () => {
@@ -164,8 +145,6 @@ class Content extends React.Component {
         tabIndex="-1"
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
-        style={style}
-        ref={this.modalRef}
       >
         <a href="#"
           className="back-button icon-arrow-thick"
@@ -242,14 +221,14 @@ class Content extends React.Component {
           </button>
         </div>
 
-        <ContentAccordion onUpdate={this.setMinHeight}/>
+        <ContentAccordion />
         { 
           this.state.modalType !== undefined &&
           <Modal
             onClose={this.onModalClose}
             className={this.state.modalType || ''}
             aria={modalAria}
-            parent=".content-detail"
+            parent=".reuse-content-result"
           >
             <ModalContent/>
           </Modal>
@@ -264,20 +243,17 @@ Content.propTypes = {
   onClose: PropTypes.func.isRequired,
   aboutToClose: PropTypes.func.isRequired,
   content: PropTypes.shape({
-    item: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
-      owner: PropTypes.string.isRequired,
-      reviewed: PropTypes.bool.isRequired,
-      contentType: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-      screenshots: PropTypes.arrayOf(PropTypes.shape({
-        url: nonEmptyString,
-        alt: nonEmptyString
-      })),
-      image: PropTypes.string
-    }),
-    listNode: PropTypes.node
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    owner: PropTypes.string.isRequired,
+    reviewed: PropTypes.bool.isRequired,
+    contentType: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    screenshots: PropTypes.arrayOf(PropTypes.shape({
+      url: nonEmptyString,
+      alt: nonEmptyString
+    })),
+    image: PropTypes.string,
   })
 };
 

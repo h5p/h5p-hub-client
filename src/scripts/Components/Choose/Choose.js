@@ -118,17 +118,7 @@ class Choose extends React.Component {
     role: ['a', 'button'].indexOf(child.type) !== -1 ? undefined : child.props.role || 'button',
     onClick: event => this.handleClick(event, child.props.id),
     onKeyDown: event => this.handleKeyDown(event, child.props.id),
-    ref: item => {
-      //If disabled then you can't navigate to that element
-      if(item && !child.props.disabled) {
-        this.items.push(item);
-      }
-
-      const {ref} = child;
-      if (typeof ref === 'function') {
-        ref(item);
-      }
-    } 
+    ref: item => item && !child.props.disabled ? this.items.push(item) : undefined //If disabled then you can't navigate to that element
   } : undefined, !child.props.id && child.props.children ? React.Children.map(child.props.children, this.cloneChild) : child.props.children)
 
   render() {

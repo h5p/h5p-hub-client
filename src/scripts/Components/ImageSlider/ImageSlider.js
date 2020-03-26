@@ -197,7 +197,7 @@ class ImageSlider extends React.Component {
 
     this.items = []; // Array to preserve order
     const slides = images.map((image, idx) => {
-      return (
+      return(
         <li
           key={idx}
           style={slideStyle}

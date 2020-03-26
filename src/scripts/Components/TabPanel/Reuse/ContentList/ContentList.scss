@@ -1,6 +1,6 @@
 .h5p-hub .content-list {
   transition: opacity 0.2s, visibility 0s linear 0s;
-  
+
   &[aria-hidden="true"] {
     display: inherit;
     opacity: 0;
