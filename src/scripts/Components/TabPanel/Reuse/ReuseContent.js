@@ -51,8 +51,10 @@ class ReuseContent extends React.Component {
     });
 
     const licensePromise = new Promise(function (resolve) {
-      resolve([{ id: 'modified', label: filterTrans.licenses.options.modified },
-        { id: 'commercial', label: filterTrans.licenses.options.commercial }]);
+      resolve([
+        { id: 'modified', label: filterTrans.licenses.options.modified },
+        { id: 'commercial', label: filterTrans.licenses.options.commercial }
+      ]);
     });
 
     this.filters = [
