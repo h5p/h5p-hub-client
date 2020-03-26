@@ -249,6 +249,12 @@ H5PEditor.language.core = {
       dialogHeader: 'Select Content type(s)',
       dialogButtonLabel: 'Filter Content Types',
       searchPlaceholder: 'Select one or more content types'
+    },
+    disciplines: {
+      dropdownLabel: 'Discipline',
+      dialogHeader: 'Select Your Discipline',
+      dialogButtonLabel: 'Filter Disciplines',
+      searchPlaceholder: 'Select one or more disciplines'
     }
   },
   clearFilters: 'Clear all filters',

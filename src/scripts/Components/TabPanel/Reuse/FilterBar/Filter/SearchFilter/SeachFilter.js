@@ -16,15 +16,19 @@ class SearchFilter extends React.Component {
       setFocus: false,
       focused: null,
       checkedParents: [],
-      parent: null,
+      parent: [],
     };
 
     this.searchRef = React.createRef();
-    this.searchList = this.getLeaves(); //List of elements that can be checked on or off and that are not a category
-    this.parents = this.props.items.filter(element => element.children);
+    this.searchList = []; //List of elements that can be checked on or off and that are not a category
+    this.allParents = [];
+
+    this.parents = [];
     this.checkboxRefs = {};
     this.listRefId = 'list';
     this.checkboxRefs[this.listRefId] = React.createRef();
+
+    this.getParents(this.props.items);
 
     this.parents.forEach(parent => this.checkboxRefs[parent.id] = React.createRef());
     this.searchList.forEach(checkbox => this.checkboxRefs[checkbox.id] = React.createRef());
@@ -39,7 +43,7 @@ class SearchFilter extends React.Component {
 
   componentWillUnmount() {
     this.setState({
-      parent: null,
+      parent: [],
       focused: null
     });
   }
@@ -63,7 +67,7 @@ class SearchFilter extends React.Component {
         checkboxElements: list,
         searchValue: value,
         dropdownOpen: true,
-        parent: null
+        parent: [],
       });
     }
   };
@@ -85,8 +89,8 @@ class SearchFilter extends React.Component {
 
       //The checkbox is a cateqgory and all it's children should either be checked on or off.
       if (children) {
-        this.setParentsChecked(children.map(element => element.id), checkedOf);
-        this.props.handleChecked(filter, children.map(element => element.id), checkedOf);
+        this.setParentsChecked(this.getChildren(this.getParentFromId(checkbox)).map(element => element.id), checkedOf);
+        this.props.handleChecked(filter, this.getChildren(this.getParentFromId(checkbox)).filter(element => this.getParentFromId(element.id) ===null).map(element => element.id), checkedOf);
       }
       else {
         this.setParentsChecked(checkbox, checkedOf);
@@ -106,12 +110,13 @@ class SearchFilter extends React.Component {
     const checkedParents = [];
     let checked = null;
     if (Array.isArray(checkbox)) {
-      checked = checkedOf ? this.props.checked.filter(element => checkbox.indexOf(element) === -1).concat(checkbox)
+      checked = checkedOf ? this.props.checked.filter(element => checkbox.indexOf(element) === -1).concat(checkbox).concat(this.state.checkedParents)
         : this.props.checked.filter(id => checkbox.indexOf(id) === -1);
     } else {
-      checked = checkedOf ? this.props.checked.concat([checkbox]) : this.props.checked.filter(element => element !== checkbox);
+      checked = checkedOf ? this.props.checked.concat([checkbox].concat(this.state.checkedParents)) : this.props.checked.filter(element => element !== checkbox);
     }
-    this.parents.forEach(parent => this.checkedOf(parent.children, checked) ? checkedParents.push(parent.id) : {});
+    checked.filter(checkbox => this.getParentFromId(checkbox) ===null);
+    this.parents.forEach(parent => this.checkedOf(this.getChildren(parent), checked) ? checkedParents.push(parent.id) : {});
     this.setState({ checkedParents: checkedParents });
   }
 
@@ -137,6 +142,7 @@ class SearchFilter extends React.Component {
       this.checkboxRefs[this.listRefId].current.scrollTop = scrolltop;
     }
   }
+
   /**
    * Navigate to children or to the first level according to direction
    * @param  {number} direction 1 or -1
@@ -144,8 +150,8 @@ class SearchFilter extends React.Component {
   handleNavigateSideway = (direction) => {
     if (this.state.dropdownOpen && direction == -1 && this.state.parent) {
       this.navigateToParent();
-    } else if (this.state.dropdownOpen && direction == 1 && this.state.focused && this.getLeaves(this.state.focused)) {
-      this.navigeteToChildren(this.state.focused, this.getLeaves(this.state.focused));
+    } else if (this.state.dropdownOpen && direction == 1 && this.state.focused && this.getChildren(this.getParentFromId(this.state.focused))) {
+      this.navigeteToChildren(this.state.focused, this.getParentFromId(this.state.focused).children);
     }
   }
 
@@ -157,7 +163,7 @@ class SearchFilter extends React.Component {
   navigeteToChildren = (id, children) => {
     this.setState({
       checkboxElements: children,
-      parent: id,
+      parent: [...this.state.parent, id],
     });
     this.searchRef.current.focus();
   }
@@ -166,7 +172,11 @@ class SearchFilter extends React.Component {
    * Navigate to the initial level 
    */
   navigateToParent = () => {
-    this.setState({ parent: null, checkboxElements: this.props.items.sort(this.compare), focused: this.state.parent });
+    const parent = this.state.parent[this.state.parent.length -2];
+    const checkboxElements = this.getParentFromId(parent) && this.getParentFromId(parent).children;
+    const newParent = this.state.parent;
+    newParent.pop();
+    this.setState({ parent: newParent, checkboxElements: checkboxElements ? checkboxElements : this.props.items.sort(this.compare), focused: this.state.parent[0] });
     this.searchRef.current.focus();
   }
 
@@ -192,18 +202,56 @@ class SearchFilter extends React.Component {
    * @param  {string} id an id can be supplied
    * @return {array, bool}
    */
-  getLeaves = (id) => {
-    if (id) {
-      return this.props.items.filter(element => element.id === id)[0] ?
-        this.props.items.filter(element => element.id === id)[0].children
-        : false;
+  getChildren = (parent) => { //Rename to descendandts or something like that
+    if (parent === null) {
+      return [];
     }
-    else {
-      const allLeafes = [];
-      this.props.items.forEach(element => element.children ?
-        element.children.forEach(child => allLeafes.map(child => child.id).indexOf(child.id) === -1 && allLeafes.push(child))
-        : allLeafes.push(element));
-      return allLeafes;
+    const children = [];
+    const list = [parent];
+    while (list.length > 0) {
+      const element = list.pop();
+      if (element && element.children) {
+        children.concat(element.children);
+        element.children.forEach(
+          element => {
+            children.push(element);
+            list.push(element);
+          }
+        );
+      }
+    }
+    return children;
+  }
+
+  recursionExample = (list, number) => {
+    const newList = list;
+    if (number == 1) {
+      return list;
+    } else {
+      return this.recursionExample(newList.concat([number]), number - 1);
+
+    }
+  }
+
+  getParentFromId = (id) => {
+    for (let i = 0; i < this.parents.length; i++) {
+      if (this.parents[i].id === id) {
+        return (this.parents[i]);
+      }
+    }
+    return null;
+  }
+
+  getParents = (childrenList) => {
+    for (let i = 0; i < childrenList.length; i++) {
+      const element = childrenList[i];
+      if (element.children) {
+        this.parents.push(element);
+        this.getParents(element.children);
+      } else {
+        this.searchList.push(element);
+      }
+
     }
   }
 
@@ -239,12 +287,12 @@ class SearchFilter extends React.Component {
           placeholder={this.props.dictionary.searchPlaceholder}
           onClick={this.handleSearchClick}
           onNavigateVertical={this.handleNavigateVertical}
-          onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !(this.checkedOf(this.state.focused)), this.state.parent)}
+          onSelect={() => this.handleChecked(this.props.filter, this.state.focused, !(this.checkedOf(this.state.focused)), this.state.parent[this.state.parent.length-1])}
           onNavigateSideway={this.handleNavigateSideway}
         ></SearchField>
-        {this.state.parent && this.state.dropdownOpen &&
+        {this.state.parent.length > 0 && this.state.dropdownOpen &&
           <button onClick={this.navigateToParent} className='navigate-parent'>
-            {this.props.items.filter(element => element.id === this.state.parent)[0].label}
+            {this.getParentFromId(this.state.parent[this.state.parent.length - 1]).label}
           </button>
         }
         {this.state.searchValue.length > 0
@@ -255,12 +303,14 @@ class SearchFilter extends React.Component {
             onChecked={this.handleChecked}
             items={this.state.checkboxElements}
             checked={this.props.checked.concat(this.state.checkedParents)}
+            checkedParents={this.state.checkedParents}
             filter={this.props.filter}
             focused={this.state.focused}
             navigateToChildren={this.navigeteToChildren}
-            parent={this.state.parent}
+            parent={this.state.parent[this.state.parent.length - 1]}
             ref={this.checkboxRefs}
             listRefId={this.listRefId}
+            getChildren={this.getChildren}
           />
         }
       </div>

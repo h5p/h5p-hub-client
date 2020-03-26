@@ -6,18 +6,21 @@ import Checkbox from '../Checkbox/Checkbox';
 const CheckboxList = React.forwardRef(({
   items,
   onChecked,
-  checked, filter,
+  checkedParents,
+  checked,
+  filter,
   focused,
   navigateToChildren,
   parent,
-  listRefId }, ref) => {
+  listRefId,
+  getChildren}, ref) => {
 
   const isChecked = (id) => {
     return checked.indexOf(id) != -1;
   };
 
   const childrenChecked = (children) => {
-    return children ? children.filter(element => isChecked(element.id)).length : null;
+    return children ? children.filter(element => isChecked(element.id) && checkedParents.indexOf(element.id) === -1).length : null;
   };
 
   return (
@@ -41,7 +44,7 @@ const CheckboxList = React.forwardRef(({
             children={element.children}
             navigateToChildren={navigateToChildren}
             parent={parent}
-            childrenChecked={childrenChecked(element.children) > 0 && childrenChecked(element.children)}
+            childrenChecked={childrenChecked(element.children) > 0 && childrenChecked(getChildren(element))}
             ref={ref && ref[element.id]}
           />
         );

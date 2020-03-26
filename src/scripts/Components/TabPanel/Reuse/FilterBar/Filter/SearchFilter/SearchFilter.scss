@@ -3,13 +3,14 @@
 
 .search-filter {
   outline: 0.06815em solid #bebdcd;
+  position: relative;
 
   .clear-button {
     background: none;
     position: absolute;
-    top: 5em;
-    right: 5.5em;
-    padding: 1.5em;
+    top: 0;
+    padding: 1.6em;
+    right: 3em;
     color: #757575;
     &::before {
       @include icon($icon-remove);
