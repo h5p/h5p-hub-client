@@ -31,15 +31,16 @@
     li {
       outline: none;
     }
-  }
-  li:focus {
-    .filter-button {
-      box-shadow: $box-shadow-blue;
-      button {
-        background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+  
+    li:focus {
+      .filter-button {
+        box-shadow: $box-shadow-blue;
+        button {
+          background-image: linear-gradient(0deg, #e3e3e3 0%, #ffffff 100%);
+        }
       }
     }
-
+  
     @media (max-width: $screen-small) {
       flex-direction: column;
       li {

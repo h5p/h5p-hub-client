@@ -55,6 +55,9 @@
           outline: none;
           box-shadow: none;
         }
+        &:hover{
+          background-color: #f2f2f2;
+        }
         &.highlighted {
           border: 0.06815em solid #3ba0f2;
           background-color: #fff;
@@ -64,6 +67,7 @@
           background-color: rgba(230, 230, 232, 0.25);
         }
       }
+
       &::-webkit-scrollbar {
         background-color: rgba(105, 117, 133, 0.25);
         width: 0.54525em;

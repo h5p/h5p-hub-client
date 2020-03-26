@@ -47,31 +47,38 @@ class ReuseContent extends React.Component {
 
     const filterTrans = Dictionary.get('filters');
 
-    const reviewedPromise = new Promise(function(resolve) {
-      resolve( [{id: 'reviewed', label: filterTrans.reviewed.optionLabel}]);
+    const reviewedPromise = new Promise(function (resolve) {
+      resolve([{ id: 'reviewed', label: filterTrans.reviewed.optionLabel }]);
+    });
+
+    const licensePromise = new Promise(function (resolve) {
+      resolve([
+        { id: 'modified', label: filterTrans.licenses.options.modified },
+        { id: 'commercial', label: filterTrans.licenses.options.commercial }
+      ]);
     });
 
     this.filters = [
+      { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
       { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
       { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'}
     ];
-
   }
 
   handlePageChange = (setFocus, page) => {
     if (page !== this.state.page) {
       //Do something with selected page
-      this.setState({ 
+      this.setState({
         page: page,
         focusOnRender: setFocus
       });
-      this.runSearch({page: page});
+      this.runSearch({ page: page });
     }
   }
 
-  runSearch = ({query, filters, orderBy, page}) => {
+  runSearch = ({ query, filters, orderBy, page }) => {
     this.setState({
       detailViewVisible: false,
       contentListVisible: true,
@@ -86,15 +93,15 @@ class ReuseContent extends React.Component {
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({orderBy: orderBy});
-      this.runSearch({orderBy: orderBy});
+      this.setState({ orderBy: orderBy });
+      this.runSearch({ orderBy: orderBy });
     }
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({query: query});
-      this.runSearch({query: query});
+      this.setState({ query: query });
+      this.runSearch({ query: query });
     }
   }
 
@@ -102,8 +109,8 @@ class ReuseContent extends React.Component {
     // TODO - check if it has changed in a better way. Now order matters
     // Also check why this is invoked too much
     if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
-      this.setState({filters: filters});
-      this.runSearch({filters: filters});
+      this.setState({ filters: filters });
+      this.runSearch({ filters: filters });
     }
   }
 
@@ -117,7 +124,6 @@ class ReuseContent extends React.Component {
 
   showAllOrderedBy = (orderBy) => {
     // TODO - clear filters in Filterbar
-
     const newState = {
       orderBy: orderBy,
       filters: {},
@@ -130,13 +136,13 @@ class ReuseContent extends React.Component {
   }
 
   render() {
-   
+
     return (
       <div className="reuse-view loaded">
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
-          onSearch={this.handleSearch} 
-          value={this.state.query}/>
+          onSearch={this.handleSearch}
+          value={this.state.query} />
 
         <FilterBar
           label={Dictionary.get('filterBy')}
@@ -158,16 +164,16 @@ class ReuseContent extends React.Component {
             visible={this.state.contentListVisible}
             handlePageChange={this.handlePageChange} />
 
-          { 
+          {
             this.state.detailViewVisible &&
-            <Content 
+            <Content
               content={this.state.content}
-              onDownload={(content) => {console.log('DOWNLOAD', content);}}
-              aboutToClose={() => this.setState({contentListVisible: true})}
-              onClose={() => {this.setState({detailViewVisible: false});}} />
+              onDownload={(content) => { console.log('DOWNLOAD', content); }}
+              aboutToClose={() => this.setState({ contentListVisible: true })}
+              onClose={() => { this.setState({ detailViewVisible: false }); }} />
           }
         </div>
-        { 
+        {
           this.state.contentListVisible &&
           <NoContent
             tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
@@ -179,7 +185,7 @@ class ReuseContent extends React.Component {
           itemsPromise={this.state.popularContent}
           title={Dictionary.get('popularContent')}
           actionLabel={Dictionary.get('allPopular')}
-          onAction={() => this.showAllOrderedBy('popular')} 
+          onAction={() => this.showAllOrderedBy('popular')}
           onSelect={this.showContentDetails} />
 
         <SelectionsList

@@ -85,10 +85,10 @@ H5PEditor.language.core = {
   h5pFileWrongExtensionContent: 'Only files with the .h5p extension are allowed.',
   h5pFileValidationFailedTitle: 'Could not validate H5P file.',
   h5pFileValidationFailedContent: 'Make sure the uploaded H5P contains valid H5P content. H5P' +
-  ' files containing only libraries should be uploaded through the H5P Libraries page.',
+    ' files containing only libraries should be uploaded through the H5P Libraries page.',
   h5pFileUploadServerErrorTitle: 'The H5P file could not be uploaded',
   h5pFileUploadServerErrorContent: 'An unexpected error occured. Check your server error log for' +
-  ' more details.',
+    ' more details.',
   contentTypeSectionAll: 'All Content Types',
   searchResults: 'Search Results',
   contentTypeSearchFieldPlaceholder: 'Search for Content Types',
@@ -166,7 +166,7 @@ H5PEditor.language.core = {
   addTitle: 'Add title',
   usedForSearchingReportsAndCopyrightInformation: 'Used for searching, reports and copyright information',
   metadataSharingAndLicensingInfo: 'Metadata (sharing and licensing info)',
-  fillInTheFieldsBelow : 'Fill in the fields below',
+  fillInTheFieldsBelow: 'Fill in the fields below',
   saveMetadata: 'Save metadata',
   addAuthor: 'Save author',
   confirmRemoveAuthor: 'Are you sure you would like to remove this author?',
@@ -249,6 +249,15 @@ H5PEditor.language.core = {
       dialogHeader: 'Select Content type(s)',
       dialogButtonLabel: 'Filter Content Types',
       searchPlaceholder: 'Select one or more content types'
+    },
+    licenses: {
+      dropdownLabel: 'License',
+      dialogHeader: 'Select preferred rights of use',
+      dialogButtonLabel: 'Filter licenses',
+      options: {
+        modified: 'Can be modified',
+        commercial: 'Allows commercial use'
+      }
     }
   },
   clearFilters: 'Clear all filters',
