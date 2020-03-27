@@ -1,6 +1,15 @@
+@import '../../../../styles/base/mixins';
+
 .h5p-hub {
-  .reuse-content-result{
+  .reuse-content-result {
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 56em;
+    @include scroll-bar(#F3F3F3, #5e6978);
+  }
+
+  .reuse-content-container {
+    position: relative;
   }
 }

@@ -1,43 +1,51 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Accordion from '../../../Accordion/Accordion';
+import LicenseInfo from '../../../License/LicenseInfo';
+import Dictionary from '../../../../utils/dictionary';
+import { contentDefinition } from '../../../../utils/helpers';
 
 import './ContentAccordion.scss';
 
-const ContentAccordion = () => {
+const ContentAccordion = ({content, onShowLicenseDetails}) => {
   return (
     <Accordion>
+    
+      <LicenseInfo
+        header={Dictionary.get('contentTypeLicensePanelTitle')}
+        id={content.license.id}
+        version={content.license.version}
+        attributes={{}}
+        onShowLicenseDetails={onShowLicenseDetails}
+      />
+      
       <div 
-        header='License info'
-        id='lic-info'
-      >
-        License info comes here
-      </div>
-
-      <div 
-        header='Language'
-        id='language'
-      >
-        Language info comes here
-      </div>
-      <div 
-        header='Description'
+        header={Dictionary.get('contentDescriptionPanelHeader')}
         id='description'
       >
-        Description comes here
+        {content.description}
       </div>
 
       <div 
-        header='Publisher info'
+        header={Dictionary.get('contentPublisherPanelHeader')}
         id='publisher-info'
       >
-        Publisher info comes here
+        <h3 className="publisher-name">
+          {content.publisher.name}
+        </h3>
+
+        <div className="publisher-description">
+          {content.publisher.description}
+        </div>
       </div>
     </Accordion>
   );
 };
 
-/*ContentAccordion.propTypes = {
-};*/
+ContentAccordion.propTypes = {
+  content: contentDefinition,
+  onShowLicenseDetails: PropTypes.func.isRequired
+};
 
 export default ContentAccordion;

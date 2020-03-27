@@ -5,7 +5,8 @@ const endpoints = {
   licenses: 'licenses',
   languages: 'languages',
   levels: 'levels',
-  reviewed: 'reviewed'
+  reviewed: 'reviewed',
+  license: 'license'
 };
 
 export default endpoints;

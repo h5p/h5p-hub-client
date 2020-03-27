@@ -88,6 +88,13 @@ $color-back-button: #474f5a;
       color: #6f747a;
     }
 
+    .language {
+      margin-top: 1em;
+      color: #72757c;
+      font-style: italic;
+      font-size: 0.95em;
+    }
+
     .text-details {
       margin-left: 2em;
 
@@ -131,25 +138,9 @@ $color-back-button: #474f5a;
       transform: rotate(-90deg) translateX(2px);
       line-height: 1;
     }
-  }
 
-  .imagelightbox-button {
-    &.next:before,
-    &.previous:before {
-      display: block;
-      line-height: 2em;
-      height: 100%;
-    }
-    &.next:before {
-      @include icon($icon-arrow-thick);
-      transform: rotate(180deg);
-
-    }
-    &.previous:before {
-      @include icon($icon-arrow-thick);
-    }
-    &.close:before {
-      @include icon($icon-close);
+    .lightbox-inner.license {
+      @include scroll-bar(#F3F3F3, #5e6978);
     }
   }
 }

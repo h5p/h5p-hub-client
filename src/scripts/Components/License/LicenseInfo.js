@@ -1,77 +1,67 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Dictionary from '../../../../utils/dictionary';
+import Dictionary from '../../utils/dictionary';
 
-import './License.scss';
+import './LicenseInfo.scss';
 
-// const License = ({id, onShowLicenseDetails, attributes}) => {
-
-class License extends React.Component {
-
-  renderSection(flag) {
-    if(flag) {
-      return (
-        <div className='short-license-info'>
-          <h3>{this.props.id}</h3>
+const LicenseInfo = ({id, version, onShowLicenseDetails, attributes}) => {
+  return (
+    <div className='short-license-info'> {
+      id !== 'Unspecified' ? (
+        <>
+          <h3>{`${id} ${version || ''}`}</h3>
 
           <button
             type="button"
             className="short-license-read-more"
             aria-label={Dictionary.get('readMore')}
-            onClick={this.props.onShowLicenseDetails}>
+            onClick={onShowLicenseDetails}>
           </button>
 
           <p>{Dictionary.get("licenseDescription")}</p>
 
           <ul className="ul small">
             <li>
-              {Dictionary.get(this.props.attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
+              {Dictionary.get(attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
             </li>
             {
-              this.props.attributes.useCommercially &&
+              attributes.useCommercially &&
               <li>{Dictionary.get("licenseCanUseCommercially")}</li>
             }
             {
-              this.props.attributes.modifiable &&
+              attributes.modifiable &&
               <li>{Dictionary.get("licenseCanModify")}</li>
             }
             {
-              this.props.attributes.distributable &&
+              attributes.distributable &&
               <li>{Dictionary.get("licenseCanDistribute")}</li>
             }
             {
-              this.props.attributes.sublicensable &&
+              attributes.sublicensable &&
               <li>{Dictionary.get("licenseCanSublicense")}</li>
             }
             {
-              this.props.attributes.mustIncludeCopyright &&
+              attributes.mustIncludeCopyright &&
               <li>{Dictionary.get("licenseMustIncludeCopyright")}</li>
             }
             {
-              this.props.attributes.mustIncludeLicense &&
+              attributes.mustIncludeLicense &&
               <li>{Dictionary.get("licenseMustIncludeLicense")}</li>
             }
           </ul>
-        </div>
-      );
+        </>
+      ) : (
+        <p>{Dictionary.get("licenseUnspecified")}</p>
+      )
     }
-    else {
-      return (
-        <div className='short-license-info'>
-          <p>{Dictionary.get("licenseUnspecified")}</p>
-        </div>
-      );
-    }
-  }
+    </div>
+  );
+};
 
-  render () {
-    return this.renderSection(this.props.id !== 'Unspecified');
-  }
-}
-
-License.propTypes = {
-  id: PropTypes.string,
+LicenseInfo.propTypes = {
+  id: PropTypes.string.isRequired,
+  version: PropTypes.string,
   onShowLicenseDetails: PropTypes.func,
   attributes: PropTypes.shape({
     canHoldLiable: PropTypes.bool,
@@ -84,4 +74,4 @@ License.propTypes = {
   })
 };
 
-export default License;
+export default LicenseInfo;

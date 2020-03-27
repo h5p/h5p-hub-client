@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Async from 'react-async';
 
 import Dictionary from '../../../../utils/dictionary';
-import { nonEmptyString } from '../../../../utils/helpers';
+import { contentDefinition } from '../../../../utils/helpers';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 
 import Message from '../../../Message/Message';
@@ -12,6 +13,7 @@ import ReadMore from '../../../ReadMore/ReadMore';
 import ContentAccordion from './ContentAccordion';
 
 import './Content.scss';
+import LicenseDialog from './LicenseDialog';
 
 class Content extends React.Component {
 
@@ -25,13 +27,16 @@ class Content extends React.Component {
       showImageSlider: true,
       message: undefined
     };
+
+    this.focusSet = false;
   }
 
   onTransitionEnd = () => {
     if (!this.state.visible) {
       this.props.onClose();
     }
-    else {
+    else if (!this.focusSet) {
+      this.focusSet = true;
       this.title.focus();
     }
   }
@@ -85,17 +90,44 @@ class Content extends React.Component {
     }, 1);
   }
 
+  /**
+   * Show license details
+   */
+  handleShowLicenseDetails = () => {
+    this.setState({modalType: 'license'});
+  }
+
   /*openPreviewUrl = () => {
     window.open(this.props.library.example, '_blank');
   }*/
+
+  /**
+   * Get a language's label
+   * 
+   * @param {array} languages
+   * @return {string}
+   */
+  getLanguageLabel(languages) {
+    for (let i = 0; i < languages.length; i++) {
+      if (languages[i].id === this.props.content.language) {
+        return languages[i].label;
+      }
+    }
+
+    // Unknown language
+    return this.props.content.language;
+  }
 
   render() {
     const classNames = 'content-detail' + (this.state.visible ? ' show' : '');
     const titleId = 'content-detail-view-title';
     const content = this.props.content;
 
+    let modalAria = {};
     // Modal content - image slider or license ?
     const ModalContent = () => {
+      modalAria.label = Dictionary.get('imageLightboxTitle');
+
       if (this.state.modalType === 'screenshots') {
         return (
           <ImageSlider
@@ -106,37 +138,14 @@ class Content extends React.Component {
         );
       }
       else if (this.state.modalType === 'license') {
+        modalAria.labelledby = 'license-details-id';
+        modalAria.describedby = 'license-details-description';
+
         return (
-          <div>
-            <div className="modal-header">
-              {Dictionary.get('licenseModalTitle')}
-            </div>
-            <div className="modal-content">
-              <h5 id="license-details-id" className="modal-title">
-                {content.license.id}
-              </h5>
-              <div
-                id="license-details-description"
-                className={this.state.licenseDetails ? undefined : 'loading'}
-                dangerouslySetInnerHTML={{__html: this.state.licenseDetails}}
-              />
-            </div>
-          </div>
+          <LicenseDialog id={content.license.id} />
         );
       }
-
-      return null;
     };
-
-    let modalAria = {};
-
-    if (this.state.modalType === 'screenshots') {
-      modalAria.label = Dictionary.get('imageLightboxTitle');
-    }
-    /*if (this.state.modalType === 'license' && this.state.licenseDetails) {
-      modalAria.labelledby = 'license-details-id';
-      modalAria.describedby = 'license-details-description';
-    }*/
 
     return (
       <div className={classNames}
@@ -172,6 +181,20 @@ class Content extends React.Component {
               <span className="by">{Dictionary.get("by")}</span>
               {content.owner}
             </div>
+            
+            <div className="language">
+              <Async promiseFn={this.props.languages}>
+                <Async.Pending>
+                  {content.language}
+                </Async.Pending>
+
+                <Async.Fulfilled>{languages =>
+                  this.getLanguageLabel(languages)
+                }
+                </Async.Fulfilled>
+              </Async>
+            </div>
+            
             <ReadMore
               text={content.description}
               maxLength={285}
@@ -215,20 +238,23 @@ class Content extends React.Component {
         <div className="button-bar">
           <button type="button"
             className="button button-orange button-inverse-primary button-download-content"
-            onClick={this.props.onDownload}
+            onClick={() => this.props.onDownload(content)}
           >
             {Dictionary.get(`contentDownloadButtonLabel`)}
           </button>
         </div>
 
-        <ContentAccordion />
+        <ContentAccordion 
+          content={content}
+          onShowLicenseDetails={this.handleShowLicenseDetails}
+        />
         { 
           this.state.modalType !== undefined &&
           <Modal
             onClose={this.onModalClose}
             className={this.state.modalType || ''}
             aria={modalAria}
-            parent=".reuse-content-result"
+            parent=".content-detail"
           >
             <ModalContent/>
           </Modal>
@@ -242,19 +268,8 @@ Content.propTypes = {
   onDownload: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
   aboutToClose: PropTypes.func.isRequired,
-  content: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired,
-    reviewed: PropTypes.bool.isRequired,
-    contentType: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    screenshots: PropTypes.arrayOf(PropTypes.shape({
-      url: nonEmptyString,
-      alt: nonEmptyString
-    })),
-    image: PropTypes.string,
-  })
+  content: contentDefinition,
+  languages: PropTypes.func.isRequired
 };
 
 export default Content;

@@ -274,4 +274,6 @@ H5PEditor.language.core = {
   contentPreviewButtonLabel: 'Preview',
   contentDownloadButtonLabel: 'Get Content',
   reuseContentTabLabel: 'Get Shared Content',
+  contentDescriptionPanelHeader: 'Description',
+  contentPublisherPanelHeader: 'Publisher Info',
 };

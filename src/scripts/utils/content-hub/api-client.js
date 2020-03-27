@@ -3,6 +3,7 @@ import endpoints from './endpoints';
 export default class ApiClient {
   constructor({language = 'en'}) {
     this.language = language;
+    this.licenses = {};
   }
 
   static init(language) {
@@ -27,11 +28,20 @@ export default class ApiClient {
     };
   }
 
+  static getLicense(id) {
+    // Cache the license text
+    if (!ApiClient.instance.licenses[id]) {
+      ApiClient.instance.licenses[id] = ApiClient.instance.get(endpoints.license, {id: id});
+    }
+
+    return ApiClient.instance.licenses[id];
+  }
+
   static search({
     query = '',
     orderBy = '',
     filters = [],
-    limit = 8,
+    limit = 6,
     page = 0
   }) {
     return ApiClient.instance.get(endpoints.search, {

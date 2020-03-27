@@ -14,7 +14,9 @@ class Accordion extends React.Component {
   }
 
   handleToggle(child) {
-    this.setState({expanded: this.state.expanded === child.props.id ? undefined : child.props.id});
+    this.setState({
+      expanded: this.state.expanded === child.props.id ? undefined : child.props.id
+    });
   }
 
   render() {

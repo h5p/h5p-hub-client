@@ -58,13 +58,17 @@ class ReuseContent extends React.Component {
       ]);
     });
 
+    this.languages = ApiClient.languages;
+
     this.filters = [
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
       { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
+      { id: 'language', promise: this.languages(), dictionary: filterTrans.language, type: 'search' },
       { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'}
     ];
+
+    this.reuseContentResultRef = React.createRef();
   }
 
   handlePageChange = (setFocus, page) => {
@@ -89,6 +93,15 @@ class ReuseContent extends React.Component {
         page: page || this.state.page,
       })
     });
+    this.scrollToSearchResults();
+  }
+
+  scrollToSearchResults = () => {
+    this.reuseContentResultRef.current.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 
   handleOrderBy = (orderBy) => {
@@ -96,6 +109,7 @@ class ReuseContent extends React.Component {
       this.setState({ orderBy: orderBy });
       this.runSearch({ orderBy: orderBy });
     }
+    this.scrollToSearchResults();
   }
 
   handleSearch = (query) => {
@@ -103,6 +117,7 @@ class ReuseContent extends React.Component {
       this.setState({ query: query });
       this.runSearch({ query: query });
     }
+    this.scrollToSearchResults();
   }
 
   handleFilters = (filters) => {
@@ -133,6 +148,8 @@ class ReuseContent extends React.Component {
 
     this.setState(newState);
     this.runSearch(newState);
+
+    this.scrollToSearchResults();
   }
 
   render() {
@@ -149,20 +166,44 @@ class ReuseContent extends React.Component {
           filters={this.filters}
           onChange={this.handleFilters}
         />
-        <div className='reuse-content-result'>
-          <Order
-            hits={22930} //Get from api
-            selected={this.state.orderBy}
-            onChange={this.handleOrderBy}
-            headerLabel={Dictionary.get('contentSectionAll')}
-            visible={this.state.contentListVisible}
-            orderVariables={this.orderBySettings} />
+        
+        <div className='reuse-content-container'>
+          <div className='reuse-content-result' ref={this.reuseContentResultRef}>
+            <Order
+              hits={22930} //Get from api
+              selected={this.state.orderBy}
+              onChange={this.handleOrderBy}
+              headerLabel={Dictionary.get('contentSectionAll')}
+              visible={this.state.contentListVisible}
+              orderVariables={this.orderBySettings} />
 
-          <ContentList
-            itemsPromise={this.state.search}
-            onSelect={this.showContentDetails}
-            visible={this.state.contentListVisible}
-            handlePageChange={this.handlePageChange} />
+            <ContentList
+              itemsPromise={this.state.search}
+              onSelect={this.showContentDetails}
+              visible={this.state.contentListVisible}
+              handlePageChange={this.handlePageChange} />
+            
+              
+            <NoContent
+              tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
+              suggestionText={Dictionary.get('noContentSuggestion')}
+              headerText={Dictionary.get('noContentHeader')} />
+          
+
+            <SelectionsList
+              itemsPromise={this.state.popularContent}
+              title={Dictionary.get('popularContent')}
+              actionLabel={Dictionary.get('allPopular')}
+              onAction={() => this.showAllOrderedBy('popular')}
+              onSelect={this.showContentDetails} />
+
+            <SelectionsList
+              itemsPromise={this.state.newContent}
+              title={Dictionary.get('newOnTheHub')}
+              actionLabel={Dictionary.get('allNew')}
+              onAction={() => this.showAllOrderedBy('newest')}
+              onSelect={this.showContentDetails} />
+          </div>
 
           {
             this.state.detailViewVisible &&
@@ -170,31 +211,10 @@ class ReuseContent extends React.Component {
               content={this.state.content}
               onDownload={(content) => { console.log('DOWNLOAD', content); }}
               aboutToClose={() => this.setState({ contentListVisible: true })}
-              onClose={() => { this.setState({ detailViewVisible: false }); }} />
+              onClose={() => { this.setState({ detailViewVisible: false }); }} 
+              languages={this.languages} />
           }
         </div>
-        {
-          this.state.contentListVisible &&
-          <NoContent
-            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-            suggestionText={Dictionary.get('noContentSuggestion')}
-            headerText={Dictionary.get('noContentHeader')} />
-        }
-
-        <SelectionsList
-          itemsPromise={this.state.popularContent}
-          title={Dictionary.get('popularContent')}
-          actionLabel={Dictionary.get('allPopular')}
-          onAction={() => this.showAllOrderedBy('popular')}
-          onSelect={this.showContentDetails} />
-
-        <SelectionsList
-          itemsPromise={this.state.newContent}
-          title={Dictionary.get('newOnTheHub')}
-          actionLabel={Dictionary.get('allNew')}
-          onAction={() => this.showAllOrderedBy('newest')}
-          onSelect={this.showContentDetails} />
-
       </div>
     );
   }

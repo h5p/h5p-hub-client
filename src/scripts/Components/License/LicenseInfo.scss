@@ -1,0 +1,18 @@
+@import '../../../styles/base/mixins';
+
+.h5p-hub .short-license-info {
+  h3 {
+    display: inline-block;
+  }
+
+  .short-license-read-more {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .short-license-read-more:before {
+    @include icon($icon-info-circle);
+    margin-left: 0.5em;
+  }
+}
