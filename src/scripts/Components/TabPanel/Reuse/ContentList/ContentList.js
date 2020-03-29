@@ -57,19 +57,21 @@ const ContentList = ({
         </Async.Rejected>
 
         <Async.Fulfilled>{result =>
-          <>
-            <List type={type} onSelect={id => onSelect(contentLookup[id])}>
-              {createItems(result.content)}
-            </List>
-            { 
-              showPagination &&
-              <Pagination
-                selectedPage={result.page}
-                pages={result.pages}
-                onChange={handlePageChange}
-                setFocus={false} />
-            }
-          </>
+          result.numResults ? (
+            <>
+              <List type={type} onSelect={id => onSelect(contentLookup[id])}>
+                {createItems(result.content)}
+              </List>
+              { 
+                showPagination &&
+                <Pagination
+                  selectedPage={result.page}
+                  pages={result.pages}
+                  onChange={handlePageChange}
+                  setFocus={false} />
+              }
+            </> 
+          ) : null
         }
         </Async.Fulfilled>
       </Async>

@@ -19,11 +19,6 @@
 
     .right-text {
       padding: 3em 2em;
-      height: 5em;
-      display: flex;
-
-      justify-content: space-between;
-      flex-direction: column;
 
       .header {
         font-size: 1.2em;
@@ -34,6 +29,7 @@
       .suggestion-text {
         color: #72757c;
         font-size: 0.95em;
+        margin: 0.2em 0;
         text-decoration: none solid rgb(114, 117, 124);
       }
 

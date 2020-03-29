@@ -16,6 +16,7 @@ import Content from './Detail/Content';
 
 
 import './ReuseContent.scss';
+import { Async } from 'react-async';
 
 const defaultOrderBy = 'popular';
 
@@ -153,7 +154,6 @@ class ReuseContent extends React.Component {
   }
 
   render() {
-
     return (
       <div className="reuse-view loaded">
         <Search
@@ -169,14 +169,20 @@ class ReuseContent extends React.Component {
         
         <div className='reuse-content-container'>
           <div className='reuse-content-result' ref={this.reuseContentResultRef}>
-            <Order
-              hits={22930} //Get from api
-              selected={this.state.orderBy}
-              onChange={this.handleOrderBy}
-              headerLabel={Dictionary.get('contentSectionAll')}
-              visible={this.state.contentListVisible}
-              orderVariables={this.orderBySettings} />
-
+            <Async promiseFn={this.state.search}>
+              <Async.Fulfilled>{result =>
+                result.numResults ? (
+                  <Order
+                    hits={result.numResults}
+                    selected={this.state.orderBy}
+                    onChange={this.handleOrderBy}
+                    headerLabel={Dictionary.get('contentSectionAll')}
+                    visible={this.state.contentListVisible}
+                    orderVariables={this.orderBySettings} />
+                ) : null 
+              }
+              </Async.Fulfilled>
+            </Async>
             <ContentList
               itemsPromise={this.state.search}
               onSelect={this.showContentDetails}
@@ -184,11 +190,15 @@ class ReuseContent extends React.Component {
               handlePageChange={this.handlePageChange} />
             
               
-            <NoContent
-              tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-              suggestionText={Dictionary.get('noContentSuggestion')}
-              headerText={Dictionary.get('noContentHeader')} />
-          
+            <Async promiseFn={this.state.search}>
+              <Async.Fulfilled>{result =>
+                <NoContent
+                  tutorialUrl={result.numResults ? "https://h5p.org/documentation/for-authors/tutorials" : null}
+                  suggestionText={Dictionary.get(result.numResults ? 'noContentSuggestion' : 'noContentFoundDesc')}
+                  headerText={Dictionary.get(result.numResults ? 'noContentHeader' : 'noResultsFound')} />
+              }
+              </Async.Fulfilled>
+            </Async>
 
             <SelectionsList
               itemsPromise={this.state.popularContent}
