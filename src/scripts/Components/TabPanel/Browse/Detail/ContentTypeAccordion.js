@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 import Accordion from '../../../Accordion/Accordion';
-import License from './License';
+import License from '../../../License/LicenseInfo';
 
 import './ContentTypeAccordion.scss';
 

@@ -85,11 +85,11 @@ const CategoryList = React.forwardRef(({
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
 
-      {getCheckboxes(categoryList.topCategories)}
       {
         categoryList.map(category => {
           return (
             <div key={'div-' + category.id}>
+              <div>{category.catNoParent !== null ? getCheckboxes([category.catNoParent]) : null}</div>
               <div key={category} ref={ref && ref[categoryRefId]} className='category-header'>in {category.label}</div>
               {getCheckboxes(category.children)}
             </div>

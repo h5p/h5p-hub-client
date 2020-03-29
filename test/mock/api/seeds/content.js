@@ -34,10 +34,19 @@ const create = function(content) {
     contentType: content.contentType || randomContentType(),
     icon: content.image || 'test/images/image.jpg',
     summary: content.summary || chance.sentence({ words: 12 }),
-    description: content.description || chance.sentence({ words: 50 }),
+    description: content.description || chance.sentence({ words: 150 }),
     reviewed: content.reviewed || chance.bool(),
     preview_url: content.preview_url || chance.url(),
     screenshots: screenshots,
+    language: randomFromArray(['en', 'nb', 'sv', 'da', 'sr']),
+    publisher: {
+      name: chance.name(),
+      description: chance.sentence({ words: 50 })
+    },
+    license: {
+      id: randomFromArray(['mit', 'cc', 'ocl', 'opl', 'gfdl']),
+      version: 1
+    }
   };
 };
 

@@ -4,7 +4,7 @@ import Dictionary from '../../../../utils/dictionary';
 
 import './ContentItemGrid.scss';
 
-const ContentItemGrid = ({content, onOpenDetails}) => {
+const ContentItemGrid = ({content}) => {
   return (
     <div className="grid-item">
       <img src={content.icon} />
@@ -16,6 +16,7 @@ const ContentItemGrid = ({content, onOpenDetails}) => {
       <button 
         type="button"
         className="button button-orange button-inverse-primary"        
+        tabIndex="-1"
       >
         {Dictionary.get('contentTypeDetailButtonLabel')}
       </button>

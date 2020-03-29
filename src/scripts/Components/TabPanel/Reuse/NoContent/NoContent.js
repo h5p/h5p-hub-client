@@ -14,16 +14,19 @@ const NoContent = ({ headerText, suggestionText, tutorialUrl }) => (
       <div className="suggestion-text">
         {suggestionText}
       </div>
-      <div>
-        <a className="url" target="_blank" href={tutorialUrl}>{Dictionary.get('tutorials')}</a>
-      </div>
+      {
+        tutorialUrl &&
+        <div>
+          <a className="url" target="_blank" href={tutorialUrl}>{Dictionary.get('tutorials')}</a>
+        </div>
+      }
     </section>
   </div>
 );
 
 NoContent.propTypes = {
-  headerText: PropTypes.string,
-  suggestionText: PropTypes.string,
+  headerText: PropTypes.string.isRequired,
+  suggestionText: PropTypes.string.isRequired,
   tutorialUrl: PropTypes.string
 };
 

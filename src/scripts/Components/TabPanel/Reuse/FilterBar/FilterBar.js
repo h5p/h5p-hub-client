@@ -6,7 +6,7 @@ import Choose from '../../../../Components/Choose/Choose';
 import FilterButton from './FilterButton/FilterButton';
 import Dictionary from '../../../../utils/dictionary';
 import CheckboxList from '../../../CheckboxList/CheckboxList';
-import SearchFilter from './Filter/SearchFilter/SeachFilter';
+import SearchFilter from './Filter/SearchFilter/SearchFilter';
 
 class FilterBar extends React.Component {
   constructor(props) {

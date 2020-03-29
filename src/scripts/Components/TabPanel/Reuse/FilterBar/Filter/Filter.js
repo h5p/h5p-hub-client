@@ -6,7 +6,9 @@ import Modal from 'react-modal';
 class Filter extends React.Component {
   constructor(props) {
     super(props);
-    Modal.setAppElement('.reuse-content-result');
+
+    this.container = document.querySelector('.reuse-content-container');
+
     this.state = {
       left: this.calculatePosition()
     };
@@ -23,12 +25,8 @@ class Filter extends React.Component {
   }
 
   closeModal = () => {
-    document.querySelector('.reuse-content-result').removeAttribute('aria-hidden');
+    this.container.removeAttribute('aria-hidden');
     this.props.onFilterClosed(this.props.id);
-  }
-
-  getParent = () => {
-    return document.querySelector('.reuse-content-result');
   }
 
   swallowClicks(event) {
@@ -78,21 +76,23 @@ class Filter extends React.Component {
         isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.id}
-        parentSelector={this.getParent}
+        parentSelector={() => this.container}
         className='filter-dialog'
         overlayClassName='lightbox'
         aria={modalAria}
         style={style}
         shouldCloseOnOverlayClick={false}
+        appElement={this.container}
       >
         <div className="filter-dialog-content" onClick={this.swallowClicks}>
           <div className="header-text">
             {this.props.dictionary.dialogHeader}
           </div>
 
-          {this.props.data && this.props.data.length !== undefined ?
-            //The actually checkboxes/filtering
-            this.props.children : <div className="loading" />
+          {
+            this.props.data && this.props.data.length !== undefined 
+              ? this.props.children //The actual checkboxes/filtering
+              : <div className="loading" />
           }
 
           <button

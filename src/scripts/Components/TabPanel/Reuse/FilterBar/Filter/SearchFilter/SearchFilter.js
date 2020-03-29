@@ -78,24 +78,15 @@ class SearchFilter extends React.Component {
 
   /**
    * Filter the checkboxlist according to search value
-   * @param  {string} value
+   * @param  {string} searchValue
    */
-  handleOnSearch = (value) => {
+  handleOnSearch = (searchValue) => {
     let list = [];
+    const value = searchValue.length > 1 ? searchValue : ''; // Don't filter list if only one character in search
     let categoryList = [];
-    if (value == '') {
+    if (searchValue == '') {
       this.handleClearSearch();
     }
-    /* else if(value.length === 1){
-      this.setState({
-        searchValue: value,
-        dropdownOpen: true,
-        parent: [],
-        //inSearch: true,
-        checkboxElements: [],
-        categoryList: []
-      });
-    }  */
     else {
       //This filter don't have categories to be shown
       if (!this.props.category) {
@@ -104,13 +95,12 @@ class SearchFilter extends React.Component {
 
       } else {
         categoryList = this.makeCategorySearchList(value);
-        list.push.apply(list, categoryList.topCategories);
         categoryList.forEach(category => list.push.apply(list, category.children));
       }
 
       this.setState({
         checkboxElements: list,
-        searchValue: value,
+        searchValue: searchValue,
         dropdownOpen: true,
         parent: [],
         inSearch: true,
@@ -126,23 +116,17 @@ class SearchFilter extends React.Component {
    */
   makeCategorySearchList = (value) => {
     const searchList = [];
-    const topCategories = [];
-    //Add categories for each parent that has children that match search
+    //Add categories for each parent that has children that match the search
     for (let i = 0; i < this.parents.length; i++) {
       const element = this.parents[i];
+      //Check if the parent dosen't have a parent and match value 
+      const parentMatch = RegExp(value.toUpperCase()).test(element.label.toUpperCase())
+        && this.getCheckboxFromId(element.id, this.props.items);
       const children = element.children.filter((element => RegExp(value.toUpperCase()).test(element.label.toUpperCase())));
       if (children.length > 0) {
-        searchList.push({ id: element.id, label: element.label, children: children });
+        searchList.push({ id: element.id, label: element.label, children: children, catNoParent: parentMatch ? element : null });
       }
     }
-    //Add the parent-less element if they match
-    for (let j = 0; j < this.props.items.length; j++) {
-      const newElement = this.props.items[j];
-      if ((RegExp(value.toUpperCase()).test(newElement.label.toUpperCase()))) {
-        topCategories.push(newElement);
-      }
-    }
-    searchList.topCategories = topCategories;
     return searchList;
 
   }

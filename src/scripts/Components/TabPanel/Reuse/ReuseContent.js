@@ -3,6 +3,8 @@ import React from 'react';
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
 
+import PropTypes from 'prop-types';
+
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
@@ -14,6 +16,7 @@ import Content from './Detail/Content';
 
 
 import './ReuseContent.scss';
+import { Async } from 'react-async';
 
 const defaultOrderBy = 'popular';
 
@@ -27,12 +30,12 @@ class ReuseContent extends React.Component {
       orderBy: defaultOrderBy,
       filters: {},
       hasSearchResults: false,
+      contentListVisible: true,
       detailViewVisible: false,
       focusOnRender: false,
       newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
-      containerMinHeight: null
     };
 
     this.orderBySettings = [{
@@ -56,6 +59,8 @@ class ReuseContent extends React.Component {
       ]);
     });
 
+    this.languages = ApiClient.languages;
+
     this.filters = [
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
@@ -64,6 +69,8 @@ class ReuseContent extends React.Component {
       { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'},
       { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'}
     ];
+
+    this.reuseContentResultRef = React.createRef();
   }
 
   handlePageChange = (setFocus, page) => {
@@ -80,12 +87,22 @@ class ReuseContent extends React.Component {
   runSearch = ({ query, filters, orderBy, page }) => {
     this.setState({
       detailViewVisible: false,
+      contentListVisible: true,
       search: ContentApiClient.search({
         query: query || this.state.query,
         filters: filters || this.state.filters,
         orderBy: orderBy || this.state.orderBy,
         page: page || this.state.page,
       })
+    });
+    this.scrollToSearchResults();
+  }
+
+  scrollToSearchResults = () => {
+    this.reuseContentResultRef.current.scrollTo({
+      left: 0,
+      top: 0,
+      behavior: 'smooth'
     });
   }
 
@@ -94,6 +111,7 @@ class ReuseContent extends React.Component {
       this.setState({ orderBy: orderBy });
       this.runSearch({ orderBy: orderBy });
     }
+    this.scrollToSearchResults();
   }
 
   handleSearch = (query) => {
@@ -101,6 +119,7 @@ class ReuseContent extends React.Component {
       this.setState({ query: query });
       this.runSearch({ query: query });
     }
+    this.scrollToSearchResults();
   }
 
   handleFilters = (filters) => {
@@ -115,6 +134,7 @@ class ReuseContent extends React.Component {
   showContentDetails = (content) => {
     this.setState({
       detailViewVisible: true,
+      contentListVisible: false,
       content: content
     });
   }
@@ -130,20 +150,11 @@ class ReuseContent extends React.Component {
 
     this.setState(newState);
     this.runSearch(newState);
-  }
 
-  setMinContainerHeight = (height) => {
-    this.setState({
-      containerMinHeight: height
-    });
+    this.scrollToSearchResults();
   }
 
   render() {
-
-    const containerStyle = {
-      minHeight: this.state.containerMinHeight ? `${this.state.containerMinHeight}px` : 'auto'
-    };
-
     return (
       <div className="reuse-view loaded">
         <Search
@@ -156,54 +167,65 @@ class ReuseContent extends React.Component {
           filters={this.filters}
           onChange={this.handleFilters}
         />
-        <div className='reuse-content-result' style={containerStyle}>
-          <Order
-            hits={22930} //Get from api
-            selected={this.state.orderBy}
-            onChange={this.handleOrderBy}
-            headerLabel={Dictionary.get('contentSectionAll')}
-            visible={true}
-            orderVariables={this.orderBySettings} />
+        
+        <div className='reuse-content-container'>
+          <div className='reuse-content-result' ref={this.reuseContentResultRef}>
+            <Async promiseFn={this.state.search}>
+              <Async.Fulfilled>{result =>
+                result.numResults ? (
+                  <Order
+                    hits={result.numResults}
+                    selected={this.state.orderBy}
+                    onChange={this.handleOrderBy}
+                    headerLabel={Dictionary.get('contentSectionAll')}
+                    visible={this.state.contentListVisible}
+                    orderVariables={this.orderBySettings} />
+                ) : null 
+              }
+              </Async.Fulfilled>
+            </Async>
+            <ContentList
+              itemsPromise={this.state.search}
+              onSelect={this.showContentDetails}
+              visible={this.state.contentListVisible}
+              handlePageChange={this.handlePageChange} />
+            
+              
+            <Async promiseFn={this.state.search}>
+              <Async.Fulfilled>{result =>
+                <NoContent
+                  tutorialUrl={result.numResults ? "https://h5p.org/documentation/for-authors/tutorials" : null}
+                  suggestionText={Dictionary.get(result.numResults ? 'noContentSuggestion' : 'noContentFoundDesc')}
+                  headerText={Dictionary.get(result.numResults ? 'noContentHeader' : 'noResultsFound')} />
+              }
+              </Async.Fulfilled>
+            </Async>
 
-          <ContentList
-            itemsPromise={this.state.search}
-            onSelect={this.showContentDetails}
-            visible={true}
-            handlePageChange={this.handlePageChange} />
+            <SelectionsList
+              itemsPromise={this.state.popularContent}
+              title={Dictionary.get('popularContent')}
+              actionLabel={Dictionary.get('allPopular')}
+              onAction={() => this.showAllOrderedBy('popular')}
+              onSelect={this.showContentDetails} />
+
+            <SelectionsList
+              itemsPromise={this.state.newContent}
+              title={Dictionary.get('newOnTheHub')}
+              actionLabel={Dictionary.get('allNew')}
+              onAction={() => this.showAllOrderedBy('newest')}
+              onSelect={this.showContentDetails} />
+          </div>
 
           {
             this.state.detailViewVisible &&
-            <div className="content-list-overlay">
-              <Content
-                content={this.state.content}
-                onDownload={(content) => { console.log('DOWNLOAD', content); }}
-                aboutToClose={() => this.setState({ contentListVisible: true })}
-                onClose={() => this.setState({ detailViewVisible: false })}
-                setMinContainerHeight={this.setMinContainerHeight}
-              />
-            </div>
+            <Content
+              content={this.state.content}
+              onDownload={(content) => { console.log('DOWNLOAD', content); }}
+              aboutToClose={() => this.setState({ contentListVisible: true })}
+              onClose={() => { this.setState({ detailViewVisible: false }); }} 
+              languages={this.languages} />
           }
-            
-          <NoContent
-            tutorialUrl="https://h5p.org/documentation/for-authors/tutorials"
-            suggestionText={Dictionary.get('noContentSuggestion')}
-            headerText={Dictionary.get('noContentHeader')} />
-
-          <SelectionsList
-            itemsPromise={this.state.popularContent}
-            title={Dictionary.get('popularContent')}
-            actionLabel={Dictionary.get('allPopular')}
-            onAction={() => this.showAllOrderedBy('popular')}
-            onSelect={this.showContentDetails} />
-
-          <SelectionsList
-            itemsPromise={this.state.newContent}
-            title={Dictionary.get('newOnTheHub')}
-            actionLabel={Dictionary.get('allNew')}
-            onAction={() => this.showAllOrderedBy('newest')}
-            onSelect={this.showContentDetails} />
-          </div>
-
+        </div>
       </div>
     );
   }
