@@ -4,9 +4,9 @@ import Accordion from '../../../Accordion/Accordion';
 
 import './ContentAccordion.scss';
 
-const ContentAccordion = () => {
+const ContentAccordion = ({onUpdate}) => {
   return (
-    <Accordion>
+    <Accordion onUpdate={onUpdate}>
       <div 
         header='License info'
         id='lic-info'

@@ -3,6 +3,7 @@ import endpoints from '../../../src/scripts/utils/content-hub/endpoints';
 import content from './seeds/content';
 import languages from './seeds/languages';
 import levels from './seeds/levels';
+import licenses from './seeds/licenses';
 import contentTypes from './seeds/content-types';
 import disciplines from './seeds/disciplines';
 
@@ -10,10 +11,9 @@ const endpointsToData = {};
 endpointsToData[endpoints.search] = content;
 endpointsToData[endpoints.languages] = languages;
 endpointsToData[endpoints.levels] = levels;
+endpointsToData[endpoints.licenses] = licenses;
 endpointsToData[endpoints.contentTypes] = contentTypes;
 endpointsToData[endpoints.disciplines] = disciplines;
-
-
 
 const urlParams = window.URLSearchParams ? new URLSearchParams(window.location.search) : {
   get: function () {

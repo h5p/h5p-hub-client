@@ -24,18 +24,35 @@ const ContentList = ({
   const contentLookup = {};
   const Item = (type === 'tabular') ? ContentItemTabular : ContentItemGrid;
 
-  const createItems = (items) => items.map((item, i) => {
-    contentLookup[item.id] = item;
+  const createItems = (items) => items.map(item => {
+    contentLookup[item.id] = {
+      item: item
+    };
+
     return (
-      <li className={`content-item ${type}`} id={item.id} key={i} tabIndex={i==1}>
-        <Item
-          content={item}
-          key={item.id}
-          id={item.id}
-        />
+      <li 
+        className={`content-item ${type}`}
+        key={item.id}
+        id={item.id}
+        ref={ref => contentLookup[item.id].listNode = ref}
+      >
+        <Item content={item}/>
       </li>
     );
   });
+
+  /**
+   * Handle selection of content
+   * 
+   * @param {string} id 
+   */
+  const handleSelect = id => {
+    const content = contentLookup[id];
+    onSelect({
+      item: content.item,
+      listNode: content.listNode
+    });
+  };
 
   return (
     <div className="content-list" aria-hidden={!visible}>
@@ -58,7 +75,7 @@ const ContentList = ({
 
         <Async.Fulfilled>{result =>
           <>
-            <List type={type} onSelect={id => onSelect(contentLookup[id])}>
+            <List type={type} onSelect={handleSelect}>
               {createItems(result.content)}
             </List>
             { 

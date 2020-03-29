@@ -4,12 +4,17 @@
 
 .loader {
   text-align: center;
+  padding: 2em 0;
+
+  @media screen and (max-width: $screen-small) {
+    padding: 1em 0;
+  }
 
   .spinner {
     font-family: 'h5p-hub';
     display: inline-block;
     font-size: 6.25em;
-    animation: spin 2s linear infinite;
+    animation: spin 0.5s linear infinite;
     -webkit-font-smoothing: antialiased;
     line-height: 1.05;
     width: 1em;
@@ -25,7 +30,7 @@
   .loader-title {
     margin-top: 0.5em;
     color: #242424;
-    font-size: 2em;
+    font-size: 1.5em;
     margin-bottom: 0.2em;
   }
 

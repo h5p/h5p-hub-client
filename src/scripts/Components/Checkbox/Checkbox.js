@@ -9,11 +9,17 @@ const Checkbox = React.forwardRef(
     filter,
     onChecked,
     focused,
-    children,
+    checkboxChildren,
     navigateToChildren,
     parent,
-    childrenChecked }, ref) => {
+    descendantsChecked,
+    tabIndex,
+    children }, ref) => {
 
+    /**
+     * Checkes of current checkbox if you use enter or space
+     * @param  {event} e
+     */
     const handleKeyDown = (e) => {
       if (e.key === 'Enter' || e.key == ' ') {
         onChecked(filter, id, !checked);
@@ -21,7 +27,14 @@ const Checkbox = React.forwardRef(
       }
     };
 
-    const onlyChecked = (filter, id, checked, e) => {
+    /**
+     * Stop propagation so click only check of checkbox and don't navigate
+     * @param  {string} filter
+     * @param  {string} id
+     * @param  {bool} checked
+     * @param  {event} e
+     */
+    const onCheckedClick = (filter, id, checked, e) => {
       if (e) {
         e.stopPropagation();
         onChecked(filter, id, checked, parent);
@@ -33,18 +46,20 @@ const Checkbox = React.forwardRef(
         ref={ref}
         id={id}
         key={parent + id}
-        className={`checkbox ${checked ? 'checked ' : 'unChecked '} ${focused ? 'highlighted' : ''} ${children ? 'parent' : ''}`}
+        className={`checkbox ${checked ? 'checked ' : 'unChecked '} ${focused ? 'highlighted' : ''} ${checkboxChildren ? 'parent' : ''}`}
         role='checkbox'
         aria-checked={checked}
-        onClick={() => children ? navigateToChildren(id, children) : onChecked(filter, id, !checked, parent)}
-        tabIndex='0'
+        onClick={() => checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked)}
+        tabIndex={tabIndex ? tabIndex : '0'}
         onKeyDown={handleKeyDown}>
         <div className='content' key={'label' + id}>
-          <div className='icon' onClick={(e) => children ? onlyChecked(filter, id, !checked, e) : {}} />
+          <div className='icon' onClick={(e) => checkboxChildren ? onCheckedClick(filter, id, !checked, e) : {}} />
           <div className='label-text'>
-            {label}
-            {childrenChecked &&
-              ` (${childrenChecked})`
+            {children ?
+              children : label}
+
+            {descendantsChecked > 0 &&
+              ` (${descendantsChecked})`
             }
           </div>
         </div>
@@ -59,9 +74,12 @@ Checkbox.propTypes = {
   checked: PropTypes.bool.isRequired,
   filter: PropTypes.string.isRequired,
   focused: PropTypes.bool,
-  children: PropTypes.array,
+  children: PropTypes.any,
+  checkboxChildren: PropTypes.array,
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
+  tabIndex: PropTypes.string,
+  descendantsChecked: PropTypes.any
 };
 
 export default Checkbox;
