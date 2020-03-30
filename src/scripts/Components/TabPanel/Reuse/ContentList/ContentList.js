@@ -9,6 +9,7 @@ import Loader from '../../../Loader/Loader';
 import Pagination from '../../../Pagination/Pagination';
 import ContentItemTabular from './ContentItemTabular';
 import ContentItemGrid from './ContentItemGrid';
+import LoadingList from './LoadingList';
 
 import './ContentList.scss';
 
@@ -41,10 +42,7 @@ const ContentList = ({
     <div className="content-list" aria-hidden={!visible}>
       <Async promiseFn={itemsPromise}>
         <Async.Pending>
-          <Loader
-            title={Dictionary.get('loadingContentTitle')}
-            subtitle={Dictionary.get('loadingContentSubtitle')} 
-          />
+          <LoadingList type={type}/>          
         </Async.Pending>
         
         <Async.Rejected>{(a, data) =>

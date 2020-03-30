@@ -1,0 +1,63 @@
+.h5p-hub-list.loading {
+  pointer-events: none;
+
+  .content-item {
+    animation: opacitychange 1s infinite;
+  }
+
+  .loading-block {
+    background: #ccc;
+    min-height: 1.15em;
+
+    &.button {
+      background: transparent;
+      animation: none;
+      border: 2px solid #ccc;
+    }
+  }
+
+  .middle {
+    height: 5.25em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .text-long {
+    width: 100%;
+  }
+
+  .text-medium {
+    width: 60%;    
+  }
+
+  .text-short {
+    width: 30%;    
+  }
+
+  .grid-item {
+    padding: 1em;
+
+    .image {
+      height: 8vw;
+      min-height: 5em;
+    }
+
+    .loading-block {
+      margin-bottom: 0.5em;
+
+      &.button {
+        margin-bottom: 0;
+        min-width: 0;
+        width: 4em;
+        max-width: 40%;
+      }
+    }
+  }
+}
+
+@keyframes opacitychange {
+  0% {opacity: 1;}
+  50% {opacity: 0.6;}
+  100% {opacity: 1;}
+}
