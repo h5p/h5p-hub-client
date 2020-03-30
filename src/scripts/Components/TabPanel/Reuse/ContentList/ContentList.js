@@ -19,7 +19,9 @@ const ContentList = ({
   onSelect,
   visible,
   handlePageChange,
-  showPagination
+  showPagination,
+  focused,
+  setFocus
 }) => {
 
   const contentLookup = {};
@@ -28,7 +30,7 @@ const ContentList = ({
   const createItems = (items) => items.map((item, i) => {
     contentLookup[item.id] = item;
     return (
-      <li className={`content-item ${type}`} id={item.id} key={i} tabIndex={i==1}>
+      <li className={`content-item ${type}`} id={item.id} key={i} tabIndex={i == 1}>
         <Item
           content={item}
           key={item.id}
@@ -42,11 +44,11 @@ const ContentList = ({
     <div className="content-list" aria-hidden={!visible}>
       <Async promiseFn={itemsPromise}>
         <Async.Pending>
-          <LoadingList type={type}/>          
+          <LoadingList type={type} />
         </Async.Pending>
-        
+
         <Async.Rejected>{(a, data) =>
-          <Message 
+          <Message
             title='Failed fetching data'
             severity='error'
             message={data.error.message}
@@ -57,10 +59,10 @@ const ContentList = ({
         <Async.Fulfilled>{result =>
           result.numResults ? (
             <>
-              <List type={type} onSelect={id => onSelect(contentLookup[id])}>
+              <List type={type} onSelect={id => onSelect(contentLookup[id], id)} selected={focused} setFocus={setFocus}>
                 {createItems(result.content)}
               </List>
-              { 
+              {
                 showPagination &&
                 <Pagination
                   selectedPage={result.page}
@@ -68,7 +70,7 @@ const ContentList = ({
                   onChange={handlePageChange}
                   setFocus={false} />
               }
-            </> 
+            </>
           ) : null
         }
         </Async.Fulfilled>
