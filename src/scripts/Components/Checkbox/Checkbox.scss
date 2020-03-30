@@ -52,25 +52,24 @@
       font-weight: bold;
     }
 
+    .content {
+      .icon {
+        &::before {
+          @include icon($icon-check-empty);
+          font-style: normal;
+          font-size: 0.8em;
+          margin: 0.4em 0.4em 0 0.4em;
+          margin-right: 1em;
+          color: $c1;
+        }
+      }
+    }
+    
     &.checked {
       .content {
         .icon {
           &::before {
             @include icon($icon-checkbox-check);
-            font-style: normal;
-            font-size: 0.8em;
-            margin: 0.4em 0.4em 0 0.4em;
-            margin-right: 1em;
-            color: $c1;
-          }
-        }
-      }
-    }
-    &.unChecked {
-      .content {
-        .icon {
-          &::before {
-            @include icon($icon-check-empty);
             font-style: normal;
             font-size: 0.8em;
             margin: 0.4em 0.4em 0 0.4em;

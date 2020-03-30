@@ -163,20 +163,30 @@ class FilterBar extends React.Component {
             handleChecked={this.handleChecked}
             toggleButtonRef={this.filterButtons[filter.id]}
             filterBarRef={this.filterBarRef} >
-            {filter.type == 'checkboxList' &&
+            {filter.type === 'checkboxList' &&
               <CheckboxList
                 onChecked={this.handleChecked}
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
               />}
-            {filter.type == 'search' &&
+            {filter.type === 'search' &&
               <SearchFilter
                 handleChecked={this.handleChecked}
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary}>
+              </SearchFilter>
+            }
+            {filter.type === 'boldSearch' &&
+              <SearchFilter
+                handleChecked={this.handleChecked}
+                items={this.state.filterData[filter.id]}
+                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+                filter={filter.id}
+                dictionary={filter.dictionary}
+                boldSearch={true}>
               </SearchFilter>
             }
             {filter.type === 'categorySearch' &&

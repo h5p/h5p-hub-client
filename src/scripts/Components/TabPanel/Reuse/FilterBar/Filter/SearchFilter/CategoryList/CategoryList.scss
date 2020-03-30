@@ -1,9 +1,13 @@
-.h5p-hub{
-  .category-header{
-    background-color: #f2f2f2;
-    color: #313131;
-    font-style: italic;
-    padding: 0 0 0 0.9em;
-    font-size: 0.81788em;
+.h5p-hub {
+  .category-group {
+    border-bottom: 2px solid #697585;
+  
+    .category-header {
+      background-color: #f2f2f2;
+      color: #313131;
+      font-style: italic;
+      padding: 0 0 0 0.9em;
+      font-size: 0.81788em;
+    }
   }
 }

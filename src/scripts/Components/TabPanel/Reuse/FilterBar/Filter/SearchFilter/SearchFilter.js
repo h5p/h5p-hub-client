@@ -324,7 +324,7 @@ class SearchFilter extends React.Component {
       if (element.children) {
         this.parents.push(element);
         this.setParentsAndLeafs(element.children);
-      } else {
+      } else if(this.getCheckboxFromId(element.id,this.leafs) === null) {
         this.leafs.push(element);
       }
     }
@@ -405,6 +405,8 @@ class SearchFilter extends React.Component {
             listRefId={this.listRefId}
             getDescendants={this.getDescendants}
             tabIndex='-1'
+            boldSearch={this.props.boldSearch}
+            searchValue={this.state.searchValue}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
@@ -434,7 +436,8 @@ SearchFilter.propTypes = {
   checked: PropTypes.array,
   filter: PropTypes.string.isRequired,
   dictionary: PropTypes.object.isRequired,
-  category: PropTypes.bool
+  category: PropTypes.bool,
+  boldSearch: PropTypes.bool
 };
 
 export default SearchFilter;

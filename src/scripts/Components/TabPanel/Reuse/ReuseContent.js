@@ -66,7 +66,7 @@ class ReuseContent extends React.Component {
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
       { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
-      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'},
+      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'boldSearch'},
       { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'}
     ];
 

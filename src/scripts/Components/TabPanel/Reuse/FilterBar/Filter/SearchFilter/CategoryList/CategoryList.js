@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CategoryList.scss';
-import { isChecked, descendantsChecked } from '../../../../../../../utils/filters';
+import { isChecked, descendantsChecked, getSpans } from '../../../../../../../utils/filters';
 import Checkbox from '../../../../../../Checkbox/Checkbox';
 
 const CategoryList = React.forwardRef(({
@@ -17,35 +17,6 @@ const CategoryList = React.forwardRef(({
   categoryList,
   searchValue,
   categoryRefId }, ref) => {
-
-  /**
-   * Return spans with text not matching search value in bold
-   * @param  {string} label
-   */
-  const getSpans = (label) => {
-    const indexes = []; //Start indexes of each span with text not being bold
-    const length = searchValue.length;
-
-    //Check all occerences of the search value in label
-    for (let i = 0; i < label.length; i++) {
-      if (label.slice(i, i + length).toLowerCase().indexOf(searchValue.toLowerCase()) !== -1) {
-        indexes.push(i);
-        i += length;
-      }
-    }
-
-    const spans = [(<span key={'checkbox-span-bold-start'} className='bold'>{label.slice(0, indexes[0])}</span>)];
-    indexes.forEach((index, i = 0) => {
-      spans.push(<span key={'checkbox-span-' + i}>{label.slice(index, index + length)}</span>);
-      if (indexes[i + 1]) {
-        spans.push(<span key={'checkbox-span-bold-' + i} className='bold'>{label.slice(index + length, indexes[i + 1])}</span>);
-      } else {
-        spans.push(<span key={'checkbox-span-bold-' + i} className='bold'>{label.slice(index + length)}</span>);
-      }
-      i += 1;
-    });
-    return (spans.map(element => element));
-  };
 
   /**
    * Return a list of checboxElements with span as children
@@ -69,7 +40,7 @@ const CategoryList = React.forwardRef(({
               ref={ref && ref[element.id]}
               tabIndex={tabIndex}
             >
-              {getSpans(element.label)}
+              {getSpans(element.label,searchValue)}
             </Checkbox>
           </div>
         );
@@ -88,7 +59,7 @@ const CategoryList = React.forwardRef(({
       {
         categoryList.map(category => {
           return (
-            <div key={'div-' + category.id}>
+            <div key={'headers-' + category.id} className='category-group'>
               <div>{category.catNoParent !== null ? getCheckboxes([category.catNoParent]) : null}</div>
               <div key={category} ref={ref && ref[categoryRefId]} className='category-header'>in {category.label}</div>
               {getCheckboxes(category.children)}
