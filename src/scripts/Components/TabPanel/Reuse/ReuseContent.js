@@ -62,12 +62,12 @@ class ReuseContent extends React.Component {
     this.languages = ApiClient.languages;
 
     this.filters = [
-      { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
+      { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'},
       { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'boldSearch'},
-      { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'}
+      { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
+      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' }
     ];
 
     this.reuseContentResultRef = React.createRef();
