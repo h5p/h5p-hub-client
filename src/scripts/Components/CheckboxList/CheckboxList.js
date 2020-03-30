@@ -45,9 +45,6 @@ const CheckboxList = React.forwardRef(({
             ref={ref && ref[element.id]}
             tabIndex={tabIndex}
           >
-            {boldSearch && searchValue && searchValue.length >0 &&
-              getSpans(element.label,searchValue)
-            }
           </Checkbox>
         );
       })}

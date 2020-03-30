@@ -10,8 +10,8 @@
       background: none;
       position: absolute;
       top: 0;
-      padding: 1.6em;
-      right: 4.75em;
+      padding: 1.2em;
+      right: 3em;
       color: #757575;
       &::before {
         @include icon($icon-remove);
@@ -21,30 +21,33 @@
     }
     .navigate-parent {
       width: 100%;
-      font-size: 1.36314em;
-      padding: 0.5em;
-      background-color: #ffffff;
+      font-size: 1.25em;
+      padding: 0.3534em;
       display: flex;
       font-weight: bold;
+      font-family: "Open Sans", sans-serif;
+      border: 1px solid #e6e6e8;
+      align-items: center;
 
-      &::before {
-        @include icon($icon-arrow-thick);
+      button {
+        background-color: #ffffff;
         position: relative;
-        transition: left 0.3s;
-        left: 0;
         font-style: normal;
-        font-size: 1em;
-        font-weight: normal;
-        display: inline-block;
+        font-size: 0.8em;
+        border-radius: 50%;
+        margin-right: 0.4em;
         align-self: center;
-        margin-right: 0.7em;
-      }
+        padding: 0.5em;
 
-      &:hover {
-        background-color: #f2f2f2;
-        cursor: pointer;
         &::before {
-          left: -4px;
+          @include icon($icon-arrow-thin);
+          transform: rotate(180deg);
+          font-weight: normal;
+          display: inline-block;
+        }
+        &:hover {
+          background-color: #dadada;
+          cursor: pointer;
         }
       }
     }
@@ -52,7 +55,7 @@
     .checkbox-list {
       overflow: hidden;
       overflow-y: scroll;
-      height: 25em;
+      max-height: 25em;
 
       li {
         border: 1px solid #e6e6e8;
@@ -63,7 +66,7 @@
           }
         }
         &:focus {
-          border-color:#3ba0f2;
+          border-color: #3ba0f2;
           background-color: #fff;
           outline: none;
           box-shadow: none;

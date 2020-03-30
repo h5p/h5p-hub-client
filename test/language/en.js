@@ -284,5 +284,6 @@ H5PEditor.language.core = {
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
   loadingFailed: 'Loading failed',
-  filterErrorMessage: 'Something went wrong. Please reload the page.'
+  filterErrorMessage: 'Something went wrong. Please reload the page.',
+  in: 'in'
 };

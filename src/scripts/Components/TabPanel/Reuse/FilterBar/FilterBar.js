@@ -184,16 +184,6 @@ class FilterBar extends React.Component {
                 dictionary={filter.dictionary}>
               </SearchFilter>
             }
-            {filter.type === 'boldSearch' && this.state.filterData[filter.id] &&
-              <SearchFilter
-                handleChecked={this.handleChecked}
-                items={this.state.filterData[filter.id]}
-                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
-                filter={filter.id}
-                dictionary={filter.dictionary}
-                boldSearch={true}>
-              </SearchFilter>
-            }
             {filter.type === 'categorySearch' && this.state.filterData[filter.id] &&
               <SearchFilter
                 handleChecked={this.handleChecked}

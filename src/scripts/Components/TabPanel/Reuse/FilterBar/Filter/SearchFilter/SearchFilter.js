@@ -135,6 +135,15 @@ class SearchFilter extends React.Component {
         searchList.push({ id: element.id, label: element.label, children: children, catNoParent: parentMatch ? element : null });
       }
     }
+    //Add a property to the elements that should not have a line under, used in CategoryList.
+    for (let i = 0; i < searchList.length; i++) {
+      const element = searchList[i];
+      if (searchList[i + 1] && element.children.map(child => child.id).indexOf(searchList[i + 1].id) !== -1) {
+        searchList[i] = { ...element, noLine: true };
+      }
+    }
+    searchList[searchList.length - 1] = { ...searchList[searchList.length - 1], noLine: true };
+
     return searchList;
 
   }
@@ -219,6 +228,7 @@ class SearchFilter extends React.Component {
       //Calculate scrolltop
       const checkboxHeight = this.checkboxRefs[this.state.checkboxElements[0].id].current.offsetHeight;
       const listHeight = this.checkboxRefs[this.listRefId].current.offsetHeight;
+      const parentHeaderHeight = this.state.parent ? checkboxHeight: 0;
       let categoryHeight = 0;
       let categoriesCount = 0;
 
@@ -227,8 +237,8 @@ class SearchFilter extends React.Component {
         categoryHeight = this.checkboxRefs[this.categoryRefId].current.offsetHeight; //Height of the category text element
         let childrenCount = 0;
         for (let cat of this.state.categoryList) {
-          if(cat.catNoParent){
-            childrenCount +=1;
+          if (cat.catNoParent) {
+            childrenCount += 1;
           }
           if (childrenCount > (index)) {
             break;
@@ -237,7 +247,7 @@ class SearchFilter extends React.Component {
           categoriesCount += 1;
         }
       }
-      const scrolltop = ((index + 1) * checkboxHeight) + ((categoriesCount + 1) * categoryHeight) - listHeight;
+      const scrolltop = parentHeaderHeight + ((index + 1) * checkboxHeight) + ((categoriesCount ) * categoryHeight) - listHeight;
       this.checkboxRefs[this.listRefId].current.scrollTop = scrolltop;
     }
   }
@@ -342,7 +352,7 @@ class SearchFilter extends React.Component {
   }
 
   /**
-   * Lookup filter by id
+   * Lookup checkbox by id
    * 
    * @param {string} id
    * @param {array} list - list to search in
@@ -395,9 +405,10 @@ class SearchFilter extends React.Component {
           inSearch={this.state.inSearch}
         ></SearchField>
         {this.state.parent.length > 0 && this.state.dropdownOpen &&
-          <button onClick={this.navigateToParent} className='navigate-parent'>
+          <div className='navigate-parent'>
+            <button onClick={this.navigateToParent}/>
             {this.getCheckboxFromId(this.state.parent[this.state.parent.length - 1], this.parents).label}
-          </button>
+          </div>
         }
         {this.state.searchValue.length > 0
           && <button onClick={this.handleClearSearch} className="clear-button" />
@@ -416,7 +427,6 @@ class SearchFilter extends React.Component {
             listRefId={this.listRefId}
             getDescendants={this.getDescendants}
             tabIndex='-1'
-            boldSearch={this.props.boldSearch}
             searchValue={this.state.searchValue}
           />
         }{
@@ -448,7 +458,6 @@ SearchFilter.propTypes = {
   filter: PropTypes.string.isRequired,
   dictionary: PropTypes.object.isRequired,
   category: PropTypes.bool,
-  boldSearch: PropTypes.bool
 };
 
 export default SearchFilter;

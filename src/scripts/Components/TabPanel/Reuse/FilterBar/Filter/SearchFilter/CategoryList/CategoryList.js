@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import './CategoryList.scss';
 import { isChecked, descendantsChecked, getSpans } from '../../../../../../../utils/filters';
 import Checkbox from '../../../../../../Checkbox/Checkbox';
+import Dictionary from '../../../../../../../utils/dictionary';
 
 const CategoryList = React.forwardRef(({
   onChecked,
@@ -40,7 +41,7 @@ const CategoryList = React.forwardRef(({
               ref={ref && ref[element.id]}
               tabIndex={tabIndex}
             >
-              {getSpans(element.label,searchValue)}
+              {searchValue.length > 1 && getSpans(element.label,searchValue)}
             </Checkbox>
           </div>
         );
@@ -59,9 +60,9 @@ const CategoryList = React.forwardRef(({
       {
         categoryList.map(category => {
           return (
-            <div key={'headers-' + category.id} className='category-group'>
+            <div key={'headers-' + category.id} className={!category.noLine ? 'bottom-line': ''}>
               <div>{category.catNoParent !== null ? getCheckboxes([category.catNoParent]) : null}</div>
-              <div key={category} ref={ref && ref[categoryRefId]} className='category-header'>in {category.label}</div>
+              <div key={category} ref={ref && ref[categoryRefId]} className='category-header'> {Dictionary.get('in')} {category.label}</div>
               {getCheckboxes(category.children)}
             </div>
           );

@@ -36,6 +36,8 @@ class ReuseContent extends React.Component {
       newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
+      focused: '',
+      contentListFocusToggle: false
     };
 
     this.orderBySettings = [{
@@ -63,7 +65,7 @@ class ReuseContent extends React.Component {
 
     this.filters = [
       { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'},
-      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'boldSearch'},
+      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'},
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
@@ -131,12 +133,17 @@ class ReuseContent extends React.Component {
     }
   }
 
-  showContentDetails = (content) => {
+  showContentDetails = (content, id) => {
     this.setState({
       detailViewVisible: true,
       contentListVisible: false,
-      content: content
+      content: content,
+      focused: id
     });
+  }
+
+  closeContentDetails = () => {
+    this.setState(prevState =>({ contentListVisible: true, contentListFocusToggle: !prevState.contentListFocusToggle }));
   }
 
   showAllOrderedBy = (orderBy) => {
@@ -167,7 +174,7 @@ class ReuseContent extends React.Component {
           filters={this.filters}
           onChange={this.handleFilters}
         />
-        
+
         <div className='reuse-content-container'>
           <div className='reuse-content-result' ref={this.reuseContentResultRef}>
             <Async promiseFn={this.state.search}>
@@ -180,7 +187,7 @@ class ReuseContent extends React.Component {
                     headerLabel={Dictionary.get('contentSectionAll')}
                     visible={this.state.contentListVisible}
                     orderVariables={this.orderBySettings} />
-                ) : null 
+                ) : null
               }
               </Async.Fulfilled>
             </Async>
@@ -188,8 +195,10 @@ class ReuseContent extends React.Component {
               itemsPromise={this.state.search}
               onSelect={this.showContentDetails}
               visible={this.state.contentListVisible}
-              handlePageChange={this.handlePageChange} />
-            
+              handlePageChange={this.handlePageChange}
+              focused={this.state.focused}
+              setFocus={this.state.contentListFocusToggle} />
+
             <Async promiseFn={this.state.search}>
               <Async.Fulfilled>{result =>
                 <NoContent
@@ -220,8 +229,8 @@ class ReuseContent extends React.Component {
             <Content
               content={this.state.content}
               onDownload={(content) => { console.log('DOWNLOAD', content); }}
-              aboutToClose={() => this.setState({ contentListVisible: true })}
-              onClose={() => { this.setState({ detailViewVisible: false }); }} 
+              aboutToClose={() => this.closeContentDetails()}
+              onClose={() => this.setState({ detailViewVisible: false })}
               languages={this.languages} />
           }
         </div>
