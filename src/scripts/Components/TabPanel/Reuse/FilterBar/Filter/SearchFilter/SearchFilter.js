@@ -100,7 +100,10 @@ class SearchFilter extends React.Component {
 
       } else {
         categoryList = this.makeCategorySearchList(value);
-        categoryList.forEach(category => list.push.apply(list, category.children));
+        categoryList.forEach(category => {
+          category.catNoParent && list.push(category.catNoParent);
+          list.push.apply(list, category.children);
+        });
       }
 
       this.setState({
@@ -224,7 +227,10 @@ class SearchFilter extends React.Component {
         categoryHeight = this.checkboxRefs[this.categoryRefId].current.offsetHeight; //Height of the category text element
         let childrenCount = 0;
         for (let cat of this.state.categoryList) {
-          if (childrenCount > (index - this.state.categoryList.topCategories.length)) {
+          if(cat.catNoParent){
+            childrenCount +=1;
+          }
+          if (childrenCount > (index)) {
             break;
           }
           childrenCount += cat.children.length;

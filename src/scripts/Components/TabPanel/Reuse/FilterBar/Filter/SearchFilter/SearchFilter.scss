@@ -63,7 +63,7 @@
           }
         }
         &:focus {
-          border: 0.06815em solid #3ba0f2;
+          border-color:#3ba0f2;
           background-color: #fff;
           outline: none;
           box-shadow: none;
@@ -72,7 +72,7 @@
           background-color: #f2f2f2;
         }
         &.highlighted {
-          border: 0.06815em solid #3ba0f2;
+          border-color: #3ba0f2;
           background-color: #fff;
           box-shadow: none;
         }
