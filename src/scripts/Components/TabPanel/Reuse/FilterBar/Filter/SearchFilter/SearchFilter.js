@@ -38,10 +38,15 @@ class SearchFilter extends React.Component {
   }
 
   /**
-   * Set the right parents to checked
+   * Set the right parents to checked and keep dropdown open if any checked
    */
   componentDidMount() {
     this.setParentsChecked();
+    if (this.props.checked.length > 0) {
+      this.setState({
+        dropdownOpen: true
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -324,7 +329,7 @@ class SearchFilter extends React.Component {
       if (element.children) {
         this.parents.push(element);
         this.setParentsAndLeafs(element.children);
-      } else if(this.getCheckboxFromId(element.id,this.leafs) === null) {
+      } else if (this.getCheckboxFromId(element.id, this.leafs) === null) {
         this.leafs.push(element);
       }
     }

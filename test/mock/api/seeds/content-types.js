@@ -78,10 +78,6 @@ const get = function(params, noResults) {
         }
       ]
     },
-    {
-      id: '4',
-      label: 'Flashcards'
-    }
   ];
 };
 

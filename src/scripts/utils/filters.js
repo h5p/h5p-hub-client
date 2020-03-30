@@ -39,7 +39,7 @@ export const getSpans = (label, searchValue) => {
 
   const spans = [(<span key={'checkbox-span-bold-start'} className='bold'>{label.slice(0, indexes[0])}</span>)];
   indexes.forEach((index, i = 0) => {
-    spans.push(<span key={'checkbox-span-' + i}>{label.slice(index, index + length)}</span>);
+    spans.push(<span key={'checkbox-span-' + i} className='non-bold'>{label.slice(index, index + length)}</span>);
     if (indexes[i + 1]) {
       spans.push(<span key={'checkbox-span-bold-' + i} className='bold'>{label.slice(index + length, indexes[i + 1])}</span>);
     } else {

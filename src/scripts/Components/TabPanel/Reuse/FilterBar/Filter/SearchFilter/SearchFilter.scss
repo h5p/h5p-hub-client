@@ -11,12 +11,12 @@
       position: absolute;
       top: 0;
       padding: 1.6em;
-      right: 3em;
+      right: 4.75em;
       color: #757575;
       &::before {
         @include icon($icon-remove);
         font-style: normal;
-        font-size: 0.7em;
+        font-size: 1em;
       }
     }
     .navigate-parent {
@@ -25,15 +25,16 @@
       padding: 0.5em;
       background-color: #ffffff;
       display: flex;
+      font-weight: bold;
 
       &::before {
-        content: "🡢";
+        @include icon($icon-arrow-thick);
         position: relative;
         transition: left 0.3s;
         left: 0;
-        transform: rotate(180deg);
         font-style: normal;
-        font-size: 0.7em;
+        font-size: 1em;
+        font-weight: normal;
         display: inline-block;
         align-self: center;
         margin-right: 0.7em;
@@ -41,6 +42,7 @@
 
       &:hover {
         background-color: #f2f2f2;
+        cursor: pointer;
         &::before {
           left: -4px;
         }
@@ -53,7 +55,7 @@
       height: 25em;
 
       li {
-        border: 0.06815em solid #e6e6e8;
+        border: 1px solid #e6e6e8;
         .content {
           padding: 0.3em;
           .label-text {

@@ -16,6 +16,8 @@
 .h5p-hub {
   .checkbox {
     font-size: 1.05em;
+    padding: 0.5em 0;
+    font-weight: bold;
 
     &:focus {
       box-shadow: 0 0 0.4em 0.01em RGBA(26, 147, 244, 0.7);
@@ -36,6 +38,7 @@
     }
     &.highlighted {
       &.parent:after {
+        left: 49em;
         @include arrow-right();
       }
     }
@@ -52,26 +55,32 @@
       font-weight: bold;
     }
 
+    .non-bold{
+      font-weight: normal;
+    }
+
     .content {
       .icon {
         &::before {
           @include icon($icon-check-empty);
           font-style: normal;
-          font-size: 0.8em;
+          font-weight: normal;
+          font-size: 1em;
           margin: 0.4em 0.4em 0 0.4em;
           margin-right: 1em;
           color: $c1;
         }
       }
     }
-    
+
     &.checked {
       .content {
         .icon {
           &::before {
             @include icon($icon-checkbox-check);
             font-style: normal;
-            font-size: 0.8em;
+            font-weight: normal;
+            font-size: 1em;
             margin: 0.4em 0.4em 0 0.4em;
             margin-right: 1em;
             color: $c1;
