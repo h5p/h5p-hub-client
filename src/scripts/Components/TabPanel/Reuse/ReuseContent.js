@@ -190,7 +190,6 @@ class ReuseContent extends React.Component {
               visible={this.state.contentListVisible}
               handlePageChange={this.handlePageChange} />
             
-              
             <Async promiseFn={this.state.search}>
               <Async.Fulfilled>{result =>
                 <NoContent
