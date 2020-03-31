@@ -83,23 +83,32 @@ class SearchFilter extends React.Component {
 
   /**
    * Filter the checkboxlist according to search value
+   * Set new values to the state
    * @param  {string} searchValue
    */
   handleOnSearch = (searchValue) => {
     let list = [];
-    const value = searchValue.length > 1 ? searchValue : ''; // Don't filter list if only one character in search
     let categoryList = [];
     if (searchValue == '') {
       this.handleClearSearch();
+    }
+    else if(searchValue.length === 1){
+      this.setState({
+        searchValue: searchValue,
+        dropdownOpen: true,
+        parent: [],
+        inSearch: true,
+        focused: null,
+      });
     }
     else {
       //This filter don't have categories to be shown
       if (!this.props.category) {
         list = this.leafs && this.leafs
-          .filter(element => RegExp(value.toUpperCase()).test(element.label.toUpperCase())).sort(this.compare);
+          .filter(element => RegExp(searchValue.toUpperCase()).test(element.label.toUpperCase())).sort(this.compare);
 
       } else {
-        categoryList = this.makeCategorySearchList(value);
+        categoryList = this.makeCategorySearchList(searchValue);
         categoryList.forEach(category => {
           category.catNoParent && list.push(category.catNoParent);
           list.push.apply(list, category.children);
@@ -133,12 +142,14 @@ class SearchFilter extends React.Component {
       const children = element.children.filter((element => RegExp(value.toUpperCase()).test(element.label.toUpperCase())));
       if (children.length > 0) {
         searchList.push({ id: element.id, label: element.label, children: children, catNoParent: parentMatch ? element : null });
+      }else if(parentMatch){
+        searchList.push({ id: element.id, label: element.label, catNoParent: element});
       }
     }
     //Add a property to the elements that should not have a line under, used in CategoryList.
     for (let i = 0; i < searchList.length; i++) {
       const element = searchList[i];
-      if (searchList[i + 1] && element.children.map(child => child.id).indexOf(searchList[i + 1].id) !== -1) {
+      if (searchList[i + 1] && element.children && element.children.map(child => child.id).indexOf(searchList[i + 1].id) !== -1) {
         searchList[i] = { ...element, noLine: true };
       }
     }
@@ -413,7 +424,7 @@ class SearchFilter extends React.Component {
         {this.state.searchValue.length > 0
           && <button onClick={this.handleClearSearch} className="clear-button" />
         }
-        {this.state.dropdownOpen && this.props.items && (!this.props.category || !this.state.inSearch) &&
+        {this.state.dropdownOpen && this.props.items && (!this.props.category || this.state.searchValue.length < 2) &&
           <CheckboxList
             onChecked={this.handleChecked}
             items={this.state.checkboxElements}

@@ -41,7 +41,7 @@ const CategoryList = React.forwardRef(({
               ref={ref && ref[element.id]}
               tabIndex={tabIndex}
             >
-              {searchValue.length > 1 && getSpans(element.label,searchValue)}
+              {searchValue.length > 1 && getSpans(element.label, searchValue)}
             </Checkbox>
           </div>
         );
@@ -60,10 +60,14 @@ const CategoryList = React.forwardRef(({
       {
         categoryList.map(category => {
           return (
-            <div key={'headers-' + category.id} className={!category.noLine ? 'bottom-line': ''}>
+            <div key={'headers-' + category.id} className={!category.noLine ? 'bottom-line' : ''}>
               <div>{category.catNoParent !== null ? getCheckboxes([category.catNoParent]) : null}</div>
-              <div key={category} ref={ref && ref[categoryRefId]} className='category-header'> {Dictionary.get('in')} {category.label}</div>
-              {getCheckboxes(category.children)}
+              {category.children &&
+                <>
+                  <div key={category} ref={ref && ref[categoryRefId]} className='category-header'> {Dictionary.get('in')} {category.label}</div>
+                  {getCheckboxes(category.children)}
+                </>
+              }
             </div>
           );
         })
