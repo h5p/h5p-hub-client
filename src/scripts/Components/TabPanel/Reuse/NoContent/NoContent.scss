@@ -22,15 +22,13 @@
 
       .header {
         font-size: 1.2em;
-        color: #242424;
-        text-decoration: none solid rgb(36, 36, 36);
+        font-weight: bold;
+        margin-bottom: 0.4em;
       }
 
       .suggestion-text {
-        color: #72757c;
-        font-size: 0.95em;
-        margin: 0.2em 0;
-        text-decoration: none solid rgb(114, 117, 124);
+        color: #4d4d4d;
+        margin-bottom: 0.3em;
       }
 
       @media (max-width: $screen-small) {
@@ -38,8 +36,8 @@
       }
 
       .url {
-        font-size: 1.295em;
-        color: rgb(6, 156, 207);
+        color: #186df7;
+        font-weight: bold;
       }
     }
   }

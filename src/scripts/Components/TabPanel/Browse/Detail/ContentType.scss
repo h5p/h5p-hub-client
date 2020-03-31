@@ -144,9 +144,13 @@ $color-back-button: #474f5a;
 .lightbox-inner.license {
   background: #fff;
   text-align: left;
-  width: calc(100% - 5em);
   max-height: calc(100% - 5em);
-  overflow-y: auto;
+  width: calc(100% - 5em);
+
+  :not(.loading) .modal-content {
+    max-height: 50em;
+    overflow-y: auto;
+  }
 
   .loading:after {
     @include throbber(3em);

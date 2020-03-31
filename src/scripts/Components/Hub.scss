@@ -6,6 +6,7 @@
   padding-top: 1px;
   padding-bottom: $gutter;
   position: relative;
+  overflow: hidden;
 
   .panel {
     border: 1px solid $c1;

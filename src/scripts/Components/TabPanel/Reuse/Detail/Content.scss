@@ -98,9 +98,14 @@ $color-back-button: #474f5a;
     .text-details {
       margin-left: 2em;
 
+      @media (max-width: $screen-small) {
+        margin-left: 0;
+      }
+
       h2 {
         margin-top: 0;
         font-size: 1.458em;
+        line-height: 1.458em;
       }
     }
     

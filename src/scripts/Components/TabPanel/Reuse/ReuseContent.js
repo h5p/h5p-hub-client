@@ -180,21 +180,16 @@ class ReuseContent extends React.Component {
         />
 
         <div className='reuse-content-container'>
+        
+          <Order
+            searchPromise={this.state.search}
+            selected={this.state.orderBy}
+            onChange={this.handleOrderBy}
+            headerLabel={Dictionary.get('contentSectionAll')}
+            visible={this.state.contentListVisible}
+            orderVariables={this.orderBySettings} />
+
           <div className='reuse-content-result' ref={this.reuseContentResultRef}>
-            <Async promiseFn={this.state.search}>
-              <Async.Fulfilled>{result =>
-                result.numResults ? (
-                  <Order
-                    hits={result.numResults}
-                    selected={this.state.orderBy}
-                    onChange={this.handleOrderBy}
-                    headerLabel={Dictionary.get('contentSectionAll')}
-                    visible={this.state.contentListVisible}
-                    orderVariables={this.orderBySettings} />
-                ) : null
-              }
-              </Async.Fulfilled>
-            </Async>
             <ContentList
               itemsPromise={this.state.search}
               onSelect={this.showContentDetails}
