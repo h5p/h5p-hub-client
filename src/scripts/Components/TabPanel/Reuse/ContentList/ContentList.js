@@ -21,7 +21,7 @@ const ContentList = ({
   handlePageChange,
   showPagination,
   focused,
-  setFocus
+  setFocus,
 }) => {
 
   const contentLookup = {};
@@ -59,7 +59,7 @@ const ContentList = ({
         <Async.Fulfilled>{result =>
           result.numResults ? (
             <>
-              <List type={type} onSelect={id => onSelect(contentLookup[id], id)} selected={focused} setFocus={setFocus}>
+              <List type={type} onSelect={id => onSelect(contentLookup[id], id,type)} focused={focused} setFocus={setFocus}>
                 {createItems(result.content)}
               </List>
               {
@@ -86,6 +86,8 @@ ContentList.propTypes = {
   visible: PropTypes.bool.isRequired,
   handlePageChange: PropTypes.func.isRequired,
   showPagination: PropTypes.bool,
+  focused: PropTypes.string,
+  setFocus: PropTypes.bool,
 };
 
 ContentList.defaultProps = {

@@ -37,7 +37,7 @@ class ReuseContent extends React.Component {
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
       focused: '',
-      contentListFocusToggle: false
+      setFocus: false
     };
 
     this.orderBySettings = [{
@@ -89,6 +89,8 @@ class ReuseContent extends React.Component {
     this.setState({
       detailViewVisible: false,
       contentListVisible: true,
+      focused: '',
+      setFocus: true,
       search: ContentApiClient.search({
         query: query || this.state.query,
         filters: filters || this.state.filters,
@@ -137,12 +139,15 @@ class ReuseContent extends React.Component {
       detailViewVisible: true,
       contentListVisible: false,
       content: content,
-      focused: id
+      focused: id,
     });
   }
 
   closeContentDetails = () => {
-    this.setState(prevState =>({ contentListVisible: true, contentListFocusToggle: !prevState.contentListFocusToggle }));
+    this.setState(prevState => ({
+      contentListVisible: true,
+      setFocus: !prevState.setFocus,
+    }));
   }
 
   showAllOrderedBy = (orderBy) => {
@@ -196,7 +201,7 @@ class ReuseContent extends React.Component {
               visible={this.state.contentListVisible}
               handlePageChange={this.handlePageChange}
               focused={this.state.focused}
-              setFocus={this.state.contentListFocusToggle} />
+              setFocus={this.state.setFocus} />
 
             <Async promiseFn={this.state.search}>
               <Async.Fulfilled>{result =>
@@ -213,14 +218,18 @@ class ReuseContent extends React.Component {
               title={Dictionary.get('popularContent')}
               actionLabel={Dictionary.get('allPopular')}
               onAction={() => this.showAllOrderedBy('popular')}
-              onSelect={this.showContentDetails} />
+              onSelect={this.showContentDetails}
+              focused={this.state.focused}
+              setFocus={this.state.setFocus} />
 
             <SelectionsList
               itemsPromise={this.state.newContent}
               title={Dictionary.get('newOnTheHub')}
               actionLabel={Dictionary.get('allNew')}
               onAction={() => this.showAllOrderedBy('newest')}
-              onSelect={this.showContentDetails} />
+              onSelect={this.showContentDetails}
+              focused={this.state.focused}
+              setFocus={this.state.setFocus} />
           </div>
 
           {

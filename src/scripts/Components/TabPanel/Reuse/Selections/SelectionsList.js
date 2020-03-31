@@ -5,7 +5,7 @@ import ContentList from '../ContentList/ContentList';
 
 import './SelectionsList.scss';
 
-const SelectionsList = ({title, itemsPromise, actionLabel, onAction, onSelect}) => {
+const SelectionsList = ({title, itemsPromise, actionLabel, onAction, onSelect, focused, setFocus}) => {
   return (
     <div className="content-selection-list">
       <div className="header">
@@ -19,6 +19,9 @@ const SelectionsList = ({title, itemsPromise, actionLabel, onAction, onSelect}) 
         visible={true}
         showPagination={false}
         onSelect={onSelect}
+        setFocus={null}
+        focused={focused}
+        setFocus={setFocus}
       />
     </div>
   );
@@ -30,6 +33,8 @@ SelectionsList.propTypes = {
   actionLabel: PropTypes.string.isRequired,
   onAction: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  setFocus: PropTypes.bool,
+  focused: PropTypes.string
 };
 
 export default SelectionsList;
