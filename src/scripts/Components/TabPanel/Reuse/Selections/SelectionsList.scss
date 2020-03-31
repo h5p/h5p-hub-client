@@ -1,5 +1,5 @@
 .content-selection-list {
-  padding: 2em 1em;
+  padding: 2em 1em 0;
 
   .header {
     position: relative;
@@ -14,5 +14,9 @@
     position: absolute;
     right: 1.5em;
     top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 1em;
   }
 }
