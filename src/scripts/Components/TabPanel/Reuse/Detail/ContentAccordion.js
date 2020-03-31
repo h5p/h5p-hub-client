@@ -19,13 +19,6 @@ const ContentAccordion = ({content, onShowLicenseDetails}) => {
         attributes={{}}
         onShowLicenseDetails={onShowLicenseDetails}
       />
-      
-      <div 
-        header={Dictionary.get('contentDescriptionPanelHeader')}
-        id='description'
-      >
-        {content.description}
-      </div>
 
       <div 
         header={Dictionary.get('contentPublisherPanelHeader')}

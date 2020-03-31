@@ -40,6 +40,8 @@
   border-bottom: $border-panel;
 
   .panel-body {
-    padding: $gutter;
+    padding: 1em;
+    line-height: 1.7em;
+    font-size: 0.95em;
   }
 }

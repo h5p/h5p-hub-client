@@ -274,7 +274,6 @@ H5PEditor.language.core = {
   contentPreviewButtonLabel: 'Preview',
   contentDownloadButtonLabel: 'Get Content',
   reuseContentTabLabel: 'Get Shared Content',
-  contentDescriptionPanelHeader: 'Description',
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
 };
