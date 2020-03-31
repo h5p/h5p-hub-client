@@ -5,6 +5,7 @@
     display: inline-block;
     width: 16.66%;
     margin-top: 0.5em;
+    outline: none;
 
     @media (max-width: $screen-medium) {
       width: 33.33%;
@@ -12,6 +13,22 @@
 
     @media (max-width: $screen-small) {
       width: 50%;
+    }
+
+    &:focus button,
+    &:hover button {
+      color: #fff;
+      background-color: #d16b17;
+      border-color: #d16b17;
+    }
+
+    &:focus .grid-item,
+    &:hover .grid-item {
+      background-color: #fafafa;
+    }
+
+    &:focus .grid-item {
+      border-color: #5B9DD9;
     }
   }
 
@@ -43,4 +60,3 @@
     }
   }
 }
-
