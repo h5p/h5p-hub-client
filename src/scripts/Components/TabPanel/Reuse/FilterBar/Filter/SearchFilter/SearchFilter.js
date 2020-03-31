@@ -194,7 +194,7 @@ class SearchFilter extends React.Component {
       this.setState({ setFocus: true, focused: checkbox });
       const children = this.state.checkboxElements[this.indexOfId(checkbox)].children;
 
-      //The checkbox is a category and all it's children should either be checked on or off.
+      //The checkbox is a category and all it's descendants should either be checked on or off.
       if (children) {
         this.props.handleChecked(filter,
           this.getDescendants(this.getCheckboxFromId(checkbox, this.parents))
