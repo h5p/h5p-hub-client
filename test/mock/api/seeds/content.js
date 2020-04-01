@@ -46,7 +46,10 @@ const create = function(content) {
     license: {
       id: randomFromArray(['mit', 'cc', 'ocl', 'opl', 'gfdl']),
       version: 1
-    }
+    },
+    discipline: randomFromArray(['100', '101', '102']),
+    level: randomFromArray(['beginner', 'intermediate', 'advanced']),
+    size: randomFromArray([4868, 12495, 146589, 1759864])
   };
 };
 
