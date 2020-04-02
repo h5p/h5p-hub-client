@@ -1,0 +1,21 @@
+.h5p-hub {
+  .info-list {
+    li {
+      font-size: 0.8em;
+      border-bottom: 1px solid #dadada;
+      padding: 0.5em;
+
+      .label {
+        color: #72757c;
+        margin-right: 0.3em;
+      }
+      .content {
+        color: #242424;
+        font-weight: bold;
+      }
+    }
+    .last-item {
+      border-bottom: none;
+    }
+  }
+}

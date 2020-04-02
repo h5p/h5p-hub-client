@@ -61,13 +61,11 @@ class ReuseContent extends React.Component {
       ]);
     });
 
-    this.languages = ApiClient.languages;
-
     this.filters = [
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
       { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
-      { id: 'language', promise: this.languages(), dictionary: filterTrans.language, type: 'search' },
+      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
       { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search' }
     ];
 
@@ -233,8 +231,7 @@ class ReuseContent extends React.Component {
               content={this.state.content}
               onDownload={(content) => { console.log('DOWNLOAD', content); }}
               aboutToClose={() => this.closeContentDetails()}
-              onClose={() => this.setState({ detailViewVisible: false })}
-              languages={this.languages} />
+              onClose={() => this.setState({ detailViewVisible: false })}/>
           }
         </div>
       </div>

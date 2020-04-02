@@ -264,7 +264,7 @@ H5PEditor.language.core = {
   contentSearchFieldPlaceholder: 'Search for Content',
   loadingContentTitle: 'We are loading content for you...',
   loadingContentSubtitle: 'Please wait',
-  by: 'by',
+  by: 'By',
   dropdownButton: 'Open dropdown',
   paginationNavigation: 'Pagination navigation',
   page: 'Page',
@@ -276,4 +276,8 @@ H5PEditor.language.core = {
   reuseContentTabLabel: 'Get Shared Content',
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
+  in: 'In',
+  h5pType: 'H5P Type',
+  level: 'Level',
+  size: 'Size'
 };
