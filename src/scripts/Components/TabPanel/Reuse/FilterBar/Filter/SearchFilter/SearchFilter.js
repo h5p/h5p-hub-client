@@ -87,9 +87,7 @@ class SearchFilter extends React.Component {
    * @param  {string} searchValue
    */
   handleOnSearch = (searchValue) => {
-    let list = [];
-    let categoryList = [];
-    if (searchValue == '') {
+    if (searchValue === '') {
       this.handleClearSearch();
     }
     else if(searchValue.length === 1){
@@ -102,12 +100,15 @@ class SearchFilter extends React.Component {
       });
     }
     else {
+      let list = [];
+      let categoryList = [];
       //This filter don't have categories to be shown
       if (!this.props.category) {
         list = this.leafs && this.leafs
           .filter(element => RegExp(searchValue.toUpperCase()).test(element.label.toUpperCase())).sort(this.compare);
 
-      } else {
+      } 
+      else {
         categoryList = this.makeCategorySearchList(searchValue);
         categoryList.forEach(category => {
           category.catNoParent && list.push(category.catNoParent);
@@ -136,14 +137,25 @@ class SearchFilter extends React.Component {
     //Add categories for each parent that has children that match the search
     for (let i = 0; i < this.parents.length; i++) {
       const element = this.parents[i];
-      //Check if the parent dosen't have a parent and match value 
+      //Check if the parent doesn't have a parent and match value 
       const parentMatch = RegExp(value.toUpperCase()).test(element.label.toUpperCase())
         && this.getCheckboxFromId(element.id, this.props.items);
       const children = element.children.filter((element => RegExp(value.toUpperCase()).test(element.label.toUpperCase())));
+
       if (children.length > 0) {
-        searchList.push({ id: element.id, label: element.label, children: children, catNoParent: parentMatch ? element : null });
-      }else if(parentMatch){
-        searchList.push({ id: element.id, label: element.label, catNoParent: element});
+        searchList.push({
+          id: element.id,
+          label: element.label,
+          children: children,
+          catNoParent: parentMatch ? element : null 
+        });
+      }
+      else if(parentMatch){
+        searchList.push({
+          id: element.id,
+          label: element.label,
+          catNoParent: element
+        });
       }
     }
     //Add a property to the elements that should not have a line under, used in CategoryList.
@@ -156,16 +168,17 @@ class SearchFilter extends React.Component {
     searchList[searchList.length - 1] = { ...searchList[searchList.length - 1], noLine: true };
 
     return searchList;
-
   }
 
   /**
-    Open list with checkbox if search field is fouced on. 
-  */
+   * Open list with checkbox if search field is foused on. 
+   */
   handleSearchFocus = () => {
     if (!this.click && !this.state.dropdownOpen) {
       this.click = setTimeout(() => {
-        this.setState((prevState) => ({ dropdownOpen: prevState.dropdownOpen ? prevState.dropdownOpen : true }));
+        this.setState((prevState) => ({
+          dropdownOpen: prevState.dropdownOpen ? prevState.dropdownOpen : true 
+        }));
         this.click = null;
       }, 100);
     }
@@ -177,7 +190,9 @@ class SearchFilter extends React.Component {
   handleSearchClick = () => {
     if (!this.click) {
       this.click = setTimeout(() => {
-        this.setState((prevState) => ({ dropdownOpen: !prevState.dropdownOpen }));
+        this.setState((prevState) => ({
+          dropdownOpen: !prevState.dropdownOpen
+        }));
         this.click = null;
       }, 100);
     }
@@ -232,7 +247,6 @@ class SearchFilter extends React.Component {
       this.setState({ focused: this.state.checkboxElements.map(element => element.id)[0] });
       this.checkboxRefs[this.listRefId].current.scrollTop = 0;
     }
-
     else if (this.state.dropdownOpen && index !== this.state.checkboxElements.length) {
       this.setState({ focused: sibling.id });
 
@@ -251,7 +265,7 @@ class SearchFilter extends React.Component {
           if (cat.catNoParent) {
             childrenCount += 1;
           }
-          if (childrenCount > (index)) {
+          if (childrenCount > index) {
             break;
           }
           childrenCount += cat.children.length;
@@ -270,8 +284,9 @@ class SearchFilter extends React.Component {
   handleNavigateSideway = (direction) => {
     if (this.state.dropdownOpen && direction == -1 && this.state.parent) {
       this.navigateToParent();
-    } else if (this.state.dropdownOpen && direction == 1 && this.state.focused && this.getCheckboxFromId(this.state.focused, this.parents)) {
-      this.navigeteToChildren(this.state.focused, this.getCheckboxFromId(this.state.focused, this.parents).children);
+    }
+    else if (this.state.dropdownOpen && direction == 1 && this.state.focused && this.getCheckboxFromId(this.state.focused, this.parents)) {
+      this.navigateToChildren(this.state.focused, this.getCheckboxFromId(this.state.focused, this.parents).children);
     }
   }
 
@@ -280,7 +295,7 @@ class SearchFilter extends React.Component {
    * @param  {string} id
    * @param  {array} children
    */
-  navigeteToChildren = (id, children) => {
+  navigateToChildren = (id, children) => {
     this.setState({
       checkboxElements: children,
       parent: [...this.state.parent, id],
@@ -414,15 +429,15 @@ class SearchFilter extends React.Component {
           onNavigateSideway={this.handleNavigateSideway}
           onFocus={this.handleSearchFocus}
           inSearch={this.state.inSearch}
-        ></SearchField>
+        />
         {this.state.parent.length > 0 && this.state.dropdownOpen &&
           <div className='navigate-parent'>
             <button onClick={this.navigateToParent}/>
             {this.getCheckboxFromId(this.state.parent[this.state.parent.length - 1], this.parents).label}
           </div>
         }
-        {this.state.searchValue.length > 0
-          && <button onClick={this.handleClearSearch} className="clear-button" />
+        {this.state.searchValue.length > 0 &&
+          <button onClick={this.handleClearSearch} className="clear-button" />
         }
         {this.state.dropdownOpen && this.props.items && (!this.props.category || this.state.searchValue.length < 2) &&
           <CheckboxList
@@ -432,7 +447,7 @@ class SearchFilter extends React.Component {
             checkedParents={this.state.checkedParents}
             filter={this.props.filter}
             focused={this.state.focused}
-            navigateToChildren={this.navigeteToChildren}
+            navigateToChildren={this.navigateToChildren}
             parent={this.state.parent[this.state.parent.length - 1]}
             ref={this.checkboxRefs}
             listRefId={this.listRefId}

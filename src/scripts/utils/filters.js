@@ -10,11 +10,11 @@ export const isChecked = (id, checked) => {
 };
 
 /**
-   * Gives the number of descendants that are checked of
-   * @param  {Object[]} children
-   * @param  {string[]} checkedParents
-   * @returns number
-   */
+ * Gives the number of descendants that are checked of
+ * @param  {Object[]} children
+ * @param  {string[]} checkedParents
+ * @returns number
+ */
 export const descendantsChecked = (children, checked, checkedParents) => {
   return children ?
     children.filter(element => isChecked(element.id, checked) && checkedParents.indexOf(element.id) === -1).length
@@ -22,9 +22,9 @@ export const descendantsChecked = (children, checked, checkedParents) => {
 };
 
 /**
-   * Return spans with text not matching search value in bold
-   * @param  {string} label
-   */
+ * Return spans with text not matching search value in bold
+ * @param  {string} label
+ */
 export const getSpans = (label, searchValue) => {
   const indexes = []; //Start indexes of each span with text not being bold
   const length = searchValue.length;

@@ -27,27 +27,23 @@ const CheckboxList = React.forwardRef(({
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
 
-      {items.map(element => {
-
-        return (
-          <Checkbox
-            key={filter + element.id}
-            id={element.id}
-            label={element.label}
-            checked={isChecked(element.id, checked)}
-            filter={filter}
-            onChecked={onChecked}
-            focused={focused == element.id}
-            checkboxChildren={element.children}
-            navigateToChildren={navigateToChildren}
-            parent={parent}
-            descendantsChecked={element.children && descendantsChecked(getDescendants(element),checked,checkedParents)}
-            ref={ref && ref[element.id]}
-            tabIndex={tabIndex}
-          >
-          </Checkbox>
-        );
-      })}
+      {items.map(element => 
+        <Checkbox
+          key={filter + element.id}
+          id={element.id}
+          label={element.label}
+          checked={isChecked(element.id, checked)}
+          filter={filter}
+          onChecked={onChecked}
+          focused={focused == element.id}
+          checkboxChildren={element.children}
+          navigateToChildren={navigateToChildren}
+          parent={parent}
+          descendantsChecked={element.children && descendantsChecked(getDescendants(element), checked, checkedParents)}
+          ref={ref && ref[element.id]}
+          tabIndex={tabIndex}
+        />
+      )};
     </ul>
   );
 });

@@ -23,31 +23,25 @@ const CategoryList = React.forwardRef(({
    * Return a list of checboxElements with span as children
    * @param  {Object[]} checkboxList
    */
-  const getCheckboxes = (checkboxList) => {
-    return (
-      checkboxList.map(element => {
-        return (
-          <div key={parent + element.id}>
-            <Checkbox
-              key={parent + element.id}
-              id={element.id}
-              label={element.label}
-              checked={isChecked(element.id, checked)}
-              filter={filter}
-              onChecked={onChecked}
-              focused={focused === element.id}
-              parent={parent}
-              descendantsChecked={descendantsChecked(getDescendants(element), checked, checkedParents)}
-              ref={ref && ref[element.id]}
-              tabIndex={tabIndex}
-            >
-              {searchValue.length > 1 && getSpans(element.label, searchValue)}
-            </Checkbox>
-          </div>
-        );
-      }));
-  };
-
+  const getCheckboxes = (checkboxList) => checkboxList.map(element =>
+    <div key={parent + element.id}>
+      <Checkbox
+        key={parent + element.id}
+        id={element.id}
+        label={element.label}
+        checked={isChecked(element.id, checked)}
+        filter={filter}
+        onChecked={onChecked}
+        focused={focused === element.id}
+        parent={parent}
+        descendantsChecked={descendantsChecked(getDescendants(element), checked, checkedParents)}
+        ref={ref && ref[element.id]}
+        tabIndex={tabIndex}
+      >
+        {searchValue.length > 1 && getSpans(element.label, searchValue)}
+      </Checkbox>
+    </div>
+  );
 
   return (
     <ul

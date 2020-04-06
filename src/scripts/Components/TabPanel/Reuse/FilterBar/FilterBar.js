@@ -31,7 +31,7 @@ class FilterBar extends React.Component {
         this.setState({
           filterData: { ...this.state.filterData, [filter.id]: data }
         });
-      }, reason => {
+      }, () => {
         this.setState({
           failedDataFetch: { ...this.state.failedDataFetch, [filter.id]: true }
         });
@@ -174,15 +174,16 @@ class FilterBar extends React.Component {
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
-              />}
+              />
+            }
             {filter.type === 'search' && this.state.filterData[filter.id] &&
               <SearchFilter
                 handleChecked={this.handleChecked}
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
-                dictionary={filter.dictionary}>
-              </SearchFilter>
+                dictionary={filter.dictionary} 
+              />
             }
             {filter.type === 'categorySearch' && this.state.filterData[filter.id] &&
               <SearchFilter
@@ -191,8 +192,8 @@ class FilterBar extends React.Component {
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary}
-                category={true}>
-              </SearchFilter>
+                category={true}
+              />
             }
           </Filter>
         }
