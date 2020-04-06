@@ -6,7 +6,13 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 56em;
+    box-shadow: 0 0.4em 0.4em -0.2em rgba(79,87,99,0.2) inset;
     @include scroll-bar(#F3F3F3, #5e6978);
+
+    >.content-list .fetching-failed {
+      margin-top: 2em;
+      margin-left: 2em;
+    }
   }
 
   .reuse-content-container {

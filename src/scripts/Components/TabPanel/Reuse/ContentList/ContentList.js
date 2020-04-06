@@ -47,12 +47,10 @@ const ContentList = ({
           <LoadingList type={type} />
         </Async.Pending>
 
-        <Async.Rejected>{(a, data) =>
-          <Message
-            title='Failed fetching data'
-            severity='error'
-            message={data.error.message}
-          />
+        <Async.Rejected>{() =>
+          <span className="fetching-failed">
+            {Dictionary.get('failedFetchingData')}
+          </span>
         }
         </Async.Rejected>
 

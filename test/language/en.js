@@ -276,4 +276,5 @@ H5PEditor.language.core = {
   reuseContentTabLabel: 'Get Shared Content',
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
+  failedFetchingData: 'Failed fetching data',
 };
