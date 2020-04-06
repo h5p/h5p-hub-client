@@ -35,10 +35,8 @@ const Checkbox = React.forwardRef(({
    * @param  {event} e
    */
   const onCheckedClick = (filter, id, checked, e) => {
-    if (e) {
-      e.stopPropagation();
-      onChecked(filter, id, checked, parent);
-    }
+    e.stopPropagation();
+    onChecked(filter, id, checked, parent);
   };
 
   return (

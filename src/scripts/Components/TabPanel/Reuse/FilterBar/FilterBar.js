@@ -69,6 +69,9 @@ class FilterBar extends React.Component {
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
     this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
+    if(close){
+      this.props.onChange(this.state.checked);
+    }
   }
 
   /**
@@ -183,6 +186,7 @@ class FilterBar extends React.Component {
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary} 
+                dropdownAlwaysOpen={true}
               />
             }
             {filter.type === 'categorySearch' && this.state.filterData[filter.id] &&
@@ -193,6 +197,7 @@ class FilterBar extends React.Component {
                 filter={filter.id}
                 dictionary={filter.dictionary}
                 category={true}
+                dropdownAlwaysOpen={true}
               />
             }
           </Filter>

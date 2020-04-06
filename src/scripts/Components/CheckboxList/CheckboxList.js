@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
-import {isChecked, descendantsChecked, getSpans} from '../../utils/filters';
+import { isChecked, descendantsChecked } from '../../utils/filters';
 
 const CheckboxList = React.forwardRef(({
   items,
@@ -15,9 +15,7 @@ const CheckboxList = React.forwardRef(({
   parent,
   listRefId,
   getDescendants,
-  tabIndex,
-  boldSearch,
-  searchValue}, ref) => {
+  tabIndex }, ref) => {
 
   return (
     <ul
@@ -27,9 +25,9 @@ const CheckboxList = React.forwardRef(({
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
 
-      {items.map(element => 
+      {items.map(element =>
         <Checkbox
-          key={filter + element.id}
+          key={parent + element.id}
           id={element.id}
           label={element.label}
           checked={isChecked(element.id, checked)}
@@ -43,7 +41,7 @@ const CheckboxList = React.forwardRef(({
           ref={ref && ref[element.id]}
           tabIndex={tabIndex}
         />
-      )};
+      )}
     </ul>
   );
 });
@@ -57,8 +55,6 @@ CheckboxList.propTypes = {
   parent: PropTypes.string,
   listRefId: PropTypes.string,
   tabIndex: PropTypes.string,
-  boldSearch: PropTypes.bool,
-  searchValue: PropTypes.string
 };
 
 export default CheckboxList;

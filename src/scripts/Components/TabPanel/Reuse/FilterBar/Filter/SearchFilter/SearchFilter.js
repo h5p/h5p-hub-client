@@ -28,12 +28,15 @@ class SearchFilter extends React.Component {
     this.checkboxRefs = {};
 
     this.listRefId = 'list';
-    this.categoryRefId = 'categoryLabel';
+    this.categoryRefId = 'category';
     this.checkboxRefs[this.listRefId] = React.createRef();
-    this.checkboxRefs[this.categoryRefId] = React.createRef();
+
 
     this.setParentsAndLeafs(this.props.items);
-    this.parents.forEach(parent => this.checkboxRefs[parent.id] = React.createRef());
+    this.parents.forEach(parent => {
+      this.checkboxRefs[parent.id] = React.createRef();
+      this.checkboxRefs[this.categoryRefId + parent] = React.createRef();
+    });
     this.leafs.forEach(checkbox => this.checkboxRefs[checkbox.id] = React.createRef());
   }
 
@@ -42,7 +45,7 @@ class SearchFilter extends React.Component {
    */
   componentDidMount() {
     this.setParentsChecked();
-    if (this.props.checked.length > 0) {
+    if (this.props.dropdownAlwaysOpen) {
       this.setState({
         dropdownOpen: true
       });
@@ -54,7 +57,7 @@ class SearchFilter extends React.Component {
       parent: [],
       focused: null,
       inSearch: false,
-      dropdownOpen: false
+      dropdownOpen: this.props.dropdownAlwaysOpen
     });
   }
   /**
@@ -90,13 +93,15 @@ class SearchFilter extends React.Component {
     if (searchValue === '') {
       this.handleClearSearch();
     }
-    else if(searchValue.length === 1){
+    else if (searchValue.length === 1) {
       this.setState({
         searchValue: searchValue,
+        checkboxElements: this.props.items,
         dropdownOpen: true,
         parent: [],
         inSearch: true,
         focused: null,
+        categoryList: []
       });
     }
     else {
@@ -147,10 +152,10 @@ class SearchFilter extends React.Component {
           id: element.id,
           label: element.label,
           children: children,
-          catNoParent: parentMatch ? element : null 
+          catNoParent: parentMatch ? element : null
         });
       }
-      else if(parentMatch){
+      else if (parentMatch) {
         searchList.push({
           id: element.id,
           label: element.label,
@@ -176,8 +181,8 @@ class SearchFilter extends React.Component {
   handleSearchFocus = () => {
     if (!this.click && !this.state.dropdownOpen) {
       this.click = setTimeout(() => {
-        this.setState((prevState) => ({
-          dropdownOpen: prevState.dropdownOpen ? prevState.dropdownOpen : true 
+        this.setState(({
+          dropdownOpen: true
         }));
         this.click = null;
       }, 100);
@@ -191,7 +196,7 @@ class SearchFilter extends React.Component {
     if (!this.click) {
       this.click = setTimeout(() => {
         this.setState((prevState) => ({
-          dropdownOpen: !prevState.dropdownOpen
+          dropdownOpen: this.props.dropdownAlwaysOpen || !prevState.dropdownOpen
         }));
         this.click = null;
       }, 100);
@@ -253,13 +258,14 @@ class SearchFilter extends React.Component {
       //Calculate scrolltop
       const checkboxHeight = this.checkboxRefs[this.state.checkboxElements[0].id].current.offsetHeight;
       const listHeight = this.checkboxRefs[this.listRefId].current.offsetHeight;
-      const parentHeaderHeight = this.state.parent ? checkboxHeight: 0;
+      const parentHeaderHeight = this.state.parent ? checkboxHeight : 0;
       let categoryHeight = 0;
       let categoriesCount = 0;
 
       //Number of category headers that are shown and need to be calculated
-      if (this.state.categoryList.length > 0) {
-        categoryHeight = this.checkboxRefs[this.categoryRefId].current.offsetHeight; //Height of the category text element
+      if (this.state.categoryList.length > 0 && this.checkboxRefs[this.categoryRefId]) {
+        //Height of the category text element
+        categoryHeight = this.checkboxRefs[this.categoryRefId + this.state.categoryList[0].id].current.offsetHeight;
         let childrenCount = 0;
         for (let cat of this.state.categoryList) {
           if (cat.catNoParent) {
@@ -453,7 +459,6 @@ class SearchFilter extends React.Component {
             listRefId={this.listRefId}
             getDescendants={this.getDescendants}
             tabIndex='-1'
-            searchValue={this.state.searchValue}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
@@ -484,6 +489,7 @@ SearchFilter.propTypes = {
   filter: PropTypes.string.isRequired,
   dictionary: PropTypes.object.isRequired,
   category: PropTypes.bool,
+  dropdownAlwaysOpen: PropTypes.bool
 };
 
 export default SearchFilter;

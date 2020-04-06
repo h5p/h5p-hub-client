@@ -25,7 +25,7 @@ export const descendantsChecked = (children, checked, checkedParents) => {
  * Return spans with text not matching search value in bold
  * @param  {string} label
  */
-export const getSpans = (label, searchValue) => {
+export const boldNotMatchingText = (label, searchValue) => {
   const indexes = []; //Start indexes of each span with text not being bold
   const length = searchValue.length;
 
