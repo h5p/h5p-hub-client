@@ -279,5 +279,6 @@ H5PEditor.language.core = {
   in: 'In',
   h5pType: 'H5P Type',
   level: 'Level',
-  size: 'Size'
+  size: 'Size',
+  failedFetchingData: 'Failed fetching data',
 };

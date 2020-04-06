@@ -178,7 +178,6 @@ class ReuseContent extends React.Component {
         />
 
         <div className='reuse-content-container'>
-        
           <Order
             searchPromise={this.state.search}
             selected={this.state.orderBy}
