@@ -35,7 +35,7 @@ class SearchFilter extends React.Component {
     this.setParentsAndLeafs(this.props.items);
     this.parents.forEach(parent => {
       this.checkboxRefs[parent.id] = React.createRef();
-      this.checkboxRefs[this.categoryRefId + parent] = React.createRef();
+      this.checkboxRefs[this.categoryRefId + parent.id] = React.createRef();
     });
     this.leafs.forEach(checkbox => this.checkboxRefs[checkbox.id] = React.createRef());
   }
@@ -263,7 +263,7 @@ class SearchFilter extends React.Component {
       let categoriesCount = 0;
 
       //Number of category headers that are shown and need to be calculated
-      if (this.state.categoryList.length > 0 && this.checkboxRefs[this.categoryRefId]) {
+      if (this.state.categoryList.length > 0) {
         //Height of the category text element
         categoryHeight = this.checkboxRefs[this.categoryRefId + this.state.categoryList[0].id].current.offsetHeight;
         let childrenCount = 0;
