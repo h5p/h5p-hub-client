@@ -1,10 +1,8 @@
 import React from 'react';
+import { Async } from 'react-async';
 
 import NoContent from './NoContent/NoContent';
 import ContentList from './ContentList/ContentList';
-
-import PropTypes from 'prop-types';
-
 import Dictionary from '../../../utils/dictionary';
 import Order from '../../Order/Order';
 import ContentApiClient from '../../../utils/content-hub/api-client';
@@ -14,9 +12,7 @@ import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
 import Content from './Detail/Content';
 
-
 import './ReuseContent.scss';
-import { Async } from 'react-async';
 
 const defaultOrderBy = 'popular';
 
@@ -62,11 +58,12 @@ class ReuseContent extends React.Component {
     });
 
     this.filters = [
+      { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'},
+      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'},
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' },
       { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
-      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search' }
+      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' }      
     ];
 
     this.reuseContentResultRef = React.createRef();
@@ -237,8 +234,5 @@ class ReuseContent extends React.Component {
     );
   }
 }
-
-ReuseContent.propTypes = {
-};
 
 export default ReuseContent;

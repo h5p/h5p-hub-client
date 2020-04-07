@@ -3,7 +3,13 @@ import PropTypes from 'prop-types';
 
 import './FilterButton.scss';
 
-const FilterButton = React.forwardRef(({ checked, id, onClick, open, data, dropdownLabel }, ref) => {
+const FilterButton = React.forwardRef(({
+  checked,
+  id,
+  onClick,
+  open,
+  data,
+  dropdownLabel }, ref) => {
 
   //Check if the check symbol on the filterButton should be shown
   const oneChecked = checked.length == 1 && data.length == 1;

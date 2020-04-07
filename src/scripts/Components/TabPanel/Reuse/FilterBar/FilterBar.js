@@ -6,7 +6,7 @@ import Choose from '../../../../Components/Choose/Choose';
 import FilterButton from './FilterButton/FilterButton';
 import Dictionary from '../../../../utils/dictionary';
 import CheckboxList from '../../../CheckboxList/CheckboxList';
-import SearchFilter from './Filter/SearchFilter/SeachFilter';
+import SearchFilter from './Filter/SearchFilter/SearchFilter';
 
 class FilterBar extends React.Component {
   constructor(props) {
@@ -16,7 +16,8 @@ class FilterBar extends React.Component {
       filterData: {},
       openFilter: '',
       checked: {},
-      showClearFilters: false
+      showClearFilters: false,
+      failedDataFetch: {}
     };
 
     this.filterBarRef = React.createRef();
@@ -30,7 +31,12 @@ class FilterBar extends React.Component {
         this.setState({
           filterData: { ...this.state.filterData, [filter.id]: data }
         });
-      });
+      }, () => {
+        this.setState({
+          failedDataFetch: { ...this.state.failedDataFetch, [filter.id]: true }
+        });
+      }
+      );
     });
   }
 
@@ -62,7 +68,10 @@ class FilterBar extends React.Component {
    */
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
-    this.setState({ openFilter: close ? '' : id });
+    this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
+    if (close) {
+      this.props.onChange(this.state.checked);
+    }
   }
 
   /**
@@ -101,8 +110,6 @@ class FilterBar extends React.Component {
       const newList = checkedOf ? [...this.state.checked[filter], checkbox] : this.state.checked[filter].filter(id => id != checkbox);
       this.setState({ checked: { ...this.state.checked, [filter]: newList } });
     }
-
-
   }
 
   /**
@@ -162,22 +169,36 @@ class FilterBar extends React.Component {
             checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
             handleChecked={this.handleChecked}
             toggleButtonRef={this.filterButtons[filter.id]}
-            filterBarRef={this.filterBarRef} >
-            {filter.type == 'checkboxList' &&
+            filterBarRef={this.filterBarRef}
+            failedDataFetch={this.state.failedDataFetch[filter.id]}>
+            {filter.type === 'checkboxList' && this.state.filterData[filter.id] &&
               <CheckboxList
                 onChecked={this.handleChecked}
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
-              />}
-            {filter.type == 'search' &&
+              />
+            }
+            {filter.type === 'search' && this.state.filterData[filter.id] &&
               <SearchFilter
                 handleChecked={this.handleChecked}
                 items={this.state.filterData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
-                dictionary={filter.dictionary}>
-              </SearchFilter>
+                dictionary={filter.dictionary} 
+                dropdownAlwaysOpen={true}
+              />
+            }
+            {filter.type === 'categorySearch' && this.state.filterData[filter.id] &&
+              <SearchFilter
+                handleChecked={this.handleChecked}
+                items={this.state.filterData[filter.id]}
+                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+                filter={filter.id}
+                dictionary={filter.dictionary}
+                category={true}
+                dropdownAlwaysOpen={true}
+              />
             }
           </Filter>
         }

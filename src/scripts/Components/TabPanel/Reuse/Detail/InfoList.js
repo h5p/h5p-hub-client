@@ -24,7 +24,7 @@ const InfoList = ({
         <span aria-labelledby='language' className='content'>{content.language.label}</span>
       </li>
       <li>
-        <span id='discipline' className='label'>{Dictionary.get('in')}: </span>
+        <span id='discipline' className='label capitalize'>{Dictionary.get('in')}: </span>
         <span aria-labelledby='discipline' className='content'>
           {content.disciplines.map((discipline, i, arr) => discipline.label + (arr.length - 1 !== i ? ', ' : ''))}
         </span>

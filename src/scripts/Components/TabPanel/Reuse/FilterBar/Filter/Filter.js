@@ -2,6 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import './Filter.scss';
 import Modal from 'react-modal';
+import Dictionary from '../../../../../utils/dictionary';
+import Message from '../../../../Message/Message';
+
 
 class Filter extends React.Component {
   constructor(props) {
@@ -59,7 +62,7 @@ class Filter extends React.Component {
    * Handles window resizing
    */
   handleResize = () => {
-    this.setState({left: this.calculatePosition()});
+    this.setState({ left: this.calculatePosition() });
   }
 
   render() {
@@ -89,10 +92,15 @@ class Filter extends React.Component {
             {this.props.dictionary.dialogHeader}
           </div>
 
-          {
-            this.props.data && this.props.data.length !== undefined 
-              ? this.props.children //The actual checkboxes/filtering
-              : <div className="loading" />
+          {this.props.failedDataFetch ?
+            <Message
+              severity='error'
+              title={Dictionary.get('failedFetchingData')}
+              message={Dictionary.get('filterErrorMessage')}>
+            </Message>
+            : this.props.data ?
+              this.props.children //The actual checkboxes/filtering
+              : <div className='loading' />
           }
 
           <button
@@ -116,6 +124,7 @@ Filter.propTypes = {
   dictionary: PropTypes.object.isRequired,
   toggleButtonRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
   filterBarRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  failedDataFetch: PropTypes.bool
 };
 
 export default Filter;

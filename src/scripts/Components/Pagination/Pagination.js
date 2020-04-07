@@ -58,7 +58,11 @@ class Pagination extends React.Component {
     return (
       <nav>
         <ul className="list-of-numbers" aria-label={Dictionary.get('paginationNavigation')}>
-          <Choose selected={pageNumToId(this.props.selectedPage)} onChange={this.handlePageSelected} setFocus={this.props.setFocus}>
+          <Choose 
+            selected={pageNumToId(this.props.selectedPage)}
+            onChange={this.handlePageSelected}
+            setFocus={this.props.setFocus}
+          >
             {paginationList(this.props.selectedPage, this.props.pages, this.state.screenWidth)}
           </Choose>
         </ul>

@@ -2,28 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
+import { isChecked, descendantsChecked } from '../../utils/filters';
 
 const CheckboxList = React.forwardRef(({
   items,
   onChecked,
-  checked, filter,
+  checkedParents,
+  checked,
+  filter,
   focused,
   navigateToChildren,
   parent,
   listRefId,
+  getDescendants,
   tabIndex }, ref) => {
-
-  /**
-   * Check if a checkbox is in list of the checked checkboxes
-   * @param  {string} id
-   */
-  const isChecked = (id) => {
-    return checked.indexOf(id) != -1;
-  };
-
-  const childrenChecked = (children) => {
-    return children ? children.filter(element => isChecked(element.id)).length : null;
-  };
 
   return (
     <ul
@@ -33,25 +25,23 @@ const CheckboxList = React.forwardRef(({
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
 
-      {items.map(element => {
-        return (
-          <Checkbox
-            key={parent + element.id}
-            id={element.id}
-            label={element.label}
-            checked={isChecked(element.id)}
-            filter={filter}
-            onChecked={onChecked}
-            focused={focused == element.id}
-            children={element.children}
-            navigateToChildren={navigateToChildren}
-            parent={parent}
-            childrenChecked={childrenChecked(element.children) > 0 && childrenChecked(element.children)}
-            ref={ref && ref[element.id]}
-            tabIndex={tabIndex}
-          />
-        );
-      })}
+      {items.map(element =>
+        <Checkbox
+          key={parent + element.id}
+          id={element.id}
+          label={element.label}
+          checked={isChecked(element.id, checked)}
+          filter={filter}
+          onChecked={onChecked}
+          focused={focused == element.id}
+          checkboxChildren={element.children}
+          navigateToChildren={navigateToChildren}
+          parent={parent}
+          descendantsChecked={element.children && descendantsChecked(getDescendants(element), checked, checkedParents)}
+          ref={ref && ref[element.id]}
+          tabIndex={tabIndex}
+        />
+      )}
     </ul>
   );
 });
@@ -64,7 +54,7 @@ CheckboxList.propTypes = {
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
   listRefId: PropTypes.string,
-  tabIndex: PropTypes.string
+  tabIndex: PropTypes.string,
 };
 
 export default CheckboxList;

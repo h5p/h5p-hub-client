@@ -4,45 +4,60 @@
 .h5p-hub {
   .search-filter {
     outline: 0.06815em solid #bebdcd;
+    position: relative;
 
     .clear-button {
       background: none;
       position: absolute;
-      top: 5em;
-      right: 5.5em;
-      padding: 1.5em;
+      top: 0;
+      padding: 1.2em;
+      right: 3em;
       color: #757575;
       &::before {
         @include icon($icon-remove);
         font-style: normal;
-        font-size: 0.7em;
+        font-size: 1em;
       }
     }
     .navigate-parent {
-      width: 100%;
-      font-size: 1.36314em;
-      padding: 0.5em;
-      background-color: #ffffff;
+      font-size: 1.25em;
+      padding: 0.3534em;
       display: flex;
+      font-weight: bold;
+      font-family: "Open Sans", sans-serif;
+      border: 1px solid #e6e6e8;
+      align-items: center;
 
-      &::before {
-        content: "🡢";
-        transform: rotate(180deg);
+      button {
+        background-color: #ffffff;
+        position: relative;
         font-style: normal;
-        font-size: 0.7em;
-        display: inline-block;
+        font-size: 0.8em;
+        border-radius: 50%;
+        margin-right: 0.4em;
         align-self: center;
-        margin-right: 0.7em;
+        padding: 0.5em;
+
+        &::before {
+          @include icon($icon-arrow-thin);
+          transform: rotate(180deg);
+          font-weight: normal;
+          display: inline-block;
+        }
+        &:hover {
+          background-color: #dadada;
+          cursor: pointer;
+        }
       }
     }
 
     .checkbox-list {
       overflow: hidden;
       overflow-y: scroll;
-      height: 25em;
+      max-height: 25em;
 
       li {
-        border: 0.06815em solid #e6e6e8;
+        border: 1px solid #e6e6e8;
         .content {
           padding: 0.3em;
           .label-text {
@@ -50,16 +65,16 @@
           }
         }
         &:focus {
-          border: 0.06815em solid #3ba0f2;
+          border-color: #3ba0f2;
           background-color: #fff;
           outline: none;
           box-shadow: none;
         }
-        &:hover{
+        &:hover {
           background-color: #f2f2f2;
         }
         &.highlighted {
-          border: 0.06815em solid #3ba0f2;
+          border-color: #3ba0f2;
           background-color: #fff;
           box-shadow: none;
         }
@@ -73,18 +88,12 @@
         width: 0.54525em;
         border-radius: 5.45256em;
       }
-    }
 
-    &::-webkit-scrollbar {
-      background-color: rgba(105, 117, 133, 0.25);
-      width: 0.54525em;
-      border-radius: 5.45256em;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: #697585;
-      background-size: 24px 100%;
-      border-radius: 5.45256em;
+      &::-webkit-scrollbar-thumb {
+        background-color: #697585;
+        background-size: 24px 100%;
+        border-radius: 5.45256em;
+      }
     }
   }
 }

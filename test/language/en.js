@@ -250,6 +250,12 @@ H5PEditor.language.core = {
       dialogButtonLabel: 'Filter Content Types',
       searchPlaceholder: 'Select one or more content types'
     },
+    disciplines: {
+      dropdownLabel: 'Discipline',
+      dialogHeader: 'Select Your Discipline',
+      dialogButtonLabel: 'Filter Disciplines',
+      searchPlaceholder: 'Select one or more disciplines'
+    },
     licenses: {
       dropdownLabel: 'License',
       dialogHeader: 'Select preferred rights of use',
@@ -276,9 +282,10 @@ H5PEditor.language.core = {
   reuseContentTabLabel: 'Get Shared Content',
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
-  in: 'In',
   h5pType: 'H5P Type',
   level: 'Level',
   size: 'Size',
-  failedFetchingData: 'Failed fetching data',
+  failedFetchingData: 'Failed fetching data', 
+  filterErrorMessage: 'Something went wrong. Please reload the page.',
+  in: 'in',
 };

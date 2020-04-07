@@ -8,30 +8,30 @@
     padding: 0 0.833em 0.833em 1.125em;
     display: flex;
 
-    @media (max-width: $screen-small) {
+    .filter-label {
+      color: #ffffff;
+      align-self: center;
+    }
+    @media (max-width: $screen-medium) {
       flex-direction: column;
-      justify-content: center;
 
       .filter-label {
         align-self: start;
         margin-left: 1em;
       }
     }
-
-    .filter-label {
-      color: #ffffff;
-      align-self: center;
-    }
   }
 
   .filter-buttons {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 
     li {
       outline: none;
+      margin: 0.5em 0 0.5em 0;
     }
-  
+
     li:focus {
       .filter-button {
         box-shadow: $box-shadow-blue;
@@ -40,18 +40,16 @@
         }
       }
     }
-  
-    @media (max-width: $screen-small) {
-      flex-direction: column;
-      li {
-        margin: 0.5em 0 0.5em 0;
-      }
-    }
   }
 
   .clear-filters {
     flex-grow: 1;
     align-self: center;
+
+    @media (max-width: $screen-medium) {
+      align-self: start;
+      margin-left: 1em;
+    }
 
     button {
       font-family: "Open Sans", sans-serif;
