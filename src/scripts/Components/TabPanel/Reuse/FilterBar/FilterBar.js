@@ -69,7 +69,7 @@ class FilterBar extends React.Component {
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
     this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
-    if(close){
+    if (close) {
       this.props.onChange(this.state.checked);
     }
   }
