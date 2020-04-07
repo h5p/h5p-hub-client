@@ -29,6 +29,9 @@ export const contentDefinition = PropTypes.shape({
   screenshots: PropTypes.arrayOf(PropTypes.shape({
     url: nonEmptyString,
     alt: nonEmptyString
-  })),
-  image: PropTypes.string
+  })).isRequired,
+  image: PropTypes.string.isRequired,
+  level: PropTypes.string.isRequired,
+  language: PropTypes.object.isRequired,
+  disciplines: PropTypes.array.isRequired
 });

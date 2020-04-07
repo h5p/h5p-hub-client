@@ -54,7 +54,7 @@ const create = function (content) {
       id: randomFromArray(['mit', 'cc', 'ocl', 'opl', 'gfdl']),
       version: 1
     },
-    discipline: randomFromArray([
+    disciplines: randomFromArray([
       [
         { id: '100', label: 'Performing Arts' },
         { id: '101', label: 'Visual Arts' },
