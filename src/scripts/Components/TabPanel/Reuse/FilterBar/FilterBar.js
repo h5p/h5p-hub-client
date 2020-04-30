@@ -146,11 +146,11 @@ class FilterBar extends React.Component {
     return (
       <div className="filter-bar" ref={this.filterBarRef}>
 
-        <div className="filter-label">
+        <div className="filter-label" id="content-hub-filter-label">
           {this.props.label}
         </div>
 
-        <ul className="filter-buttons">
+        <ul className="filter-buttons" aria-labelledby="content-hub-filter-label">
           <Choose
             selected={this.open}
             onChange={this.handleFilterButtonClicked}>

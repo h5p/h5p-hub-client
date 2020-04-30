@@ -97,11 +97,16 @@ class ReuseContent extends React.Component {
   }
 
   scrollToSearchResults = () => {
-    this.reuseContentResultRef.current.scrollTo({
-      left: 0,
-      top: 0,
-      behavior: 'smooth'
-    });
+    if (this.reuseContentResultRef.current.scrollTo) {
+      this.reuseContentResultRef.current.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+    else {
+      this.reuseContentResultRef.current.focus();
+    }
   }
 
   handleOrderBy = (orderBy) => {
@@ -190,7 +195,8 @@ class ReuseContent extends React.Component {
               visible={this.state.contentListVisible}
               handlePageChange={this.handlePageChange}
               focused={this.state.focused}
-              setFocus={this.state.setFocus} />
+              setFocus={this.state.setFocus}
+              title={Dictionary.get('contentSectionAll')} />
 
             <Async promiseFn={this.state.search}>
               <Async.Fulfilled>{result =>

@@ -53,8 +53,8 @@ class List extends React.Component {
   render() {
 
     return (
-      <div className={`h5p-hub-list ${this.props.type}`}>
-        <ol ref={el => this.listElement = el}>
+      <div className={`h5p-hub-list ${this.props.type} ${this.props.classNames}`}>
+        <ol ref={el => this.listElement = el} aria-label={this.props.title}>
           <Choose onChange={this.props.onSelect} selected={this.state.focused} setFocus={this.state.setFocus}>
             {this.props.children}
           </Choose>
@@ -66,10 +66,16 @@ class List extends React.Component {
 
 List.propTypes = {
   type: PropTypes.oneOf(['tabular', 'grid']).isRequired,
+  classNames: PropTypes.string,
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   onSelect: PropTypes.func.isRequired,
   focused: PropTypes.string,
-  setFocus: PropTypes.bool
+  setFocus: PropTypes.bool,
+  title: PropTypes.string.isRequired
+};
+
+List.defaultProps = {
+  classNames: ''
 };
 
 export default List;

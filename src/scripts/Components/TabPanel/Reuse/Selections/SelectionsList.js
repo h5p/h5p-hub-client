@@ -22,6 +22,7 @@ const SelectionsList = ({title, itemsPromise, actionLabel, onAction, onSelect, f
         setFocus={null}
         focused={focused}
         setFocus={setFocus}
+        title={title}
       />
     </div>
   );

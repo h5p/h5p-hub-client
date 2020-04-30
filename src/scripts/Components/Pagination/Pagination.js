@@ -56,7 +56,7 @@ class Pagination extends React.Component {
 
   render() {
     return (
-      <nav>
+      <nav role="navigation">
         <ul className="list-of-numbers" aria-label={Dictionary.get('paginationNavigation')}>
           <Choose 
             selected={pageNumToId(this.props.selectedPage)}

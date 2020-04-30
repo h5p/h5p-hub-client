@@ -2,10 +2,8 @@ import React from 'react';
 import Async from 'react-async';
 import PropTypes from 'prop-types';
 
-import Message from '../../../Message/Message';
 import List from '../../../List/List';
 import Dictionary from '../../../../utils/dictionary';
-import Loader from '../../../Loader/Loader';
 import Pagination from '../../../Pagination/Pagination';
 import ContentItemTabular from './ContentItemTabular';
 import ContentItemGrid from './ContentItemGrid';
@@ -22,6 +20,7 @@ const ContentList = ({
   showPagination,
   focused,
   setFocus,
+  title
 }) => {
 
   const contentLookup = {};
@@ -57,7 +56,13 @@ const ContentList = ({
         <Async.Fulfilled>{result =>
           result.numResults ? (
             <>
-              <List type={type} onSelect={id => onSelect(contentLookup[id], id,type)} focused={focused} setFocus={setFocus}>
+              <List 
+                type={type}
+                onSelect={id => onSelect(contentLookup[id], id,type)}
+                focused={focused}
+                setFocus={setFocus}
+                title={title}
+              >
                 {createItems(result.content)}
               </List>
               {
@@ -82,10 +87,11 @@ ContentList.propTypes = {
   type: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
-  handlePageChange: PropTypes.func.isRequired,
+  handlePageChange: PropTypes.func,
   showPagination: PropTypes.bool,
   focused: PropTypes.string,
   setFocus: PropTypes.bool,
+  title: PropTypes.string.isRequired
 };
 
 ContentList.defaultProps = {

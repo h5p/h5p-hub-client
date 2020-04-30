@@ -21,14 +21,17 @@ const Order = ({ searchPromise, selected, onChange, orderVisible = true, visible
     <div className={'navbar' + (visible ? '' : ' hidden')}>
       <div className="result-header">
         {headerLabel}
-        <span className="result-hits">
-          <Async promiseFn={searchPromise}>
-            <Async.Fulfilled>{result =>
-              `(${Dictionary.get('numResults').replace(':num', result.numResults)})`
-            }
-            </Async.Fulfilled>
-          </Async>
-        </span>
+        { 
+          searchPromise &&
+          <span className="result-hits">
+            <Async promiseFn={searchPromise}>
+              <Async.Fulfilled>{result =>
+                `(${Dictionary.get('numResults').replace(':num', result.numResults)})`
+              }
+              </Async.Fulfilled>
+            </Async>
+          </span>
+        }
       </div>
       {
         orderVisible &&
@@ -49,7 +52,7 @@ const Order = ({ searchPromise, selected, onChange, orderVisible = true, visible
 };
 
 Order.propTypes = {
-  searchPromise: PropTypes.func.isRequired,
+  searchPromise: PropTypes.func,
   selected: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   visible: PropTypes.bool.isRequired,
