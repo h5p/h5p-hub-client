@@ -90,6 +90,8 @@ class List extends React.Component {
       </li>
     ));
 
+    H5P.externalDispatcher.trigger('h5p-hub-content-types-render', {numContentTypes: this.props.contentTypes.length});
+
     return (
       <div className="content-type-list"
         aria-hidden={!this.props.visible}
