@@ -11,16 +11,11 @@ class Modal extends React.Component {
 
   constructor(props) {
     super(props);
-    ReactModal.setAppElement(this.props.parent);
   }
 
   closeModal = () => {
-    document.querySelector(this.props.parent).removeAttribute('aria-hidden');
+    document.getElementById(this.props.appElementId).removeAttribute('aria-hidden');
     this.props.onClose();
-  }
-
-  getParent = () => {
-    return document.querySelector('.h5p-hub');
   }
 
   render() {
@@ -34,11 +29,11 @@ class Modal extends React.Component {
         isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.label}
-        parentSelector={this.getParent}
         className={`lightbox-inner ${this.props.className}`}
         overlayClassName='lightbox'
         aria={this.props.aria}
-        parentSelector={() => document.querySelector(this.props.parent)}
+        appElement={document.getElementById(this.props.appElementId)}
+        parentSelector={() => document.getElementById(this.props.parentId)}
       >
         <Button
           buttonProps={closeButtonProps}
@@ -57,7 +52,11 @@ Modal.propTypes = {
     describedby: PropTypes.string
   }),
   className: PropTypes.string.isRequired,
-  parent: PropTypes.string.isRequired
+  //The element the modal is attached to,
+  //can't be the same as appElement, because then aria-hidden is applied to the modal
+  parentId: PropTypes.string.isRequired,
+  //The element that should be hidden (logically, not visually) by the modal
+  appElementId: PropTypes.string.isRequired
 };
 
 export default Modal;

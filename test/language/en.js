@@ -288,4 +288,5 @@ H5PEditor.language.core = {
   failedFetchingData: 'Failed fetching data', 
   filterErrorMessage: 'Something went wrong. Please reload the page.',
   in: 'in',
+  navigateToParent: 'Navigate to parent'
 };

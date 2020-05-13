@@ -254,7 +254,8 @@ class Content extends React.Component {
             onClose={this.onModalClose}
             className={this.state.modalType || ''}
             aria={modalAria}
-            parent=".content-detail"
+            parentId='h5p-hub'
+            appElementId='h5p-hub-panel'
           >
             <ModalContent />
           </Modal>

@@ -10,8 +10,7 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
 
-    this.container = document.querySelector('.reuse-content-container');
-
+    this.appElement = document.getElementById('reuse-content-container');
     this.state = {
       left: this.calculatePosition()
     };
@@ -28,7 +27,7 @@ class Filter extends React.Component {
   }
 
   closeModal = () => {
-    this.container.removeAttribute('aria-hidden');
+    this.appElement.removeAttribute('aria-hidden');
     this.props.onFilterClosed(this.props.id);
   }
 
@@ -66,7 +65,7 @@ class Filter extends React.Component {
   }
 
   render() {
-    const modalAria = { labelledby: this.props.dropdownLabel };
+    const modalAria = { labelledby: 'header-text'};
 
     const style = {
       content: {
@@ -79,16 +78,18 @@ class Filter extends React.Component {
         isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.id}
-        parentSelector={() => this.container}
+        //The element the modal is attached to
+        parentSelector={() => document.getElementById('reuse-view')}
+        //The element that should be hidden (logically, not visually) by the modal
+        appElement={this.appElement}
         className='filter-dialog'
-        overlayClassName='lightbox'
+        overlayClassName='filter-modal'
         aria={modalAria}
         style={style}
         shouldCloseOnOverlayClick={false}
-        appElement={this.container}
       >
         <div className="filter-dialog-content" onClick={this.swallowClicks}>
-          <div className="header-text">
+          <div className="header-text" id='header-text'>
             {this.props.dictionary.dialogHeader}
           </div>
 

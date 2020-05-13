@@ -107,8 +107,8 @@ class Hub extends React.Component {
   render() {
     this.handleRender(this.state.title, this.state.expanded);
     return (
-      <section className="h5p-hub">
-        <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`}>
+      <section className="h5p-hub" id='h5p-hub'>
+        <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`} id='h5p-hub-panel'>
           <DropDownSelector
             title={this.state.title || Dictionary.get('hubPanelLabel')}
             sectionId={this.state.section}
@@ -128,6 +128,7 @@ class Hub extends React.Component {
                 onReload={this.handleReload}/>
               <ReuseContent id="reuse"
                 title={Dictionary.get('reuseContentTabLabel')}
+                setFocus={this.state.expanded && this.state.section === 'reuse'}
               />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading

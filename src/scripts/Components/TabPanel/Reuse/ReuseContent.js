@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Async } from 'react-async';
 
 import NoContent from './NoContent/NoContent';
@@ -167,11 +168,12 @@ class ReuseContent extends React.Component {
 
   render() {
     return (
-      <div className="reuse-view loaded">
+      <div className="reuse-view loaded" id='reuse-view'>
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
-          value={this.state.query} />
+          value={this.state.query}
+          setFocus={this.props.setFocus}/>
 
         <FilterBar
           label={Dictionary.get('filterBy')}
@@ -179,7 +181,7 @@ class ReuseContent extends React.Component {
           onChange={this.handleFilters}
         />
 
-        <div className='reuse-content-container'>
+        <div className='reuse-content-container' id='reuse-content-container'>
           <Order
             searchPromise={this.state.search}
             selected={this.state.orderBy}
@@ -240,5 +242,10 @@ class ReuseContent extends React.Component {
     );
   }
 }
+
+ReuseContent.propTypes = {
+  title: PropTypes.string.isRequired,
+  setFocus: PropTypes.bool
+};
 
 export default ReuseContent;

@@ -333,7 +333,8 @@ class ContentType extends React.Component {
             onClose={this.onModalClose}
             className={this.state.modalType || ''}
             aria={modalAria}
-            parent=".h5p-section-content-types"
+            parentId='h5p-hub'
+            appElementId='h5p-hub-panel'
           >
             <ModalContent/>
           </Modal>

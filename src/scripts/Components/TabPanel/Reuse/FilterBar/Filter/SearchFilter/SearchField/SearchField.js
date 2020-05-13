@@ -64,8 +64,7 @@ const SearchField = React.forwardRef(({
   };
 
   return (
-    <div onMouseDown={onClick} className="search-button" role="button" aria-label={Dictionary.get('dropdownButton')}>
-
+    <div onMouseDown={onClick} className="search-button">
       <div className="search-field" role="search">
         <input id="filter-search-bar"
           type="text"

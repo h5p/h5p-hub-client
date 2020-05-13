@@ -47,6 +47,7 @@ const Checkbox = React.forwardRef(({
       className={`checkbox ${checked ? 'checked ' : ''} ${focused ? 'highlighted' : ''} ${checkboxChildren ? 'parent' : ''}`}
       role='checkbox'
       aria-checked={checked}
+      aria-label={label}
       onClick={() => 
         checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked)
       }

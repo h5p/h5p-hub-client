@@ -4,6 +4,7 @@ import CheckboxList from '../../../../../CheckboxList/CheckboxList';
 import CategoryList from './CategoryList/CategoryList';
 import SearchField from './SearchField/SearchField';
 import './SearchFilter.scss';
+import Dictionary from '../../../../../../utils/dictionary';
 
 class SearchFilter extends React.Component {
   constructor(props) {
@@ -438,7 +439,7 @@ class SearchFilter extends React.Component {
         />
         {this.state.parent.length > 0 && this.state.dropdownOpen &&
           <div className='navigate-parent'>
-            <button onClick={this.navigateToParent}/>
+            <button onClick={this.navigateToParent} aria-label={Dictionary.get('navigateToParent')}/>
             {this.getCheckboxFromId(this.state.parent[this.state.parent.length - 1], this.parents).label}
           </div>
         }
