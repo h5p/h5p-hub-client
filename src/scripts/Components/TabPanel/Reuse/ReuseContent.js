@@ -182,51 +182,53 @@ class ReuseContent extends React.Component {
         />
 
         <div className='reuse-content-container' id='reuse-content-container'>
-          <Order
-            searchPromise={this.state.search}
-            selected={this.state.orderBy}
-            onChange={this.handleOrderBy}
-            headerLabel={Dictionary.get('contentSectionAll')}
-            visible={this.state.contentListVisible}
-            orderVariables={this.orderBySettings} />
-
-          <div className='reuse-content-result' ref={this.reuseContentResultRef}>
-            <ContentList
-              itemsPromise={this.state.search}
-              onSelect={this.showContentDetails}
+          <div style={this.state.detailViewVisible ? {visibility: 'hidden'} : {}}>
+            <Order
+              searchPromise={this.state.search}
+              selected={this.state.orderBy}
+              onChange={this.handleOrderBy}
+              headerLabel={Dictionary.get('contentSectionAll')}
               visible={this.state.contentListVisible}
-              handlePageChange={this.handlePageChange}
-              focused={this.state.focused}
-              setFocus={this.state.setFocus}
-              title={Dictionary.get('contentSectionAll')} />
+              orderVariables={this.orderBySettings} />
 
-            <Async promiseFn={this.state.search}>
-              <Async.Fulfilled>{result =>
-                <NoContent
-                  tutorialUrl={result.numResults ? "https://h5p.org/documentation/for-authors/tutorials" : null}
-                  suggestionText={Dictionary.get(result.numResults ? 'noContentSuggestion' : 'noContentFoundDesc')}
-                  headerText={Dictionary.get(result.numResults ? 'noContentHeader' : 'noResultsFound')} />
-              }
-              </Async.Fulfilled>
-            </Async>
+            <div className='reuse-content-result' ref={this.reuseContentResultRef}>
+              <ContentList
+                itemsPromise={this.state.search}
+                onSelect={this.showContentDetails}
+                visible={this.state.contentListVisible}
+                handlePageChange={this.handlePageChange}
+                focused={this.state.focused}
+                setFocus={this.state.setFocus}
+                title={Dictionary.get('contentSectionAll')} />
 
-            <SelectionsList
-              itemsPromise={this.state.popularContent}
-              title={Dictionary.get('popularContent')}
-              actionLabel={Dictionary.get('allPopular')}
-              onAction={() => this.showAllOrderedBy('popular')}
-              onSelect={this.showContentDetails}
-              focused={this.state.focused}
-              setFocus={this.state.setFocus} />
+              <Async promiseFn={this.state.search}>
+                <Async.Fulfilled>{result =>
+                  <NoContent
+                    tutorialUrl={result.numResults ? "https://h5p.org/documentation/for-authors/tutorials" : null}
+                    suggestionText={Dictionary.get(result.numResults ? 'noContentSuggestion' : 'noContentFoundDesc')}
+                    headerText={Dictionary.get(result.numResults ? 'noContentHeader' : 'noResultsFound')} />
+                }
+                </Async.Fulfilled>
+              </Async>
 
-            <SelectionsList
-              itemsPromise={this.state.newContent}
-              title={Dictionary.get('newOnTheHub')}
-              actionLabel={Dictionary.get('allNew')}
-              onAction={() => this.showAllOrderedBy('newest')}
-              onSelect={this.showContentDetails}
-              focused={this.state.focused}
-              setFocus={this.state.setFocus} />
+              <SelectionsList
+                itemsPromise={this.state.popularContent}
+                title={Dictionary.get('popularContent')}
+                actionLabel={Dictionary.get('allPopular')}
+                onAction={() => this.showAllOrderedBy('popular')}
+                onSelect={this.showContentDetails}
+                focused={this.state.focused}
+                setFocus={this.state.setFocus} />
+
+              <SelectionsList
+                itemsPromise={this.state.newContent}
+                title={Dictionary.get('newOnTheHub')}
+                actionLabel={Dictionary.get('allNew')}
+                onAction={() => this.showAllOrderedBy('newest')}
+                onSelect={this.showContentDetails}
+                focused={this.state.focused}
+                setFocus={this.state.setFocus} />
+            </div>
           </div>
 
           {
