@@ -48,7 +48,8 @@ const create = function (content) {
       { id: "it", label: "Italian" }]),
     publisher: {
       name: chance.name(),
-      description: chance.sentence({ words: 50 })
+      description: chance.sentence({ words: 50 }),
+      image: 'test/images/image.jpg',
     },
     license: {
       id: randomFromArray(['mit', 'cc', 'ocl', 'opl', 'gfdl']),

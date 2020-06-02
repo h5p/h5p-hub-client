@@ -27,7 +27,7 @@ const ContentAccordion = ({content, onShowLicenseDetails}) => {
         <h3 className="publisher-name">
           {content.publisher.name}
         </h3>
-
+        <img className='publisher-image' src={content.publisher.image}/>
         <div className="publisher-description">
           {content.publisher.description}
         </div>

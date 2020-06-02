@@ -1,0 +1,14 @@
+.h5p-hub {
+  #publisher-info {
+    overflow: auto;
+
+    .publisher-image {
+      max-width: 10em;
+      max-height: 10em;
+      height: auto;
+      width: auto;
+      margin-right: 1em;
+      float: left;
+    }
+  }
+}
