@@ -42,7 +42,7 @@
     "karma-jasmine": "^1.1.2",
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^2.0.13",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "prettier": "^1.18.2",
     "react-async": "^10.0.0",
     "resolve-url-loader": "^3.1.0",
