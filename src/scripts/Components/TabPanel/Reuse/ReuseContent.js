@@ -182,7 +182,7 @@ class ReuseContent extends React.Component {
         />
 
         <div className='reuse-content-container' id='reuse-content-container'>
-          <div style={this.state.detailViewVisible ? {visibility: 'hidden'} : {}}>
+          <div className={!this.state.contentListVisible ? 'content-list-hidden' : ''}>
             <Order
               searchPromise={this.state.search}
               selected={this.state.orderBy}
