@@ -1,10 +1,11 @@
 import './fetch';
 import Dictionary from './dictionary';
 
-const fetchJSON = (url, data) =>
+const fetchJSON = (url, data, credentials = 'include', mode = 'cors') =>
   fetch(url, {
     method: data === undefined ? 'GET' : 'POST',
-    credentials: 'include',
+    credentials: credentials,
+    mode: mode,
     body: data
   })
     .then(response => {

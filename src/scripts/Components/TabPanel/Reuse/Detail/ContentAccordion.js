@@ -11,7 +11,7 @@ import './ContentAccordion.scss';
 const ContentAccordion = ({content, onShowLicenseDetails}) => {
   return (
     <Accordion>
-    
+
       <LicenseInfo
         header={Dictionary.get('contentTypeLicensePanelTitle')}
         id={content.license.id}
@@ -20,14 +20,14 @@ const ContentAccordion = ({content, onShowLicenseDetails}) => {
         onShowLicenseDetails={onShowLicenseDetails}
       />
 
-      <div 
+      <div
         header={Dictionary.get('contentPublisherPanelHeader')}
         id='publisher-info'
       >
         <h3 className="publisher-name">
           {content.publisher.name}
         </h3>
-        <img className='publisher-image' src={content.publisher.image}/>
+        <img className='publisher-image' src={content.publisher.logo}/>
         <div className="publisher-description">
           {content.publisher.description}
         </div>

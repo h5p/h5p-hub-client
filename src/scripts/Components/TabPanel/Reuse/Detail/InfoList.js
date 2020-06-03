@@ -17,21 +17,21 @@ const InfoList = ({
       </li>
       <li>
         <span id='h5p-type' className='label'>{Dictionary.get('h5pType') + ': '}</span>
-        <span aria-labelledby='h5p-type' className='content'>{content.contentType}</span>
+        <span aria-labelledby='h5p-type' className='content'>{content.content_type} TODO</span>
       </li>
       <li>
         <span id='language' className='label'>{Dictionary.get('language')}: </span>
-        <span aria-labelledby='language' className='content'>{content.language.label}</span>
+        <span aria-labelledby='language' className='content'>{content.language} TODO</span>
       </li>
       <li>
         <span id='discipline' className='label capitalize'>{Dictionary.get('in')}: </span>
         <span aria-labelledby='discipline' className='content'>
-          {content.disciplines.map((discipline, i, arr) => discipline.label + (arr.length - 1 !== i ? ', ' : ''))}
+          {content.disciplines.map((discipline, i, arr) => discipline + (arr.length - 1 !== i ? ', ' : ''))} TODO
         </span>
       </li>
       <li>
         <span id='level' className='label'>{Dictionary.get('level')}: </span>
-        <span className='content capitalize' aria-labelledby='level'>{content.level}</span>
+        <span className='content capitalize' aria-labelledby='level'>{content.level} TODO</span>
       </li>
       <li>
         <span id='size' className='label'>{Dictionary.get('size')}: </span>

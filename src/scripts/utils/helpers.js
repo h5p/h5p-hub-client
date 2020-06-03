@@ -24,14 +24,11 @@ export const contentDefinition = PropTypes.shape({
   title: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
   reviewed: PropTypes.bool.isRequired,
-  contentType: PropTypes.string.isRequired,
+  content_type: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  screenshots: PropTypes.arrayOf(PropTypes.shape({
-    url: nonEmptyString,
-    alt: nonEmptyString
-  })).isRequired,
-  image: PropTypes.string.isRequired,
+  screenshots: PropTypes.arrayOf(PropTypes.string),
+  icon: PropTypes.string,
   level: PropTypes.string.isRequired,
-  language: PropTypes.object.isRequired,
+  language: PropTypes.string.isRequired,
   disciplines: PropTypes.array.isRequired
 });
