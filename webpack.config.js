@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = {
   entry: "./src/entries/dist.js",
@@ -21,7 +22,7 @@ const config = {
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'resolve-url-loader',
           'sass-loader',
@@ -33,7 +34,12 @@ const config = {
         loader: 'url-loader?limit=1000000'
       }
     ]
-  }
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "h5p-hub-client.css"
+    })
+  ]
 };
 
 module.exports = (env, argv) => {
