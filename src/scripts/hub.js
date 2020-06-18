@@ -23,7 +23,7 @@ export default class HubClient {
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
-    ApiClient.init(language);
+    ApiClient.init(language, state.getAjaxUrl('content-hub-metadata-cache'), state.contentTypes);
 
     /**
      * @private

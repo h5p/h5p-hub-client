@@ -129,6 +129,8 @@ class Hub extends React.Component {
               <ReuseContent id="reuse"
                 title={Dictionary.get('reuseContentTabLabel')}
                 setFocus={this.state.expanded && this.state.section === 'reuse'}
+                getAjaxUrl={this.props.getAjaxUrl}
+                onDownload={this.handleUpload}
               />
               <UploadContent id="upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading

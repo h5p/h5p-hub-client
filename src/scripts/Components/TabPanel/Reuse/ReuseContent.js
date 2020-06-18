@@ -12,6 +12,7 @@ import FilterBar from './FilterBar/FilterBar';
 import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
 import Content from './Detail/Content';
+import fetchJSON from '../../../utils/fetchJSON';
 
 import './ReuseContent.scss';
 
@@ -59,12 +60,12 @@ class ReuseContent extends React.Component {
     });
 
     this.filters = [
-      { id: 'disciplines', promise: ApiClient.disciplines(), dictionary: filterTrans.disciplines, type: 'categorySearch'},
-      { id: 'contentTypes', promise: ApiClient.contentTypes(), dictionary: filterTrans.contentTypes, type: 'search'},
+      { id: 'disciplines', promise: ApiClient.disciplines, dictionary: filterTrans.disciplines, type: 'categorySearch'},
+      { id: 'contentTypes', promise: ApiClient.contentTypes, dictionary: filterTrans.contentTypes, type: 'search'},
       { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages(), dictionary: filterTrans.language, type: 'search' },
-      { id: 'level', promise: ApiClient.levels(), dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' }      
+      { id: 'language', promise: ApiClient.languages, dictionary: filterTrans.language, type: 'search' },
+      { id: 'level', promise: ApiClient.levels, dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' }
     ];
 
     this.reuseContentResultRef = React.createRef();
@@ -166,6 +167,23 @@ class ReuseContent extends React.Component {
     this.scrollToSearchResults();
   }
 
+  /**
+   * Handles download events from the Content component.
+   */
+  handleDownload = content => {
+    console.log('Displaying nice throbber so the user doesn\'t download 10 content at the same times... just kidding not implemented :-)'); // TODO: Display throbber? Disable button?
+
+    fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
+      .then(response => {
+        // Download success, inform parent
+        this.props.onDownload(response.data);
+      })
+      .catch(reason => {
+        // Download failed, inform the user? TODO
+        throw new Error(reason);
+      });
+  }
+
   render() {
     return (
       <div className="reuse-view loaded" id='reuse-view'>
@@ -235,7 +253,7 @@ class ReuseContent extends React.Component {
             this.state.detailViewVisible &&
             <Content
               content={this.state.content}
-              onDownload={(content) => { console.log('DOWNLOAD', content); }}
+              onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
               onClose={() => this.setState({ detailViewVisible: false })}/>
           }
