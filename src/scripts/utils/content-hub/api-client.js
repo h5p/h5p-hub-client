@@ -75,16 +75,6 @@ export default class ApiClient {
     return datas;
   }
 
-  get(endpoint, params) {
-    return () => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject(new Error('not implemented'));
-        }, 2000);
-      });
-    };
-  }
-
   static getLicense(id) {
     // Cache the license text
     if (!ApiClient.instance.licenses[id]) {
