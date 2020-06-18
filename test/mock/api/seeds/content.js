@@ -72,6 +72,7 @@ const get = function (params, noResults) {
 
   const page = params.page || 1;
   const pages = 25;
+  const limit = params.limit || 10;
 
   if (noResults) {
     return {
@@ -84,7 +85,7 @@ const get = function (params, noResults) {
 
   let content = [];
 
-  for (let i = 0; i < params.limit; i++) {
+  for (let i = 0; i < limit; i++) {
     content.push(create());
   }
 

@@ -4,6 +4,7 @@ import content from './seeds/content';
 import languages from './seeds/languages';
 import levels from './seeds/levels';
 import license from './seeds/license';
+import licenses from './seeds/licenses';
 import contentTypes from './seeds/content-types';
 import disciplines from './seeds/disciplines';
 
@@ -14,6 +15,7 @@ endpointsToData[endpoints.levels] = levels;
 endpointsToData[endpoints.contentTypes] = contentTypes;
 endpointsToData[endpoints.disciplines] = disciplines;
 endpointsToData[endpoints.license] = license;
+endpointsToData[endpoints.licenses] = licenses;
 
 const urlParams = window.URLSearchParams ? new URLSearchParams(window.location.search) : {
   get: function () {
@@ -25,34 +27,39 @@ const loadingForever = urlParams.get('loading') !== null;
 const errorLoading = urlParams.get('error') !== null;
 const emptyResults = urlParams.get('empty') !== null;
 
-ApiClient.prototype.get = function(endpoint, params) {
-  console.log('SEARCH APPLIED', endpoint, params);
-
+const get = function(endpoint, params) {
   if (loadingForever) {
-    return function() {
-      return new Promise(function () {});
-    };
+    return new Promise(function () {});
   }
   else if (errorLoading) {
-    return function() {
-      return new Promise(function (resolve, reject) {
-        reject(new Error('Failed fetching data'));
-      });
-    };
+    return new Promise(function (resolve, reject) {
+      reject(new Error('Failed fetching data'));
+    });
   }
   else if (emptyResults) {
-    return function() {
-      return new Promise(function (resolve) {
-        resolve(endpointsToData[endpoint](params, true));
-      });
-    };
+    return new Promise(function (resolve) {
+      resolve(endpointsToData[endpoint](params, true));
+    });
   }
 
-  return function() {
-    return new Promise(function(resolve) {
-      setTimeout(function() {
-        resolve(endpointsToData[endpoint](params));
-      }, latency);
-    });
-  };
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve(endpointsToData[endpoint](params));
+    }, latency);
+  });
 };
+
+
+ApiClient.init = function(language) {
+  ApiClient.instance = new ApiClient(language);
+  ApiClient.levels = get(endpoints.levels);
+  ApiClient.disciplines = get(endpoints.disciplines);
+  ApiClient.languages = get(endpoints.languages);
+  ApiClient.licenses = get(endpoints.licenses);
+  ApiClient.contentTypes = get(endpoints.contentTypes);
+};
+
+ApiClient.search = function(params) {
+  return () => get(endpoints.search, params);
+};
+
