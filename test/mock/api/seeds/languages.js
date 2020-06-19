@@ -1,33 +1,65 @@
-const get = function(params, noResults) {
+const get = function (params, noResults) {
   return noResults ? [] : [
     {
-      id: 'en',
-      label: 'English'
+      "name": "aa",
+      "translation": null
     },
     {
-      id: 'nb',
-      label: 'Norwegian bokmål'
+      "name": "ab",
+      "translation": null
     },
     {
-      id: 'ss',
-      label: 'A strange language with a long name to make the UI a little harder to implement :)'
+      "name": "ae",
+      "translation": null
     },
     {
-      id: "da",
-      label:"Danish"
+      "name": "af",
+      "translation": null
     },
     {
-      id: "nl",
-      label:"Dutch"
+      "name": "ak",
+      "translation": null
     },
     {
-      id: "fr",
-      label:"French"
+      "name": "am",
+      "translation": null
     },
     {
-      id: "it",
-      label:"Italian"
-    }
+      "name": "ar",
+      "translation": null
+    },
+    {
+      "name": "as",
+      "translation": null
+    },
+    {
+      "name": "ast",
+      "translation": null
+    },
+    {
+      "name": "av",
+      "translation": null
+    },
+    {
+      "name": "ay",
+      "translation": null
+    },
+    {
+      "name": "az",
+      "translation": null
+    },
+    {
+      "name": "ba",
+      "translation": null
+    },
+    {
+      "name": "be",
+      "translation": null
+    },
+    {
+      "name": "bg",
+      "translation": "Bulgarian"
+    },
   ];
 };
 

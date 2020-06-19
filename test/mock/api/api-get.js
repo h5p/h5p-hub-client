@@ -44,7 +44,15 @@ const get = function(endpoint, params) {
 
   return new Promise(function(resolve) {
     setTimeout(function() {
-      resolve(endpointsToData[endpoint](params));
+      if(endpoint === endpoints.disciplines) {
+        resolve(ApiClient.makeHierarchicalList(ApiClient.massageMetadata(endpointsToData[endpoint](params))));
+      }
+      else if(endpoint === endpoints.contentTypes) {
+        resolve(ApiClient.makeContentTypes(ApiClient.massageContentTypes(endpointsToData[endpoint](params))));
+      }
+      else {
+        resolve(ApiClient.massageMetadata(endpointsToData[endpoint](params)));
+      }
     }, latency);
   });
 };

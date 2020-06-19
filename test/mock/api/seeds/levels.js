@@ -1,16 +1,16 @@
 const get = function(params, noResults) {
   return noResults ? [] : [
     {
-      id: 'beginner',
-      label: 'Introductory/Beginner'
+      "name": "beginner",
+      "translation": null
     },
     {
-      id: 'intermediate',
-      label: 'Intermediate'
+      "name": "intermediate",
+      "translation": null
     },
     {
-      id: 'advanced',
-      label: 'Advanced'
+      "name": "advanced",
+      "translation": null
     }
   ];
 };

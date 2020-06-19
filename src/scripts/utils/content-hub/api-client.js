@@ -11,27 +11,39 @@ export default class ApiClient {
     if (!ApiClient.instance) {
       ApiClient.instance = new ApiClient(language);
 
+      //Make promise for content types metadata
       ApiClient.contentTypes = new Promise(resolve => {
         // Massage content types so they can be used by the Content Hub
-        const cts = [];
-        for (let i = 0; i < contentTypes.libraries.length; i++) {
-          const library = contentTypes.libraries[i];
-          cts.push({
-            id: library.machineName + ' ' + library.majorVersion + '.' + library.minorVersion,
-            label: library.title
-          });
-        }
-        resolve(cts);
+        const cts = ApiClient.massageContentTypes(contentTypes);
+        const hierarchical = ApiClient.makeHierarchicalContentTypes(cts);
+        resolve(hierarchical);
       });
 
       // Create promises for all the metadata
       const metadataPromises = [];
-      const metadata = ['levels', 'disciplines', 'languages', 'licenses'];
+      const metadata = [
+        {
+          name: 'levels',
+          hierarchical: false
+        },
+        {
+          name: 'languages',
+          hierarchical: false
+        },
+        {
+          name: 'licenses',
+          hierarchical: false
+        },
+        {
+          name: 'disciplines',
+          hierarchical: true
+        }];
       for (let i = 0; i < metadata.length; i++) {
-        const metadataType = metadata[i];
+        const metadataType = metadata[i].name;
         ApiClient[metadataType] = new Promise((resolve, reject) => {
           metadataPromises.push({
             type: metadataType,
+            hierarchical: metadata[i].hierarchical,
             resolve: resolve,
             reject: reject
           });
@@ -44,7 +56,12 @@ export default class ApiClient {
           for (let i = 0; i < metadataPromises.length; i++) {
             const promise = metadataPromises[i];
             if (response.success === true && response.data[promise.type] !== undefined) {
-              promise.resolve(ApiClient.massageMetadata(response.data[promise.type]));
+              if (promise.hierarchical) {
+                promise.resolve(ApiClient.makeHierarchicalList(ApiClient.massageMetadata(response.data[promise.type])));
+              }
+              else {
+                promise.resolve(ApiClient.massageMetadata(response.data[promise.type]));
+              }
             }
             else {
               promise.reject(new Error('Unable to load ' + promise.type + ' metadata.'));
@@ -73,6 +90,93 @@ export default class ApiClient {
       data.id = data.name;
     }
     return datas;
+  }
+
+  /**
+   * Need to massage the content type data to be in the right format
+   *
+   * @param {Onject} contentTypes
+   * @return {Array}
+   */
+  static massageContentTypes(contentTypes) {
+    const cts = [];
+    for (let i = 0; i < contentTypes.libraries.length; i++) {
+      const library = contentTypes.libraries[i];
+      cts.push({
+        id: library.machineName + ' ' + library.majorVersion + '.' + library.minorVersion,
+        label: library.title,
+        categories: library.categories
+      });
+    }
+    return cts;
+  }
+
+  /**
+   * Create a hierarchical list
+   * Need to have elements with id and parent
+   * @param  {Array} list
+   * @return {Array}
+   */
+  static makeHierarchicalList(list) {
+    //Create lookup table
+    const lookupTable = {};
+    for (let i = 0; i < list.length; i++) {
+      lookupTable[list[i].id] = list[i];
+    }
+
+    //Add children to parents
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].parent !== null) {
+        const parent = lookupTable[list[i].parent];
+        parent.children = parent.children ? parent.children.concat([list[i]]) : [list[i]];
+      }
+    }
+
+    const hierarchicalList = [];
+
+    //Add all disciplines without parent to list
+    for (let discipline of Object.values(lookupTable)) {
+      if (discipline.parent === null) {
+        hierarchicalList.push(discipline);
+      }
+    }
+    return hierarchicalList;
+  }
+
+  /**
+   * Make a hierarchical list of the content types
+   * @param  {Array} list
+   * @return {Array}
+   */
+  static makeHierarchicalContentTypes(list) {
+    //Create categories
+    const categoriesObject = {};
+    for (let i = 0; i < list.length; i++) {
+      if (list[i].categories && list[i].categories.length > 0) {
+        list[i].categories.forEach(category => {
+          if (categoriesObject[category] === undefined) {
+            categoriesObject[category] = {
+              id: category,
+              label: category,
+              children: []
+            };
+          }
+        });
+      }
+    }
+
+    //Add children to parents
+    for (let i = 0; i < list.length; i++) {
+      const categories = list[i].categories;
+      if (categories !== undefined && categories.length > 0) {
+        categories.forEach(category => {
+          const parent = categoriesObject[category];
+          parent.children = parent.children.concat([list[i]]);
+        });
+      }
+    }
+
+    return Object.values(categoriesObject);
   }
 
   static getLicense(id) {
