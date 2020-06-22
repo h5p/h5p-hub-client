@@ -48,7 +48,7 @@ const get = function(endpoint, params) {
         resolve(ApiClient.makeHierarchicalList(ApiClient.massageMetadata(endpointsToData[endpoint](params))));
       }
       else if(endpoint === endpoints.contentTypes) {
-        resolve(ApiClient.makeContentTypes(ApiClient.massageContentTypes(endpointsToData[endpoint](params))));
+        resolve(ApiClient.makeHierarchicalContentTypes(ApiClient.massageContentTypes(endpointsToData[endpoint](params))));
       }
       else {
         resolve(ApiClient.massageMetadata(endpointsToData[endpoint](params)));
