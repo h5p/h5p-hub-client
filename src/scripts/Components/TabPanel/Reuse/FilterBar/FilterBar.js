@@ -210,7 +210,7 @@ FilterBar.propTypes = {
   filters: PropTypes.array.isRequired,
   onChange: PropTypes.func.isRequired,
   metaData: PropTypes.object.isRequired,
-  failedDataFetch: PropTypes.isRequired
+  failedDataFetch: PropTypes.object.isRequired
 };
 
 export default FilterBar;

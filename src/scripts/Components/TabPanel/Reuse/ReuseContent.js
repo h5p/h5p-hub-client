@@ -218,7 +218,7 @@ class ReuseContent extends React.Component {
           filters={this.filters}
           onChange={this.handleFilters}
           filters={this.filters}
-          metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'review': this.reviewedFilter }}
+          metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
         />
 
