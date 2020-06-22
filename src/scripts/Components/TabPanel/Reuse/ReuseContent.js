@@ -204,7 +204,6 @@ class ReuseContent extends React.Component {
       });
   }
   render() {
-    console.log(this.state.metaData)
     return (
       <div className="reuse-view loaded" id='reuse-view'>
         <Search

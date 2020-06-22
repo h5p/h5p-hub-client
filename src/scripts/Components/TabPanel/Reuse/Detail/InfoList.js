@@ -9,9 +9,7 @@ import PropTypes from 'prop-types';
 const InfoList = ({
   content,
   getH5PTitle,
-  getLanguage,
-  getDiscipline,
-  getLevel
+  getLabel
 }) => {
 
   return (
@@ -26,17 +24,17 @@ const InfoList = ({
       </li>
       <li>
         <span id='language' className='label'>{Dictionary.get('language')}: </span>
-        <span aria-labelledby='language' className='content'>{getLanguage(content.language)}</span>
+        <span aria-labelledby='language' className='content'>{getLabel(content.language, 'language')}</span>
       </li>
       <li>
         <span id='discipline' className='label capitalize'>{Dictionary.get('in')}: </span>
         <span aria-labelledby='discipline' className='content'>
-          {content.disciplines.map((discipline, i, arr) => getDiscipline(discipline) + (arr.length - 1 !== i ? ', ' : ''))}
+          {content.disciplines.map((discipline, i, arr) => getLabel(discipline, 'flatDisciplines') + (arr.length - 1 !== i ? ', ' : ''))}
         </span>
       </li>
       <li>
         <span id='level' className='label'>{Dictionary.get('level')}: </span>
-        <span className='content capitalize' aria-labelledby='level'>{getLevel(content.level)}</span>
+        <span className='content capitalize' aria-labelledby='level'>{getLabel(content.level, 'level')}</span>
       </li>
       <li>
         <span id='size' className='label'>{Dictionary.get('size')}: </span>
@@ -48,10 +46,8 @@ const InfoList = ({
 
 InfoList.propTypes = {
   content: contentDefinition,
-  getDiscipline: PropTypes.func.isRequired,
-  getLanguage: PropTypes.func.isRequired,
+  getLabel: PropTypes.func.isRequired,
   getH5PTitle: PropTypes.func.isRequired,
-  getLevel: PropTypes.func.isRequired
 };
 
 export default InfoList;

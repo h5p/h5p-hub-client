@@ -120,41 +120,13 @@ class Content extends React.Component {
     return name;
   }
 
-  /**
-   * Get language label
-   * @param  {string} name
-   */
-  getLanguage = (name) => {
-    if (this.props.metaData.language) {
-      const element = this.props.metaData.language.filter(language => language.id === name);
-      if (element.length > 0 && element[0].translation !== null) {
-        return element[0].translation;
-      }
-    }
-    return name;
-  }
-
-  /**
-   * Get discipline level
-   * @param  {string} name
-   */
-  getDiscipline = (name) => {
-    if (this.props.metaData.flatDisciplines) {
-      const element = this.props.metaData.flatDisciplines.filter(discipline => discipline.id === name);
-      if (element.length > 0 && element[0].translation !== null) {
-        return element[0].translation;
-      }
-    }
-    return name;
-  }
-
   /** 
    * Get level label
    * @param  {string} name
    */
-  getLevel = (name) => {
-    if (this.props.metaData.level) {
-      const element = this.props.metaData.level.filter(level => level.id === name);
+  getLabel = (name, type) => {
+    if (this.props.metaData[type]) {
+      const element = this.props.metaData[type].filter(element => element.id === name);
       if (element.length > 0 && element[0].translation !== null) {
         return element[0].translation;
       }
@@ -267,9 +239,7 @@ class Content extends React.Component {
                 <InfoList
                   content={this.props.content}
                   getH5PTitle={this.getH5PTitle}
-                  getDiscipline={this.getDiscipline}
-                  getLanguage={this.getLanguage}
-                  getLevel={this.getLevel}
+                  getLabel={this.getLabel}
                 />
               </div>
             </div>
