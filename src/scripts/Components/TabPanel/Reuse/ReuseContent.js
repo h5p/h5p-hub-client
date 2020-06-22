@@ -35,7 +35,9 @@ class ReuseContent extends React.Component {
       popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
       search: ContentApiClient.search({}),
       focused: '',
-      setFocus: false
+      setFocus: false,
+      failedDataFetch: {},
+      metaData: {}
     };
 
     this.orderBySettings = [{
@@ -48,24 +50,42 @@ class ReuseContent extends React.Component {
 
     const filterTrans = Dictionary.get('filters');
 
-    const reviewedPromise = new Promise(function (resolve) {
-      resolve([{ id: 'reviewed', label: filterTrans.reviewed.optionLabel }]);
-    });
+    this.reviewedFilter = [{ id: 'reviewed', label: filterTrans.reviewed.optionLabel }];
 
-    const licensePromise = new Promise(function (resolve) {
-      resolve([
-        { id: 'modified', label: filterTrans.licenses.options.modified },
-        { id: 'commercial', label: filterTrans.licenses.options.commercial }
-      ]);
+    this.licenseFilter = [
+      { id: 'modified', label: filterTrans.licenses.options.modified },
+      { id: 'commercial', label: filterTrans.licenses.options.commercial }
+    ];
+
+    this.metaData = [
+      { id: 'disciplines', promise: ApiClient.disciplines },
+      { id: 'contentTypes', promise: ApiClient.contentTypes },
+      { id: 'language', promise: ApiClient.languages },
+      { id: 'level', promise: ApiClient.levels },
+      { id: 'flatDisciplines', promise: ApiClient.flatDisciplines },
+      { id: 'flatContentTypes', promise: ApiClient.flatContentTypes }
+    ];
+
+    this.metaData.forEach(metaData => {
+
+      metaData.promise.then(data => {
+        this.setState({
+          metaData: { ...this.state.metaData, [metaData.id]: data }
+        });
+      }, () => {
+        this.setState({
+          failedDataFetch: { ...this.state.failedDataFetch, [metaData.id]: true }
+        });
+      });
     });
 
     this.filters = [
-      { id: 'disciplines', promise: ApiClient.disciplines, dictionary: filterTrans.disciplines, type: 'categorySearch'},
-      { id: 'contentTypes', promise: ApiClient.contentTypes, dictionary: filterTrans.contentTypes, type: 'search'},
-      { id: 'license', promise: licensePromise, dictionary: filterTrans.licenses, type: 'checkboxList' },
-      { id: 'language', promise: ApiClient.languages, dictionary: filterTrans.language, type: 'search' },
-      { id: 'level', promise: ApiClient.levels, dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', promise: reviewedPromise, dictionary: filterTrans.reviewed, type: 'checkboxList' }
+      { id: 'disciplines', dictionary: filterTrans.disciplines, type: 'categorySearch' },
+      { id: 'contentTypes', dictionary: filterTrans.contentTypes, type: 'search' },
+      { id: 'license', dictionary: filterTrans.licenses, type: 'checkboxList' },
+      { id: 'language', dictionary: filterTrans.language, type: 'search' },
+      { id: 'level', dictionary: filterTrans.level, type: 'checkboxList' },
+      { id: 'reviewed', dictionary: filterTrans.reviewed, type: 'checkboxList' }
     ];
 
     this.reuseContentResultRef = React.createRef();
@@ -183,20 +203,23 @@ class ReuseContent extends React.Component {
         throw new Error(reason);
       });
   }
-
   render() {
+    console.log(this.state.metaData)
     return (
       <div className="reuse-view loaded" id='reuse-view'>
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
           value={this.state.query}
-          setFocus={this.props.setFocus}/>
+          setFocus={this.props.setFocus} />
 
         <FilterBar
           label={Dictionary.get('filterBy')}
           filters={this.filters}
           onChange={this.handleFilters}
+          filters={this.filters}
+          metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'review': this.reviewedFilter }}
+          failedDataFetch={this.state.failedDataFetch}
         />
 
         <div className='reuse-content-container' id='reuse-content-container'>
@@ -255,7 +278,8 @@ class ReuseContent extends React.Component {
               content={this.state.content}
               onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
-              onClose={() => this.setState({ detailViewVisible: false })}/>
+              onClose={() => this.setState({ detailViewVisible: false })}
+              metaData={this.state.metaData} />
           }
         </div>
       </div>

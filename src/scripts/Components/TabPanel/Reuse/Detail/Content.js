@@ -105,6 +105,64 @@ class Content extends React.Component {
   }
 
   /**
+   * Get title og H5P content type
+   * @param  {string} name
+   */
+  getH5PTitle = (name) => {
+    if (this.props.metaData.flatContentTypes) {
+      const element = this.props.metaData.flatContentTypes
+        //Ignore version in matching
+        .filter(contentType => contentType.id.split(' ')[0] === name.split(' ')[0]);
+      if (element.length > 0) {
+        return element[0].label;
+      }
+    }
+    return name;
+  }
+
+  /**
+   * Get language label
+   * @param  {string} name
+   */
+  getLanguage = (name) => {
+    if (this.props.metaData.language) {
+      const element = this.props.metaData.language.filter(language => language.id === name);
+      if (element.length > 0 && element[0].translation !== null) {
+        return element[0].translation;
+      }
+    }
+    return name;
+  }
+
+  /**
+   * Get discipline level
+   * @param  {string} name
+   */
+  getDiscipline = (name) => {
+    if (this.props.metaData.flatDisciplines) {
+      const element = this.props.metaData.flatDisciplines.filter(discipline => discipline.id === name);
+      if (element.length > 0 && element[0].translation !== null) {
+        return element[0].translation;
+      }
+    }
+    return name;
+  }
+
+  /** 
+   * Get level label
+   * @param  {string} name
+   */
+  getLevel = (name) => {
+    if (this.props.metaData.level) {
+      const element = this.props.metaData.level.filter(level => level.id === name);
+      if (element.length > 0 && element[0].translation !== null) {
+        return element[0].translation;
+      }
+    }
+    return name;
+  }
+
+  /**
    * Show license details
    */
   handleShowLicenseDetails = () => {
@@ -206,7 +264,13 @@ class Content extends React.Component {
                 </h2>
               }
               <div className="info-list">
-                <InfoList content={this.props.content} />
+                <InfoList
+                  content={this.props.content}
+                  getH5PTitle={this.getH5PTitle}
+                  getDiscipline={this.getDiscipline}
+                  getLanguage={this.getLanguage}
+                  getLevel={this.getLevel}
+                />
               </div>
             </div>
           </div>
@@ -270,6 +334,7 @@ Content.propTypes = {
   onClose: PropTypes.func.isRequired,
   aboutToClose: PropTypes.func.isRequired,
   content: contentDefinition,
+  metaData: PropTypes.object.isRequired
 };
 
 export default Content;

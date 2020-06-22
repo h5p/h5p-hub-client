@@ -44,11 +44,14 @@ const get = function(endpoint, params) {
 
   return new Promise(function(resolve) {
     setTimeout(function() {
-      if(endpoint === endpoints.disciplines) {
+      if(endpoint === endpoints.disciplines && !params) {
         resolve(ApiClient.makeHierarchicalList(ApiClient.massageMetadata(endpointsToData[endpoint](params))));
       }
-      else if(endpoint === endpoints.contentTypes) {
+      else if(endpoint === endpoints.contentTypes && !params) {
         resolve(ApiClient.makeHierarchicalContentTypes(ApiClient.massageContentTypes(endpointsToData[endpoint](params))));
+      }
+      else if(endpoint === endpoints.contentTypes && params && params.flat) {
+        resolve(ApiClient.massageContentTypes(endpointsToData[endpoint](params)));
       }
       else {
         resolve(ApiClient.massageMetadata(endpointsToData[endpoint](params)));
@@ -65,6 +68,8 @@ ApiClient.init = function(language) {
   ApiClient.languages = get(endpoints.languages);
   ApiClient.licenses = get(endpoints.licenses);
   ApiClient.contentTypes = get(endpoints.contentTypes);
+  ApiClient.flatContentTypes = get(endpoints.contentTypes, {flat: true});
+  ApiClient.flatDisciplines = get(endpoints.disciplines,{flat: true});
 };
 
 ApiClient.search = function(params) {

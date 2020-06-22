@@ -13,11 +13,9 @@ class FilterBar extends React.Component {
     super(props);
 
     this.state = {
-      filterData: {},
       openFilter: '',
       checked: {},
       showClearFilters: false,
-      failedDataFetch: {}
     };
 
     this.filterBarRef = React.createRef();
@@ -26,17 +24,6 @@ class FilterBar extends React.Component {
     this.props.filters.forEach(filter => {
 
       this.filterButtons[filter.id] = React.createRef();
-
-      filter.promise.then(data => {
-        this.setState({
-          filterData: { ...this.state.filterData, [filter.id]: data }
-        });
-      }, () => {
-        this.setState({
-          failedDataFetch: { ...this.state.failedDataFetch, [filter.id]: true }
-        });
-      }
-      );
     });
   }
 
@@ -135,7 +122,7 @@ class FilterBar extends React.Component {
           onClick={this.handleFilterButtonClicked}
           checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
           open={this.state.openFilter == filter.id}
-          data={this.state.filterData[filter.id]}
+          data={this.props.metaData[filter.id]}
           ref={this.filterButtons[filter.id]}
         />
       </li>
@@ -164,35 +151,35 @@ class FilterBar extends React.Component {
             id={filter.id}
             key={filter.id}
             dictionary={filter.dictionary}
-            data={this.state.filterData[filter.id]}
+            data={this.props.metaData[filter.id]}
             onFilterClosed={this.handleFilterClosed}
             checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
             handleChecked={this.handleChecked}
             toggleButtonRef={this.filterButtons[filter.id]}
             filterBarRef={this.filterBarRef}
-            failedDataFetch={this.state.failedDataFetch[filter.id]}>
-            {filter.type === 'checkboxList' && this.state.filterData[filter.id] &&
+            failedDataFetch={this.props.failedDataFetch[filter.id]}>
+            {filter.type === 'checkboxList' && this.props.metaData[filter.id] &&
               <CheckboxList
                 onChecked={this.handleChecked}
-                items={this.state.filterData[filter.id]}
+                items={this.props.metaData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
               />
             }
-            {filter.type === 'search' && this.state.filterData[filter.id] &&
+            {filter.type === 'search' && this.props.metaData[filter.id] &&
               <SearchFilter
                 handleChecked={this.handleChecked}
-                items={this.state.filterData[filter.id]}
+                items={this.props.metaData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary} 
                 dropdownAlwaysOpen={true}
               />
             }
-            {filter.type === 'categorySearch' && this.state.filterData[filter.id] &&
+            {filter.type === 'categorySearch' && this.props.metaData[filter.id] &&
               <SearchFilter
                 handleChecked={this.handleChecked}
-                items={this.state.filterData[filter.id]}
+                items={this.props.metaData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary}
@@ -221,7 +208,9 @@ class FilterBar extends React.Component {
 FilterBar.propTypes = {
   label: PropTypes.string.isRequired,
   filters: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  metaData: PropTypes.object.isRequired,
+  failedDataFetch: PropTypes.isRequired
 };
 
 export default FilterBar;

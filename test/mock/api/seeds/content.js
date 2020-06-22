@@ -6,11 +6,8 @@ const randomFromArray = function (arr) {
 
 const randomContentType = function () {
   return randomFromArray([
-    'Interactive Video',
-    'Course Presentation',
-    'Fill in the blanks',
-    'Multiple Choice',
-    'Branching scenario'
+    "H5P.MultiChoice 1.14",
+    "H5P.ImageSlider 1.0"
   ]);
 };
 
@@ -31,7 +28,7 @@ const create = function (content) {
     id: content.id || chance.guid(),
     title: content.title || chance.sentence({ words: 5 }),
     owner: content.owner || chance.name(),
-    contentType: content.contentType || randomContentType(),
+    content_type: content.contentType || randomContentType(),
     icon: content.image || 'test/images/image.jpg',
     summary: content.summary || chance.sentence({ words: 12 }),
     description: content.description || chance.sentence({ words: 150 }),
@@ -39,13 +36,13 @@ const create = function (content) {
     preview_url: content.preview_url || chance.url(),
     screenshots: screenshots,
     language: randomFromArray([
-      { id: 'en', label: 'English' },
-      { id: 'nb', label: 'Norwegian bokmål' },
-      { id: 'ss', label: 'A strange language with a long name to make the UI a little harder to implement :)' },
-      { id: "da", label: "Danish" },
-      { id: "nl", label: "Dutch" },
-      { id: "fr", label: "French" },
-      { id: "it", label: "Italian" }]),
+      'en',
+      'nb',
+      'ss',
+      "da",
+      "nl",
+      "fr",
+      "it"]),
     publisher: {
       name: chance.name(),
       description: chance.sentence({ words: 50 }),
@@ -55,14 +52,7 @@ const create = function (content) {
       id: randomFromArray(['mit', 'cc', 'ocl', 'opl', 'gfdl']),
       version: 1
     },
-    disciplines: randomFromArray([
-      [
-        { id: '100', label: 'Performing Arts' },
-        { id: '101', label: 'Visual Arts' },
-        { id: '12', label: 'Languages and literature' },
-        { id: '23', label: 'Economics' },
-        { id: '24', label: 'Human geography' }],
-      [{ id: '100', label: 'Performing Arts' }]]),
+    disciplines: ["architecture", "business"],
     level: randomFromArray(['beginner', 'intermediate', 'advanced']),
     size: randomFromArray([4868, 12495, 146589, 1759864])
   };

@@ -19,30 +19,45 @@ export default class ApiClient {
         resolve(hierarchical);
       });
 
+      ApiClient.flatContentTypes = new Promise(resolve => {
+        // Massage content types so they can be used by the Content Hub
+        const cts = ApiClient.massageContentTypes(contentTypes);
+        resolve(cts);
+      });
+
       // Create promises for all the metadata
       const metadataPromises = [];
       const metadata = [
         {
           name: 'levels',
+          promise: 'levels',
           hierarchical: false
         },
         {
           name: 'languages',
+          promise: 'languages',
           hierarchical: false
         },
         {
           name: 'licenses',
+          promise: 'licenses',
           hierarchical: false
         },
         {
           name: 'disciplines',
+          promise: 'disciplines',
           hierarchical: true
+        },
+        {
+          name: 'flatDisciplines',
+          promise: 'disciplines',
+          hierarchical: false
         }];
       for (let i = 0; i < metadata.length; i++) {
         const metadataType = metadata[i].name;
         ApiClient[metadataType] = new Promise((resolve, reject) => {
           metadataPromises.push({
-            type: metadataType,
+            type: metadata[i].promise,
             hierarchical: metadata[i].hierarchical,
             resolve: resolve,
             reject: reject
