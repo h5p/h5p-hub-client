@@ -12,7 +12,8 @@ class Filter extends React.Component {
 
     this.appElement = document.getElementById('reuse-content-container');
     this.state = {
-      left: this.calculatePosition()
+      left: this.calculatePosition(),
+      top: this.calculateTop()
     };
   }
 
@@ -58,16 +59,28 @@ class Filter extends React.Component {
   }
 
   /**
+   * Return top position for modal
+   * to be shown below filterbar
+   */
+  calculateTop = () => {
+    const filterBar = this.props.filterBarRef.current;
+    return filterBar.offsetTop + filterBar.offsetHeight;
+  }
+
+  /**
    * Handles window resizing
    */
   handleResize = () => {
-    this.setState({ left: this.calculatePosition() });
+    this.setState({ left: this.calculatePosition(), top: this.calculateTop() });
   }
 
   render() {
     const modalAria = { labelledby: 'header-text'};
 
     const style = {
+      overlay: {
+        top: this.state.top + 'px'
+      },
       content: {
         left: this.state.left + 'px'
       }
