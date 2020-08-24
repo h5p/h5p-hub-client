@@ -19,6 +19,21 @@ export const minimizeLongText = (text, threshold = 90) => {
   return (text.length > threshold) ? (text.substr(0, threshold-3) + '...') : text;
 };
 
+/**
+ * Maps content screenshots to a format that ImageSlider accepts
+ *
+ * @param screenshots Screenshots as received from the content hub
+ * @returns {Array} Image Slider processable screenshots
+ */
+export const mapContentScreenShotsForImageSlider = (screenshots) => {
+  return screenshots.map((ss) =>  {
+    return {
+      url: ss.path,
+      alt: ss.altText,
+    }
+  });
+}
+
 export const contentDefinition = PropTypes.shape({
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
@@ -26,7 +41,12 @@ export const contentDefinition = PropTypes.shape({
   reviewed: PropTypes.bool.isRequired,
   content_type: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  screenshots: PropTypes.arrayOf(PropTypes.string),
+  screenshots: PropTypes.arrayOf(
+    PropTypes.shape({
+      path: PropTypes.string,
+      altText: PropTypes.string,
+    })
+  ),
   icon: PropTypes.string,
   level: PropTypes.string.isRequired,
   language: PropTypes.string.isRequired,

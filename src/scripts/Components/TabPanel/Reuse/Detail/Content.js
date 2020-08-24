@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
-import { contentDefinition } from '../../../../utils/helpers';
+import {contentDefinition, mapContentScreenShotsForImageSlider} from '../../../../utils/helpers';
 import noIcon from '../../../../../images/content-type-placeholder.svg';
 import variables from '../../../../../styles/base/_variables.scss';
 
@@ -158,7 +158,7 @@ class Content extends React.Component {
       if (this.state.modalType === 'screenshots') {
         return (
           <ImageSlider
-            images={content.screenshots}
+            images={mapContentScreenShotsForImageSlider(content.screenshots)}
             imagesToShow={1}
             showProgress={true}
             selected={this.state.selectedScreenshot} />
@@ -249,7 +249,7 @@ class Content extends React.Component {
           this.state.showImageSlider &&
           content.screenshots &&
           <ImageSlider
-            images={content.screenshots}
+            images={mapContentScreenShotsForImageSlider(content.screenshots)}
             onImageSelect={this.onImageSelect}
             showProgress={false}
             selected={this.state.selectedScreenshot} />
