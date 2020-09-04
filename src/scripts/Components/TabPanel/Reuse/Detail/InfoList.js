@@ -15,30 +15,30 @@ const InfoList = ({
   return (
     <ul>
       <li>
-        <span id='owner' className='label'>{Dictionary.get('by')}: </span>
-        <span aria-labelledby='owner' className='content'>{(content.owner)}</span>
+        <span id='hubowner' className='hublabel'>{Dictionary.get('by')}: </span>
+        <span aria-labelledby='hubowner' className='hubcontent'>{(content.owner)}</span>
       </li>
       <li>
-        <span id='h5p-type' className='label'>{Dictionary.get('h5pType') + ': '}</span>
-        <span aria-labelledby='h5p-type' className='content'>{getH5PTitle(content.content_type)}</span>
+        <span id='hubh5p-type' className='hublabel'>{Dictionary.get('h5pType') + ': '}</span>
+        <span aria-labelledby='hubh5p-type' className='hubcontent'>{getH5PTitle(content.content_type)}</span>
       </li>
       <li>
-        <span id='language' className='label'>{Dictionary.get('language')}: </span>
-        <span aria-labelledby='language' className='content'>{getLabel(content.language, 'language')}</span>
+        <span id='hublanguage' className='hublabel'>{Dictionary.get('language')}: </span>
+        <span aria-labelledby='hublanguage' className='hubcontent'>{getLabel(content.language, 'language')}</span>
       </li>
       <li>
-        <span id='discipline' className='label capitalize'>{Dictionary.get('in')}: </span>
-        <span aria-labelledby='discipline' className='content'>
+        <span id='hubdiscipline' className='hublabel capitalize'>{Dictionary.get('in')}: </span>
+        <span aria-labelledby='hubdiscipline' className='hubcontent'>
           {content.disciplines.map((discipline, i, arr) => getLabel(discipline, 'flatDisciplines') + (arr.length - 1 !== i ? ', ' : ''))}
         </span>
       </li>
       <li>
-        <span id='level' className='label'>{Dictionary.get('level')}: </span>
-        <span className='content capitalize' aria-labelledby='level'>{getLabel(content.level, 'level')}</span>
+        <span id='hublevel' className='hublabel'>{Dictionary.get('level')}: </span>
+        <span className='hubcontent capitalize' aria-labelledby='hublevel'>{getLabel(content.level, 'level')}</span>
       </li>
       <li>
-        <span id='size' className='label'>{Dictionary.get('size')}: </span>
-        <span aria-labelledby='size' className='content'>{filesize(content.size)}</span>
+        <span id='hubsize' className='hublabel'>{Dictionary.get('size')}: </span>
+        <span aria-labelledby='hubsize' className='hubcontent'>{filesize(content.size)}</span>
       </li>
     </ul>
   );
