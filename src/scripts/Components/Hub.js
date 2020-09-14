@@ -52,7 +52,7 @@ class Hub extends React.Component {
     this.props.onUse(contentType);
   }
 
-  handleUpload = (data) => {
+  handleUpload = (data, type = 'upload') => {
     let panelTitle = data.h5p.mainLibrary;
     for (let i = 0; i < data.contentTypes.libraries.length; i++) {
       if (data.contentTypes.libraries[i].machineName === panelTitle) {
@@ -60,13 +60,18 @@ class Hub extends React.Component {
         break;
       }
     }
+    let title = Dictionary.get('uploadSuccess').replace(':title', panelTitle);
+    if (type === 'reuse') {
+      title = Dictionary.get('reuseSuccess').replace(':title', panelTitle);
+    }
+
     // Collapse Hub, update title and content type cache
     this.setState({
       expanded: false,
       title: panelTitle,
       contentTypes: data.contentTypes,
       infoMessage: {
-        title: Dictionary.get('uploadSuccess').replace(':title', panelTitle),
+        title: title,
         message: data.contentTypes.details
       }
     });
