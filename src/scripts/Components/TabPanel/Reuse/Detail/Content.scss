@@ -71,6 +71,7 @@ $color-back-button: #474f5a;
     .text-wrapper{
       flex-direction: row;
       display: flex;
+      flex-grow: 1;
 
       @media(max-width: $screen-medium){
         display: flex;
@@ -105,6 +106,7 @@ $color-back-button: #474f5a;
 
     .text-details {
       margin: 0 2em 0 2em;
+      flex-grow: 1;
 
       @media (max-width: $screen-medium) {
         margin: 2em 0 0 -16em;
