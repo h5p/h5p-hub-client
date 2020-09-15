@@ -12,8 +12,8 @@ class Filter extends React.Component {
 
     this.appElement = document.getElementById('reuse-content-container');
     this.state = {
-      left: this.calculatePosition(),
-      top: this.calculateTop()
+      left: this.calculateLeftPosition(),
+      top: this.calculateTopPosition()
     };
   }
 
@@ -41,7 +41,7 @@ class Filter extends React.Component {
    * 
    * @returns {integer}
    */
-  calculatePosition = () => {
+  calculateLeftPosition = () => {
     const filterBar = this.props.filterBarRef.current;
     // Font size of the dialog
     const font = 14.672;
@@ -62,7 +62,7 @@ class Filter extends React.Component {
    * Return top position for modal
    * to be shown below filterbar
    */
-  calculateTop = () => {
+  calculateTopPosition = () => {
     const filterBar = this.props.filterBarRef.current;
     return filterBar.offsetTop + filterBar.offsetHeight;
   }
@@ -71,7 +71,7 @@ class Filter extends React.Component {
    * Handles window resizing
    */
   handleResize = () => {
-    this.setState({ left: this.calculatePosition(), top: this.calculateTop() });
+    this.setState({ left: this.calculateLeftPosition(), top: this.calculateTopPosition() });
   }
 
   render() {
