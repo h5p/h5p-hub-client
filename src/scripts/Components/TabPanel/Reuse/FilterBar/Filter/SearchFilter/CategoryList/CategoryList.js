@@ -62,7 +62,7 @@ const CategoryList = React.forwardRef(({
                     key={category}
                     ref={ref[categoryRefId + category.id]}
                     className='category-header'>
-                    {Dictionary.get('in')}{category.label}
+                    {`${Dictionary.get('in')} ${category.label}`}
                   </div>
                   {getCheckboxes(category.children)}
                 </>
