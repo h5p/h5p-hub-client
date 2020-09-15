@@ -7,9 +7,9 @@
   transform: rotate(-90deg);
   font-style: normal;
   font-size: 0.7em;
-  display: inline-block;
+  display: block;
   position: absolute;
-  left: 47em;
+  right: 2em;
   align-self: center;
 }
 
@@ -23,24 +23,17 @@
     align-self: start;
     color: #4d5057;
     width: 100%;
+    position: relative;
 
     &:focus {
       box-shadow: 0 0 0.4em 0.01em RGBA(26, 147, 244, 0.7);
       outline: none;
     }
 
-    &:hover {
-      &.parent:after {
-        @include arrow-right();
-      }
+    &.parent::after {
+      @include arrow-right();
     }
-    &.highlighted {
-      &.parent:after {
-        left: 49em;
-        @include arrow-right();
-      }
-    }
-
+    
     .content {
       display: flex;
     }
