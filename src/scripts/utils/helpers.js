@@ -40,7 +40,7 @@ export const contentDefinition = PropTypes.shape({
   owner: PropTypes.string.isRequired,
   reviewed: PropTypes.bool.isRequired,
   content_type: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   screenshots: PropTypes.arrayOf(
     PropTypes.shape({
       path: PropTypes.string,

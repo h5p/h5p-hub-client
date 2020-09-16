@@ -27,7 +27,7 @@ class ReadMore extends React.Component {
   render() {
     const text = this.props.text;
 
-    if (text === undefined || text.length === 0) {
+    if (!text) {
       return null;
     }
 
