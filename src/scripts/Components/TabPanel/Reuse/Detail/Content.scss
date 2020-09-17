@@ -110,6 +110,7 @@ $color-back-button: #474f5a;
 
       @media (max-width: $screen-medium) {
         margin: 2em 0 0 -16em;
+        flex-basis: 100%;
       }
 
       @media(max-width: $screen-small){
