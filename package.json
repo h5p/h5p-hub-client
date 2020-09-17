@@ -8,7 +8,8 @@
     "build": "webpack --mode production",
     "lint": "./node_modules/.bin/eslint src",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
-    "watch": "webpack --mode development --watch"
+    "watch": "webpack --mode development --watch",
+    "watch:test-api": "webpack --mode development --api test --watch"
   },
   "repository": {
     "type": "git",
