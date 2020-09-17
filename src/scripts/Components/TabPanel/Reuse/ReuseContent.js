@@ -97,8 +97,7 @@ class ReuseContent extends React.Component {
       this.setState({
         page: page,
         focusOnRender: setFocus
-      });
-      this.runSearch({ page: page });
+      }, () => { this.runSearch({ page: page }); });
     }
   }
 
@@ -133,16 +132,18 @@ class ReuseContent extends React.Component {
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({ orderBy: orderBy });
-      this.runSearch({ orderBy: orderBy });
+      this.setState({ orderBy: orderBy }, () => {
+        this.runSearch({ orderBy: orderBy });
+      });
     }
     this.scrollToSearchResults();
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({ query: query });
-      this.runSearch({ query: query });
+      this.setState({ query: query }, () => {
+        this.runSearch({ query: query });
+      });
     }
     this.scrollToSearchResults();
   }
@@ -151,8 +152,9 @@ class ReuseContent extends React.Component {
     // TODO - check if it has changed in a better way. Now order matters
     // Also check why this is invoked too much
     if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
-      this.setState({ filters: filters });
-      this.runSearch({ filters: filters });
+      this.setState({ filters: filters }, () => {
+        this.runSearch({ filters: filters });
+      });
     }
   }
 
@@ -181,8 +183,9 @@ class ReuseContent extends React.Component {
       page: 1
     };
 
-    this.setState(newState);
-    this.runSearch(newState);
+    this.setState(newState, () => {
+      this.runSearch(newState);
+    });
 
     this.scrollToSearchResults();
   }
