@@ -41,6 +41,7 @@ $color-back-button: #474f5a;
       margin-bottom: $gutter * 2;
       padding-bottom: 1em;
       display: flex;
+      flex-wrap: wrap;
 
       @media (max-width: $screen-small) {
         display: flex;
@@ -48,44 +49,59 @@ $color-back-button: #474f5a;
       }
     }
 
-    // mobile first
     .image-wrapper {
+      flex-grow: 1;
       flex-shrink: 0;
-
-      @media (max-width: $screen-small) {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 1em;
-      }
+      order: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1em;
 
       img {
-        width: 15.5em;
-        height: 11.625em;
-        @media (max-width: $screen-medium) {
-          width: 16.5em;
-          height: 12.375em;
+        width: 16.5em;
+        height: 12.375em;
+        @media (min-width: $screen-medium) {
+          width: 15.5em;
+          height: 11.625em;
         }
       }
     }
 
-    .text-wrapper{
-      flex-direction: row;
-      display: flex;
+    .text-details {
+      order: 2;
       flex-grow: 1;
+      margin: 2em;
 
-      @media(max-width: $screen-medium){
-        display: flex;
-        flex-wrap: wrap-reverse;
+      @media(min-width: $screen-small) {
+        order: 3; // On medium screens, move text down below using full widh
+        flex-basis: 100%;
+      }
+
+      @media (min-width: $screen-medium) {
+        order: 2;
+        flex-basis: 12em;
+      }
+
+      h2 {
+        margin-top: 0;
+        font-size: 1.458em;
+        line-height: 1.458em;
       }
     }
 
     .info-list {
+      order: 3;
+      flex-grow: 1;
       min-width: 15em;
-      margin-left: 1em;
+      margin: 1em;
 
-      @media (max-width: $screen-small) {
-        margin-left: 0;
-        margin-top: 1em;
+      @media (min-width: $screen-small) {
+        order: 2;
+      }
+
+      @media (min-width: $screen-medium) {
+        order: 3;
       }
     }
 
@@ -101,26 +117,6 @@ $color-back-button: #474f5a;
         position: relative;
         top: -0.2em;
         margin-left: 0.3em;
-      }
-    }
-
-    .text-details {
-      margin: 0 2em 0 2em;
-      flex-grow: 1;
-
-      @media (max-width: $screen-medium) {
-        margin: 2em 0 0 -16em;
-        flex-basis: 100%;
-      }
-
-      @media(max-width: $screen-small){
-        margin: 1em 0 0 0em;
-      }
-
-      h2 {
-        margin-top: 0;
-        font-size: 1.458em;
-        line-height: 1.458em;
       }
     }
 

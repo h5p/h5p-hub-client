@@ -195,54 +195,38 @@ class Content extends React.Component {
               src={content.icon || noIcon}
             />
           </div>
-          <div className='text-wrapper'>
-            <div className="text-details">
-              {this.state.screenWidth > this.screenSmall &&
-                <h2
-                  id={titleId}
-                  className={`title ${content.reviewed ? 'reviewed' : ''}`}
-                  tabIndex="-1"
-                  ref={element => this.title = element}
-                >
-                  {content.title}
-                </h2>
-              }
+          <div className="text-details">
+            <h2
+              id={titleId}
+              className={`title ${content.reviewed ? 'reviewed' : ''}`}
+              tabIndex="-1"
+              ref={element => this.title = element}
+            >
+              {content.title}
+            </h2>
 
-              <ReadMore
-                text={content.description}
-                maxLength={285}
-              />
+            <ReadMore
+              text={content.description}
+              maxLength={285}
+            />
 
-              {
-                content.preview_url &&
-                <a
-                  className="button demo-button"
-                  target="_blank"
-                  href={content.preview_url}
-                >
-                  {Dictionary.get("contentPreviewButtonLabel")}
-                </a>
-              }
-            </div>
-            <div>
-              {this.state.screenWidth < this.screenSmall &&
-                <h2
-                  id={titleId}
-                  className={`title ${content.reviewed ? 'reviewed' : ''}`}
-                  tabIndex="-1"
-                  ref={element => this.title = element}
-                >
-                  {content.title}
-                </h2>
-              }
-              <div className="info-list">
-                <InfoList
-                  content={this.props.content}
-                  getH5PTitle={this.getH5PTitle}
-                  getLabel={this.getLabel}
-                />
-              </div>
-            </div>
+            {
+              content.preview_url &&
+              <a
+                className="button demo-button"
+                target="_blank"
+                href={content.preview_url}
+              >
+                {Dictionary.get("contentPreviewButtonLabel")}
+              </a>
+            }
+          </div>
+          <div className="info-list">
+            <InfoList
+              content={this.props.content}
+              getH5PTitle={this.getH5PTitle}
+              getLabel={this.getLabel}
+            />
           </div>
         </div>
         {
