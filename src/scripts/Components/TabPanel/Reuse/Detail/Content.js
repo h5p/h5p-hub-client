@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
 import {contentDefinition, mapContentScreenShotsForImageSlider} from '../../../../utils/helpers';
-import noIcon from '../../../../../images/content-type-placeholder.svg';
 import variables from '../../../../../styles/base/_variables.scss';
 
 import Message from '../../../Message/Message';
@@ -15,6 +14,7 @@ import ContentAccordion from './ContentAccordion';
 import './Content.scss';
 import LicenseDialog from './LicenseDialog';
 import InfoList from './InfoList';
+import ContentIcon from '../ContentIcon';
 
 class Content extends React.Component {
 
@@ -190,10 +190,7 @@ class Content extends React.Component {
         />
         <div className="container">
           <div className="image-wrapper">
-            <img
-              className="img-responsive content-type-image"
-              src={content.icon || noIcon}
-            />
+            <ContentIcon src={content.icon} className="img-responsive content-type-image" />
           </div>
           <div className="text-details">
             <h2

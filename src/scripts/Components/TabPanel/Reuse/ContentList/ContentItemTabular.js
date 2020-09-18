@@ -1,17 +1,16 @@
+import './ContentItemTabular.scss';
+
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Dictionary from '../../../../utils/dictionary';
-import placeholderImage from '../../../../../images/placeholder.svg';
 import { minimizeLongText } from '../../../../utils/helpers';
-
-import './ContentItemTabular.scss';
+import ContentIcon from '../ContentIcon';
 
 const ContentItemTabular = ({content}) => {
   return (
     <>
       <div className='left'>
-        <div className='image' style={{backgroundImage: `url("${content.icon || placeholderImage}")`}}/>
+        <ContentIcon src={content.icon} />
       </div>
 
       <div className='middle'>

@@ -1,15 +1,14 @@
+import './ContentItemGrid.scss';
+
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Dictionary from '../../../../utils/dictionary';
-import placeholderImage from '../../../../../images/placeholder.svg';
-
-import './ContentItemGrid.scss';
+import ContentIcon from '../ContentIcon';
 
 const ContentItemGrid = ({content}) => {
   return (
     <div className="grid-item">
-      <img src={content.icon || placeholderImage} />
+      <ContentIcon src={content.icon} />
 
       <div className="grid-item-title">
         { content.title }

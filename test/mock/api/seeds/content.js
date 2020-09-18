@@ -82,8 +82,14 @@ const get = function (params, noResults) {
   // A long summary
   content[0].summary = chance.sentence({ words: 30 });
 
+  // A non-existing image:
+  content[0].icon = 'does-not-exist.jpg';
+
   // A long name
   content[1].owner = "Adolph Blaine Charles David Earl Frederick Gerald Hubert Irvin John Kenneth Lloyd Martin Nero Oliver Paul Quincy Randolph Sherman Thomas Uncas Victor William Xerxes Yancy Zeus";
+
+  // No image at all
+  delete content[1].icon;
 
   // A long title
   content[2].title = chance.sentence({ words: 40 });
