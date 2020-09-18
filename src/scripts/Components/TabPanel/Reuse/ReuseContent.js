@@ -13,6 +13,7 @@ import ApiClient from '../../../utils/content-hub/api-client';
 import Search from '../../Search/Search';
 import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
+import { hubFiltersEqual } from '../../../utils/helpers';
 
 import './ReuseContent.scss';
 
@@ -91,30 +92,40 @@ class ReuseContent extends React.Component {
     this.reuseContentResultRef = React.createRef();
   }
 
-  handlePageChange = (setFocus, page) => {
-    if (page !== this.state.page) {
-      //Do something with selected page
+  componentDidUpdate(prevProps, prevState) {
+    // Check if there are changes in any of the state variables 
+    // used by the search. If so execute a new search
+    const searchHasChanged = 
+      (prevState.orderBy !== this.state.orderBy) ||
+      (prevState.query !== this.state.query) ||
+      (prevState.page !== this.state.page) ||
+      !hubFiltersEqual(prevState.filters, this.state.filters);
+
+    if (searchHasChanged) {
       this.setState({
-        page: page,
-        focusOnRender: setFocus
-      }, () => { this.runSearch({ page: page }); });
+        detailViewVisible: false,
+        contentListVisible: true,
+        focused: '',
+        setFocus: true,
+        search: ContentApiClient.search({
+          query: this.state.query,
+          filters: this.state.filters,
+          orderBy: this.state.orderBy,
+          page: this.state.page,
+        })
+      });
+
+      this.scrollToSearchResults();
     }
   }
 
-  runSearch = ({ query, filters, orderBy, page }) => {
-    this.setState({
-      detailViewVisible: false,
-      contentListVisible: true,
-      focused: '',
-      setFocus: true,
-      search: ContentApiClient.search({
-        query: query || this.state.query,
-        filters: filters || this.state.filters,
-        orderBy: orderBy || this.state.orderBy,
-        page: page || this.state.page,
-      })
-    });
-    this.scrollToSearchResults();
+  handlePageChange = (setFocus, page) => {
+    if (page !== this.state.page) {
+      this.setState({
+        page: page,
+        focusOnRender: setFocus
+      });
+    }
   }
 
   scrollToSearchResults = () => {
@@ -132,29 +143,20 @@ class ReuseContent extends React.Component {
 
   handleOrderBy = (orderBy) => {
     if (orderBy !== this.state.orderBy) {
-      this.setState({ orderBy: orderBy }, () => {
-        this.runSearch({ orderBy: orderBy });
-      });
+      this.setState({ orderBy: orderBy });
     }
-    this.scrollToSearchResults();
   }
 
   handleSearch = (query) => {
     if (query !== this.state.query) {
-      this.setState({ query: query }, () => {
-        this.runSearch({ query: query });
-      });
+      this.setState({ query: query });
     }
-    this.scrollToSearchResults();
   }
 
   handleFilters = (filters) => {
-    // TODO - check if it has changed in a better way. Now order matters
-    // Also check why this is invoked too much
-    if (JSON.stringify(filters) !== JSON.stringify(this.state.filters)) {
-      this.setState({ filters: filters }, () => {
-        this.runSearch({ filters: filters });
-      });
+    // TODO - check why this is invoked too much
+    if (!hubFiltersEqual(filters, this.state.filters)) {
+      this.setState({ filters: filters });
     }
   }
 
@@ -176,18 +178,12 @@ class ReuseContent extends React.Component {
 
   showAllOrderedBy = (orderBy) => {
     // TODO - clear filters in Filterbar
-    const newState = {
+    this.setState({
       orderBy: orderBy,
       filters: {},
       query: '',
       page: 1
-    };
-
-    this.setState(newState, () => {
-      this.runSearch(newState);
     });
-
-    this.scrollToSearchResults();
   }
 
   /**
@@ -219,7 +215,6 @@ class ReuseContent extends React.Component {
           label={Dictionary.get('filterBy')}
           filters={this.filters}
           onChange={this.handleFilters}
-          filters={this.filters}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
         />
