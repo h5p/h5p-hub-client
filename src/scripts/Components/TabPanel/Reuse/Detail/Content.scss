@@ -50,17 +50,16 @@ $color-back-button: #474f5a;
     }
 
     .image-wrapper {
-      flex-grow: 1;
       flex-shrink: 0;
       order: 1;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 1em;
 
       img {
         width: 16.5em;
         height: 12.375em;
+        
         @media (min-width: $screen-medium) {
           width: 15.5em;
           height: 11.625em;
@@ -80,7 +79,8 @@ $color-back-button: #474f5a;
 
       @media (min-width: $screen-medium) {
         order: 2;
-        flex-basis: 12em;
+        flex-basis: 0;
+        margin: 2em 1em 0;
       }
 
       h2 {
@@ -92,16 +92,18 @@ $color-back-button: #474f5a;
 
     .info-list {
       order: 3;
-      flex-grow: 1;
+      flex-shrink: 0;
       min-width: 15em;
       margin: 1em;
 
       @media (min-width: $screen-small) {
         order: 2;
+        flex-grow: 1;
       }
 
       @media (min-width: $screen-medium) {
         order: 3;
+        flex-grow: 0;
       }
     }
 
