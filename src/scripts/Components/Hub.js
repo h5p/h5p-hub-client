@@ -133,7 +133,7 @@ class Hub extends React.Component {
                 onReload={this.handleReload}/>
               <ReuseContent id="reuse"
                 title={Dictionary.get('reuseContentTabLabel')}
-                setFocus={this.state.expanded && this.state.section === 'reuse'}
+                isVisible={this.state.expanded && this.state.section === 'reuse'}
                 getAjaxUrl={this.props.getAjaxUrl}
                 onDownload={this.handleUpload}
               />

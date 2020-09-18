@@ -32,13 +32,11 @@ class ReuseContent extends React.Component {
       contentListVisible: true,
       detailViewVisible: false,
       focusOnRender: false,
-      newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
-      popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
-      search: ContentApiClient.search({}),
       focused: '',
       setFocus: false,
       failedDataFetch: {},
-      metaData: {}
+      metaData: {},
+      initialized: false
     };
 
     this.orderBySettings = [{
@@ -93,6 +91,16 @@ class ReuseContent extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Run initial search first time ReuseContent is shown:
+    if (!this.state.initialized && this.props.isVisible) {
+      this.setState({
+        newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
+        popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
+        search: ContentApiClient.search({}),
+        initialized: true
+      });
+    }
+
     // Check if there are changes in any of the state variables 
     // used by the search. If so execute a new search
     const searchHasChanged = 
@@ -190,8 +198,6 @@ class ReuseContent extends React.Component {
    * Handles download events from the Content component.
    */
   handleDownload = content => {
-    console.log('Displaying nice throbber so the user doesn\'t download 10 content at the same times... just kidding not implemented :-)'); // TODO: Display throbber? Disable button?
-
     fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
       .then(response => {
         // Download success, inform parent
@@ -209,7 +215,7 @@ class ReuseContent extends React.Component {
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
           value={this.state.query}
-          setFocus={this.props.setFocus} />
+          setFocus={this.props.isVisible} />
 
         <FilterBar
           label={Dictionary.get('filterBy')}
@@ -286,7 +292,7 @@ class ReuseContent extends React.Component {
 
 ReuseContent.propTypes = {
   title: PropTypes.string.isRequired,
-  setFocus: PropTypes.bool
+  isVisible: PropTypes.bool
 };
 
 export default ReuseContent;
