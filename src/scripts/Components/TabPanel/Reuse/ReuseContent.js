@@ -216,6 +216,9 @@ class ReuseContent extends React.Component {
     });
   }
   render() {
+    const showPopularList = this.state.query || this.state.orderBy !== 'popular';
+    const showNewOnTheHubList = this.state.query || this.state.orderBy !== 'newest';
+
     return (
       <div className="reuse-view loaded" id='reuse-view'>
         {this.state.downloading && <BlockInteractionOverlay />}
@@ -263,23 +266,27 @@ class ReuseContent extends React.Component {
                 </Async.Fulfilled>
               </Async>
 
-              <SelectionsList
-                itemsPromise={this.state.popularContent}
-                title={Dictionary.get('popularContent')}
-                actionLabel={Dictionary.get('allPopular')}
-                onAction={() => this.showAllOrderedBy('popular')}
-                onSelect={this.showContentDetails}
-                focused={this.state.focused}
-                setFocus={this.state.setFocus} />
+              { showPopularList &&
+                <SelectionsList
+                  itemsPromise={this.state.popularContent}
+                  title={Dictionary.get('popularContent')}
+                  actionLabel={Dictionary.get('allPopular')}
+                  onAction={() => this.showAllOrderedBy('popular')}
+                  onSelect={this.showContentDetails}
+                  focused={this.state.focused}
+                  setFocus={this.state.setFocus} />
+              }
 
-              <SelectionsList
-                itemsPromise={this.state.newContent}
-                title={Dictionary.get('newOnTheHub')}
-                actionLabel={Dictionary.get('allNew')}
-                onAction={() => this.showAllOrderedBy('newest')}
-                onSelect={this.showContentDetails}
-                focused={this.state.focused}
-                setFocus={this.state.setFocus} />
+              { showNewOnTheHubList &&
+                <SelectionsList
+                  itemsPromise={this.state.newContent}
+                  title={Dictionary.get('newOnTheHub')}
+                  actionLabel={Dictionary.get('allNew')}
+                  onAction={() => this.showAllOrderedBy('newest')}
+                  onSelect={this.showContentDetails}
+                  focused={this.state.focused}
+                  setFocus={this.state.setFocus} />
+              }
             </div>
           </div>
 
