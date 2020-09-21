@@ -117,3 +117,24 @@ export const hubFiltersEqual = (a, b) => {
 
   return true;
 };
+
+/**
+ * Extend an array just like JQuery's extend.
+ * @param {object} arguments Objects to be merged.
+ * @return {object} Merged objects.
+ */
+export const extend = (...args) => {
+  for (let i = 1; i < args.length; i++) {
+    for (let key in args[i]) {
+      if (args[i].hasOwnProperty(key)) {
+        if (typeof args[0][key] === 'object' && typeof args[i][key] === 'object') {
+          this.extend(args[0][key], args[i][key]);
+        }
+        else {
+          args[0][key] = args[i][key];
+        }
+      }
+    }
+  }
+  return args[0];
+};

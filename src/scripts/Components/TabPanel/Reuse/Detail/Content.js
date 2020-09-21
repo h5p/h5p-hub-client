@@ -17,7 +17,6 @@ import InfoList from './InfoList';
 import ContentIcon from '../ContentIcon';
 
 class Content extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {

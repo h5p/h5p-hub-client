@@ -1,3 +1,5 @@
+import defaultTexts from './default-texts';
+import { extend } from './helpers';
 /**
  * Class responsible for providing translations
  */
@@ -9,7 +11,7 @@ export default class Dictionary {
    * @param {Object} dictionary - dictionary as key/value
    */
   static init(dictionary) {
-    Dictionary.dictionary = dictionary;
+    Dictionary.dictionary = extend(defaultTexts, dictionary);
   }
 
   /**
