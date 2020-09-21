@@ -23,7 +23,6 @@ class Content extends React.Component {
       visible: false,
       selectedScreenshot: 0,
       modalType: undefined,
-      downloading: false,
       showImageSlider: true,
       message: undefined,
       screenWidth: document.documentElement.clientWidth
@@ -256,10 +255,13 @@ class Content extends React.Component {
         }
         <div className="button-bar">
           <button type="button"
-            className="button button-orange button-inverse-primary button-download-content"
+            className={`button button-orange button-inverse-primary button-download-content${this.props.downloading ? ' downloading' : ''}`}
+            disabled={this.props.downloading}
             onClick={() => this.props.onDownload(content)}
           >
-            {Dictionary.get(`contentDownloadButtonLabel`)}
+            {this.props.downloading
+              ? Dictionary.get('contentDownloadButtonDownloadingLabel') || 'Downloading...'
+              : Dictionary.get('contentDownloadButtonLabel') }
           </button>
         </div>
 

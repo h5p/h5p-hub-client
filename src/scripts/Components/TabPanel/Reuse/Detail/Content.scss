@@ -157,15 +157,25 @@ $color-back-button: #474f5a;
       text-align: right;
       margin: 1.666em 0;
     }
-    .button-download-content:before {
-      font-family: "h5p-hub";
-      font-size: 0.7em;
-      content: "\e90c";
-      display: inline-block;
-      margin-right: 1em;
-      transform: rotate(-90deg) translateX(2px);
-      line-height: 1;
+
+    .button-download-content {
+
+      &::before {
+        font-family: "h5p-hub";
+        font-size: 0.7em;
+        content: "\e90c";
+        display: inline-block;
+        margin-right: 1em;
+        transform: rotate(-90deg) translateX(2px);
+        line-height: 1;
+      }
+
+      &.downloading::before {
+        @include icon($icon-throbber);
+        @include animation(spin 2s linear infinite);
+      }
     }
+
 
     .lightbox-inner.license {
       @include scroll-bar(#f3f3f3, #5e6978);

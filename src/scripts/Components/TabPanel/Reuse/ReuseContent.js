@@ -16,6 +16,7 @@ import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
 
 import './ReuseContent.scss';
+import BlockInteractionOverlay from '../../BlockInteractionOverlay/BlockInteractionOverlay';
 
 const defaultOrderBy = 'popular';
 
@@ -36,7 +37,8 @@ class ReuseContent extends React.Component {
       setFocus: false,
       failedDataFetch: {},
       metaData: {},
-      initialized: false
+      initialized: false,
+      downloading: false
     };
 
     this.orderBySettings = [{
@@ -103,7 +105,7 @@ class ReuseContent extends React.Component {
 
     // Check if there are changes in any of the state variables 
     // used by the search. If so execute a new search
-    const searchHasChanged = 
+    const searchHasChanged =
       (prevState.orderBy !== this.state.orderBy) ||
       (prevState.query !== this.state.query) ||
       (prevState.page !== this.state.page) ||
@@ -198,19 +200,25 @@ class ReuseContent extends React.Component {
    * Handles download events from the Content component.
    */
   handleDownload = content => {
-    fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
-      .then(response => {
-        // Download success, inform parent
-        this.props.onDownload(response.data, 'reuse');
-      })
-      .catch(reason => {
-        // Download failed, inform the user? TODO
-        throw new Error(reason);
-      });
+    this.setState({ downloading: true }, () => {
+      setTimeout(() => {
+        fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
+          .then(response => {
+            // Download success, inform parent
+            this.props.onDownload(response.data, 'reuse');
+          })
+          .catch(reason => {
+            // Download failed, inform the user? TODO
+            throw new Error(reason);
+          })
+          .finally(() => this.setState({ downloading: false }));
+      }, 2000);
+    });
   }
   render() {
     return (
       <div className="reuse-view loaded" id='reuse-view'>
+        {this.state.downloading && <BlockInteractionOverlay />}
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
@@ -279,6 +287,7 @@ class ReuseContent extends React.Component {
             this.state.detailViewVisible &&
             <Content
               content={this.state.content}
+              downloading={this.state.downloading}
               onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
               onClose={() => this.setState({ detailViewVisible: false })}

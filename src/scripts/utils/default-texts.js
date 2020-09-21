@@ -133,6 +133,7 @@ export default {
   previousPage: 'Go to previous page',
   contentPreviewButtonLabel: 'Preview',
   contentDownloadButtonLabel: 'Get Content',
+  contentDownloadButtonDownloadingLabel: 'Downloading',
   reuseContentTabLabel: 'Get Shared Content',
   contentPublisherPanelHeader: 'Publisher Info',
   noContentFoundDesc: 'There is no content that matches your search criteria.',
