@@ -201,10 +201,15 @@ class Content extends React.Component {
               {content.title}
             </h2>
 
-            <ReadMore
-              text={content.description}
-              maxLength={285}
-            />
+            <div className="info-list">
+              <InfoList
+                content={this.props.content}
+                getH5PTitle={this.getH5PTitle}
+                getLabel={this.getLabel}
+              />
+            </div>
+
+            <ReadMore text={content.description} maxLength={285} />
 
             {
               content.preview_url &&

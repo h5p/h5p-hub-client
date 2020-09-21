@@ -42,68 +42,78 @@ $color-back-button: #474f5a;
       padding-bottom: 1em;
       display: flex;
       flex-wrap: wrap;
-
-      @media (max-width: $screen-small) {
-        display: flex;
-        flex-direction: column;
-      }
-    }
-
-    .image-wrapper {
-      flex-shrink: 0;
-      order: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      img {
-        width: 16.5em;
-        height: 12.375em;
-        
-        @media (min-width: $screen-medium) {
-          width: 15.5em;
-          height: 11.625em;
-        }
-      }
-    }
-
-    .text-details {
-      order: 2;
-      flex-grow: 1;
-      margin: 2em;
-
-      @media(min-width: $screen-small) {
-        order: 3; // On medium screens, move text down below using full widh
-        flex-basis: 100%;
-      }
-
-      @media (min-width: $screen-medium) {
-        order: 2;
-        flex-basis: 0;
-        margin: 2em 1em 0;
-      }
-
-      h2 {
-        margin-top: 0;
-        font-size: 1.458em;
-        line-height: 1.458em;
-      }
-    }
-
-    .info-list {
-      order: 3;
-      flex-shrink: 0;
-      min-width: 15em;
-      margin: 1em;
+      flex-direction: column;
 
       @media (min-width: $screen-small) {
-        order: 2;
-        flex-grow: 1;
+        flex-direction: row;
       }
 
-      @media (min-width: $screen-medium) {
+      .image-wrapper {
+        flex-shrink: 0;
+        order: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+  
+        img {
+          width: 16.5em;
+          height: 12.375em;
+          
+          @media (min-width: $screen-medium) {
+            width: 15.5em;
+            height: 11.625em;
+          }
+        }
+      }
+
+      & > .text-details {
+        order: 2;
+        flex-grow: 1;
+        margin: 2em;
+  
+        .info-list {
+          order: 2;
+        }
+  
+        @media (min-width: $screen-small) {
+          order: 3; // On medium screens, move text down below using full widh
+          flex-basis: 100%;
+
+          .info-list {
+            display: none;
+          }
+        }
+  
+        @media (min-width: $screen-medium) {
+          order: 2;
+          flex-basis: 0;
+          margin: 2em 1em 0;
+        }
+  
+        h2 {
+          margin-top: 0;
+          font-size: 1.458em;
+          line-height: 1.458em;
+        }
+      }
+  
+      & > .info-list {
         order: 3;
-        flex-grow: 0;
+        flex-shrink: 0;
+        min-width: 15em;
+        margin: 1em;
+        display: none;
+  
+        @media (min-width: $screen-small) {
+          display: block;
+          order: 2;
+          flex-grow: 1;
+        }
+  
+        @media (min-width: $screen-medium) {
+          order: 3;
+          flex-grow: 0;
+        }
       }
     }
 
