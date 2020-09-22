@@ -29,8 +29,7 @@ const ContentAccordion = ({content, licenseInfo}) => {
 
 ContentAccordion.propTypes = {
   content: contentDefinition,
-  licenseInfo: PropTypes.element,
-  onShowLicenseDetails: PropTypes.func.isRequired
+  licenseInfo: PropTypes.element
 };
 
 export default ContentAccordion;

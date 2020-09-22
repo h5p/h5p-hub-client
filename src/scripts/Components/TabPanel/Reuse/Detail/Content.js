@@ -102,7 +102,7 @@ class Content extends React.Component {
       
       for (let licenseDetails of flattenedLicenses) {
         if (licenseDetails.id === `${this.props.content.license.id}-${this.props.content.license.version}`) {
-          this.setState({ licenseDetails });
+          this.setState({ licenseDetailsUrl: licenseDetails.url});
           break;
         }
       }
@@ -148,17 +148,6 @@ class Content extends React.Component {
     }
     return name;
   }
-
-  /**
-   * Show license details
-   */
-  handleShowLicenseDetails = () => {
-    this.setState({ modalType: 'license' });
-  }
-
-  /*openPreviewUrl = () => {
-    window.open(this.props.library.example, '_blank');
-  }*/
 
   render() {
     const classNames = 'h5p-hub-content-detail' + (this.state.visible ? ' h5p-hub-show' : '');
@@ -287,9 +276,11 @@ class Content extends React.Component {
               header={Dictionary.get('contentTypeLicensePanelTitle')}
               id={content.license.id}
               version={content.license.version}
-              attributes={{}}
-              onShowLicenseDetails={this.handleShowLicenseDetails}
-              licenseDetails={this.state.licenseDetails}
+              licenseDetailsUrl={this.state.licenseDetailsUrl}
+              attributes={{
+                useCommercially: content.license.allows_commercial_use,
+                modifiable: content.license.can_be_modified,
+              }}
             />
           }
         />

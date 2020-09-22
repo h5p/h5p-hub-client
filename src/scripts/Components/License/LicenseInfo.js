@@ -5,7 +5,7 @@ import Dictionary from '../../utils/dictionary';
 
 import './LicenseInfo.scss';
 
-const LicenseInfo = ({ id, version, onShowLicenseDetails, attributes, licenseDetails }) => {
+const LicenseInfo = ({ id, version, onShowLicenseDetails, attributes, licenseDetailsUrl }) => {
   return (
     <div className='h5p-hub-short-license-info'> {
       id !== 'Unspecified' ? (
@@ -13,27 +13,32 @@ const LicenseInfo = ({ id, version, onShowLicenseDetails, attributes, licenseDet
           <h3>{`${id} ${version || ''}`}</h3>
 
           {
-            (licenseDetails && licenseDetails.url)
-              ? <a 
-                className="h5p-hub-short-license-read-more" 
-                aria-label={Dictionary.get('readMore')}
-                href={licenseDetails.url}
-                target="_blank"
-              />
-              : <button
+            onShowLicenseDetails 
+              ? <button
                 type="button"
                 className="h5p-hub-short-license-read-more"
                 aria-label={Dictionary.get('readMore')}
                 onClick={onShowLicenseDetails}>
               </button>
+              : licenseDetailsUrl 
+                ? <a 
+                  className="h5p-hub-short-license-read-more" 
+                  aria-label={Dictionary.get('readMore')}
+                  href={licenseDetailsUrl}
+                  target="_blank"
+                />
+                : null
           }
 
           <p>{Dictionary.get("licenseDescription")}</p>
 
           <ul className="h5p-hub-ul h5p-hub-small">
-            <li>
-              {Dictionary.get(attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
-            </li>
+            { 
+              attributes.canHoldLiable !== undefined &&
+              <li>
+                {Dictionary.get(attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
+              </li>
+            }
             {
               attributes.useCommercially &&
               <li>{Dictionary.get("licenseCanUseCommercially")}</li>
@@ -59,6 +64,7 @@ const LicenseInfo = ({ id, version, onShowLicenseDetails, attributes, licenseDet
               <li>{Dictionary.get("licenseMustIncludeLicense")}</li>
             }
           </ul>
+        
         </>
       ) : (
         <p>{Dictionary.get("licenseUnspecified")}</p>
@@ -81,11 +87,7 @@ LicenseInfo.propTypes = {
     mustIncludeCopyright: PropTypes.bool,
     mustIncludeLicense: PropTypes.bool
   }),
-  licenseDetails: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    url: PropTypes.string
-  })
+  licenseDetailsUrl: PropTypes.string
 };
 
 export default LicenseInfo;
