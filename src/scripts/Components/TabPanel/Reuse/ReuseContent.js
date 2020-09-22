@@ -221,6 +221,7 @@ class ReuseContent extends React.Component {
 
     return (
       <div id='h5p-hub-reuse-view'>
+        {this.state.downloading && <BlockInteractionOverlay />}
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
