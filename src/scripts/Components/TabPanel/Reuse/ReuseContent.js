@@ -212,7 +212,7 @@ class ReuseContent extends React.Component {
             throw new Error(reason);
           })
           .finally(() => this.setState({ downloading: false }));
-      }, 200000);
+      }, 2000);
     });
   }
   render() {
