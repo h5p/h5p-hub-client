@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Dictionary from '../../../../utils/dictionary';
 import { 
   contentDefinition, 
-  getLicensesReducer, 
+  licensesReducer, 
   mapContentScreenShotsForImageSlider
 } from '../../../../utils/helpers';
 import variables from '../../../../../styles/base/_variables.scss';
@@ -98,14 +98,11 @@ class Content extends React.Component {
     window.addEventListener('resize', this.resize);
 
     ApiClient.licenses.then(licenses => {
-      const flattenedLicenses = licenses.reduce(getLicensesReducer, []);
-      
-      for (let licenseDetails of flattenedLicenses) {
-        if (licenseDetails.id === `${this.props.content.license.id}-${this.props.content.license.version}`) {
-          this.setState({ licenseDetailsUrl: licenseDetails.url});
-          break;
-        }
-      }
+      const flattenedLicenses = licenses.reduce(licensesReducer, {});
+      const licenseDetails = this.props.content.license.version
+        ? flattenedLicenses[`${this.props.content.license.id}-${this.props.content.license.version}`]
+        : flattenedLicenses[this.props.content.license.id];
+      this.setState({ licenseDetailsUrl: licenseDetails.url});
     });
   }
 

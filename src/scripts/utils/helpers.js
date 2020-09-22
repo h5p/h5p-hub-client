@@ -140,43 +140,48 @@ export const extend = (...args) => {
 };
 
 /**
- * Get licenses in a listable format
+ * This reducer turns an array of license details objects that are structured
+ * hierarchically into a flat object where each object's key is the license's
+ * id and version separated by a dash '-', or just id if the license has only
+ * one version.
  *
- * @param arr
- * @param license
- * @returns {any[]}
+ * @param {object} licenses
+ * @param {object} license
+ * @returns {object}
  */
-export const getLicensesReducer = (arr, license) => {
+export const licensesReducer = (licenses, license) => {
 
   /**
-   * Get licenses or license versions if they exist for a given license
+   * Get an object containing all versions of the current license
+   * where the key is the license's id+version.
    *
    * @param license
    * @returns {{name: string, id: string, url: string}[]}
    */
   const getLicenseVersions = (license) => {
     if (license.versions.length) {
-      return license.versions.map(version => ({
-        id: `${license.id}-${version.id}`,
-        parentLicenseId: license.id,
-        version: version.id,
-        name: `${license.name} ${version.name}`,
-        url: version.url
-      }));
+      return license.versions.reduce((licenses, version) => {
+        return { ...licenses, [`${license.id}-${version.id}`]: {
+          id: `${license.id}-${version.id}`,
+          parentLicenseId: license.id,
+          version: version.id,
+          name: `${license.name} ${version.name}`,
+          url: version.url
+        }};
+      }, {});
     }
 
-    return [license];
+    return { [license.id]: { ...license } };
   };
 
   if (license.licenses) {
-    // Flatten option group
-    const licenses = license.licenses.reduce((optGroupArr, optGroupLicense) => {
-      const licenseVersions = getLicenseVersions(optGroupLicense);
-      return optGroupArr.concat(licenseVersions);
-    }, []);
-    return arr.concat(licenses);
+    const subLicenses = license.licenses.reduce((subLicences, subLicense) => {
+      const licenseVersions = getLicenseVersions(subLicense);
+      return { ... subLicences, ...licenseVersions };
+    }, {});
+    return { ...licenses, ...subLicenses };
   }
 
   const licenseVersions = getLicenseVersions(license);
-  return [...arr, ...licenseVersions];
+  return { ...licenses, ...licenseVersions };
 };
