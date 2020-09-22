@@ -5,19 +5,28 @@ import Dictionary from '../../utils/dictionary';
 
 import './LicenseInfo.scss';
 
-const LicenseInfo = ({id, version, onShowLicenseDetails, attributes}) => {
+const LicenseInfo = ({ id, version, onShowLicenseDetails, attributes, licenseDetails }) => {
   return (
     <div className='h5p-hub-short-license-info'> {
       id !== 'Unspecified' ? (
         <>
           <h3>{`${id} ${version || ''}`}</h3>
 
-          <button
-            type="button"
-            className="h5p-hub-short-license-read-more"
-            aria-label={Dictionary.get('readMore')}
-            onClick={onShowLicenseDetails}>
-          </button>
+          {
+            (licenseDetails && licenseDetails.url)
+              ? <a 
+                className="h5p-hub-short-license-read-more" 
+                aria-label={Dictionary.get('readMore')}
+                href={licenseDetails.url}
+                target="_blank"
+              />
+              : <button
+                type="button"
+                className="h5p-hub-short-license-read-more"
+                aria-label={Dictionary.get('readMore')}
+                onClick={onShowLicenseDetails}>
+              </button>
+          }
 
           <p>{Dictionary.get("licenseDescription")}</p>
 
@@ -71,6 +80,11 @@ LicenseInfo.propTypes = {
     sublicensable: PropTypes.bool,
     mustIncludeCopyright: PropTypes.bool,
     mustIncludeLicense: PropTypes.bool
+  }),
+  licenseDetails: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string
   })
 };
 

@@ -75,6 +75,9 @@ export default class ApiClient {
               if (promise.hierarchical) {
                 promise.resolve(ApiClient.makeHierarchicalList(ApiClient.massageMetadata(response.data[promise.type])));
               }
+              else if (promise.type === 'licenses') {
+                promise.resolve(ApiClient.massageLicenses(response.data[promise.type]));
+              }
               else {
                 promise.resolve(ApiClient.massageMetadata(response.data[promise.type]));
               }
@@ -106,6 +109,26 @@ export default class ApiClient {
       data.id = data.name;
     }
     return datas;
+  }
+
+  /**
+   * Convert backend format of licenses to the format needed by the UI
+   *
+   * @param {*} list
+   */
+  static massageLicenses(list) {
+    return list.map(element => {
+      const result = {...element};
+      if (result.licenses !== undefined) {
+        result.licenses = ApiClient.massageLicenses(result.licenses);
+      }
+      else {
+        result.id =  result.name,
+        result.name = result.translation || result.name,
+        result.versions = ApiClient.massageMetadata(result.versions);
+      }
+      return result;
+    });
   }
 
   /**

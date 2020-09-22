@@ -2,7 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
-import {contentDefinition, mapContentScreenShotsForImageSlider} from '../../../../utils/helpers';
+import { 
+  contentDefinition, 
+  getLicensesReducer, 
+  mapContentScreenShotsForImageSlider
+} from '../../../../utils/helpers';
 import variables from '../../../../../styles/base/_variables.scss';
 
 import Message from '../../../Message/Message';
@@ -15,6 +19,8 @@ import './Content.scss';
 import LicenseDialog from './LicenseDialog';
 import InfoList from './InfoList';
 import ContentIcon from '../ContentIcon';
+import ApiClient from '../../../../utils/content-hub/api-client';
+import LicenseInfo from '../../../License/LicenseInfo';
 
 class Content extends React.Component {
   constructor(props) {
@@ -90,6 +96,17 @@ class Content extends React.Component {
       });
     }, 1);
     window.addEventListener('resize', this.resize);
+
+    ApiClient.licenses.then(licenses => {
+      const flattenedLicenses = licenses.reduce(getLicensesReducer, []);
+      
+      for (let licenseDetails of flattenedLicenses) {
+        if (licenseDetails.id === `${this.props.content.license.id}-${this.props.content.license.version}`) {
+          this.setState({ licenseDetails });
+          break;
+        }
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -259,13 +276,22 @@ class Content extends React.Component {
           >
             {this.props.downloading
               ? Dictionary.get('contentDownloadButtonDownloadingLabel') || 'Downloading...'
-              : Dictionary.get('contentDownloadButtonLabel') }
+              : Dictionary.get('contentDownloadButtonLabel')}
           </button>
         </div>
 
         <ContentAccordion
           content={content}
-          onShowLicenseDetails={this.handleShowLicenseDetails}
+          licenseInfo={
+            <LicenseInfo
+              header={Dictionary.get('contentTypeLicensePanelTitle')}
+              id={content.license.id}
+              version={content.license.version}
+              attributes={{}}
+              onShowLicenseDetails={this.handleShowLicenseDetails}
+              licenseDetails={this.state.licenseDetails}
+            />
+          }
         />
         {
           this.state.modalType !== undefined &&

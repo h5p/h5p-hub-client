@@ -2,24 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Accordion from '../../../Accordion/Accordion';
-import LicenseInfo from '../../../License/LicenseInfo';
 import Dictionary from '../../../../utils/dictionary';
 import { contentDefinition } from '../../../../utils/helpers';
 
 import './ContentAccordion.scss';
 
-const ContentAccordion = ({content, onShowLicenseDetails}) => {
+const ContentAccordion = ({content, licenseInfo}) => {
   return (
     <Accordion>
-
-      <LicenseInfo
-        header={Dictionary.get('contentTypeLicensePanelTitle')}
-        id={content.license.id}
-        version={content.license.version}
-        attributes={{}}
-        onShowLicenseDetails={onShowLicenseDetails}
-      />
-
+      {licenseInfo}
       <div
         header={Dictionary.get('contentPublisherPanelHeader')}
         className='h5p-hub-publisher-info'
@@ -38,6 +29,7 @@ const ContentAccordion = ({content, onShowLicenseDetails}) => {
 
 ContentAccordion.propTypes = {
   content: contentDefinition,
+  licenseInfo: PropTypes.element,
   onShowLicenseDetails: PropTypes.func.isRequired
 };
 

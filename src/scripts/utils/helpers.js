@@ -138,3 +138,45 @@ export const extend = (...args) => {
   }
   return args[0];
 };
+
+/**
+ * Get licenses in a listable format
+ *
+ * @param arr
+ * @param license
+ * @returns {any[]}
+ */
+export const getLicensesReducer = (arr, license) => {
+
+  /**
+   * Get licenses or license versions if they exist for a given license
+   *
+   * @param license
+   * @returns {{name: string, id: string, url: string}[]}
+   */
+  const getLicenseVersions = (license) => {
+    if (license.versions.length) {
+      return license.versions.map(version => ({
+        id: `${license.id}-${version.id}`,
+        parentLicenseId: license.id,
+        version: version.id,
+        name: `${license.name} ${version.name}`,
+        url: version.url
+      }));
+    }
+
+    return [license];
+  };
+
+  if (license.licenses) {
+    // Flatten option group
+    const licenses = license.licenses.reduce((optGroupArr, optGroupLicense) => {
+      const licenseVersions = getLicenseVersions(optGroupLicense);
+      return optGroupArr.concat(licenseVersions);
+    }, []);
+    return arr.concat(licenses);
+  }
+
+  const licenseVersions = getLicenseVersions(license);
+  return [...arr, ...licenseVersions];
+};
