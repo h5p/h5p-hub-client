@@ -11,6 +11,10 @@
     cursor: pointer;
   }
 
+  a.short-license-read-more {
+    text-decoration: none;
+  }
+
   .short-license-read-more:before {
     @include icon($icon-info-circle);
     margin-left: 0.5em;
