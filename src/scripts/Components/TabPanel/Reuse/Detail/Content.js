@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Dictionary from '../../../../utils/dictionary';
 import { 
   contentDefinition, 
-  getLicensesReducer, 
+  licensesReducer, 
   mapContentScreenShotsForImageSlider
 } from '../../../../utils/helpers';
 import variables from '../../../../../styles/base/_variables.scss';
@@ -98,14 +98,11 @@ class Content extends React.Component {
     window.addEventListener('resize', this.resize);
 
     ApiClient.licenses.then(licenses => {
-      const flattenedLicenses = licenses.reduce(getLicensesReducer, []);
-      
-      for (let licenseDetails of flattenedLicenses) {
-        if (licenseDetails.id === `${this.props.content.license.id}-${this.props.content.license.version}`) {
-          this.setState({ licenseDetails });
-          break;
-        }
-      }
+      const flattenedLicenses = licenses.reduce(licensesReducer, {});
+      const licenseDetails = this.props.content.license.version
+        ? flattenedLicenses[`${this.props.content.license.id}-${this.props.content.license.version}`]
+        : flattenedLicenses[this.props.content.license.id];
+      this.setState({ licenseDetailsUrl: licenseDetails.url});
     });
   }
 
@@ -148,17 +145,6 @@ class Content extends React.Component {
     }
     return name;
   }
-
-  /**
-   * Show license details
-   */
-  handleShowLicenseDetails = () => {
-    this.setState({ modalType: 'license' });
-  }
-
-  /*openPreviewUrl = () => {
-    window.open(this.props.library.example, '_blank');
-  }*/
 
   render() {
     const classNames = 'h5p-hub-content-detail' + (this.state.visible ? ' h5p-hub-show' : '');
@@ -271,12 +257,10 @@ class Content extends React.Component {
         }
         <div className="h5p-hub-button-bar">
           <button type="button"
-            className={`h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content${this.props.downloading ? ' h5p-hub-downloading' : ''}`}
+            className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
             onClick={() => this.props.onDownload(content)}
           >
-            {this.props.downloading
-              ? Dictionary.get('contentDownloadButtonDownloadingLabel') || 'Downloading...'
-              : Dictionary.get('contentDownloadButtonLabel')}
+            {Dictionary.get('contentDownloadButtonLabel')}
           </button>
         </div>
 
@@ -287,9 +271,11 @@ class Content extends React.Component {
               header={Dictionary.get('contentTypeLicensePanelTitle')}
               id={content.license.id}
               version={content.license.version}
-              attributes={{}}
-              onShowLicenseDetails={this.handleShowLicenseDetails}
-              licenseDetails={this.state.licenseDetails}
+              licenseDetailsUrl={this.state.licenseDetailsUrl}
+              attributes={{
+                useCommercially: content.license.allows_commercial_use,
+                modifiable: content.license.can_be_modified,
+              }}
             />
           }
         />
