@@ -19,8 +19,7 @@ const CheckboxList = React.forwardRef(({
 
   return (
     <ul
-      className="checkbox-list"
-      id='checkbox-list'
+      className="h5p-hub-checkbox-list"
       role='group'
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>

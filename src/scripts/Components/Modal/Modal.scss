@@ -1,6 +1,6 @@
 @import '../../../styles/base/mixins';
 
-.lightbox {
+.h5p-hub-lightbox {
   position: absolute;
   top: 0;
   left: 0;
@@ -9,7 +9,7 @@
 
   background: rgba(0, 0, 0, 0.8);
 }
-.lightbox-inner {
+.h5p-hub-lightbox-inner {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -20,10 +20,10 @@
   padding: 2em;
   text-align: center;
 }
-.lightbox-inner:focus {
+.h5p-hub-lightbox-inner:focus {
   outline: 0;
 }
-.lightbox-close {
+.h5p-hub-lightbox-close {
   position: relative;
   top: -1.5em;
   right: 0;
@@ -41,18 +41,18 @@
   border: 2px solid transparent;
   transition: background 0.2s;
 }
-.lightbox-close:focus {
+.h5p-hub-lightbox-close:focus {
   border-color: #7bc1f9;
   box-shadow: 0.06em 0 0.6em 0.1em #7bc1f9;
   outline: 0;
 }
-.lightbox-close:hover {
+.h5p-hub-lightbox-close:hover {
   background: rgba(132, 143, 158, 0.8);
 }
-.license .lightbox-close:hover {
+.h5p-hub-license .h5p-hub-lightbox-close:hover {
   background: rgba(165, 175, 189, 0.43);
 }
-.lightbox-close:before {
+.h5p-hub-lightbox-close:before {
   @include icon($icon-close);
   font-size: 0.6em;
 }

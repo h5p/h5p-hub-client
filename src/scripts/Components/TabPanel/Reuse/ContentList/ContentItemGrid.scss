@@ -1,7 +1,7 @@
 @import '../../../../../styles/base/variables';
 
 .h5p-hub {
-  .content-item.grid {
+  .h5p-hub-content-item.h5p-hub-grid {
     display: inline-block;
     width: 16.66%;
     margin-top: 0.5em;
@@ -15,24 +15,24 @@
       width: 50%;
     }
 
-    &:focus .grid-item,
-    &:hover .grid-item {
+    &:focus .h5p-hub-grid-item,
+    &:hover .h5p-hub-grid-item {
       background-color: #fafafa;
     }
 
-    &:focus .grid-item {
+    &:focus .h5p-hub-grid-item {
       border-color: #5B9DD9;
     }
   }
 
-  .grid-item {
+  .h5p-hub-grid-item {
     cursor: pointer;
     text-align: center;
     padding: 0.5em;
     border: 1px solid #ddd;
     margin: 0 0.3em;
 
-    .grid-item-title {
+    .h5p-hub-grid-item-title {
       font-weight: bold;
       letter-spacing: -0.5px;
       display: -webkit-box;

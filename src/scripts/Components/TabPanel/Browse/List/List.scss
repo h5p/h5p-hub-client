@@ -2,7 +2,7 @@
 @import "../../../../../styles/base/mixins";
 @import "../../../../../styles/base/variables";
 
-.h5p-hub .content-type-list {
+.h5p-hub .h5p-hub-content-type-list {
   overflow: auto;
   height: 37.422137em;
   opacity: 1;
@@ -33,7 +33,7 @@
     list-style: none;
   }
 
-  .media {
+  .h5p-hub-media {
     width: 100%;
     padding: 0.5em 1.5em 0.5em 1em;
     box-sizing: border-box;
@@ -65,21 +65,21 @@
   }
 }
 
-.h5p-hub .filtering .content-type-list:before {
+.h5p-hub .h5p-hub-filtering .h5p-hub-content-type-list:before {
   height: calc(100% - 3.536668484em);
 }
 
-.no-results {
+.h5p-hub-no-results {
   background: no-repeat 4em 0 url('../../../../../images/no-results.svg');
   background-size: 16% 100%;
   padding: 0 1em 0.5em 17em;
   margin-top: 2em;
 }
-.no-results-title {
+.h5p-hub-no-results-title {
   margin-bottom: 0.4em;
   font-size: 1.2em;
   font-weight: bold;
 }
-.no-results-desc {
+.h5p-hub-no-results-desc {
   color: #4d4d4d;
 }

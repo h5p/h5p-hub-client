@@ -9,23 +9,23 @@ import ContentIcon from '../ContentIcon';
 const ContentItemTabular = ({content}) => {
   return (
     <>
-      <div className='left'>
+      <div className='h5p-hub-left'>
         <ContentIcon src={content.icon} />
       </div>
 
-      <div className='middle'>
-        <div className='headline'>
-          <span className={`title ${content.reviewed ? 'reviewed' : ''}`}>
+      <div className='h5p-hub-middle'>
+        <div className='h5p-hub-headline'>
+          <span className={`h5p-hub-title ${content.reviewed ? 'h5p-hub-reviewed' : ''}`}>
             {minimizeLongText(content.title)}
           </span>
-          <span className='by'>{Dictionary.get('by')}</span>
-          <span className='owner'>{minimizeLongText(content.owner, 50)}</span>
+          <span className='h5p-hub-by'>{Dictionary.get('by')}</span>
+          <span className='h5p-hub-owner'>{minimizeLongText(content.owner, 50)}</span>
         </div>
-        <div className='content-type'>{content.contentType}</div>
-        <div className='summary'>{content.summary}</div>
+        <div className='h5p-hub-content-type'>{content.contentType}</div>
+        <div className='h5p-hub-summary'>{content.summary}</div>
       </div>
       
-      <div className='right'></div>
+      <div className='h5p-hub-right'></div>
     </>
   );
 };

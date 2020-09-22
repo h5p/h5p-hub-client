@@ -12,7 +12,7 @@ class Message extends React.Component {
   }
 
   render() {
-    const className = `h5p-hub-message ${this.props.severity}` + (this.props.onClose ? ' dismissible' : '');
+    const className = `h5p-hub-message h5p-hub-${this.props.severity}` + (this.props.onClose ? ' h5p-hub-dismissible' : '');
 
     let messages = this.props.message;
     if (messages && !Array.isArray(messages)) {
@@ -24,10 +24,10 @@ class Message extends React.Component {
         let getHelpUrl = this.createTroubleshootingURL(message.code);
 
         return (
-          <p key={index} className="message-body">
+          <p key={index} className="h5p-hub-message-body">
             <span dangerouslySetInnerHTML={{__html: text}}/>
             {getHelpUrl &&
-            <a className="get-help" target="_blank" href={getHelpUrl}>
+            <a className="h5p-hub-get-help" target="_blank" href={getHelpUrl}>
               {Dictionary.get('getHelp')}
             </a>
             }
@@ -41,13 +41,13 @@ class Message extends React.Component {
         {
           this.props.onClose &&
           <button
-            className="message-close"
+            className="h5p-hub-message-close"
             tabIndex="0"
             aria-label={Dictionary.get('Close')}
             onClick={this.props.onClose}
           />
         }
-        <div className="message-content">
+        <div className="h5p-hub-message-content">
           <h2>{this.props.title}</h2>
           {messageDetails}
         </div>

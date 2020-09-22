@@ -21,9 +21,9 @@ class TabPanel extends React.Component {
   render() {
     const tabButtons = React.Children.map(this.props.children, child => (
       <li
-        className='tab-button'
+        className='h5p-hub-tab-button'
         aria-selected={this.state.selected === child.props.id}
-        aria-controls={`tab-panel-${child.props.id}`}
+        aria-controls={`h5p-hub-tab-panel-${child.props.id}`}
         role='tab'
         key={child.props.id}>
         <a id={child.props.id} href="#">{child.props.title}</a>
@@ -31,8 +31,8 @@ class TabPanel extends React.Component {
     ));
 
     const tabContent = React.Children.map(this.props.children, child => (
-      <div className={`tabpanel${this.state.selected === child.props.id ? '' : ' hidden'}`}
-        id={`tab-panel-${child.props.id}`}
+      <div className={`h5p-hub-tabpanel${this.state.selected === child.props.id ? '' : ' h5p-hub-hidden'}`}
+        id={`h5p-hub-tab-panel-${child.props.id}`}
         aria-labelledby={child.props.id}
         role='tabpanel'>
         {child}
@@ -40,7 +40,7 @@ class TabPanel extends React.Component {
     ));
 
     return (
-      <div className='tab-panel'>
+      <div className='h5p-hub-tab-panel'>
         <nav>
           {
             !!window.localStorage &&

@@ -254,7 +254,7 @@ export default class ApiClient {
 
         // Add pagination
         if (datas.page !== undefined && datas.page > 1) {
-          query.push('from=' + ((datas.page - 1) * 6));
+          query.push('from=' + ((datas.page -1) * 6));
         }
 
         // TODO: Should it not be possible to filter on keywords?

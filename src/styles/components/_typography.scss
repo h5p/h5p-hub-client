@@ -65,7 +65,7 @@ $dl-horizontal-dt-width: 5em;
     border-bottom: 1px solid $separator-color;
   }
 
-  small, .small {
+  small, .small, .h5p-hub-small {
     color: $text-light;
     line-height: 1.7em;
     font-size: $text-body-small;
@@ -107,6 +107,10 @@ $dl-horizontal-dt-width: 5em;
   }
 
   .hidden {
+    display: none;
+  }
+  
+  .h5p-hub-hidden {
     display: none;
   }
 }

@@ -7,52 +7,52 @@
   padding-bottom: $gutter;
   position: relative;
   overflow: hidden;
-
-  .panel {
+  background-color: blue;
+  .h5p-hub-panel {
     border: 1px solid $c1;
     background: #fff;
 
-    &.h5p-section-content-types {
+    &.h5p-hub-section-content-types {
       border-color: $color-section-content-types;
     }
 
-    &.h5p-section-reuse {
+    &.h5p-hub-section-reuse {
       border-color: $color-section-reuse;
     }
 
-    &.h5p-section-upload {
+    &.h5p-hub-section-upload {
       border-color: $color-section-upload;
     }
   }
 
-  .h5p-section-content-types.open {
+  .h5p-hub-ssection-content-types.open {
     max-height: 58.65em;
   }
 
-  .button-install {
+  .h5p-hub-button-install {
     [class^="icon-"] {
       margin-right: $gutter / 2;
       display: inline-block;
     }
 
-    .icon-arrow-thick {
+    .h5p-hub-icon-arrow-thick {
       transform: rotate(-90deg);
     }
   }
 
-  .content-type-section {
+  .h5p-hub-content-type-section {
     position: relative;
     overflow: hidden;
 
-    &.height-limit {
+    &.h5p-hub-height-limit {
       height: 34em;
     }
   }
-  .content-type-section-view > .h5p-hub-message {
+  .h5p-hub-content-type-section-view > .h5p-hub-message {
     margin: 0;
     padding: 0.5em 3.5em 0.7em 2.292em;
   }
-  .error .button.retry-button {
+  .h5p-hub-error .h5p-hub-button.h5p-hub-retry-button {
     margin: 0.5em 0 0.75em;
     border-width: 2px;
 
@@ -84,6 +84,6 @@
   }
 }
 
-.h5p-hub.hidden {
+.h5p-hub.h5p-hub-hidden {
   display: none;
 }

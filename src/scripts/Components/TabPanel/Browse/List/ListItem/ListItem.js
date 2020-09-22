@@ -23,34 +23,34 @@ const ListItem = ({contentType, apiVersion, tabindex, onSelect}) => {
   };
 
   const textIcons = contentType.icons ? contentType.icons.map((icon, i) => (
-    <img key={i} className="media-text-icon" src={ icon.src } alt={ icon.alt } title={ icon.alt }/>
+    <img key={i} className="h5p-hub-media-text-icon" src={ icon.src } alt={ icon.alt } title={ icon.alt }/>
   )) : null;
 
   return (
     <div>
-      <div className="media-left">
-        <img className="media-object" src={contentType.icon || noIcon} alt={title + ' ' + Dictionary.get('contentTypeIconAltText')}/>
+      <div className="h5p-hub-media-left">
+        <img className="h5p-hub-media-object" src={contentType.icon || noIcon} alt={title + ' ' + Dictionary.get('contentTypeIconAltText')}/>
       </div>
 
-      <div className="media-body">
-        <div className="h4 media-heading">{title}</div>
+      <div className="h5p-hub-media-body">
+        <div className="h4 h5p-hub-media-heading">{title}</div>
         { textIcons }
 
         {contentType.installed ? (
-          <button type="button" className="button button-primary" tabIndex={tabindex} onClick={handleSelect} onKeyDown={handleKeyDown}>
+          <button type="button" className="h5p-hub-button h5p-hub-button-primary" tabIndex={tabindex} onClick={handleSelect} onKeyDown={handleKeyDown}>
             {Dictionary.get('contentTypeDetailButtonLabel')}
           </button>
         ) : (
-          <button type="button" className="button button-inverse-primary button-install" tabIndex={tabindex}>
+          <button type="button" className="h5p-hub-button h5p-hub-button-inverse-primary h5p-hub-button-install" tabIndex={tabindex}>
             {Dictionary.get('contentTypeGetButtonLabel')}
           </button>
         )}
 
-        <div className={'content-type-update-info' + (updateAvailable ? '' : ' hidden')}>
+        <div className={'h5p-hub-content-type-update-info' + (updateAvailable ? '' : ' hidden')}>
           {Dictionary.get('contentTypeUpdateAvailable')}
         </div>
 
-        <div className="description">{contentType.summary || ''}</div>
+        <div className="h5p-hub-description">{contentType.summary || ''}</div>
       </div>
     </div>
   );

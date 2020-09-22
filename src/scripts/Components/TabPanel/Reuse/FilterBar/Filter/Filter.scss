@@ -2,7 +2,7 @@
 @import "../../../../../../styles/base/variables";
 
 .h5p-hub {
-  .filter-modal {
+  .h5p-hub-filter-modal {
     background: rgba(71, 79, 90, 0.6);
     top: 14.7em;
     width: 100%;
@@ -10,10 +10,10 @@
     left: 0;
     position: absolute;
   }
-  .filter-dialog-content {
+  .h5p-hub-filter-dialog-content {
     padding: 1.5em;
   }
-  .filter-dialog {
+  .h5p-hub-filter-dialog {
     position: absolute;
     width: 40em;
     max-width: 100%;
@@ -22,7 +22,7 @@
     border-radius: 0.25em;
     box-shadow: 2px 5px 5px 1px rgba(0, 0, 0, 0.1);
 
-    .apply-filters-button {
+    .h5p-hub-apply-filters-button {
       &::before {
         @include icon($icon-filters);
         font-style: normal;
@@ -42,14 +42,14 @@
       cursor: pointer;
     }
 
-    .header-text {
+    .h5p-hub-header-text {
       color: #000000;
       font-size: 1.25em;
       font-weight: bold;
       margin-bottom: 1em;
     }
 
-    .loading:after {
+    .h5p-hub-loading:after {
       @include throbber();
       width: 1em;
       margin: 0 auto;

@@ -5,19 +5,19 @@ import Dictionary from '../../../../utils/dictionary';
 import noResults from '../../../../../images/no-results.svg';
 
 const NoContent = ({ headerText, suggestionText, tutorialUrl }) => (
-  <div className="no-content">
-    <img className="no-results-img" src={noResults} />
-    <section className="right-text">
-      <div className="header">
+  <div className="h5p-hub-no-content">
+    <img className="h5p-hub-no-results-img" src={noResults} />
+    <section className="h5p-hub-right-text">
+      <div className="h5p-hub-header">
         {headerText}
       </div>
-      <div className="suggestion-text">
+      <div className="h5p-hub-suggestion-text">
         {suggestionText}
       </div>
       {
         tutorialUrl &&
         <div>
-          <a className="url" target="_blank" href={tutorialUrl}>{Dictionary.get('tutorials')}</a>
+          <a className="h5p-hub-url" target="_blank" href={tutorialUrl}>{Dictionary.get('tutorials')}</a>
         </div>
       }
     </section>

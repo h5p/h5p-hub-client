@@ -47,13 +47,13 @@ class ReadMore extends React.Component {
             <span
               key="part-two"
               tabIndex="-1"
-              className={!this.state.expanded ? 'hidden' : ''}
+              className={!this.state.expanded ? 'h5p-hub-hidden' : ''}
             >
               {partTwo}
             </span>,
             <a href="#"
               key="button"
-              className={'link ' + (this.state.expanded ? 'read-less' : 'read-more')}
+              className={'h5p-hub-link ' + (this.state.expanded ? 'h5p-hub-read-less' : 'h5p-hub-read-more')}
               onClick={this.handleToggle}
               onKeyPress={this.handleKeyPress}
             >

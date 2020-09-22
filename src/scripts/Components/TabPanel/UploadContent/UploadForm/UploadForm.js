@@ -29,8 +29,8 @@ class UploadForm extends React.Component {
 
   render() {
     return (
-      <div className="upload-form">
-        <input className="upload-path"
+      <div className="h5p-hub-upload-form">
+        <input className="h5p-hub-upload-path"
           placeholder={((this.props.fileSelected || this.props.fileUploading) ? this.props.filePath : Dictionary.get('uploadPlaceholder'))}
           onClick={this.clickFileField}
           tabIndex="-1"
@@ -39,19 +39,19 @@ class UploadForm extends React.Component {
         />
         <button type="button"
           ref={(button) => {this.useButton = button; }}
-          className={"button use-button"}
+          className={"h5p-hub-button h5p-hub-use-button"}
           aria-hidden={(this.props.fileSelected ? '' : 'true')}
           disabled={this.props.fileUploading}
           onClick={this.props.onUpload}>{Dictionary.get("contentTypeUseButtonLabel")}
         </button>
-        <div className="input-wrapper">
+        <div className="h5p-hub-input-wrapper">
           <input type="file" accept=".h5p" aria-hidden="true"
             ref={(input) => { this.fileField = input; }}
             onChange={this.props.onValidate}
           />
           <button type="button"
             ref={el => this.uploadButton = el}
-            className="button upload-button"
+            className="h5p-hub-button h5p-hub-upload-button"
             onClick={this.clickFileField}
             disabled={this.props.fileUploading}
             tabIndex="0">{this.props.fileSelected ? Dictionary.get('uploadFileButtonChangeLabel') : Dictionary.get('uploadFileButtonLabel')}

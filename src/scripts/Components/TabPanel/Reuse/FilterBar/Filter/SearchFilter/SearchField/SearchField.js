@@ -64,9 +64,9 @@ const SearchField = React.forwardRef(({
   };
 
   return (
-    <div onMouseDown={onClick} className="search-button">
-      <div className="search-field" role="search">
-        <input id="filter-search-bar"
+    <div onMouseDown={onClick} className="h5p-hub-search-button">
+      <div className="h5p-hub-search-field" role="search">
+        <input className="h5p-hub-filter-search-bar"
           type="text"
           value={value}
           aria-label={placeholder}
@@ -77,7 +77,7 @@ const SearchField = React.forwardRef(({
           onFocus={onFocus}
         >
         </input>
-        <div className="icon-arrow" />
+        <div className="h5p-hub-icon-arrow" />
       </div>
     </div>
   );

@@ -7,21 +7,21 @@ import './LicenseInfo.scss';
 
 const LicenseInfo = ({id, version, onShowLicenseDetails, attributes}) => {
   return (
-    <div className='short-license-info'> {
+    <div className='h5p-hub-short-license-info'> {
       id !== 'Unspecified' ? (
         <>
           <h3>{`${id} ${version || ''}`}</h3>
 
           <button
             type="button"
-            className="short-license-read-more"
+            className="h5p-hub-short-license-read-more"
             aria-label={Dictionary.get('readMore')}
             onClick={onShowLicenseDetails}>
           </button>
 
           <p>{Dictionary.get("licenseDescription")}</p>
 
-          <ul className="ul small">
+          <ul className="h5p-hub-ul h5p-hub-small">
             <li>
               {Dictionary.get(attributes.canHoldLiable ? "licenseCanHoldLiable" : "licenseCannotHoldLiable")}
             </li>

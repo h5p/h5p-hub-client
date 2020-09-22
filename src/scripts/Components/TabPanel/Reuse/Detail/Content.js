@@ -146,7 +146,7 @@ class Content extends React.Component {
   }*/
 
   render() {
-    const classNames = 'content-detail' + (this.state.visible ? ' show' : '');
+    const classNames = 'h5p-hub-content-detail' + (this.state.visible ? ' h5p-hub-show' : '');
     const titleId = 'content-detail-view-title';
     const content = this.props.content;
 
@@ -165,8 +165,8 @@ class Content extends React.Component {
         );
       }
       else if (this.state.modalType === 'license') {
-        modalAria.labelledby = 'license-details-id';
-        modalAria.describedby = 'license-details-description';
+        modalAria.labelledby = 'h5p-hub-license-details-id';
+        modalAria.describedby = 'h5p-hub-license-details-description';
 
         return (
           <LicenseDialog id={content.license.id} />
@@ -176,33 +176,32 @@ class Content extends React.Component {
 
     return (
       <div className={classNames}
-        id="content-detail"
         role="region"
         tabIndex="-1"
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
       >
         <a href="#"
-          className="back-button icon-arrow-thick"
+          className="h5p-hub-back-button h5p-hub-icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
           onClick={this.handleClose}
           onKeyPress={this.handleBackKeyPress}
         />
-        <div className="container">
-          <div className="image-wrapper">
-            <ContentIcon src={content.icon} className="img-responsive content-type-image" />
+        <div className="h5p-hub-container">
+          <div className="h5p-hub-image-wrapper">
+            <ContentIcon src={content.icon} className="h5p-hub-img-responsive"/> 
           </div>
-          <div className="text-details">
+          <div className="h5p-hub-text-details">
             <h2
               id={titleId}
-              className={`title ${content.reviewed ? 'reviewed' : ''}`}
+              className={`h5p-hub-title ${content.reviewed ? 'h5p-hub-reviewed' : ''}`}
               tabIndex="-1"
               ref={element => this.title = element}
             >
               {content.title}
             </h2>
 
-            <div className="info-list">
+            <div className="h5p-hub-info-list">
               <InfoList
                 content={this.props.content}
                 getH5PTitle={this.getH5PTitle}
@@ -215,7 +214,7 @@ class Content extends React.Component {
             {
               content.preview_url &&
               <a
-                className="button demo-button"
+                className="h5p-hub-button h5p-hub-demo-button"
                 target="_blank"
                 href={content.preview_url}
               >
@@ -223,7 +222,7 @@ class Content extends React.Component {
               </a>
             }
           </div>
-          <div className="info-list">
+          <div className="h5p-hub-info-list">
             <InfoList
               content={this.props.content}
               getH5PTitle={this.getH5PTitle}
@@ -255,9 +254,9 @@ class Content extends React.Component {
             severity='info'
             onClose={this.handleInfoDismiss} />
         }
-        <div className="button-bar">
+        <div className="h5p-hub-button-bar">
           <button type="button"
-            className="button button-orange button-inverse-primary button-download-content"
+            className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
             onClick={() => this.props.onDownload(content)}
           >
             {Dictionary.get(`contentDownloadButtonLabel`)}
@@ -272,7 +271,7 @@ class Content extends React.Component {
           this.state.modalType !== undefined &&
           <Modal
             onClose={this.onModalClose}
-            className={this.state.modalType || ''}
+            className={this.state.modalType ? 'h5p-hub-' + this.state.modalType : ''}
             aria={modalAria}
             parentId='h5p-hub'
             appElementId='h5p-hub-panel'

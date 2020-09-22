@@ -5,12 +5,12 @@ $gutter-image: 0.625em;
 $size-button: 2.1em;
 $color-button: rgba($c1, .8);
 
-.carousel {
+.h5p-hub-carousel {
   width: 100%;
   box-sizing: border-box;
   position: relative;
 
-  .scroller {
+  .h5p-hub-scroller {
     overflow: hidden;
     width: calc(100% - 5em);
     margin-left: 2.5em;
@@ -45,7 +45,7 @@ $color-button: rgba($c1, .8);
       border: 1px solid #ced6e3;
     }
 
-    img.selectable {
+    img.h5p-hub-selectable {
       cursor: pointer;
     }
   }
@@ -59,14 +59,14 @@ $color-button: rgba($c1, .8);
   }
 
 
-  .progress {
+  .h5p-hub-progress {
     color: #fff;
     position: relative;
     bottom: -2em;
     text-align: center;
   }
 
-  .navigation {
+  .h5p-hub-navigation {
     width: 2.1em;
     height: 2.1em;
     line-height: 2.1em;
@@ -81,46 +81,46 @@ $color-button: rgba($c1, .8);
     transform: translateY(-50%);
   }
 
-  .navigation[disabled] {
+  .h5p-hub-navigation[disabled] {
     background-color: rgba(189, 195, 203, 0.8);
     color: rgba(255, 255, 255, 0.6);
     pointer-events: none;
   }
 
-  .navigation:before {
+  .h5p-hub-navigation:before {
     display: inline-block;
     line-height: 1em;
     height: 1em;
   }
 
-  .navigation:hover {
+  .h5p-hub-navigation:hover {
     background-color: rgba(132, 143, 158, 0.8);
   }
 
-  .navigation:focus {
+  .h5p-hub-navigation:focus {
     outline: 0;
     box-shadow: 0.06em 0 0.6em 0.1em #7bc1f9;
     border-color: #7bc1f9;
   }
 
-  .prev {
+  .h5p-hub-prev {
     left: 0;
   }
-  .prev:before {
+  .h5p-hub-prev:before {
     @include icon($icon-arrow-thick);
   }
 
-  .next {
+  .h5p-hub-next {
     right: 0;
   }
-  .next:before {
+  .h5p-hub-next:before {
     @include icon($icon-arrow-thick);
     transform: rotate(180deg);
   }
 }
 
 /* Styling for the image slider in the lightbox */
-.lightbox-inner .carousel {
+.h5p-hub-lightbox-inner .h5p-hub-carousel {
   ul {
     transition-duration: 0.15s;
   }
@@ -133,19 +133,19 @@ $color-button: rgba($c1, .8);
     }
   }
 
-  .navigation {
+  .h5p-hub-navigation {
     font-size: 1.2em;
   }
 
-  .navigation:focus {
+  .h5p-hub-navigation:focus {
     background-color: transparent;
   }
 
-  .next {
+  .h5p-hub-next {
     right: -0.75em;
   }
 
-  .prev {
+  .h5p-hub-prev {
     left: -0.75em;
   }
 }

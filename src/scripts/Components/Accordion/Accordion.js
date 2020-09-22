@@ -33,12 +33,12 @@ class Accordion extends React.Component {
             <Button buttonProps={buttonProps}
               onButtonClick={() => this.handleToggle(child)}
             >
-              <span className="icon-accordion-arrow"></span>
+              <span className="h5p-hub-icon-accordion-arrow"></span>
               <span>{child.props.header}</span>
             </Button>
           </dt>
           <dl role="region" className={'h5p-hub-accordion-region' + (this.state.expanded == child.props.id ? '' : ' hidden')}>
-            <div className="panel-body">
+            <div className="h5p-hub-panel-body">
               {child}
             </div>
           </dl>

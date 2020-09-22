@@ -155,7 +155,7 @@ class Browse extends React.Component {
     }];
 
     return (
-      <div className="content-type-section-view loaded">
+      <div className="h5p-hub-content-type-section-view"> 
 
         <Search value={this.state.filterOn}
           auto={!this.state.detailViewActive}
@@ -176,7 +176,7 @@ class Browse extends React.Component {
           />
         }
 
-        <div className={'content-type-section' + (this.state.warnOutdated ? ' height-limit' : '') + (this.state.filterOn ? ' filtering' : '')}>
+        <div className={'h5p-hub-content-type-section' + (this.state.warnOutdated ? ' h5p-hub-height-limit' : '') + (this.state.filterOn ? ' h5p-hub-filtering' : '')}>
           <Order hits={this.state.contentTypes.length}
             selected={this.state.orderBy}
             onChange={this.handleOrderBy}

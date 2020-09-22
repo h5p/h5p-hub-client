@@ -20,7 +20,7 @@ class Modal extends React.Component {
 
   render() {
     const closeButtonProps = {
-      className: 'lightbox-close',
+      className: 'h5p-hub-lightbox-close',
       'aria-label': Dictionary.get('close')
     };
 
@@ -29,8 +29,8 @@ class Modal extends React.Component {
         isOpen={true}
         onRequestClose={this.closeModal}
         contentLabel={this.props.label}
-        className={`lightbox-inner ${this.props.className}`}
-        overlayClassName='lightbox'
+        className={`h5p-hub-lightbox-inner ${this.props.className}`}
+        overlayClassName='h5p-hub-lightbox'
         aria={this.props.aria}
         appElement={document.getElementById(this.props.appElementId)}
         parentSelector={() => document.getElementById(this.props.parentId)}

@@ -22,13 +22,13 @@ const ContentAccordion = ({content, onShowLicenseDetails}) => {
 
       <div
         header={Dictionary.get('contentPublisherPanelHeader')}
-        id='publisher-info'
+        className='h5p-hub-publisher-info'
       >
-        <h3 className="publisher-name">
+        <h3 className="h5p-hub-publisher-name">
           {content.publisher.name}
         </h3>
-        <img className='publisher-image' src={content.publisher.logo}/>
-        <div className="publisher-description">
+        <img className='h5p-hub-publisher-image' src={content.publisher.logo}/>
+        <div className="h5p-hub-publisher-description">
           {content.publisher.description}
         </div>
       </div>

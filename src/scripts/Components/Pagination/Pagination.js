@@ -57,7 +57,7 @@ class Pagination extends React.Component {
   render() {
     return (
       <nav role="navigation">
-        <ul className="list-of-numbers" aria-label={Dictionary.get('paginationNavigation')}>
+        <ul className="h5p-hub-list-of-numbers" aria-label={Dictionary.get('paginationNavigation')}>
           <Choose 
             selected={pageNumToId(this.props.selectedPage)}
             onChange={this.handlePageSelected}

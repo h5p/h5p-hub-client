@@ -7,7 +7,7 @@
   @include box-shadow(0.167em 0, 0, 0, $background, true);
   background: rgba($background, 0.15);
 
-  .button {
+  .h5p-hub-button {
     color: $color;
     border: solid 1px;
     background-color: transparent;
@@ -22,48 +22,48 @@
   padding: 0.5em 1.250em;
   padding-right: 2.250em;
 
-  .title {
+  .h5p-hub-title {
     font-size: $text-list-title;
     color: $text-dark;
   }
-  .message-content h2 {
+  .h5p-hub-message-content h2 {
     margin-top: 0.4165em;
     font-size: 1.2em;
   }
 
-  .description {
+  .h5p-hub-description {
     font-size: $text-body-small;
     color: $text-light;
   }
 
-  .message-header {
+  .h5p-hub-message-header {
     margin: 0;
     font-size: 1.19em;
     line-height: 1.9em;
   }
 
-  .message-body {
+  .h5p-hub-message-body {
     font-size: 0.925em;
     margin: 0;
     padding-bottom: 0.5em;
   }
-  .message-content .message-body {
+  .h5p-hub-message-content .h5p-hub-message-body {
     color: $text-light;
   }
 
-  .get-help {
+  .h5p-hub-get-help {
     margin-left: 0.75em;
     color: #c62c15;
     text-decoration: none;
   }
-  .get-help:before {
+  .h5p-hub-get-help:before {
     @include icon($icon-question);
     font-size: 0.9em;
     margin-right: 0.3em;
     display: inline-block;
   }
 
-  .message-close {
+  .h5p-hub-message-close {
     cursor: pointer;
     display: block;
     position: absolute;
@@ -76,30 +76,30 @@
     text-align: center;
   }
 
-  .message-close:before {
+  .h5p-hub-message-close:before {
     @include icon($icon-close);
   }
 
-  .message-close:hover {
+  .h5p-hub-message-close:hover {
     color: #333;
   }
 
-  &.info {
+  &.h5p-hub-info {
     @include message-level($ac-info, $ac-info);
     box-shadow: inset 0.167em 0 $ac-info;
   }
 
-  &.warning {
+  &.h5p-hub-warning {
     @include message-level($ac-warning, $text-dark);
     box-shadow: inset 0.167em 0 $ac-warning;
   }
 
-  &.error {
+  &.h5p-hub-error {
     @include message-level($ac-error, $ac-error);
     box-shadow: inset 0.167em 0 $ac-error;
   }
 
-  &.dismissible {
+  &.h5p-hub-dismissible {
     overflow: auto;
     padding-right: 3.5em;
   }

@@ -57,7 +57,7 @@ class ButtonBar extends React.Component {
         {
           secondButtonType &&
           <button type="button"
-            className={`button button-inverse-primary button-${secondButtonType.toLowerCase()}`}
+            className={`h5p-hub-button h5p-hub-button-inverse-primary h5p-hub-button-${secondButtonType.toLowerCase()}`}
             disabled={secondButtonDisabled}
             onClick={this.props.installing ? undefined : this.props.onInstall}
             ref={button => this.installButton = button}
@@ -68,7 +68,7 @@ class ButtonBar extends React.Component {
         {
           useButton &&
           <button type="button"
-            className={"button button-primary button-use"}
+            className={"h5p-hub-button h5p-hub-button-primary"}
             onClick={this.props.onUse}
             ref={button => this.useButton = button}
           >

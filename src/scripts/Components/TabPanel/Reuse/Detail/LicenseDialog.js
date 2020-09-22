@@ -11,24 +11,24 @@ const LicenseDialog = ({id}) => {
 
   return (
     <div>
-      <div className="modal-header">
+      <div className="h5p-hub-modal-header">
         {Dictionary.get('licenseModalTitle')}
       </div>
-      <div className="modal-content">
-        <h5 id="license-details-id" className="modal-title">
+      <div className="h5p-hub-modal-content">
+        <h5 id="h5p-hub-license-details-id" className="h5p-hub-modal-title">
           {id}
         </h5>
         <Async promise={license()}>
           <Async.Pending>
             <div
-              id="license-details-description"
-              className="loading"
+              id="h5p-hub-license-details-description"
+              className="h5p-hub-loading"
             />
           </Async.Pending>
 
           <Async.Fulfilled>{licenseText =>
             <div
-              id="license-details-description"
+              id="h5p-hub-license-details-description"
               dangerouslySetInnerHTML={{__html: licenseText}}
             />
           }

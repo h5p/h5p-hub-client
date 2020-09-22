@@ -209,7 +209,7 @@ class ImageSlider extends React.Component {
           <img
             src={image.url}
             alt={image.alt}
-            className={this.props.onImageSelect ? 'selectable' : ''}/>
+            className={this.props.onImageSelect ? 'h5p-hub-selectable' : ''}/>
         </li>
       );
     });
@@ -220,7 +220,7 @@ class ImageSlider extends React.Component {
 
     return (
       <div
-        className="carousel"
+        className="h5p-hub-carousel"
         role="region"
         aria-label={Dictionary.get('screenshots')}
         ref={carousel => this.carousel = carousel}
@@ -229,7 +229,7 @@ class ImageSlider extends React.Component {
           navigationNeeded &&
           <NavigationButton type="prev" label={Dictionary.get('previousImage')} onClick={this.previousSlide} disabled={disablePrev}/>
         }
-        <nav className="scroller" ref={scroller => this.scroller = scroller}>
+        <nav className="h5p-hub-scroller" ref={scroller => this.scroller = scroller}>
           <ul style={sliderStyle} onTransitionEnd={stopPropagation}>
             {slides}
           </ul>
@@ -240,7 +240,7 @@ class ImageSlider extends React.Component {
         }
         {
           this.props.showProgress &&
-          <div className="progress" role="alert">
+          <div className="h5p-hub-progress" role="alert">
             {Dictionary.get('imageLightBoxProgress').replace(':num', this.state.offset+1).replace(':total', numSlides)}
           </div>
         }
@@ -271,7 +271,7 @@ const breakpoints = [
 const NavigationButton = ({onClick, type, disabled, label}) => {
   return (
     <button
-      className={'navigation ' + type}
+      className={'h5p-hub-navigation ' + 'h5p-hub-' + type}
       aria-disabled={disabled}
       aria-label={label}
       disabled={disabled}

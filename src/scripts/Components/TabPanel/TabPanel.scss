@@ -4,7 +4,7 @@
 
 // General color scheme for each section
 @mixin section($color) {
-  .tab-button {
+  .h5p-hub-tab-button {
     &[aria-selected="true"] {
       border-bottom: $height-menuitem-underline solid $color;
     }
@@ -12,21 +12,21 @@
 }
 
 .h5p-hub {
-  .panel {
-    &.h5p-section-content-types {
+  .h5p-hub-panel {
+    &.h5p-hub-section-content-types {
       @include section($color-section-content-types);
     }
 
-    &.h5p-section-reuse {
+    &.h5p-hub-section-reuse {
       @include section($color-section-reuse);
     }
 
-    &.h5p-section-upload {
+    &.h5p-hub-section-upload {
       @include section($color-section-upload);
     }
   }
 
-  .tab-panel {
+  .h5p-hub-tab-panel {
     border: none;
 
     [role="tablist"] {
@@ -85,12 +85,6 @@
 
       &[aria-selected='true'] > a:before {
         content: $icon-radio-selected;
-      }
-    }
-
-    [role="tabpanel"] {
-      .tab-panel-inner {
-        padding: $gutter;
       }
     }
   }

@@ -6,15 +6,15 @@ import './Loader.scss';
 const Loader = ({title, subtitle}) => {
 
   return (
-    <div className='loader'> 
-      <span className='spinner'></span>
+    <div className='h5p-hub-loader'> 
+      <span className='h5p-hub-spinner'></span>
       { 
         title &&
-        <div className='loader-title'>{title}</div>
+        <div className='h5p-hub-loader-title'>{title}</div>
       }
       { 
         subtitle &&
-        <div className='loader-subtitle'>{subtitle}</div>
+        <div className='h5p-hub-loader-subtitle'>{subtitle}</div>
       }
     </div>
   );

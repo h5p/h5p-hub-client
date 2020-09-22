@@ -2,8 +2,8 @@
 @import '../../../../../styles/base/mixins';
 
 .h5p-hub {
-  .upload-form {
-    .input-wrapper {
+  .h5p-hub-upload-form {
+    .h5p-hub-input-wrapper {
       display: inline-block;
 
       input[type="file"] {
@@ -15,14 +15,14 @@
       display: none;
     }
 
-    .upload-button {
+    .h5p-hub-upload-button {
       background: transparent;
       color: $c1;
       border: 0.125em solid $c1;
       margin-left: 0.5em;
     }
 
-    .use-button {
+    .h5p-hub-use-button {
       background: $c1;
       color: white;
       margin-left: 0.5em;
@@ -32,7 +32,7 @@
       opacity: 0.5;
     }
 
-    .upload-path {
+    .h5p-hub-upload-path {
       display: inline-block;
       min-width: 14em;
       padding: 10px;
@@ -50,7 +50,7 @@
     }
 
     @media (min-width: $screen-small) {
-      .upload-path {
+      .h5p-hub-upload-path {
         width: 60%;
       }
     }

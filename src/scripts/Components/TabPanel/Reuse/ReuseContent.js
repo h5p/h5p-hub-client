@@ -201,7 +201,7 @@ class ReuseContent extends React.Component {
     fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
       .then(response => {
         // Download success, inform parent
-        this.props.onDownload(response.data, 'reuse');
+        this.props.onDownload(response.data, 'h5p-hub-reuse');
       })
       .catch(reason => {
         // Download failed, inform the user? TODO
@@ -210,7 +210,7 @@ class ReuseContent extends React.Component {
   }
   render() {
     return (
-      <div className="reuse-view loaded" id='reuse-view'>
+      <div id='h5p-hub-reuse-view'>
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
@@ -225,8 +225,8 @@ class ReuseContent extends React.Component {
           failedDataFetch={this.state.failedDataFetch}
         />
 
-        <div className='reuse-content-container' id='reuse-content-container'>
-          <div className={!this.state.contentListVisible ? 'content-list-hidden' : ''}>
+        <div className='h5p-hub-reuse-content-container' id='h5p-hub-reuse-content-container' >
+          <div className={!this.state.contentListVisible ? 'h5p-hub-content-list-hidden' : ''}>
             <Order
               searchPromise={this.state.search}
               selected={this.state.orderBy}
@@ -235,7 +235,7 @@ class ReuseContent extends React.Component {
               visible={this.state.contentListVisible}
               orderVariables={this.orderBySettings} />
 
-            <div className='reuse-content-result' ref={this.reuseContentResultRef}>
+            <div className='h5p-hub-reuse-content-result' ref={this.reuseContentResultRef}>
               <ContentList
                 itemsPromise={this.state.search}
                 onSelect={this.showContentDetails}

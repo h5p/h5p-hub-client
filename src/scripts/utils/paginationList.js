@@ -3,7 +3,7 @@ import variables from '../../styles/base/_variables.scss';
 import Dictionary from './dictionary';
 
 export const pageNumToId = (num) => {
-  return `paginator-page-${num}`;
+  return `h5p-hub-paginator-page-${num}`;
 };
 
 export const paginationList = (selected, pages, screenWidth) => {
@@ -21,14 +21,14 @@ export const paginationList = (selected, pages, screenWidth) => {
    * @param  {string} key
    */
   const dots = (key) => (
-    <li id='paginator-dots' disabled={true} key={'dots: ' + key} className="dots">
-      <div className="dots-text">
+    <li id='h5p-hub-paginator-dots' disabled={true} key={'dots: ' + key} className="h5p-hub-dots"> 
+      <div className="h5p-hub-dots-text">
         ...
       </div>
     </li>);
 
   const numberElement = (page) => (
-    <li key={page.toString()} className="list-element">
+    <li key={page.toString()} className="h5p-hub-list-element">
       <a href="#"
         id={pageNumToId(page)}
         data-page={page}
@@ -40,14 +40,14 @@ export const paginationList = (selected, pages, screenWidth) => {
     </li>);
 
   const arrow = (direction, active) => (
-    <li key={direction} className={`list-element ${active ? '' : "disabled"}`} >
+    <li key={direction} className={`h5p-hub-list-element ${active ? '' : "disabled"}`} >
       <a href="#"
         id={direction}
         data-page={direction}
-        id={`paginator-${direction == '-1' ? 'previous' : 'next'}`}
+        id={`h5p-hub-paginator-${direction == '-1' ? 'previous' : 'next'}`}
         disabled={!active}
         aria-label={Dictionary.get(`${direction == '-1' ? 'previous' : 'next'}Page`)}
-        className={direction=='-1' ? 'previous-arrow' : 'next-arrow'}
+        className={direction=='-1' ? 'h5p-hub-previous-arrow' : 'h5p-hub-next-arrow'}
       >
       </a>
     </li>

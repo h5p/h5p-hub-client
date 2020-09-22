@@ -1,19 +1,19 @@
 @import "../../../styles/base/colors";
 @import "../../../styles/base/variables";
 
-.search-wrapper {
+.h5p-hub-search-wrapper {
   padding: $gutter 1.125em;
   background-color: $c1;
   position: relative;
 
-  .border-wrap {
+  .h5p-hub-border-wrap {
     padding: 3px;
     background: #fff;
     border-radius: 1.25em;
     font-size: 1.15em;
   }
 
-  .icon-search {
+  .h5p-hub-icon-search {
     position: absolute;
     font-size: 1em;
     top: 1.4em;
@@ -23,7 +23,7 @@
   }
 }
 
-.hub-search-bar {
+.h5p-hub-search-bar {
   border: 1px solid #bfc0c0;
   padding: 0.5em 0.5em 0.5em 1.2em;
   font-style: italic;

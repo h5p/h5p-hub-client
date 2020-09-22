@@ -189,14 +189,14 @@ class ContentType extends React.Component {
   }
 
   render() {
-    const classNames = 'content-type-detail' + (this.state.visible ? ' show' : '');
-    const titleId = 'content-type-detail-view-title';
+    const classNames = 'h5p-hub-content-type-detail' + (this.state.visible ? ' h5p-hub-show' : '');
+    const titleId = 'h5p-hub-content-type-detail-view-title';
 
     // On the first render, no library is selected. We add an empty DIV,
     // just to get the sliding effect when viewing the first library
     if (!this.props.library) {
       return (
-        <div className={classNames} id="content-type-detail"/>
+        <div className={classNames} /> 
       );
     }
 
@@ -214,16 +214,16 @@ class ContentType extends React.Component {
       else if (this.state.modalType === 'license') {
         return (
           <div>
-            <div className="modal-header">
+            <div className="h5p-hub-modal-header">
               {Dictionary.get('licenseModalTitle')}
             </div>
-            <div className="modal-content">
-              <h5 id="license-details-id" className="modal-title">
+            <div className="h5p-hub-modal-content">
+              <h5 id="h5p-hub-license-details-id" className="h5p-hub-modal-title">
                 {this.props.library.license.id}
               </h5>
               <div
-                id="license-details-description"
-                className={this.state.licenseDetails ? undefined : 'loading'}
+                id="h5p-hub-license-details-description"
+                className={this.state.licenseDetails ? undefined : 'h5p-hub-loading'}
                 dangerouslySetInnerHTML={{__html: this.state.licenseDetails}}
               />
             </div>
@@ -240,39 +240,38 @@ class ContentType extends React.Component {
       modalAria.label = Dictionary.get('imageLightboxTitle');
     }
     if (this.state.modalType === 'license' && this.state.licenseDetails) {
-      modalAria.labelledby = 'license-details-id';
-      modalAria.describedby = 'license-details-description';
+      modalAria.labelledby = 'h5p-hub-license-details-id';
+      modalAria.describedby = 'h5p-hub-license-details-description';
     }
 
     return (
       <div className={classNames}
-        id="content-type-detail"
         role="region"
         tabIndex="-1"
         aria-labelledby={titleId}
         onTransitionEnd={this.onTransitionEnd}
       >
         <a href="#"
-          className="back-button icon-arrow-thick"
+          className="h5p-hub-back-button h5p-hub-icon-arrow-thick"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
           onClick={this.handleClose}
           onKeyPress={this.handleBackKeyPress}/>
-        <div className="container">
-          <div className="image-wrapper">
+        <div className="h5p-hub-container">
+          <div className="h5p-hub-image-wrapper">
             <img
-              className="img-responsive content-type-image"
+              className="h5p-hub-img-responsive"
               src={this.props.library.icon || noIcon}
             />
           </div>
-          <div className="text-details">
+          <div className="h5p-hub-text-details">
             <h2
               id={titleId}
-              className="title"
+              className="h5p-hub-title"
               tabIndex="-1"
             >
               {this.props.library.title || this.props.library.machineName}
             </h2>
-            <div className="owner">{this.props.library.owner}</div>
+            <div className="h5p-hub-owner">{this.props.library.owner}</div>
             <ReadMore
               text={this.props.library.description}
               maxLength={285}
@@ -280,7 +279,7 @@ class ContentType extends React.Component {
             {
               this.props.library.example &&
               <a
-                className="button demo-button"
+                className="h5p-hub-button h5p-hub-demo-button"
                 target="_blank"
                 href={this.props.library.example || '#'}
                 onKeyPress={event => onSpaceOrEnterEvent(event, this.openExampleUrl)}
@@ -331,7 +330,7 @@ class ContentType extends React.Component {
         { this.state.modalType !== undefined &&
           <Modal
             onClose={this.onModalClose}
-            className={this.state.modalType || ''}
+            className={'h5p-hub-' + this.state.modalType || ''}
             aria={modalAria}
             parentId='h5p-hub'
             appElementId='h5p-hub-panel'

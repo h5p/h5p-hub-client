@@ -1,12 +1,12 @@
 @import '../../../../../styles/base/variables';
 
 .h5p-hub {
-  .no-content {
+  .h5p-hub-no-content {
 
     display: flex;
     box-shadow: 0 -0.4em 0.4em -0.2em rgba(79, 87, 99, 0.2) inset;
 
-    .no-results-img {
+    .h5p-hub-no-results-img {
       width: 12.7em;
       height: 4.95em;
       padding: 3em 2em;
@@ -17,16 +17,16 @@
       }
     }
 
-    .right-text {
+    .h5p-hub-right-text {
       padding: 3em 2em;
 
-      .header {
+      .h5p-hub-header {
         font-size: 1.2em;
         font-weight: bold;
         margin-bottom: 0.4em;
       }
 
-      .suggestion-text {
+      .h5p-hub-suggestion-text {
         color: #4d4d4d;
         margin-bottom: 0.3em;
       }
@@ -35,7 +35,7 @@
         padding: 3em 1em;
       }
 
-      .url {
+      .h5p-hub-url {
         color: #186df7;
         font-weight: bold;
       }

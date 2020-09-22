@@ -15,30 +15,30 @@ const InfoList = ({
   return (
     <ul>
       <li>
-        <span id='hubowner' className='hublabel'>{Dictionary.get('by')}: </span>
-        <span aria-labelledby='hubowner' className='hubcontent'>{(content.owner)}</span>
+        <span id='h5p-hub-hubowner' className='h5p-hub-hublabel'>{Dictionary.get('by')}: </span>
+        <span aria-labelledby='h5p-hub-hubowner' className='h5p-hub-hubcontent'>{(content.owner)}</span>
       </li>
       <li>
-        <span id='hubh5p-type' className='hublabel'>{Dictionary.get('h5pType') + ': '}</span>
-        <span aria-labelledby='hubh5p-type' className='hubcontent'>{getH5PTitle(content.content_type)}</span>
+        <span id='h5p-hub-hubh5p-type' className='h5p-hub-hublabel'>{Dictionary.get('h5pType') + ': '}</span>
+        <span aria-labelledby='h5p-hub-hubh5p-type' className='h5p-hub-hubcontent'>{getH5PTitle(content.content_type)}</span>
       </li>
       <li>
-        <span id='hublanguage' className='hublabel'>{Dictionary.get('language')}: </span>
-        <span aria-labelledby='hublanguage' className='hubcontent'>{getLabel(content.language, 'language')}</span>
+        <span id='h5p-hub-hublanguage' className='h5p-hub-hublabel'>{Dictionary.get('language')}: </span>
+        <span aria-labelledby='h5p-hub-hublanguage' className='h5p-hub-hubcontent'>{getLabel(content.language, 'language')}</span>
       </li>
       <li>
-        <span id='hubdiscipline' className='hublabel capitalize'>{Dictionary.get('in')}: </span>
-        <span aria-labelledby='hubdiscipline' className='hubcontent'>
+        <span id='h5p-hub-hubdiscipline' className='h5p-hub-hublabel h5p-hub-capitalize'>{Dictionary.get('in')}: </span>
+        <span aria-labelledby='h5p-hub-hubdiscipline' className='h5p-hub-hubcontent'>
           {content.disciplines.map((discipline, i, arr) => getLabel(discipline, 'flatDisciplines') + (arr.length - 1 !== i ? ', ' : ''))}
         </span>
       </li>
       <li>
-        <span id='hublevel' className='hublabel'>{Dictionary.get('level')}: </span>
-        <span className='hubcontent capitalize' aria-labelledby='hublevel'>{getLabel(content.level, 'level')}</span>
+        <span id='h5p-hub-hublevel' className='h5p-hub-hublabel'>{Dictionary.get('level')}: </span>
+        <span className='h5p-hub-hubcontent h5p-hub-capitalize' aria-labelledby='h5p-hub-hublevel'>{getLabel(content.level, 'level')}</span>
       </li>
       <li>
-        <span id='hubsize' className='hublabel'>{Dictionary.get('size')}: </span>
-        <span aria-labelledby='hubsize' className='hubcontent'>{filesize(content.size)}</span>
+        <span id='h5p-hub-hubsize' className='h5p-hub-hublabel'>{Dictionary.get('size')}: </span>
+        <span aria-labelledby='h5p-hub-hubsize' className='h5p-hub-hubcontent'>{filesize(content.size)}</span>
       </li>
     </ul>
   );

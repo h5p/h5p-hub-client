@@ -7,10 +7,10 @@ import './SelectionsList.scss';
 
 const SelectionsList = ({title, itemsPromise, actionLabel, onAction, onSelect, focused, setFocus}) => {
   return (
-    <div className="content-selection-list">
-      <div className="header">
-        <div className="title">{title}</div>
-        <a className="action" href="#" onClick={onAction}>{actionLabel}</a>
+    <div className="h5p-hub-content-selection-list">
+      <div className="h5p-hub-header">
+        <div className="h5p-hub-title">{title}</div>
+        <a className="h5p-hub-action" href="#" onClick={onAction}>{actionLabel}</a>
       </div>
 
       <ContentList 

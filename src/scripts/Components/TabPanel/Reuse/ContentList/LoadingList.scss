@@ -1,52 +1,52 @@
-.h5p-hub-list.loading {
+.h5p-hub-list.h5p-hub-loading {
   pointer-events: none;
 
-  .content-item {
+  .h5p-hub-content-item {
     animation: opacitychange 1s infinite;
   }
 
-  .loading-block {
+  .h5p-hub-loading-block {
     background: #ccc;
     min-height: 1.15em;
 
-    &.button {
+    &.h5p-hub-button {
       background: transparent;
       animation: none;
       border: 2px solid #ccc;
     }
   }
 
-  .middle {
+  .h5p-hub-middle {
     height: 5.25em;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
 
-  .text-long {
+  .h5p-hub-text-long {
     width: 100%;
   }
 
-  .text-medium {
+  .h5p-hub-text-medium {
     width: 60%;    
   }
 
-  .text-short {
+  .h5p-hub-text-short {
     width: 30%;    
   }
 
-  .grid-item {
+  .h5p-hub-grid-item {
     padding: 1em;
 
-    .image {
+    .h5p-hub-image {
       height: 8vw;
       min-height: 5em;
     }
 
-    .loading-block {
+    .h5p-hub-loading-block {
       margin-bottom: 0.5em;
 
-      &.button {
+      &.h5p-hub-button {
         margin-bottom: 0;
         min-width: 0;
         width: 4em;

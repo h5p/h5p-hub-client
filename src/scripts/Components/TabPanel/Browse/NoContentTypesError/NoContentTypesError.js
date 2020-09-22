@@ -22,7 +22,7 @@ const NoContentTypesError = ({throbbing, details, onRetry}) => {
       severity='error'
       title={Dictionary.get('noContentTypesAvailable')}
       message={messages}>
-      <button type="button" className="button button-primary retry-button"
+      <button type="h5p-hub-button" className="h5p-hub-button h5p-hub-button-primary h5p-hub-retry-button"
         tabIndex="0" onClick={onRetry} disabled={throbbing}>
         {Dictionary.get('tryAgain')}
       </button>

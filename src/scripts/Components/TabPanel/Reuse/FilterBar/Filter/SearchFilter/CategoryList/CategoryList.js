@@ -45,8 +45,7 @@ const CategoryList = React.forwardRef(({
 
   return (
     <ul
-      className="checkbox-list"
-      id='checkbox-list'
+      className="h5p-hub-checkbox-list"
       role='group'
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
@@ -54,14 +53,14 @@ const CategoryList = React.forwardRef(({
       {
         categoryList.map(category => {
           return (
-            <div key={'headers-' + category.id} className={!category.noLine ? 'bottom-line' : ''}>
+            <div key={'headers-' + category.id} className={!category.noLine ? 'h5p-hub-bottom-line' : ''}>
               <div>{category.catNoParent !== null ? getCheckboxes([category.catNoParent]) : null}</div>
               {category.children &&
                 <>
                   <div
                     key={category}
                     ref={ref[categoryRefId + category.id]}
-                    className='category-header'>
+                    className='h5p-hub-category-header'>
                     {`${Dictionary.get('in')} ${category.label}`}
                   </div>
                   {getCheckboxes(category.children)}

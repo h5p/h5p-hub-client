@@ -2,7 +2,7 @@
 @import '../../../styles/base/variables';
 @import '../../../styles/base/mixins';
 
-.loader {
+.h5p-hub-loader {
   text-align: center;
   padding: 2em 0;
 
@@ -10,7 +10,7 @@
     padding: 1em 0;
   }
 
-  .spinner {
+  .h5p-hub-spinner {
     font-family: 'h5p-hub';
     display: inline-block;
     font-size: 6.25em;
@@ -27,14 +27,14 @@
     }
   }
 
-  .loader-title {
+  .h5p-hub-loader-title {
     margin-top: 0.5em;
     color: #242424;
     font-size: 1.5em;
     margin-bottom: 0.2em;
   }
 
-  .loader-subtitle {
+  .h5p-hub-loader-subtitle {
     color: #72757c;
     font-size: 1.1em;
   }

@@ -18,12 +18,12 @@ const Order = ({ searchPromise, selected, onChange, orderVisible = true, visible
   );
 
   return (
-    <div className={'navbar' + (visible ? '' : ' hidden')}>
-      <div className="result-header">
+    <div className={'h5p-hub-navbar' + (visible ? '' : ' h5p-hub-hidden')}>
+      <div className="h5p-hub-result-header">
         {headerLabel}
         { 
           searchPromise &&
-          <span className="result-hits">
+          <span className="h5p-hub-result-hits">
             <Async promiseFn={searchPromise}>
               <Async.Fulfilled>{result =>
                 `(${Dictionary.get('numResults').replace(':num', result.numResults)})`
@@ -35,13 +35,13 @@ const Order = ({ searchPromise, selected, onChange, orderVisible = true, visible
       </div>
       {
         orderVisible &&
-        <div id="sort-by" className="sort-by-header">
+        <div id="h5p-hub-sort-by" className="h5p-hub-sort-by-header">
           {Dictionary.get('show')}:
         </div>
       }
       {
         orderVisible &&
-        <ul className="sort-by-list" aria-labelledby="sort-by">
+        <ul className="h5p-hub-sort-by-list" aria-labelledby="h5p-hub-sort-by">
           <Choose selected={selected} onChange={onChange}>
             {listElement}
           </Choose>

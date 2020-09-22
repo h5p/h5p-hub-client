@@ -42,9 +42,9 @@ const Checkbox = React.forwardRef(({
   return (
     <li
       ref={ref}
-      id={id}
+      id={'h5p-hub-' + id}
       key={filter + id}
-      className={`checkbox ${checked ? 'checked ' : ''} ${focused ? 'highlighted' : ''} ${checkboxChildren ? 'parent' : ''}`}
+      className={`h5p-hub-checkbox ${checked ? 'h5p-hub-checked ' : ''} ${focused ? 'h5p-hub-highlighted' : ''} ${checkboxChildren ? 'h5p-hub-parent' : ''}`}
       role='checkbox'
       aria-checked={checked}
       aria-label={label}
@@ -53,13 +53,13 @@ const Checkbox = React.forwardRef(({
       }
       tabIndex={tabIndex ? tabIndex : '0'}
       onKeyDown={handleKeyDown}>
-      <div className='content' key={'label' + id}>
-        <div className='icon' 
+      <div className='h5p-hub-content' key={'label' + id}>
+        <div className='h5p-hub-icon' 
           onClick={(e) =>
             checkboxChildren ? onCheckedClick(filter, id, !checked, e) : {}
           }
         />
-        <div className='label-text'>
+        <div className='h5p-hub-label-text'>
           {children ? children : label}
           {descendantsChecked > 0 && ` (${descendantsChecked})`}
         </div>

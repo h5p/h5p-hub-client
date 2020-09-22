@@ -19,7 +19,7 @@ class Hub extends React.Component {
 
     this.state = {
       expanded: props.expanded,
-      section: 'content-types',
+      section: 'h5p-hub-content-types',
       selected: props.selected,
       title: props.title,
       contentTypes: props.contentTypes
@@ -52,7 +52,7 @@ class Hub extends React.Component {
     this.props.onUse(contentType);
   }
 
-  handleUpload = (data, type = 'upload') => {
+  handleUpload = (data, type = 'h5p-hub-upload') => {
     let panelTitle = data.h5p.mainLibrary;
     for (let i = 0; i < data.contentTypes.libraries.length; i++) {
       if (data.contentTypes.libraries[i].machineName === panelTitle) {
@@ -61,7 +61,7 @@ class Hub extends React.Component {
       }
     }
     let title = Dictionary.get('uploadSuccess').replace(':title', panelTitle);
-    if (type === 'reuse') {
+    if (type === 'h5p-hub-reuse') {
       title = Dictionary.get('reuseSuccess').replace(':title', panelTitle);
     }
 
@@ -113,35 +113,35 @@ class Hub extends React.Component {
     this.handleRender(this.state.title, this.state.expanded);
     return (
       <section className="h5p-hub" id='h5p-hub'>
-        <div className={`panel h5p-section-${this.state.section}${this.state.expanded ? ' open' : ''}`} id='h5p-hub-panel'>
+        <div className={`h5p-hub-panel h5p-hub-section-${this.state.section}${this.state.expanded ? ' h5p-hub-open' : ''}`} id='h5p-hub-panel'>
           <DropDownSelector
             title={this.state.title || Dictionary.get('hubPanelLabel')}
             sectionId={this.state.section}
             isExpanded={this.state.expanded}
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
           />
-          <div id={`panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'hidden'}>
+          <div id={`h5p-hub-panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'h5p-hub-hidden'}>
             <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} canPasteTitle={this.props.canPasteTitle} onPaste={this.props.onPaste}>
-              <Browse id="content-types"
+              <Browse id="h5p-hub-content-types" 
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}
-                setFocus={this.state.expanded && this.state.section === 'content-types'}
+                setFocus={this.state.expanded && this.state.section === 'h5p-hub-content-types'}
                 getAjaxUrl={this.props.getAjaxUrl}
                 error={this.state.error}
                 onUse={this.handleUse}
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
-              <ReuseContent id="reuse"
+              <ReuseContent id="h5p-hub-reuse"
                 title={Dictionary.get('reuseContentTabLabel')}
-                isVisible={this.state.expanded && this.state.section === 'reuse'}
+                isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
                 getAjaxUrl={this.props.getAjaxUrl}
                 onDownload={this.handleUpload}
               />
-              <UploadContent id="upload"
+              <UploadContent id="h5p-hub-upload"
                 title={Dictionary.get('uploadTabLabel')} // TODO set the title of the dropdown when uploading
                 getAjaxUrl={this.props.getAjaxUrl}
                 contentId={this.props.contentId}
-                setFocus={this.state.expanded && this.state.section === 'upload'}
+                setFocus={this.state.expanded && this.state.section === 'h5p-hub-upload'}
                 onUpload={this.handleUpload} />
             </TabPanel>
           </div>

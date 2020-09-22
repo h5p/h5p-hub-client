@@ -6,7 +6,7 @@
 $color-back-button: #474f5a;
 
 .h5p-hub {
-  .content-type-detail {
+  .h5p-hub-content-type-detail {
     background-color: white;
     padding: 1.3em;
     display: inherit;
@@ -26,33 +26,33 @@ $color-back-button: #474f5a;
 
     @include scroll-bar(#F3F3F3, #5e6978);
 
-    &.show {
+    &.h5p-hub-show {
       transform: translateX(0);
       visibility: visible;
       transition: transform 0.2s ease-out, visibility 0s linear 0s;
     }
 
-    .panel[aria-hidden="false"] {
+    .h5p-hub-panel[aria-hidden="false"] {
       display: none;
     }
 
     // layout
-    .container {
+    .h5p-hub-container {
       @include container;
       margin-bottom: $gutter * 2;
       padding-bottom: 1em;
     }
 
     // mobile first
-    .image-wrapper {
+    .h5p-hub-image-wrapper {
       @include span(1 of 1);
     }
 
-    .title {
+    .h5p-hub-title {
       outline: 0;
     }
 
-    .text-details {
+    .h5p-hub-text-details {
       @include span(1 of 1);
 
       h2 {
@@ -62,25 +62,25 @@ $color-back-button: #474f5a;
 
     // larger then mobile
     @media (min-width: $screen-small) {
-      .image-wrapper {
+      .h5p-hub-image-wrapper {
         @include span(first 4 of 12);
       }
 
-      .text-details {
+      .h5p-hub-text-details {
         @include span(last 8 of 12);
       }
     }
 
-    .button-bar {
+    .h5p-hub-button-bar {
       margin: ($gutter * 2) 0;
       text-align: right;
 
-      .button-update,
-      .button-updating {
+      .h5p-hub-button-update,
+      .h5p-hub-button-updating {
         margin-right: 0.6em;
       }
 
-      .button-update:before {
+      .h5p-hub-button-update:before {
         @include icon($icon-update);
         margin-right: 0.5em;
         font-weight: normal;
@@ -88,7 +88,7 @@ $color-back-button: #474f5a;
       }
     }
 
-    .back-button {
+    .h5p-hub-back-button {
       color: $color-back-button;
       font-size: 1.3em;
       display: inline-block;
@@ -104,73 +104,43 @@ $color-back-button: #474f5a;
         box-shadow: 0 0 1px 1px #1a93f4;
       }
 
-      &.icon-arrow-thick:before {
+      &.h5p-hub-icon-arrow-thick:before {
         cursor: pointer;
       }
     }
   }
-
-  .license-dialog .loading .panel {
-    display: none;
-  }
-
-  .license-dialog .loading:after {
-    @include throbber(3em);
-    width: 1em;
-    margin: 0 auto;
-  }
-
-  .imagelightbox-button {
-    &.next:before,
-    &.previous:before {
-      display: block;
-      line-height: 2em;
-      height: 100%;
-    }
-    &.next:before {
-      @include icon($icon-arrow-thick);
-      transform: rotate(180deg);
-
-    }
-    &.previous:before {
-      @include icon($icon-arrow-thick);
-    }
-    &.close:before {
-      @include icon($icon-close);
-    }
-  }
 }
 
-.lightbox-inner.license {
+.h5p-hub-lightbox-inner.h5p-hub-license {
   background: #fff;
   text-align: left;
   max-height: calc(100% - 5em);
   width: calc(100% - 5em);
 
-  :not(.loading) .modal-content {
+  :not(.h5p-hub-loading) .h5p-hub-modal-content {
     max-height: 50em;
     overflow-y: auto;
   }
 
-  .loading:after {
+  .h5p-hub-loading:after {
     @include throbber(3em);
     width: 1em;
     margin: 0 auto;
   }
 
-  .lightbox-close {
+  .h5p-hub-lightbox-close {
     top: -0.8em;
     right: -0.8em;
     color: #333;
   }
 
-  .modal-header {
+  .h5p-hub-modal-header {
     font-weight: 400;
     font-size: 1.6em;
     margin-bottom: 1em;
   }
 
-  .modal-title {
+  .h5p-hub-modal-title {
     font-weight: 700;
   }
 }

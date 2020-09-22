@@ -18,13 +18,13 @@ const FilterButton = React.forwardRef(({
 
   const className = () => {
     if (open) {
-      return 'open';
+      return 'h5p-hub-open';
     }
     else if (oneChecked) {
-      return 'one-checked';
+      return 'h5p-hub-one-checked';
     }
     else if (filterNumberShown) {
-      return 'filter-checked';
+      return 'h5p-hub-filter-checked';
     }
     else {
       return '';
@@ -44,7 +44,7 @@ const FilterButton = React.forwardRef(({
   };
 
   return (
-    <div id={id} className='filter-button'>
+    <div id={id} className='h5p-hub-filter-button'>
       <button
         tabIndex='-1'
         id={id}
@@ -53,7 +53,7 @@ const FilterButton = React.forwardRef(({
         ref={ref}>
 
         {dropdownLabel}
-        <div className={oneChecked ? 'icon check' : 'icon'}>
+        <div className={oneChecked ? 'h5p-hub-icon h5p-hub-check' : 'h5p-hub-icon'}>
           {filterNumberShown && `(${checked.length})`}
         </div>
 

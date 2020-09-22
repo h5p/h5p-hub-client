@@ -1,19 +1,19 @@
 .h5p-hub {
-  .info-list {
+  .h5p-hub-info-list {
     li {
       font-size: 0.8em;
       border-bottom: 1px solid #dadada;
       padding: 0.85em 0.5em;
 
-      .hublabel {
+      .h5p-hub-hublabel {
         color: #72757c;
         margin-right: 0.3em;
       }
-      .hubcontent {
+      .h5p-hub-hubcontent {
         color: #242424;
         font-weight: bold;
       }
-      .capitalize {
+      .h5p-hub-capitalize {
         text-transform: capitalize;
       }
 

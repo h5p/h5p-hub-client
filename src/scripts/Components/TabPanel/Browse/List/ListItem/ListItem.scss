@@ -4,56 +4,56 @@
 
 $content-type-list-image-size: 100px;
 
-.h5p-hub .content-type-list {
-  .media .media-body {
+.h5p-hub .h5p-hub-content-type-list {
+  .h5p-hub-media .h5p-hub-media-body {
     overflow: visible;
     zoom: 1;
     width: 10000px;
   }
 
-  .media-left {
+  .h5p-hub-media-left {
     display: table-cell;
     vertical-align: top;
   }
 
-  .media-body {
+  .h5p-hub-media-body {
     display: table-cell;
     vertical-align: middle;
   }
 
-  .media-left {
+  .h5p-hub-media-left {
     padding-right: $gutter;
   }
 
-  .media-object {
+  .h5p-hub-media-object {
     width: $content-type-list-image-size / 2;
   }
 
-  .media-heading {
+  .h5p-hub-media-heading {
     margin-top: 0;
     float: left;
     margin-right: 0.5em;
   }
 
-  .media-text-icon {
+  .h5p-hub-media-text-icon {
     float: left;
     height: 15px;
   }
 
-  .button {
+  .h5p-hub-button {
     min-width: 4em;
     padding: 0.65em 1.5em;
     float: right;
   }
 
-  .description {
+  .h5p-hub-description {
     color: $c6;
     font-size: $text-body-small;
     float: left;
     clear: left;
   }
 
-  .content-type-update-info {
+  .h5p-hub-content-type-update-info {
     margin-right: 0;
     color: $text-light;
     font-size: 0.8em;
@@ -68,12 +68,7 @@ $content-type-list-image-size: 100px;
     }
   }
 
-  .content-type-actions-info {
-    display: inline-block;
-    float: right;
-  }
-
-  .button-install:before {
+  .h5p-hub-button-install:before {
     @include icon($icon-arrow-thick);
     display: inline-block;
     transform: rotate(-90deg);
@@ -82,11 +77,11 @@ $content-type-list-image-size: 100px;
   }
 
   @media (min-width: $screen-medium) {
-    .button {
+    .h5p-hub-button {
       margin-top: 0.25em;
     }
 
-    .content-type-update-info {
+    .h5p-hub-content-type-update-info {
       margin-right: 2em;
       margin-top: 1em;
       float: right;
@@ -94,7 +89,7 @@ $content-type-list-image-size: 100px;
   }
 
   @media (min-width: $screen-small) {
-    .media-object {
+    .h5p-hub-media-object {
       width: $content-type-list-image-size;
     }
   }

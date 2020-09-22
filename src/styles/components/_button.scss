@@ -35,7 +35,7 @@
 }
 
 .h5p-hub {
-  .button {
+  .h5p-hub-button {
     font-family: 'Open Sans', sans-serif;
     font-size: $text-body-small;
     font-weight: 600;
@@ -62,11 +62,11 @@
       @include blueGlow
     }
 
-    &.button-primary {
+    &.h5p-hub-button-primary {
       @include button-filled($ac1, white);
     }
 
-    &.button-inverse-primary {
+    &.h5p-hub-button-inverse-primary {
       @include button-inverse(white, $ac1);
     }
 

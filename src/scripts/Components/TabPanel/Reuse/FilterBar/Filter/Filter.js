@@ -10,7 +10,7 @@ class Filter extends React.Component {
   constructor(props) {
     super(props);
 
-    this.appElement = document.getElementById('reuse-content-container');
+    this.appElement = document.getElementById('h5p-hub-reuse-content-container');
     this.state = {
       left: this.calculateLeftPosition(),
       top: this.calculateTopPosition()
@@ -75,7 +75,7 @@ class Filter extends React.Component {
   }
 
   render() {
-    const modalAria = { labelledby: 'header-text'};
+    const modalAria = { labelledby: 'h5p-hub-header-text'};
 
     const style = {
       overlay: {
@@ -92,17 +92,17 @@ class Filter extends React.Component {
         onRequestClose={this.closeModal}
         contentLabel={this.props.id}
         //The element the modal is attached to
-        parentSelector={() => document.getElementById('reuse-view')}
+        parentSelector={() => document.getElementById('h5p-hub-reuse-view')}
         //The element that should be hidden (logically, not visually) by the modal
         appElement={this.appElement}
-        className='filter-dialog'
-        overlayClassName='filter-modal'
+        className='h5p-hub-filter-dialog'
+        overlayClassName='h5p-hub-filter-modal'
         aria={modalAria}
         style={style}
         shouldCloseOnOverlayClick={false}
       >
-        <div className="filter-dialog-content" onClick={this.swallowClicks}>
-          <div className="header-text" id='header-text'>
+        <div className="h5p-hub-filter-dialog-content" onClick={this.swallowClicks}>
+          <div className="h5p-hub-header-text" id='h5p-hub-header-text'>
             {this.props.dictionary.dialogHeader}
           </div>
 
@@ -114,11 +114,11 @@ class Filter extends React.Component {
             </Message>
             : this.props.data ?
               this.props.children //The actual checkboxes/filtering
-              : <div className='loading' />
+              : <div className='h5p-hub-loading' />
           }
 
           <button
-            className="apply-filters-button"
+            className="h5p-hub-apply-filters-button"
             onClick={this.closeModal}
           >
             {this.props.dictionary.dialogButtonLabel}

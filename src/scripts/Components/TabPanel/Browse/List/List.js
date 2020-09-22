@@ -22,7 +22,7 @@ class List extends React.Component {
   getLibrary = (id) => {
     for (let i = 0; i < this.props.contentTypes.length; i++) {
       const library = this.props.contentTypes[i];
-      if (library.machineName.toLocaleLowerCase().replace('.','-') === id) {
+      if (library.machineName.toLocaleLowerCase().replace('.','-') === id.replace('h5p-hub-', '')) {
         return library;
       }
     }
@@ -82,7 +82,7 @@ class List extends React.Component {
 
   render() {
     const listItems = this.props.contentTypes.map((contentType, i) => (
-      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="media">
+      <li key={i} id={contentType.machineName.toLocaleLowerCase().replace('.','-')} className="h5p-hub-media">
         <ListItem contentType={contentType}
           apiVersion={this.props.apiVersion}
           tabindex={this.props.focused ? (this.props.focused === contentType ? 0 : -1) : (i === 0 ? 0 : -1)}
@@ -93,7 +93,7 @@ class List extends React.Component {
     H5P.externalDispatcher.trigger('h5p-hub-content-types-render', {numContentTypes: this.props.contentTypes.length});
 
     return (
-      <div className="content-type-list"
+      <div className="h5p-hub-content-type-list"
         aria-hidden={!this.props.visible}
         ref={el => this.list = el}>
 
@@ -109,9 +109,9 @@ class List extends React.Component {
             </Choose>
           </ol>
         ) : (
-          <div className="no-results">
-            <div className="no-results-title">{Dictionary.get('noResultsFound')}</div>
-            <div className="no-results-desc">{Dictionary.get('noResultsFoundDesc')}</div>
+          <div className="h5p-hub-no-results">
+            <div className="h5p-hub-no-results-title">{Dictionary.get('noResultsFound')}</div>
+            <div className="h5p-hub-no-results-desc">{Dictionary.get('noResultsFoundDesc')}</div>
           </div>
         )}
       </div>

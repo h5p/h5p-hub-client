@@ -2,12 +2,12 @@
 @import "../../../../../../../../styles/base/variables";
 
 .h5p-hub {
-  .search-button {
+  .h5p-hub-search-button {
     width: 100%;
-    .search-field {
+    .h5p-hub-search-field {
       position: relative;
 
-      .icon-arrow {
+      .h5p-hub-icon-arrow {
         position: absolute;
         font-size: 1.30353em;
         top: 0.7em;
@@ -25,7 +25,7 @@
     }
   }
 
-  #filter-search-bar {
+  .h5p-hub-filter-search-bar {
     border: 0.04545em solid #e6e6e8;
     padding: 0.7em;
     font-style: italic;

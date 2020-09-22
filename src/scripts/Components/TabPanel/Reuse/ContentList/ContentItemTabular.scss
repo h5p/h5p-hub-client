@@ -1,6 +1,6 @@
 @import '../../../../../styles/base/variables';
 
-.h5p-hub .content-item.tabular {
+.h5p-hub .h5p-hub-content-item.h5p-hub-tabular {
   font-size: 16px;
   display: flex;
   padding: 0.5em 1em;
@@ -8,11 +8,11 @@
   align-items: center;
   cursor: pointer;
 
-  .left {
+  .h5p-hub-left {
     align-self: flex-start;
   }
 
-  .middle {
+  .h5p-hub-middle {
     flex-grow: 10;
     flex-shrink: 10;
     margin-left: 1em;
@@ -25,17 +25,17 @@
     height: 5.25em;
   }
 
-  .headline {
+  .h5p-hub-headline {
     line-height: 1.2;
   }
 
-  .title {
+  .h5p-hub-title {
     font-size: 1.1em;
     font-weight: bold;
     line-height: normal;
     letter-spacing: -0.5px;
 
-    &.reviewed:after {
+    &.h5p-hub-reviewed:after {
       font-size: 0.8em;
       font-family: 'h5p-hub';
       font-weight: normal;
@@ -47,24 +47,24 @@
     }
   }
 
-  .by {
+  .h5p-hub-by {
     font-size: 1em;
     color: #666;
     margin: 0 0.3em;
   }
 
-  .owner {
+  .h5p-hub-owner {
     font-size: 1em;
   }
 
-  .content-type {
+  .h5p-hub-content-type {
     font-size: 0.9em;
     color: #303030;
     letter-spacing: 0.65px;
     margin: 0.25em 0;
   }
 
-  .summary {
+  .h5p-hub-summary {
     color: #72757c;
     font-size: 0.95em;
     white-space: nowrap;
@@ -72,7 +72,7 @@
     text-overflow: ellipsis;
   }
 
-  .right {
+  .h5p-hub-right {
     flex-grow: 0;
     flex-shrink: 0;
     position: relative;
@@ -103,7 +103,7 @@
   &:focus {
     background-color: #fafafa;
 
-    .right:before {
+    .h5p-hub-right:before {
       opacity: 1;
       left: 0em;
     }

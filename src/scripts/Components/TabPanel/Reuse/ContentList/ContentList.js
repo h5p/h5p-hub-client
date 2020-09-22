@@ -27,9 +27,9 @@ const ContentList = ({
   const Item = (type === 'tabular') ? ContentItemTabular : ContentItemGrid;
 
   const createItems = (items) => items.map((item, i) => {
-    contentLookup[item.id] = item;
+    contentLookup['h5p-hub-' + item.id] = item;
     return (
-      <li className={`content-item ${type}`} id={item.id} key={i} tabIndex={i == 1}>
+      <li className={`h5p-hub-content-item h5p-hub-${type}`} id={'h5p-hub-' + item.id} key={i} tabIndex={i == 1}>
         <Item
           content={item}
           key={item.id}
@@ -40,14 +40,14 @@ const ContentList = ({
   });
 
   return (
-    <div className="content-list" aria-hidden={!visible}>
+    <div className="h5p-hub-content-list" aria-hidden={!visible}>
       <Async promiseFn={itemsPromise}>
         <Async.Pending>
           <LoadingList type={type} />
         </Async.Pending>
 
         <Async.Rejected>{() =>
-          <span className="fetching-failed">
+          <span className="h5p-hub-fetching-failed">
             {Dictionary.get('failedFetchingData')}
           </span>
         }

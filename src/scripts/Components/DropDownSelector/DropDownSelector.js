@@ -13,12 +13,12 @@ const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
   return (
     <div className="h5p-hub-client-drop-down" aria-level="1" role="heading">
       <div
-        className="icon-hub-icon"
+        className="h5p-hub-icon-hub-icon"
         role="button"
         onClick={togglePanel}
         onKeyUp={onPanelKeyUp}
         aria-expanded={isExpanded.toString()}
-        aria-controls={`panel-body-${sectionId}`}
+        aria-controls={`h5p-hub-panel-body-${sectionId}`}
         tabIndex="0"
       >
         <span className="h5p-hub-description">H5P Hub.</span>

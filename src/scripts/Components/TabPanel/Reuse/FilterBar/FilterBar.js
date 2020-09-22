@@ -20,7 +20,7 @@ class FilterBar extends React.Component {
 
     this.filterBarRef = React.createRef();
     this.filterButtons = {};
-    
+
     this.props.filters.forEach(filter => {
 
       this.filterButtons[filter.id] = React.createRef();
@@ -106,8 +106,9 @@ class FilterBar extends React.Component {
    * @returns {Object} The filter
    */
   findFilterById = (id) => {
+    const cleanId = id.replace('h5p-hub-', '');
     for (let i = 0; i < this.props.filters.length; i++) {
-      if (this.props.filters[i].id === id) {
+      if (this.props.filters[i].id === cleanId) {
         return this.props.filters[i];
       }
     }
@@ -115,9 +116,9 @@ class FilterBar extends React.Component {
 
   render() {
     const filterButtons = this.props.filters.map(filter =>
-      <li key={filter.id} id={filter.id}>
+      <li key={filter.id} id={'h5p-hub-' + filter.id}>
         <FilterButton
-          id={filter.id}
+          id={'h5p-hub-' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
           checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
@@ -131,13 +132,13 @@ class FilterBar extends React.Component {
     const filter = this.findFilterById(this.state.openFilter);
 
     return (
-      <div className="filter-bar" ref={this.filterBarRef}>
+      <div className="h5p-hub-filter-bar" ref={this.filterBarRef}>
 
-        <div className="filter-label" id="content-hub-filter-label">
+        <div className="h5p-hub-filter-label" id="h5p-hub-content-hub-filter-label">
           {this.props.label}
         </div>
 
-        <ul className="filter-buttons" aria-labelledby="content-hub-filter-label">
+        <ul className="h5p-hub-filter-buttons" aria-labelledby="h5p-hub-content-hub-filter-label">
           <Choose
             selected={this.open}
             onChange={this.handleFilterButtonClicked}>
@@ -148,7 +149,7 @@ class FilterBar extends React.Component {
         {
           filter &&
           <Filter
-            id={filter.id}
+            id={'h5p-hub-' + filter.id}
             key={filter.id}
             dictionary={filter.dictionary}
             data={this.props.metaData[filter.id]}
@@ -172,7 +173,7 @@ class FilterBar extends React.Component {
                 items={this.props.metaData[filter.id]}
                 checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
                 filter={filter.id}
-                dictionary={filter.dictionary} 
+                dictionary={filter.dictionary}
                 dropdownAlwaysOpen={true}
               />
             }
@@ -192,12 +193,10 @@ class FilterBar extends React.Component {
 
         {
           this.state.showClearFilters &&
-          <div className="clear-filters">
-            <div className="button-content">
-              <button onClick={this.clearFilters} aria-label={Dictionary.get('clearFilters')}>
-                {Dictionary.get('clearFilters')}
-              </button>
-            </div>
+          <div className="h5p-hub-clear-filters">
+            <button onClick={this.clearFilters} aria-label={Dictionary.get('clearFilters')}>
+              {Dictionary.get('clearFilters')}
+            </button>
           </div>
         }
       </div>

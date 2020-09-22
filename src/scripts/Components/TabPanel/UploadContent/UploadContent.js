@@ -98,7 +98,7 @@ class UploadContent extends React.Component {
 
   render() {
     return (
-      <div className="upload-wrapper">
+      <div className="h5p-hub-upload-wrapper">
         {
           !!this.state.error &&
           <Message
@@ -106,9 +106,9 @@ class UploadContent extends React.Component {
             severity='error'
             onClose={this.handleErrorDismiss}/>
         }
-        <div className={"upload-throbber" + (this.state.fileUploading ? '' : ' hidden')}
+        <div className={"h5p-hub-upload-throbber" + (this.state.fileUploading ? '' : ' h5p-hub-hidden')}
           aria-label={Dictionary.get('uploadingThrobber')}/>
-        <h1 className="upload-instruction-header">{Dictionary.get('uploadInstructionsTitle')}</h1>
+        <h1 className="h5p-hub-upload-instruction-header">{Dictionary.get('uploadInstructionsTitle')}</h1>
         <UploadForm
           fileSelected={this.state.fileSelected}
           fileUploading={this.state.fileUploading}
@@ -117,7 +117,7 @@ class UploadContent extends React.Component {
           onValidate={this.handleValidation}
           onUpload={this.handleUpload}
         />
-        <p className="upload-instruction-description"
+        <p className="h5p-hub-upload-instruction-description"
           dangerouslySetInnerHTML={{__html: Dictionary.get('uploadInstructionsContent')}}
         />
       </div>

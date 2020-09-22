@@ -427,7 +427,7 @@ class SearchFilter extends React.Component {
 
   render() {
     return (
-      <div className="search-filter">
+      <div className="h5p-hub-search-filter">
         <SearchField
           ref={this.searchRef}
           value={this.state.searchValue}
@@ -441,13 +441,13 @@ class SearchFilter extends React.Component {
           inSearch={this.state.inSearch}
         />
         {this.state.parent.length > 0 && this.state.dropdownOpen &&
-          <div className='navigate-parent'>
+          <div className='h5p-hub-navigate-parent'>
             <button onClick={this.navigateToParent} aria-label={Dictionary.get('navigateToParent')}/>
             {this.getCheckboxFromId(this.state.parent[this.state.parent.length - 1], this.parents).label}
           </div>
         }
         {this.state.searchValue.length > 0 &&
-          <button onClick={this.handleClearSearch} className="clear-button" />
+          <button onClick={this.handleClearSearch} className="h5p-hub-clear-button" />
         }
         {this.state.dropdownOpen && this.props.items && (!this.props.category || this.state.searchValue.length < 2) &&
           <CheckboxList

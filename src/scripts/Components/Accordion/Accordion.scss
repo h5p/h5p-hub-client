@@ -4,7 +4,7 @@
   border: $border-panel;
   border-bottom: 0;
 
-  .icon-accordion-arrow {
+  .h5p-hub-icon-accordion-arrow {
     margin-top: -4px;
     font-size: 0.7em;
     margin-right: $gutter;
@@ -15,7 +15,7 @@
   }
 
   [aria-expanded="true"] {
-    .icon-accordion-arrow {
+    .h5p-hub-icon-accordion-arrow {
       transform: rotate(90deg);
     }
   }
@@ -39,7 +39,7 @@
 .h5p-hub-accordion-region {
   border-bottom: $border-panel;
 
-  .panel-body {
+  .h5p-hub-panel-body {
     padding: 1em;
     line-height: 1.7em;
     font-size: 0.95em;

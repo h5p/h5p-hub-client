@@ -1,6 +1,6 @@
 
 .h5p-hub {
-  .navbar {
+  .h5p-hub-navbar {
     background-color: transparent;
     list-style: none;
     color: #020202;
@@ -14,24 +14,24 @@
     overflow: auto;
     display: block;
 
-    &.hidden {
+    &.h5p-hub-hidden {
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.2s, visibility 0s linear 0.2s;
     }
   }
 
-  .result-header {
+  .h5p-hub-result-header {
     font-size: 1.042em;
     font-weight: 600;
   }
-  .result-hits {
+  .h5p-hub-result-hits {
     font-size: 0.8em;
     color: #697585;
     font-weight: 400;
     padding-left: 0.4em;
   }
-  ul.sort-by-list {
+  ul.h5p-hub-sort-by-list {
     margin-top: 0.7844743em;
 
     & > li {
@@ -54,7 +54,7 @@
           outline: none;
         }
 
-        &.highlight {
+        &.h5p-hub-highlight {
           font-weight: 600;
           color: #000000;
           text-decoration: underline;
@@ -62,7 +62,7 @@
       }
     }
   }
-  .sort-by-header {
+  .h5p-hub-sort-by-header {
     float: left;
     padding: 0.25em 0.75em 0.25em 0;
     font-size: 0.9em;

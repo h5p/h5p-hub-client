@@ -7,16 +7,16 @@ import ContentIcon from '../ContentIcon';
 
 const ContentItemGrid = ({content}) => {
   return (
-    <div className="grid-item">
+    <div className="h5p-hub-grid-item">
       <ContentIcon src={content.icon} />
 
-      <div className="grid-item-title">
+      <div className="h5p-hub-grid-item-title">
         { content.title }
       </div>
 
       <button 
         type="button"
-        className="button button-orange button-inverse-primary"        
+        className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary"
         tabIndex="-1"
       >
         {Dictionary.get('contentTypeDetailButtonLabel')}
