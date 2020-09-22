@@ -10,13 +10,13 @@ import ContentApiClient from '../../../utils/content-hub/api-client';
 import SelectionsList from './Selections/SelectionsList';
 import FilterBar from './FilterBar/FilterBar';
 import ApiClient from '../../../utils/content-hub/api-client';
+import DownloadingModal from '../../DownloadingModal/DownloadingModal';
 import Search from '../../Search/Search';
 import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
 
 import './ReuseContent.scss';
-import BlockInteractionOverlay from '../../BlockInteractionOverlay/BlockInteractionOverlay';
 
 const defaultOrderBy = 'popular';
 
@@ -212,16 +212,16 @@ class ReuseContent extends React.Component {
             throw new Error(reason);
           })
           .finally(() => this.setState({ downloading: false }));
-      }, 2000);
+      }, 200000);
     });
   }
   render() {
     const showPopularList = this.state.query || this.state.orderBy !== 'popular';
     const showNewOnTheHubList = this.state.query || this.state.orderBy !== 'newest';
-
+    const downloadingLabel = Dictionary.get('contentDownloadButtonDownloadingLabel');
     return (
       <div id='h5p-hub-reuse-view'>
-        {this.state.downloading && <BlockInteractionOverlay />}
+        {this.state.downloading  && <DownloadingModal label={downloadingLabel} />}
         <Search
           placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}

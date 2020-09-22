@@ -271,12 +271,10 @@ class Content extends React.Component {
         }
         <div className="h5p-hub-button-bar">
           <button type="button"
-            className={`h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content${this.props.downloading ? ' h5p-hub-downloading' : ''}`}
+            className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
             onClick={() => this.props.onDownload(content)}
           >
-            {this.props.downloading
-              ? Dictionary.get('contentDownloadButtonDownloadingLabel') || 'Downloading...'
-              : Dictionary.get('contentDownloadButtonLabel')}
+            {Dictionary.get('contentDownloadButtonLabel')}
           </button>
         </div>
 
