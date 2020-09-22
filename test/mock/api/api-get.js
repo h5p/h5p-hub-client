@@ -74,6 +74,8 @@ ApiClient.init = function(language) {
 
 ApiClient.search = function(params) {
   console.log('Running search', params);
-  return () => get(endpoints.search, params);
+  return function () {
+    return get(endpoints.search, params);
+  };
 };
 

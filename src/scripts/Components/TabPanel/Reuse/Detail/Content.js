@@ -17,14 +17,12 @@ import InfoList from './InfoList';
 import ContentIcon from '../ContentIcon';
 
 class Content extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
       selectedScreenshot: 0,
       modalType: undefined,
-      downloading: false,
       showImageSlider: true,
       message: undefined,
       screenWidth: document.documentElement.clientWidth
@@ -256,10 +254,12 @@ class Content extends React.Component {
         }
         <div className="h5p-hub-button-bar">
           <button type="button"
-            className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
+            className={`h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content${this.props.downloading ? ' h5p-hub-downloading' : ''}`}
             onClick={() => this.props.onDownload(content)}
           >
-            {Dictionary.get(`contentDownloadButtonLabel`)}
+            {this.props.downloading
+              ? Dictionary.get('contentDownloadButtonDownloadingLabel') || 'Downloading...'
+              : Dictionary.get('contentDownloadButtonLabel') }
           </button>
         </div>
 
