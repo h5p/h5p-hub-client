@@ -9,9 +9,9 @@ const generateItems = (type, num) => {
   let items = [];
   for (let i = 0; i < num; i++) {
     items.push(type === 'tabular' ? (
-      <li className={`h5p-hub-content-item ${type}`} key={i}>
+      <li className={`h5p-hub-content-item h5p-hub-${type}`} key={i}>
         <div className='h5p-hub-left'>
-          <div className='h5p-hub-loading-block image'/>
+          <div className='h5p-hub-loading-block h5p-hub-image'/>
         </div>
 
         <div className='h5p-hub-middle'>
@@ -21,7 +21,7 @@ const generateItems = (type, num) => {
         </div>
       </li>
     ) : (
-      <li className={`h5p-hub-content-item ${type}`} key={i}>
+      <li className={`h5p-hub-content-item h5p-hub-${type}`} key={i}>
         <div className='h5p-hub-grid-item'>
           <div className='h5p-hub-loading-block h5p-hub-image'></div>
           <div className='h5p-hub-loading-block h5p-hub-text-medium'></div>
