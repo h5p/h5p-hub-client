@@ -52,7 +52,7 @@ class Hub extends React.Component {
     this.props.onUse(contentType);
   }
 
-  handleUpload = (data, type = 'h5p-hub-upload') => {
+  handleUpload = (data, type = 'upload') => {
     let panelTitle = data.h5p.mainLibrary;
     for (let i = 0; i < data.contentTypes.libraries.length; i++) {
       if (data.contentTypes.libraries[i].machineName === panelTitle) {
@@ -61,7 +61,7 @@ class Hub extends React.Component {
       }
     }
     let title = Dictionary.get('uploadSuccess').replace(':title', panelTitle);
-    if (type === 'h5p-hub-reuse') {
+    if (type === 'reuse') {
       title = Dictionary.get('reuseSuccess').replace(':title', panelTitle);
     }
 
