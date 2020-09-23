@@ -116,35 +116,6 @@ class Content extends React.Component {
     });
   }
 
-  /**
-   * Get title og H5P content type
-   * @param  {string} name
-   */
-  getH5PTitle = (name) => {
-    if (this.props.metaData.flatContentTypes) {
-      const element = this.props.metaData.flatContentTypes
-        //Ignore version in matching
-        .filter(contentType => contentType.id.split(' ')[0] === name.split(' ')[0]);
-      if (element.length > 0) {
-        return element[0].label;
-      }
-    }
-    return name;
-  }
-
-  /** 
-   * Get level label
-   * @param  {string} name
-   */
-  getLabel = (name, type) => {
-    if (this.props.metaData[type]) {
-      const element = this.props.metaData[type].filter(element => element.id === name);
-      if (element.length > 0 && element[0].translation !== null) {
-        return element[0].translation;
-      }
-    }
-    return name;
-  }
 
   render() {
     const classNames = 'h5p-hub-content-detail' + (this.state.visible ? ' h5p-hub-show' : '');
@@ -205,8 +176,6 @@ class Content extends React.Component {
             <div className="h5p-hub-info-list">
               <InfoList
                 content={this.props.content}
-                getH5PTitle={this.getH5PTitle}
-                getLabel={this.getLabel}
               />
             </div>
 
@@ -226,8 +195,6 @@ class Content extends React.Component {
           <div className="h5p-hub-info-list">
             <InfoList
               content={this.props.content}
-              getH5PTitle={this.getH5PTitle}
-              getLabel={this.getLabel}
             />
           </div>
         </div>
@@ -301,7 +268,6 @@ Content.propTypes = {
   onClose: PropTypes.func.isRequired,
   aboutToClose: PropTypes.func.isRequired,
   content: contentDefinition,
-  metaData: PropTypes.object.isRequired
 };
 
 export default Content;

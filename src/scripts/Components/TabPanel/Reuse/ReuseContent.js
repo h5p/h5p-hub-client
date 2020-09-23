@@ -15,6 +15,7 @@ import Search from '../../Search/Search';
 import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
+import filesize from 'filesize.js';
 
 import './ReuseContent.scss';
 
@@ -215,6 +216,38 @@ class ReuseContent extends React.Component {
       }, 2000);
     });
   }
+
+  /**
+   * Get title og H5P content type
+   * @param  {string} name
+   */
+  getH5PTitle = (name) => {
+    if (this.state.metaData.flatContentTypes) {
+      const element = this.state.metaData.flatContentTypes
+        //Ignore version in matching
+        .filter(contentType => contentType.id.split(' ')[0] === name.split(' ')[0]);
+      if (element.length > 0) {
+        return element[0].label;
+      }
+    }
+    return name;
+  }
+
+  /** 
+   * Get level label
+   * @param  {string} name
+   */
+  getLabel = (name, type) => {
+    if (this.state.metaData[type]) {
+      const element = this.state.metaData[type].filter(element => element.id === name);
+      if (element.length > 0 && element[0].translation !== null) {
+        return element[0].translation;
+      }
+    }
+    return name;
+  }
+
+
   render() {
     const showPopularList = this.state.query || this.state.orderBy !== 'popular';
     const showNewOnTheHubList = this.state.query || this.state.orderBy !== 'newest';
@@ -266,7 +299,7 @@ class ReuseContent extends React.Component {
                 </Async.Fulfilled>
               </Async>
 
-              { showPopularList &&
+              {showPopularList &&
                 <SelectionsList
                   itemsPromise={this.state.popularContent}
                   title={Dictionary.get('popularContent')}
@@ -277,7 +310,7 @@ class ReuseContent extends React.Component {
                   setFocus={this.state.setFocus} />
               }
 
-              { showNewOnTheHubList &&
+              {showNewOnTheHubList &&
                 <SelectionsList
                   itemsPromise={this.state.newContent}
                   title={Dictionary.get('newOnTheHub')}
@@ -293,12 +326,20 @@ class ReuseContent extends React.Component {
           {
             this.state.detailViewVisible &&
             <Content
-              content={this.state.content}
+              content={{
+                ...this.state.content,
+                h5pTitle: this.getH5PTitle(this.state.content.content_type),
+                language: this.getLabel(this.state.content.language, 'language'),
+                disciplines: this.state.content.disciplines.map((discipline, i, arr) =>
+                  this.getLabel(discipline, 'flatDisciplines') + (arr.length - 1 !== i ? ', ' : '')),
+                level: this.getLabel(this.state.content.level, 'level'),
+                filesize: filesize(this.state.content.size)
+              }}
               downloading={this.state.downloading}
               onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
               onClose={() => this.setState({ detailViewVisible: false })}
-              metaData={this.state.metaData} />
+            />
           }
         </div>
       </div>
