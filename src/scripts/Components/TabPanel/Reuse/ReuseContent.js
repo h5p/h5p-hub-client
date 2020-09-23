@@ -249,9 +249,10 @@ class ReuseContent extends React.Component {
 
 
   render() {
-    const showPopularList = this.state.query || this.state.orderBy !== 'popular';
-    const showNewOnTheHubList = this.state.query || this.state.orderBy !== 'newest';
+    const showPopularList = this.state.initialized && (this.state.query || this.state.orderBy !== 'popular');
+    const showNewOnTheHubList = this.state.initialized && (this.state.query || this.state.orderBy !== 'newest');
     const downloadingLabel = Dictionary.get('contentDownloadButtonDownloadingLabel');
+    
     return (
       <div id='h5p-hub-reuse-view'>
         {this.state.downloading  && <DownloadingModal label={downloadingLabel} />}
@@ -280,14 +281,14 @@ class ReuseContent extends React.Component {
               orderVariables={this.orderBySettings} />
 
             <div className='h5p-hub-reuse-content-result' ref={this.reuseContentResultRef}>
-              <ContentList
+              {this.state.initialized && <ContentList
                 itemsPromise={this.state.search}
                 onSelect={this.showContentDetails}
                 visible={this.state.contentListVisible}
                 handlePageChange={this.handlePageChange}
                 focused={this.state.focused}
                 setFocus={this.state.setFocus}
-                title={Dictionary.get('contentSectionAll')} />
+                title={Dictionary.get('contentSectionAll')} />}
 
               <Async promiseFn={this.state.search}>
                 <Async.Fulfilled>{result =>
