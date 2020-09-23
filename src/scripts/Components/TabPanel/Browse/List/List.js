@@ -90,7 +90,10 @@ class List extends React.Component {
       </li>
     ));
 
-    H5P.externalDispatcher.trigger('h5p-hub-content-types-render', {numContentTypes: this.props.contentTypes.length});
+    H5P.externalDispatcher.trigger('h5p-hub-content-types-render', {
+      numContentTypes: this.props.contentTypes.length,
+      contentTypeListClassName: "h5p-hub-content-type-list"
+    });
 
     return (
       <div className="h5p-hub-content-type-list"
