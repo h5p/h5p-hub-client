@@ -27,7 +27,6 @@ class ReuseContent extends React.Component {
 
     this.state = {
       page: 1,
-      pages: 10, // TODO - Get from API call
       orderBy: defaultOrderBy,
       filters: {},
       hasSearchResults: false,
@@ -165,7 +164,6 @@ class ReuseContent extends React.Component {
   }
 
   handleFilters = (filters) => {
-    // TODO - check why this is invoked too much
     if (!hubFiltersEqual(filters, this.state.filters)) {
       this.setState({ filters: filters });
     }
@@ -188,7 +186,6 @@ class ReuseContent extends React.Component {
   }
 
   showAllOrderedBy = (orderBy) => {
-    // TODO - clear filters in Filterbar
     this.setState({
       orderBy: orderBy,
       filters: {},
@@ -208,7 +205,6 @@ class ReuseContent extends React.Component {
           this.props.onDownload(response.data, 'reuse');
         })
         .catch(reason => {
-          // Download failed, inform the user? TODO
           throw new Error(reason);
         })
         .finally(() => this.setState({ downloading: false }));
