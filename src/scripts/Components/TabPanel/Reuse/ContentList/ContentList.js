@@ -27,9 +27,9 @@ const ContentList = ({
   const Item = (type === 'tabular') ? ContentItemTabular : ContentItemGrid;
 
   const createItems = (items) => items.map((item, i) => {
-    contentLookup['h5p-hub-' + item.id] = item;
+    contentLookup['h5p-hub-' + type + '-' + item.id] = item;
     return (
-      <li className={`h5p-hub-content-item h5p-hub-${type}`} id={'h5p-hub-' + item.id} key={i} tabIndex={i == 1}>
+      <li className={`h5p-hub-content-item h5p-hub-${type}`} id={'h5p-hub-' + type + '-' + item.id} key={i} tabIndex={i == 1}>
         <Item
           content={item}
           key={item.id}
