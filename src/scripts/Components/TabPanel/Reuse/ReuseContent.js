@@ -202,18 +202,16 @@ class ReuseContent extends React.Component {
    */
   handleDownload = content => {
     this.setState({ downloading: true }, () => {
-      setTimeout(() => {
-        fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
-          .then(response => {
-            // Download success, inform parent
-            this.props.onDownload(response.data, 'reuse');
-          })
-          .catch(reason => {
-            // Download failed, inform the user? TODO
-            throw new Error(reason);
-          })
-          .finally(() => this.setState({ downloading: false }));
-      }, 2000);
+      fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
+        .then(response => {
+          // Download success, inform parent
+          this.props.onDownload(response.data, 'reuse');
+        })
+        .catch(reason => {
+          // Download failed, inform the user? TODO
+          throw new Error(reason);
+        })
+        .finally(() => this.setState({ downloading: false }));
     });
   }
 
