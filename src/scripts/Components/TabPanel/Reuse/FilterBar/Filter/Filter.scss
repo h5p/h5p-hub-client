@@ -26,7 +26,7 @@
       &::before {
         @include icon($icon-filters);
         font-style: normal;
-        font-size: 0.8em;
+        font-size: 1em;
         margin: 0 0.4em 0 0.4em;
         margin-right: 1em;
       }
@@ -36,6 +36,7 @@
       width: 100%;
       color: #ffffff;
       font-size: 1.15em;
+      font-family: 'Open Sans', sans-serif;
       padding: 1em;
       border-radius: 0.25em;
       margin-top: 1em;

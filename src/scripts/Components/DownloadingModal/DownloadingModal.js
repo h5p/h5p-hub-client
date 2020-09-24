@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import ReactModal from 'react-modal';
 
-import Loader from '../Loader/Loader';
+import spinner from '../../../images/spinner.svg';
 
 import './DownloadingModal.scss';
 
 const DownloadingModal = ({ label }) => {
+
+  const labelRef = useRef(null);
+
+  const focusDownloadingMessage = () => {
+    labelRef.current.focus();
+  };
+
   return (
     <ReactModal
       isOpen={true}
@@ -16,8 +23,10 @@ const DownloadingModal = ({ label }) => {
       aria={{label: label}}
       appElement={document.getElementById('h5p-hub-panel')}
       parentSelector={() => document.getElementById('h5p-hub')}
-    >
-      <Loader title={label} />
+      onAfterOpen={focusDownloadingMessage}
+    > 
+      <img className="h5p-hub-spinner" src={spinner} aria-hidden="true" />
+      <span className="h5p-hub-downloading-message" tabIndex="-1" ref={labelRef}>{label}</span>
     </ReactModal>
   );
 };

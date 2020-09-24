@@ -1,6 +1,11 @@
 import endpoints from './endpoints';
 import fetchJSON from '../fetchJSON';
 
+// 1 minute in milliseconds
+const CACHE_EXPIRATION_DURATION = 60 * 1000;
+
+const now = () => (new Date()).getTime();
+
 export default class ApiClient {
   constructor({language = 'en'}) {
     this.language = language;
@@ -226,6 +231,21 @@ export default class ApiClient {
 
     return ApiClient.instance.licenses[id];
   }
+
+  /**
+   * Get cached query promise.
+   *
+   * @param {String} queryString
+   * @return {Function|null}
+   */
+  static getCachedQueryResults(queryString) {
+    const cache = ApiClient.instance.searchCache[queryString];
+
+    // Return the promise if it exists AND it hasn't expired
+    if (cache && now() < cache.expiresAt) {
+      return cache.promise;
+    }
+  }
   
   /**
    * Perform a search using the HUB Content API. Will cache each search.
@@ -290,8 +310,12 @@ export default class ApiClient {
 
     // Did we create a promise for this query already?
     // If we did, use the "cached" promise.
-    const cache = ApiClient.instance.searchCache[queryString];
-    const promise = cache !== undefined ? cache : new Promise((resolve, reject) => {
+    const cachedPromise = this.getCachedQueryResults(queryString);
+    if (cachedPromise) {
+      return () => cachedPromise;
+    }
+
+    const promise = new Promise((resolve, reject) => {
       if (window.H5PIntegration.Hub === undefined) {
         return reject(new Error('Did you forget to add the Hub integration?'));
       }
@@ -309,11 +333,12 @@ export default class ApiClient {
         reject(reason);
       });
     });
-
-    ApiClient.instance.searchCache[queryString] = promise;
-
-    return () => {
-      return promise;
+    
+    ApiClient.instance.searchCache[queryString] = {
+      promise: promise,
+      expiresAt: now() + CACHE_EXPIRATION_DURATION
     };
+
+    return () => promise;
   }
 }
