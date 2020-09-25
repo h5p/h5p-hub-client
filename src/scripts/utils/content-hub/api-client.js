@@ -259,7 +259,6 @@ export default class ApiClient {
     if (datas.filters !== undefined) {
       // Add licensing facets
       if (datas.filters.license !== undefined) {
-        // TODO: How can we tell if these filters have been turned off? I.e. you want to view content that cannot be used commercially?
         if (datas.filters.license.indexOf('modified') !== -1) {
           query.push('can_be_modified=1');
         }
@@ -270,7 +269,6 @@ export default class ApiClient {
 
       // Add reviewed facet
       if (datas.filters.reviewed !== undefined && datas.filters.reviewed.indexOf('reviewed') !== -1) {
-        // TODO: How can we tell if this filter has been turned off? I.e. you want to view content that is not reviewed
         query.push('reviewed=1');
       }
 
