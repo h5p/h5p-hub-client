@@ -89,7 +89,6 @@ class Content extends React.Component {
   }
 
   componentDidMount = () => {
-    // TODO - probably a smarter way to do this?
     setTimeout(() => {
       this.setState({
         visible: true
