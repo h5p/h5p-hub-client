@@ -64,21 +64,10 @@ class Content extends React.Component {
 
   handleClose = (event) => {
     event.preventDefault();
+    this.props.onDismissMessage();
     this.props.aboutToClose();
     this.setState({
       visible: false
-    });
-  }
-
-  handleErrorDismiss = () => {
-    this.setState({
-      errorMessage: null
-    });
-  }
-
-  handleInfoDismiss = () => {
-    this.setState({
-      infoMessage: null
     });
   }
 
@@ -207,20 +196,7 @@ class Content extends React.Component {
             selected={this.state.selectedScreenshot} />
         }
         <hr />
-        {
-          !!this.state.errorMessage &&
-          <Message
-            {...this.state.errorMessage}
-            severity='error'
-            onClose={this.handleErrorDismiss} />
-        }
-        {
-          !!this.state.infoMessage &&
-          <Message
-            {...this.state.infoMessage}
-            severity='info'
-            onClose={this.handleInfoDismiss} />
-        }
+        {this.props.message}
         <div className="h5p-hub-button-bar">
           <button type="button"
             className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
@@ -267,6 +243,8 @@ Content.propTypes = {
   onClose: PropTypes.func.isRequired,
   aboutToClose: PropTypes.func.isRequired,
   content: contentDefinition,
+  message: PropTypes.node,
+  onDismissMessage: PropTypes.func.isRequired
 };
 
 export default Content;

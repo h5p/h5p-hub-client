@@ -16,6 +16,7 @@ import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
 import filesize from 'filesize.js';
+import Message from '../../Message/Message';
 
 import './ReuseContent.scss';
 
@@ -200,6 +201,35 @@ class ReuseContent extends React.Component {
     });
   }
 
+  showMessage = (title, message, severity) => {
+    const messageProps = { title, message, severity };
+    messageProps.onClose = () => this.clearMessage();
+    this.setState({ message: <Message {...messageProps} />});
+  };
+
+  clearMessage = () => { this.setState({ message: null }); };
+
+  /**
+   * Construe response error reason and set user friendly message properties.
+   * 
+   * @param {object} reason 
+   */
+  getFriendlyMessage = (reason) => {
+    let title = Dictionary.get('downloadFailed'),
+      message = Dictionary.get('somethingWentWrongTryAgain'),
+      severity = 'error';
+
+    if (reason instanceof TypeError) {
+      message = 'Could not connect to the content hub.';
+    }
+    else if (Array.isArray(reason.message) && (reason.message[0].code === 'missing-required-library')) {
+      title = 'Missing required libraries',
+      message = reason.message[0] && reason.message.map(m => m.message).join(',\n');
+    }
+
+    return { title, message, severity };
+  }
+
   /**
    * Handles download events from the Content component.
    */
@@ -211,7 +241,8 @@ class ReuseContent extends React.Component {
           this.props.onDownload(response.data, 'reuse');
         })
         .catch(reason => {
-          throw new Error(reason);
+          const { title, message, severity } = this.getFriendlyMessage(reason);
+          this.showMessage(title, message, severity);
         })
         .finally(() => this.setState({ downloading: false }));
     });
@@ -346,6 +377,8 @@ class ReuseContent extends React.Component {
                 filesize: filesize(this.state.content.size)
               }}
               downloading={this.state.downloading}
+              message={this.state.message}
+              onDismissMessage={this.clearMessage}
               onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
               onClose={() => this.setState({ detailViewVisible: false })}
