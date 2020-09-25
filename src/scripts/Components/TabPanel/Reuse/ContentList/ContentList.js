@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Async from 'react-async';
 import PropTypes from 'prop-types';
 
@@ -23,13 +23,18 @@ const ContentList = ({
   title
 }) => {
 
+  const listId = useMemo(() => {
+    return (ContentList.listId++);
+  }, []);
+
+
   const contentLookup = {};
   const Item = (type === 'tabular') ? ContentItemTabular : ContentItemGrid;
 
   const createItems = (items) => items.map((item, i) => {
-    contentLookup[`h5p-hub-${type}-${item.id}`] = item;
+    contentLookup[`h5p-hub-${listId}-${item.id}`] = item;
     return (
-      <li className={`h5p-hub-content-item h5p-hub-${type}`} id={`h5p-hub-${type}-${item.id}`} key={i} tabIndex={i == 1}>
+      <li className={`h5p-hub-content-item h5p-hub-${type}`} id={`h5p-hub-${listId}-${item.id}`} key={i} tabIndex={i == 1}>
         <Item
           content={item}
           key={item.id}
@@ -98,5 +103,7 @@ ContentList.defaultProps = {
   type: 'tabular',
   showPagination: true,
 };
+
+ContentList.listId = 0;
 
 export default ContentList;
