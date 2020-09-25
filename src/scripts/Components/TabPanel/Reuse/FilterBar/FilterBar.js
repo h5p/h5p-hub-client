@@ -14,7 +14,6 @@ class FilterBar extends React.Component {
 
     this.state = {
       openFilter: '',
-      checked: {},
       showClearFilters: false,
     };
 
@@ -32,8 +31,8 @@ class FilterBar extends React.Component {
    */
   anyChecked = () => {
     let anyChecked = false;
-    Object.keys(this.state.checked).forEach((filter) => {
-      if ((this.state.checked[filter]).length > 0) {
+    Object.keys(this.props.checked).forEach((filter) => {
+      if ((this.props.checked[filter]).length > 0) {
         anyChecked = true;
         return;
       }
@@ -45,8 +44,9 @@ class FilterBar extends React.Component {
    * Unchecks all checkboxes.
    */
   clearFilters = () => {
-    this.setState({ checked: {}, showClearFilters: false });
-    this.props.onChange({});
+    this.setState({ showClearFilters: false });
+    this.props.setChecked({});
+    this.props.applyFilters({});
   }
 
   /**
@@ -57,19 +57,19 @@ class FilterBar extends React.Component {
     const close = this.state.openFilter === id;
     this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
     if (close) {
-      this.props.onChange(this.state.checked);
+      this.props.applyFilters(this.props.checked);
     }
   }
 
   /**
    * Called when filter dropdown is closed 
-   * Updates states and calls the onChange with the new state of checked checkboxes
+   * Updates states and calls the apply filters
    */
   handleFilterClosed = (id) => {
     if (this.state.openFilter === id) {
       this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
     }
-    this.props.onChange(this.state.checked);
+    this.props.applyFilters(this.props.checked);
   }
 
   /**
@@ -80,22 +80,22 @@ class FilterBar extends React.Component {
    */
   handleChecked = (filter, checkbox, checkedOf) => {
     if (Array.isArray(checkbox)) {
-      if (this.state.checked[filter] == undefined && checkbox != null) {
-        this.setState(prevState => ({ checked: { ...prevState.checked, [filter]: checkbox } }));
+      if (this.props.checked[filter] == undefined && checkbox != null) {
+        this.props.setChecked({  ...this.props.checked, [filter]: checkbox });
       }
       else if (checkbox != null) {
         const newList = checkedOf ?
-          this.state.checked[filter].filter(element => checkbox.indexOf(element) == -1).concat(checkbox)
-          : this.state.checked[filter].filter(id => checkbox.indexOf(id) == -1);
-        this.setState({ checked: { ...this.state.checked, [filter]: newList } });
+          this.props.checked[filter].filter(element => checkbox.indexOf(element) == -1).concat(checkbox)
+          : this.props.checked[filter].filter(id => checkbox.indexOf(id) == -1);
+        this.props.setChecked({...this.props.checked, [filter]: newList });
       }
     }
-    else if (this.state.checked[filter] == undefined && checkbox != null) {
-      this.setState(prevState => ({ checked: { ...prevState.checked, [filter]: [checkbox] } }));
+    else if (this.props.checked[filter] == undefined && checkbox != null) {
+      this.props.setChecked({ ...this.props.checked, [filter]: [checkbox] });
     }
     else if (checkbox != null) {
-      const newList = checkedOf ? [...this.state.checked[filter], checkbox] : this.state.checked[filter].filter(id => id != checkbox);
-      this.setState({ checked: { ...this.state.checked, [filter]: newList } });
+      const newList = checkedOf ? [...this.props.checked[filter], checkbox] : this.props.checked[filter].filter(id => id != checkbox);
+      this.props.setChecked({ ...this.props.checked, [filter]: newList });
     }
   }
 
@@ -121,7 +121,7 @@ class FilterBar extends React.Component {
           id={'h5p-hub-' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
-          checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+          checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
           open={this.state.openFilter == filter.id}
           data={this.props.metaData[filter.id]}
           ref={this.filterButtons[filter.id]}
@@ -154,7 +154,7 @@ class FilterBar extends React.Component {
             dictionary={filter.dictionary}
             data={this.props.metaData[filter.id]}
             onFilterClosed={this.handleFilterClosed}
-            checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+            checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
             handleChecked={this.handleChecked}
             toggleButtonRef={this.filterButtons[filter.id]}
             filterBarRef={this.filterBarRef}
@@ -163,7 +163,7 @@ class FilterBar extends React.Component {
               <CheckboxList
                 onChecked={this.handleChecked}
                 items={this.props.metaData[filter.id]}
-                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+                checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
                 filter={filter.id}
               />
             }
@@ -171,7 +171,7 @@ class FilterBar extends React.Component {
               <SearchFilter
                 handleChecked={this.handleChecked}
                 items={this.props.metaData[filter.id]}
-                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+                checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary}
                 dropdownAlwaysOpen={true}
@@ -181,7 +181,7 @@ class FilterBar extends React.Component {
               <SearchFilter
                 handleChecked={this.handleChecked}
                 items={this.props.metaData[filter.id]}
-                checked={this.state.checked[filter.id] ? this.state.checked[filter.id] : []}
+                checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
                 filter={filter.id}
                 dictionary={filter.dictionary}
                 category={true}
@@ -207,9 +207,11 @@ class FilterBar extends React.Component {
 FilterBar.propTypes = {
   label: PropTypes.string.isRequired,
   filters: PropTypes.array.isRequired,
-  onChange: PropTypes.func.isRequired,
+  applyFilters: PropTypes.func.isRequired,
   metaData: PropTypes.object.isRequired,
-  failedDataFetch: PropTypes.object.isRequired
+  failedDataFetch: PropTypes.object.isRequired,
+  checked: PropTypes.object.isRequired,
+  setChecked: PropTypes.func.isRequired
 };
 
 export default FilterBar;

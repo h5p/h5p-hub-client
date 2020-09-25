@@ -28,7 +28,7 @@ class ReuseContent extends React.Component {
     this.state = {
       page: 1,
       orderBy: defaultOrderBy,
-      filters: {},
+      appliedFilters: {},
       hasSearchResults: false,
       contentListVisible: true,
       detailViewVisible: false,
@@ -38,7 +38,8 @@ class ReuseContent extends React.Component {
       failedDataFetch: {},
       metaData: {},
       initialized: false,
-      downloading: false
+      downloading: false,
+      tempFilters: {}
     };
 
     this.orderBySettings = [{
@@ -109,7 +110,7 @@ class ReuseContent extends React.Component {
       (prevState.orderBy !== this.state.orderBy) ||
       (prevState.query !== this.state.query) ||
       (prevState.page !== this.state.page) ||
-      !hubFiltersEqual(prevState.filters, this.state.filters);
+      !hubFiltersEqual(prevState.appliedFilters, this.state.appliedFilters);
 
     if (searchHasChanged) {
       this.setState({
@@ -119,7 +120,7 @@ class ReuseContent extends React.Component {
         setFocus: true,
         search: ContentApiClient.search({
           query: this.state.query,
-          filters: this.state.filters,
+          filters: this.state.appliedFilters,
           orderBy: this.state.orderBy,
           page: this.state.page,
         })
@@ -163,9 +164,13 @@ class ReuseContent extends React.Component {
     }
   }
 
-  handleFilters = (filters) => {
-    if (!hubFiltersEqual(filters, this.state.filters)) {
-      this.setState({ filters: filters });
+  /**
+   * Apply filters that have been cheked
+   * @param  {Object} checked
+   */
+  applyFilters = (checked) => {
+    if (!hubFiltersEqual(this.state.appliedFilters, checked)) {
+      this.setState({ appliedFilters: checked });
     }
   }
 
@@ -188,7 +193,8 @@ class ReuseContent extends React.Component {
   showAllOrderedBy = (orderBy) => {
     this.setState({
       orderBy: orderBy,
-      filters: {},
+      appliedFilters: {},
+      tempFilters: {},
       query: '',
       page: 1
     });
@@ -241,6 +247,13 @@ class ReuseContent extends React.Component {
     return name;
   }
 
+  /**
+   * Set the checked filters
+   * @param  {Object} checked
+   */
+  setChecked = (checked) => {
+    this.setState({tempFilters: checked});
+  }
 
   render() {
     const showPopularList = this.state.initialized && (this.state.query || this.state.orderBy !== 'popular');
@@ -259,7 +272,9 @@ class ReuseContent extends React.Component {
         <FilterBar
           label={Dictionary.get('filterBy')}
           filters={this.filters}
-          onChange={this.handleFilters}
+          applyFilters={this.applyFilters}
+          checked={this.state.tempFilters}
+          setChecked={this.setChecked}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
         />
