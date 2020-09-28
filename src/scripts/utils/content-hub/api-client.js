@@ -328,6 +328,8 @@ export default class ApiClient {
           page: datas.page || 1
         });
       }).catch(reason => {
+        //Delete cache if fetching failed
+        delete ApiClient.instance.searchCache[queryString];
         reject(reason);
       });
     });
