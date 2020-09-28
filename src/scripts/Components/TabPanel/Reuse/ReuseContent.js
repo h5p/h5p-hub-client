@@ -40,7 +40,7 @@ class ReuseContent extends React.Component {
       metaData: {},
       initialized: false,
       downloading: false,
-      tempFilters: {}
+      selectedFilters: {}
     };
 
     this.orderBySettings = [{
@@ -195,7 +195,7 @@ class ReuseContent extends React.Component {
     this.setState({
       orderBy: orderBy,
       appliedFilters: {},
-      tempFilters: {},
+      selectedFilters: {},
       query: '',
       page: 1
     });
@@ -283,7 +283,7 @@ class ReuseContent extends React.Component {
    * @param  {Object} checked
    */
   setChecked = (checked) => {
-    this.setState({tempFilters: checked});
+    this.setState({selectedFilters: checked});
   }
 
   render() {
@@ -304,7 +304,7 @@ class ReuseContent extends React.Component {
           label={Dictionary.get('filterBy')}
           filters={this.filters}
           applyFilters={this.applyFilters}
-          checked={this.state.tempFilters}
+          checked={this.state.selectedFilters}
           setChecked={this.setChecked}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
