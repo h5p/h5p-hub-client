@@ -253,7 +253,7 @@ class ReuseContent extends React.Component {
    */
   handleDownload = content => {
     this.setState({ downloading: true }, () => {
-      fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), [])
+      fetchJSON(this.props.getAjaxUrl('get-content/' + content.id), '')
         .then(response => {
           // Download success, inform parent
           this.props.onDownload(response.data, 'reuse');
