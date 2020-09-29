@@ -210,9 +210,12 @@ class ReuseContent extends React.Component {
   clearMessage = () => { this.setState({ message: null }); };
 
   /**
-   * Construe response error reason and set user friendly message properties.
+   * Set an appropriate title, message and severity to be displayed to the user
+   * depending on the supplied error reason.
    * 
-   * @param {object} reason 
+   * @param {object} reason
+   * @returns {{title: string, message: string, severity: string}} props
+   *  compatible with the Message component.
    */
   getFriendlyMessage = (reason) => {
     let title = Dictionary.get('downloadFailed'),
@@ -220,11 +223,26 @@ class ReuseContent extends React.Component {
       severity = 'error';
 
     if (reason instanceof TypeError) {
-      message = 'Could not connect to the content hub.';
+      message = Dictionary.get('contentHubConnectionFailed');
     }
-    else if (Array.isArray(reason.message) && (reason.message[0].code === 'missing-required-library')) {
-      title = 'Missing required libraries',
-      message = reason.message[0] && reason.message.map(m => m.message).join(',\n');
+    else if (Array.isArray(reason.message)) {
+      let responseIncludesMissingRequiredLibraryError = false;
+      for (let message of reason.message) {
+        if (message.code === 'missing-required-library') {
+          responseIncludesMissingRequiredLibraryError = true;
+          break;
+        }
+      }
+
+      if (responseIncludesMissingRequiredLibraryError) {
+        title = Dictionary.get('downloadFailedMissingLibrariesTitle');
+        message = `
+          <p>${Dictionary.get('downloadFailedMissingLibrariesMessage')}</p>
+          <ul class="h5p-hub-message-item-list">
+            ${reason.message.map(m => `<li>${m.message}</li>`).join('\n')}
+          </ul>
+        `;
+      }
     }
 
     return { title, message, severity };

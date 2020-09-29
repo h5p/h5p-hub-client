@@ -46,6 +46,11 @@
     font-size: 0.925em;
     margin: 0;
     padding-bottom: 0.5em;
+
+    ul.h5p-hub-message-item-list {
+      list-style-type: disc;
+      margin: 1em;
+    }
   }
   .h5p-hub-message-content .h5p-hub-message-body {
     color: $text-light;

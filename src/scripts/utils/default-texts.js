@@ -145,5 +145,8 @@ export default {
   in: 'in',
   navigateToParent: 'Navigate to parent',
   downloadFailed: 'Download failed',
+  downloadFailedMissingLibrariesTitle: 'Download failed',
+  downloadFailedMissingLibrariesMessage: 'You are not authorized to install or update the libraries required by this content.',
+  contentHubConnectionFailed: 'Could not connect to the content hub.',
   somethingWentWrongTryAgain: 'Something went wrong. Please try again.'
 };
