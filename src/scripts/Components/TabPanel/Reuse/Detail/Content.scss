@@ -54,6 +54,12 @@ $color-back-button: #474f5a;
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @media (min-width: $screen-medium) {
+          justify-content: normal;
+          align-items: normal;
+          margin-top: 2em;
+        }
   
         img {
           width: 16.5em;
@@ -87,7 +93,7 @@ $color-back-button: #474f5a;
         @media (min-width: $screen-medium) {
           order: 2;
           flex-basis: 0;
-          margin: 2em 1em 0;
+          margin: 2em 2em 0;
         }
   
         h2 {
@@ -159,6 +165,8 @@ $color-back-button: #474f5a;
     }
 
     .h5p-hub-button-download-content {
+      display: inline-flex;
+      align-items: center;
 
       &::before {
         font-family: "h5p-hub";
@@ -166,8 +174,7 @@ $color-back-button: #474f5a;
         content: "\e90c";
         display: inline-block;
         margin-right: 1em;
-        transform: rotate(-90deg) translateX(2px);
-        line-height: 1;
+        transform: rotate(-90deg);
       }
     }
 
