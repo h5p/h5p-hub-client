@@ -9,10 +9,18 @@
 
     @media (max-width: $screen-medium) {
       width: 33.33%;
+
+      .h5p-hub-content-icon {
+        height: 10.5em;
+      }
     }
 
     @media (max-width: $screen-small) {
       width: 50%;
+
+      .h5p-hub-content-icon {
+        height: 12em;
+      }
     }
 
     &:focus .h5p-hub-grid-item,
@@ -45,7 +53,9 @@
 
     img {
       width: 100%;
-      height: auto;
+      height: 6em;
+      object-fit: contain;
+      background-color: #d0d0d1;
     }
 
     button {

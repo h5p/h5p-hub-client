@@ -1,5 +1,7 @@
 .h5p-hub {
   .h5p-hub-img-responsive {
     max-width: 100%;
+    object-fit: contain;
+    background-color: #d0d0d1;
   }
 }
