@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Dictionary from '../../../../utils/dictionary';
-import { 
-  contentDefinition, 
-  licensesReducer, 
+import {
+  contentDefinition,
+  licensesReducer,
   mapContentScreenShotsForImageSlider
 } from '../../../../utils/helpers';
 import variables from '../../../../../styles/base/_variables.scss';
@@ -142,14 +142,14 @@ class Content extends React.Component {
         onTransitionEnd={this.onTransitionEnd}
       >
         <a href="#"
-          className="h5p-hub-back-button h5p-hub-icon-arrow-thick"
+          className="h5p-hub-back-button h5p-hub-icon-arrow-thin"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
           onClick={this.handleClose}
           onKeyPress={this.handleBackKeyPress}
         />
         <div className="h5p-hub-container">
           <div className="h5p-hub-image-wrapper">
-            <ContentIcon src={content.icon} className="h5p-hub-img-responsive"/> 
+            <ContentIcon src={content.icon} className="h5p-hub-img-responsive"/>
           </div>
           <div className="h5p-hub-text-details">
             <h2

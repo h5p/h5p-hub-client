@@ -196,7 +196,7 @@ class ContentType extends React.Component {
     // just to get the sliding effect when viewing the first library
     if (!this.props.library) {
       return (
-        <div className={classNames} /> 
+        <div className={classNames} />
       );
     }
 
@@ -252,7 +252,7 @@ class ContentType extends React.Component {
         onTransitionEnd={this.onTransitionEnd}
       >
         <a href="#"
-          className="h5p-hub-back-button h5p-hub-icon-arrow-thick"
+          className="h5p-hub-back-button h5p-hub-icon-arrow-thin"
           aria-label={Dictionary.get('contentTypeBackButtonLabel')}
           onClick={this.handleClose}
           onKeyPress={this.handleBackKeyPress}/>
