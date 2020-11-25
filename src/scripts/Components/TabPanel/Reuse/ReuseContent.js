@@ -105,15 +105,14 @@ class ReuseContent extends React.Component {
       });
     }
 
-    // Check if there are changes in any of the state variables 
+    // Check if there are changes in any of the state variables
     // used by the search. If so execute a new search
     const searchHasChanged =
       (prevState.orderBy !== this.state.orderBy) ||
       (prevState.query !== this.state.query) ||
-      (prevState.page !== this.state.page) ||
       !hubFiltersEqual(prevState.appliedFilters, this.state.appliedFilters);
 
-    if (searchHasChanged) {
+    if (searchHasChanged || prevState.page !== this.state.page) {
       this.setState({
         detailViewVisible: false,
         contentListVisible: true,
@@ -123,7 +122,7 @@ class ReuseContent extends React.Component {
           query: this.state.query,
           filters: this.state.appliedFilters,
           orderBy: this.state.orderBy,
-          page: this.state.page,
+          page: searchHasChanged ? 1 : this.state.page,
         })
       });
 
@@ -212,7 +211,7 @@ class ReuseContent extends React.Component {
   /**
    * Set an appropriate title, message and severity to be displayed to the user
    * depending on the supplied error reason.
-   * 
+   *
    * @param {object} reason
    * @returns {{title: string, message: string, severity: string}} props
    *  compatible with the Message component.
@@ -282,7 +281,7 @@ class ReuseContent extends React.Component {
     return name;
   }
 
-  /** 
+  /**
    * Get level label
    * @param  {string} name
    */
@@ -308,7 +307,7 @@ class ReuseContent extends React.Component {
     const showPopularList = this.state.initialized && (this.state.query || this.state.orderBy !== 'popular');
     const showNewOnTheHubList = this.state.initialized && (this.state.query || this.state.orderBy !== 'newest');
     const downloadingLabel = Dictionary.get('contentDownloadButtonDownloadingLabel');
-    
+
     return (
       <div id='h5p-hub-reuse-view'>
         {this.state.downloading  && <DownloadingModal label={downloadingLabel} />}
