@@ -102,7 +102,7 @@ class Filter extends React.Component {
         shouldCloseOnOverlayClick={false}
       >
         <div className="h5p-hub-filter-dialog-content" onClick={this.swallowClicks}>
-          <div className="h5p-hub-header-text" id='h5p-hub-header-text'>
+          <div className="h5p-hub-header-text" id='h5p-hub-filter-modal-header-text'>
             {this.props.dictionary.dialogHeader}
           </div>
 

@@ -44,10 +44,9 @@ const FilterButton = React.forwardRef(({
   };
 
   return (
-    <div id={id} className='h5p-hub-filter-button'>
+    <div className='h5p-hub-filter-button'>
       <button
         tabIndex='-1'
-        id={id}
         className={className()}
         onClick={handleClick}
         ref={ref}>

@@ -107,7 +107,7 @@ class Content extends React.Component {
 
   render() {
     const classNames = 'h5p-hub-content-detail' + (this.state.visible ? ' h5p-hub-show' : '');
-    const titleId = 'content-detail-view-title';
+    const titleId = 'h5p-hub-content-detail-view-title';
     const content = this.props.content;
 
     let modalAria = {};

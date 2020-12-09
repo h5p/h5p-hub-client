@@ -116,9 +116,9 @@ class FilterBar extends React.Component {
 
   render() {
     const filterButtons = this.props.filters.map(filter =>
-      <li key={filter.id} id={'h5p-hub-' + filter.id}>
+      <li key={filter.id} id={'h5p-hub-filter-button' + filter.id}>
         <FilterButton
-          id={'h5p-hub-' + filter.id}
+          id={'h5p-hub-filter-button' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
           checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
