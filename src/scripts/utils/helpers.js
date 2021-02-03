@@ -79,9 +79,9 @@ export const contentDefinition = PropTypes.shape({
     })
   ),
   icon: PropTypes.string,
-  level: PropTypes.string.isRequired,
+  level: PropTypes.string,
   language: PropTypes.string.isRequired,
-  disciplines: PropTypes.array.isRequired
+  disciplines: PropTypes.array
 });
 
 /**

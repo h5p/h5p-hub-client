@@ -21,16 +21,24 @@ const InfoList = ({
         <span id='h5p-hub-info-list-language' className='h5p-hub-hublabel'>{Dictionary.get('language')}: </span>
         <span aria-labelledby='h5p-hub-info-list-language' className='h5p-hub-content'>{content.language}</span>
       </li>
-      <li>
-        <span id='h5p-hub-info-list-discipline' className='h5p-hub-hublabel h5p-hub-capitalize'>{Dictionary.get('in')}: </span>
-        <span aria-labelledby='h5p-hub-info-list-discipline' className='h5p-hub-content'>
-          {content.disciplines}
-        </span>
-      </li>
-      <li>
-        <span id='h5p-hub-info-list-level' className='h5p-hub-label'>{Dictionary.get('level')}: </span>
-        <span className='h5p-hub-content h5p-hub-capitalize' aria-labelledby='h5p-hub-info-list-level'>{content.level}</span>
-      </li>
+      {
+        (content.disciplines && content.disciplines.length) ?
+        <li>
+          <span id='h5p-hub-info-list-discipline'
+                className='h5p-hub-hublabel h5p-hub-capitalize'>{Dictionary.get('in')}: </span>
+          <span aria-labelledby='h5p-hub-info-list-discipline' className='h5p-hub-content'>
+            {content.disciplines}
+          </span>
+        </li>
+        : null
+      }
+      {
+        content.level &&
+        <li>
+          <span id='h5p-hub-info-list-level' className='h5p-hub-label'>{Dictionary.get('level')}: </span>
+          <span className='h5p-hub-content h5p-hub-capitalize' aria-labelledby='h5p-hub-info-list-level'>{content.level}</span>
+        </li>
+      }
       <li>
         <span id='h5p-hub-info-list-size' className='h5p-hub-label'>{Dictionary.get('size')}: </span>
         <span aria-labelledby='h5p-hub-info-list-size' className='h5p-hub-content'>{content.filesize}</span>
