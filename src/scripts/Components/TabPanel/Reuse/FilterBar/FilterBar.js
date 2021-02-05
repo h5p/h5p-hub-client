@@ -66,7 +66,8 @@ class FilterBar extends React.Component {
    * Updates states and calls the apply filters
    */
   handleFilterClosed = (id) => {
-    if (this.state.openFilter === id) {
+    const filteredId = id.split('-').pop();
+    if (this.state.openFilter.split('-').pop() === filteredId) {
       this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
     }
     this.props.applyFilters(this.props.checked);
@@ -106,7 +107,7 @@ class FilterBar extends React.Component {
    * @returns {Object} The filter
    */
   findFilterById = (id) => {
-    const cleanId = id.replace('h5p-hub-', '');
+    const cleanId = id.replace('h5p-hub-filter-button-', '');
     for (let i = 0; i < this.props.filters.length; i++) {
       if (this.props.filters[i].id === cleanId) {
         return this.props.filters[i];
@@ -116,9 +117,9 @@ class FilterBar extends React.Component {
 
   render() {
     const filterButtons = this.props.filters.map(filter =>
-      <li key={filter.id} id={'h5p-hub-filter-button' + filter.id}>
+      <li key={filter.id} id={'h5p-hub-filter-button-' + filter.id}>
         <FilterButton
-          id={'h5p-hub-filter-button' + filter.id}
+          id={'h5p-hub-filter-button-' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
           checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
