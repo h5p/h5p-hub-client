@@ -61,7 +61,7 @@ const ContentList = ({
         <Async.Fulfilled>{result =>
           result.numResults ? (
             <>
-              <List 
+              <List
                 type={type}
                 onSelect={id => onSelect(contentLookup[id], id,type)}
                 focused={focused}
@@ -74,7 +74,7 @@ const ContentList = ({
                 showPagination &&
                 <Pagination
                   selectedPage={result.page}
-                  pages={result.pages}
+                  pages={Math.floor(parseFloat(result.pages))}
                   onChange={handlePageChange}
                   setFocus={false} />
               }
