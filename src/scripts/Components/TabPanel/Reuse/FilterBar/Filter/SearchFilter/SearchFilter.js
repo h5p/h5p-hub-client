@@ -222,7 +222,6 @@ class SearchFilter extends React.Component {
       if (children) {
         this.props.handleChecked(filter,
           this.getDescendants(this.getCheckboxFromId(checkbox, this.parents))
-            .filter(element => this.getCheckboxFromId(element.id, this.parents) === null)
             .map(element => element.id), checkedOf);
       }
       else {
