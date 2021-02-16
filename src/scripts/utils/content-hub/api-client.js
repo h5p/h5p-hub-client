@@ -255,20 +255,24 @@ export default class ApiClient {
    */
   static search(datas) {
     const query = [];
+    let formData = new FormData();
 
     if (datas.filters !== undefined) {
       // Add licensing facets
       if (datas.filters.license !== undefined) {
         if (datas.filters.license.indexOf('modified') !== -1) {
+          formData.append('can_be_modified', 1);
           query.push('can_be_modified=1');
         }
         if (datas.filters.license.indexOf('commercial') !== -1) {
+          formData.append('allows_commercial_use', 1);
           query.push('allows_commercial_use=1');
         }
       }
 
       // Add reviewed facet
       if (datas.filters.reviewed !== undefined && datas.filters.reviewed.indexOf('reviewed') !== -1) {
+        formData.append('reviewed', 1);
         query.push('reviewed=1');
       }
 
@@ -283,6 +287,7 @@ export default class ApiClient {
         if (supportedFacets.hasOwnProperty(supportedFacet) && datas.filters[supportedFacet] !== undefined) {
           const facet = datas.filters[supportedFacet];
           for (let i = 0; i < facet.length; i++) {
+            formData.append(supportedFacets[supportedFacet] + '[]', facet[i]);
             query.push(supportedFacets[supportedFacet] + '[]=' + facet[i]);
           }
         }
@@ -291,16 +296,19 @@ export default class ApiClient {
 
     // Add sorting
     if (datas.orderBy === 'newest') {
+      formData.append('sort_by', 'created_at');
       query.push('sort_by=created_at');
     }
 
     // Add pagination
     if (datas.page !== undefined && datas.page > 1) {
+      formData.append('from', ((datas.page - 1) * 6).toString());
       query.push('from=' + ((datas.page - 1) * 6));
     }
 
     // Add fuzzy text search
     if (datas.query !== undefined && datas.query.trim()) {
+      formData.append('text', datas.query);
       query.push('text=' + datas.query);
     }
 
@@ -318,9 +326,9 @@ export default class ApiClient {
         return reject(new Error('Did you forget to add the Hub integration?'));
       }
       
-      const url = window.H5PIntegration.Hub.contentSearchUrl + (queryString ? '?' + queryString : '');
+      const url = window.H5PIntegration.Hub.contentSearchUrl;
 
-      return new fetchJSON(url, undefined, 'omit').then(response => {
+      return new fetchJSON(url, formData, 'omit').then(response => {
         resolve({
           numResults: response.total,
           content: response.items,
