@@ -209,23 +209,27 @@ class SearchFilter extends React.Component {
 
   /**
    * Updates state and use callbacks with a checkbox being switched on or off
-   * @param  {string} filter
-   * @param  {string} checkbox id
-   * @param  {boolean} checkedOf
+   * @param  {string} filterType
+   * @param  {string} checkboxId id
+   * @param  {boolean} isChecked
    */
-  handleChecked = (filter, checkbox, checkedOf) => {
-    if (this.state.dropdownOpen && checkbox && this.state.checkboxElements[this.indexOfId(checkbox)]) {
-      this.setState({ setFocus: true, focused: checkbox });
-      const children = this.state.checkboxElements[this.indexOfId(checkbox)].children;
+  handleChecked = (filterType, checkboxId, isChecked) => {
+    if (this.state.dropdownOpen && checkboxId && this.state.checkboxElements[this.indexOfId(checkboxId)]) {
+      this.setState({setFocus: true, focused: checkboxId});
+      const children = this.state.checkboxElements[this.indexOfId(checkboxId)].children;
 
       //The checkbox is a category and all it's descendants should either be checked on or off.
       if (children) {
-        this.props.handleChecked(filter,
-          this.getDescendants(this.getCheckboxFromId(checkbox, this.parents))
-            .map(element => element.id), checkedOf);
+        const checkbox = this.getCheckboxFromId(checkboxId, this.parents);
+        const descendants = this.getDescendants(checkbox)
+          .map(element => element.id);
+        this.props.handleChecked(filterType, [
+          checkboxId,
+          ...descendants
+        ], isChecked);
       }
       else {
-        this.props.handleChecked(filter, checkbox, checkedOf);
+        this.props.handleChecked(filterType, checkboxId, isChecked);
       }
       this.searchRef.current.focus();
     }
