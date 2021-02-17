@@ -96,6 +96,7 @@ $color-back-button: #474f5a;
       border: none;
       text-decoration: none;
       outline: none;
+      transform: rotate(180deg);
 
       &:hover {
         color: darken(#1f2227, 30%);
