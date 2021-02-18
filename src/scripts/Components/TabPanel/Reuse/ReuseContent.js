@@ -29,7 +29,9 @@ class ReuseContent extends React.Component {
     this.state = {
       page: 1,
       orderBy: defaultOrderBy,
-      appliedFilters: {},
+      appliedFilters: {
+        reviewed: ['reviewed'],
+      },
       hasSearchResults: false,
       contentListVisible: true,
       detailViewVisible: false,
@@ -40,7 +42,9 @@ class ReuseContent extends React.Component {
       metaData: {},
       initialized: false,
       downloading: false,
-      selectedFilters: {}
+      selectedFilters: {
+        reviewed: ['reviewed'],
+      }
     };
 
     this.orderBySettings = [{
@@ -98,9 +102,19 @@ class ReuseContent extends React.Component {
     // Run initial search first time ReuseContent is shown:
     if (!this.state.initialized && this.props.isVisible) {
       this.setState({
-        newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
-        popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
-        search: ContentApiClient.search({}),
+        newContent: ContentApiClient.search({
+          orderBy: 'newest',
+          limit: 6,
+          filters: this.state.appliedFilters,
+        }),
+        popularContent: ContentApiClient.search({
+          orderBy: 'popularity',
+          limit: 6,
+          filters: this.state.appliedFilters,
+        }),
+        search: ContentApiClient.search({
+          filters: this.state.appliedFilters,
+        }),
         initialized: true
       });
     }
