@@ -139,6 +139,7 @@ export default {
   noContentFoundDesc: 'There is no content that matches your search criteria.',
   h5pType: 'H5P Type',
   level: 'Level',
+  age: 'Typical age',
   size: 'Size',
   failedFetchingData: 'Failed fetching data', 
   filterErrorMessage: 'Something went wrong. Please reload the page.',
