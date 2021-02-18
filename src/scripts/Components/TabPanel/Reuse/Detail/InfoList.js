@@ -47,7 +47,7 @@ const InfoList = ({
         content.age &&
         <li>
           <span id='h5p-hub-info-list-age' className='h5p-hub-label'>{Dictionary.get('age')}: </span>
-          <span className='h5p-hub-content h5p-hub-capitalize' aria-labelledby='h5p-hub-info-list-age'>{content.age}</span>
+          <span className='h5p-hub-content' aria-labelledby='h5p-hub-info-list-age'>{content.age}</span>
         </li>
       }
     </ul>
