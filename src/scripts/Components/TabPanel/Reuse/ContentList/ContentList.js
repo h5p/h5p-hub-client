@@ -74,7 +74,7 @@ const ContentList = ({
                 showPagination &&
                 <Pagination
                   selectedPage={result.page}
-                  pages={Math.floor(parseFloat(result.pages))}
+                  pages={result.pages}
                   onChange={handlePageChange}
                   setFocus={false} />
               }

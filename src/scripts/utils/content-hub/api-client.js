@@ -332,7 +332,7 @@ export default class ApiClient {
         resolve({
           numResults: response.total,
           content: response.items,
-          pages: response.total / 6,
+          pages: Math.floor(parseInt(response.total) / 6),
           page: datas.page || 1
         });
       }).catch(reason => {
