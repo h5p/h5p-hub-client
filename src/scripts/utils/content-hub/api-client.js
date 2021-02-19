@@ -254,26 +254,22 @@ export default class ApiClient {
    * @return {Function}
    */
   static search(datas) {
-    const query = [];
-    let formData = new FormData();
+    const formData = new FormData();
 
     if (datas.filters !== undefined) {
       // Add licensing facets
       if (datas.filters.license !== undefined) {
         if (datas.filters.license.indexOf('modified') !== -1) {
           formData.append('can_be_modified', 1);
-          query.push('can_be_modified=1');
         }
         if (datas.filters.license.indexOf('commercial') !== -1) {
           formData.append('allows_commercial_use', 1);
-          query.push('allows_commercial_use=1');
         }
       }
 
       // Add reviewed facet
       if (datas.filters.reviewed !== undefined && datas.filters.reviewed.indexOf('reviewed') !== -1) {
         formData.append('reviewed', 1);
-        query.push('reviewed=1');
       }
 
       // Add multi facets
@@ -288,7 +284,6 @@ export default class ApiClient {
           const facet = datas.filters[supportedFacet];
           for (let i = 0; i < facet.length; i++) {
             formData.append(supportedFacets[supportedFacet] + '[]', facet[i]);
-            query.push(supportedFacets[supportedFacet] + '[]=' + facet[i]);
           }
         }
       }
@@ -297,25 +292,21 @@ export default class ApiClient {
     // Add sorting
     if (datas.orderBy === 'newest') {
       formData.append('sort_by', 'created_at');
-      query.push('sort_by=created_at');
     }
 
     // Add pagination
     if (datas.page !== undefined && datas.page > 1) {
       formData.append('from', ((datas.page - 1) * 6).toString());
-      query.push('from=' + ((datas.page - 1) * 6));
     }
 
     // Add fuzzy text search
     if (datas.query !== undefined && datas.query.trim()) {
       formData.append('text', datas.query);
-      query.push('text=' + datas.query);
     }
-
-    const queryString = query.join('&');
 
     // Did we create a promise for this query already?
     // If we did, use the "cached" promise.
+    const queryString = new URLSearchParams(formData).toString();
     const cachedPromise = this.getCachedQueryResults(queryString);
     if (cachedPromise) {
       return () => cachedPromise;
