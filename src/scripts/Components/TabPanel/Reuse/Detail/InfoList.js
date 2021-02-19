@@ -15,22 +15,21 @@ const InfoList = ({
       </li>
       <li>
         <span id='h5p-hub-info-list-h5p-type' className='h5p-hub-label'>{Dictionary.get('h5pType') + ': '}</span>
-        <span aria-labelledby='h5p-hub-h5p-type' className='h5p-hub-content'>{content.h5pTitle}</span>
+        <span aria-labelledby='h5p-hub-info-list-h5p-type' className='h5p-hub-content'>{content.h5pTitle}</span>
       </li>
       <li>
         <span id='h5p-hub-info-list-language' className='h5p-hub-label'>{Dictionary.get('language')}: </span>
         <span aria-labelledby='h5p-hub-info-list-language' className='h5p-hub-content'>{content.language}</span>
       </li>
       {
-        (content.disciplines && content.disciplines.length) ?
-        <li>
-          <span id='h5p-hub-info-list-discipline'
-                className='h5p-hub-label h5p-hub-capitalize'>{Dictionary.get('in')}: </span>
+        (content.disciplines && content.disciplines.length) ? <li>
+          <span id='h5p-hub-info-list-discipline' className='h5p-hub-label h5p-hub-capitalize'>
+            {Dictionary.get('in')}:
+          </span>
           <span aria-labelledby='h5p-hub-info-list-discipline' className='h5p-hub-content'>
             {content.disciplines}
           </span>
-        </li>
-        : null
+        </li> : null
       }
       {
         content.level &&
