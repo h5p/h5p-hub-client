@@ -86,3 +86,7 @@
 .h5p-hub.h5p-hub-hidden {
   display: none;
 }
+
+.h5p-hub-client-container-using-mouse [role=button] {
+  outline: none;
+}

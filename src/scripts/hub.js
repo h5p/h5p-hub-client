@@ -19,7 +19,7 @@ export default class HubClient {
     Object.assign(this, Eventful());
 
     const self = this;
-    const container = document.createElement('div');
+    const container = this.createContainerElement('div');
 
     // Setting up Dictionary
     Dictionary.init(dictionary);
@@ -79,5 +79,34 @@ export default class HubClient {
 
     // Trigger initial rendering
     render();
+  }
+
+  /**
+   * Creates a DOM element and attaches listeners to the window object to
+   * detect if the user is navigating using their mouse or keyboard, assigning
+   * a CSS class to the container to allow distinctive styling.
+   * 
+   * @param {string} tagName
+   * @returns {HTMLElement}
+   */
+  createContainerElement(tagName) {
+    const NAV_KEY_CODES = ['Enter', 'Space', 'Tab'];
+    const USING_MOUSE_SELECTOR = 'h5p-hub-client-container-using-mouse';
+    
+    const container = document.createElement(tagName, {
+      className: USING_MOUSE_SELECTOR
+    });
+
+    window.addEventListener('keydown', (event) => {
+      if (NAV_KEY_CODES.indexOf(event.code) !== -1) {
+        container.classList.remove(USING_MOUSE_SELECTOR);
+      }
+    });
+
+    window.addEventListener('mousemove', () => {
+      container.classList.add(USING_MOUSE_SELECTOR);
+    });
+
+    return container;
   }
 }
