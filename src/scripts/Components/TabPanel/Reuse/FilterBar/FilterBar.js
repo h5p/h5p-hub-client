@@ -27,12 +27,13 @@ class FilterBar extends React.Component {
   }
 
   /**
-   * Test if there is any checked checkboxes
+   * Clear filters button should be shown if any there is any checked
+   * except for the exception prop
    */
-  anyChecked = () => {
+  showClearFilters = () => {
     let anyChecked = false;
     Object.keys(this.props.checked).forEach((filter) => {
-      if ((this.props.checked[filter]).length > 0) {
+      if ((this.props.checked[filter]).length > 0 && this.props.clearFilterException !== filter) {
         anyChecked = true;
         return;
       }
@@ -41,12 +42,16 @@ class FilterBar extends React.Component {
   }
 
   /**
-   * Unchecks all checkboxes.
+   * Unchecks all checkboxes excpet any sent exception
    */
   clearFilters = () => {
     this.setState({ showClearFilters: false });
-    this.props.setChecked({});
-    this.props.applyFilters({});
+    this.props.setChecked({
+      [this.props.clearFilterException]: this.props.checked[this.props.clearFilterException]
+    });
+    this.props.applyFilters({
+      [this.props.clearFilterException]: this.props.checked[this.props.clearFilterException]
+    });
   }
 
   /**
@@ -55,7 +60,7 @@ class FilterBar extends React.Component {
    */
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
-    this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
+    this.setState({ openFilter: close ? '' : id, showClearFilters: this.showClearFilters() });
     if (close) {
       this.props.applyFilters(this.props.checked);
     }
@@ -68,7 +73,7 @@ class FilterBar extends React.Component {
   handleFilterClosed = (id) => {
     const filteredId = id.split('-').pop();
     if (this.state.openFilter.split('-').pop() === filteredId) {
-      this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
+      this.setState({ openFilter: '', showClearFilters: this.showClearFilters() });
     }
     this.props.applyFilters(this.props.checked);
   }
@@ -212,7 +217,8 @@ FilterBar.propTypes = {
   metaData: PropTypes.object.isRequired,
   failedDataFetch: PropTypes.object.isRequired,
   checked: PropTypes.object.isRequired,
-  setChecked: PropTypes.func.isRequired
+  setChecked: PropTypes.func.isRequired,
+  clearFilterException: PropTypes.string.isRequired
 };
 
 export default FilterBar;
