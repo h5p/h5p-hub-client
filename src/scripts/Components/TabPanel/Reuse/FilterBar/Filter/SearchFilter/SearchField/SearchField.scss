@@ -7,6 +7,18 @@
     .h5p-hub-search-field {
       position: relative;
 
+      &::before {
+        position: absolute;
+        content: "\e88a";
+        font-family: "h5p";
+        font-style: normal;
+        font-size: 2em;
+        margin-left: 0.25em;
+        color: #b7b8ba;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
       .h5p-hub-icon-arrow {
         position: absolute;
         font-size: 1.30353em;
@@ -32,6 +44,7 @@
     font-size: 1.25em;
     width: 100%;
     box-sizing: border-box;
+    padding-left: 2.25em;
 
     &::placeholder {
       color: #b7b8ba;
