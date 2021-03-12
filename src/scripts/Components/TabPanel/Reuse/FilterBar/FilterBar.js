@@ -42,7 +42,7 @@ class FilterBar extends React.Component {
   }
 
   /**
-   * Unchecks all checkboxes excpet any sent exception
+   * Unchecks all checkboxes excpet for clear filters exception
    */
   clearFilters = () => {
     this.setState({ showClearFilters: false });

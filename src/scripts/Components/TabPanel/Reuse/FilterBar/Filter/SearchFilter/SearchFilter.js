@@ -466,6 +466,7 @@ class SearchFilter extends React.Component {
             listRefId={this.listRefId}
             getDescendants={this.getDescendants}
             tabIndex='-1'
+            appliedSearch={this.props.checked}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
@@ -482,6 +483,7 @@ class SearchFilter extends React.Component {
             categoryList={this.state.categoryList}
             searchValue={this.state.searchValue}
             categoryRefId={this.categoryRefId}
+            appliedSearch={this.props.checked}
           />
         }
       </div>
