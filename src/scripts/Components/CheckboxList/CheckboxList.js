@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
@@ -15,11 +15,19 @@ const CheckboxList = React.forwardRef(({
   listRefId,
   getDescendants,
   tabIndex,
-  appliedSearch}, ref) => {
+  appliedSearch,
+  navigateDirection,
+  setNavigateDirection }, ref) => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      setNavigateDirection('');
+    }, 350);
+  }, [items]);
 
   return (
     <ul
-      className="h5p-hub-checkbox-list"
+      className={`h5p-hub-checkbox-list ${navigateDirection ? `h5p-hub-animate-in-${navigateDirection}` : ''}`}
       role='group'
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
@@ -55,7 +63,9 @@ CheckboxList.propTypes = {
   listRefId: PropTypes.string,
   tabIndex: PropTypes.string,
   getDescendants: PropTypes.func,
-  appliedSearch: PropTypes.array
+  appliedSearch: PropTypes.array,
+  navigateDirection: PropTypes.string,
+  setNavigateDirection: PropTypes.func
 };
 
 export default CheckboxList;

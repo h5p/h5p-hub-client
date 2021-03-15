@@ -20,6 +20,7 @@ class SearchFilter extends React.Component {
       parent: [],
       inSearch: false,
       categoryList: [],
+      navigateDirection: ''
     };
 
     this.searchRef = React.createRef();
@@ -312,6 +313,7 @@ class SearchFilter extends React.Component {
     this.setState({
       checkboxElements: children,
       parent: [...this.state.parent, id],
+      navigateDirection: 'right'
     });
     this.searchRef.current.focus();
   }
@@ -327,7 +329,8 @@ class SearchFilter extends React.Component {
     this.setState({
       parent: newParent,
       checkboxElements: checkboxElements ? checkboxElements : this.props.items.sort(this.compare),
-      focused: focused
+      focused: focused,
+      navigateDirection: 'left'
     });
     this.searchRef.current.focus();
   }
@@ -467,6 +470,8 @@ class SearchFilter extends React.Component {
             getDescendants={this.getDescendants}
             tabIndex='-1'
             appliedSearch={this.props.checked}
+            navigateDirection={this.state.navigateDirection}
+            setNavigateDirection={(value) => this.setState({ navigateDirection: value })}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
