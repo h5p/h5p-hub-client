@@ -20,9 +20,11 @@ const CheckboxList = React.forwardRef(({
   setNavigateDirection }, ref) => {
 
   useEffect(() => {
-    setTimeout(() => {
-      setNavigateDirection('');
-    }, 350);
+    if (setNavigateDirection) {
+      setTimeout(() => {
+        setNavigateDirection('');
+      }, 350);
+    }
   }, [items]);
 
   return (
