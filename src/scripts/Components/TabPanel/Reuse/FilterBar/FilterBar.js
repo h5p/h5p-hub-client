@@ -33,7 +33,9 @@ class FilterBar extends React.Component {
   showClearFilters = () => {
     let anyChecked = false;
     Object.keys(this.props.checked).forEach((filter) => {
-      if ((this.props.checked[filter]).length > 0 && this.props.clearFilterException !== filter) {
+      if ((this.props.checked[filter]).length > 0
+        && this.props.clearFilterExceptions
+        && this.props.clearFilterExceptions.indexOf(filter) === -1) {
         anyChecked = true;
         return;
       }
@@ -46,12 +48,17 @@ class FilterBar extends React.Component {
    */
   clearFilters = () => {
     this.setState({ showClearFilters: false });
-    this.props.setChecked({
-      [this.props.clearFilterException]: this.props.checked[this.props.clearFilterException]
-    });
-    this.props.applyFilters({
-      [this.props.clearFilterException]: this.props.checked[this.props.clearFilterException]
-    });
+    const checkedFilters = {};
+    for (let i = 0; i < this.props.clearFilterExceptions.length; i++) {
+      const filter = this.props.clearFilterExceptions[i];
+      checkedFilters[filter] = this.props.checked[filter];
+    }
+    this.props.setChecked(
+      checkedFilters
+    );
+    this.props.applyFilters(
+      checkedFilters
+    );
   }
 
   /**
@@ -218,7 +225,7 @@ FilterBar.propTypes = {
   failedDataFetch: PropTypes.object.isRequired,
   checked: PropTypes.object.isRequired,
   setChecked: PropTypes.func.isRequired,
-  clearFilterException: PropTypes.string.isRequired
+  clearFilterExceptions: PropTypes.array
 };
 
 export default FilterBar;

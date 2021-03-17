@@ -339,7 +339,7 @@ class ReuseContent extends React.Component {
           setChecked={this.setChecked}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
-          clearFilterException='reviewed'
+          clearFilterExceptions={['reviewed']}
         />
 
         <div className='h5p-hub-reuse-content-container' id='h5p-hub-reuse-content-container' >
