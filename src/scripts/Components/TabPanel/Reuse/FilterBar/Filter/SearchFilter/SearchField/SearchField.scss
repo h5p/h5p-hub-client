@@ -9,11 +9,10 @@
 
       &::before {
         position: absolute;
-        content: "\e88a";
-        font-family: "h5p";
+        @include icon($icon-search);
         font-style: normal;
-        font-size: 2em;
-        margin-left: 0.25em;
+        font-size: 1em;
+        margin-left: 1em;
         color: #b7b8ba;
         top: 50%;
         transform: translateY(-50%);
