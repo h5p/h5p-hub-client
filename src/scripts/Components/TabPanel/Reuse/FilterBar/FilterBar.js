@@ -14,7 +14,6 @@ class FilterBar extends React.Component {
 
     this.state = {
       openFilter: '',
-      showClearFilters: false,
     };
 
     this.filterBarRef = React.createRef();
@@ -47,7 +46,6 @@ class FilterBar extends React.Component {
    * Unchecks all checkboxes excpet for clear filters exception
    */
   clearFilters = () => {
-    this.setState({ showClearFilters: false });
     const checkedFilters = {};
     for (let i = 0; i < this.props.clearFilterExceptions.length; i++) {
       const filter = this.props.clearFilterExceptions[i];
@@ -67,7 +65,7 @@ class FilterBar extends React.Component {
    */
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
-    this.setState({ openFilter: close ? '' : id, showClearFilters: this.showClearFilters() });
+    this.setState({ openFilter: close ? '' : id});
     if (close) {
       this.props.applyFilters(this.props.checked);
     }
@@ -80,7 +78,7 @@ class FilterBar extends React.Component {
   handleFilterClosed = (id) => {
     const filteredId = id.split('-').pop();
     if (this.state.openFilter.split('-').pop() === filteredId) {
-      this.setState({ openFilter: '', showClearFilters: this.showClearFilters() });
+      this.setState({ openFilter: '' });
     }
     this.props.applyFilters(this.props.checked);
   }
@@ -205,7 +203,7 @@ class FilterBar extends React.Component {
         }
 
         {
-          this.state.showClearFilters &&
+          this.showClearFilters() &&
           <div className="h5p-hub-clear-filters">
             <button onClick={this.clearFilters} aria-label={Dictionary.get('clearFilters')}>
               {Dictionary.get('clearFilters')}

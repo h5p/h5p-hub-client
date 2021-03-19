@@ -96,6 +96,8 @@ class ReuseContent extends React.Component {
     ];
 
     this.reuseContentResultRef = React.createRef();
+
+    this.clearFilterExceptions = ['reviewed'];
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -205,10 +207,14 @@ class ReuseContent extends React.Component {
   }
 
   showAllOrderedBy = (orderBy) => {
+    const keptFilters = {};
+    this.clearFilterExceptions.forEach((filter) => {
+      keptFilters[filter] = this.state.appliedFilters[filter];
+    });
     this.setState({
       orderBy: orderBy,
-      appliedFilters: {},
-      selectedFilters: {},
+      appliedFilters: keptFilters,
+      selectedFilters: keptFilters,
       query: '',
       page: 1
     });
@@ -339,7 +345,7 @@ class ReuseContent extends React.Component {
           setChecked={this.setChecked}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
-          clearFilterExceptions={['reviewed']}
+          clearFilterExceptions={this.clearFilterExceptions}
         />
 
         <div className='h5p-hub-reuse-content-container' id='h5p-hub-reuse-content-container' >
