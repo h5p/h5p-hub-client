@@ -147,7 +147,7 @@ export default class ApiClient {
     for (let i = 0; i < contentTypes.libraries.length; i++) {
       const library = contentTypes.libraries[i];
       cts.push({
-        id: library.machineName + ' ' + library.majorVersion + '.' + library.minorVersion,
+        id: library.machineName,
         label: library.title,
         categories: library.categories
       });
