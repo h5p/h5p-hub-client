@@ -15,7 +15,7 @@ import Search from '../../Search/Search';
 import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
-import filesize from 'filesize.js';
+import filesize from 'filesize';
 import Message from '../../Message/Message';
 
 import './ReuseContent.scss';
