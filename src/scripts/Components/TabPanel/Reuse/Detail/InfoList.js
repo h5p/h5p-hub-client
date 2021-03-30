@@ -56,7 +56,6 @@ const InfoList = ({
       <li>
         <span id='h5p-hub-info-list-size' className='h5p-hub-label'>{Dictionary.get('size')}: </span>
         <span
-          id='h5p-hub-info-list-size-value'
           aria-labelledby='h5p-hub-info-list-size'
           className='h5p-hub-content'
           dangerouslySetInnerHTML={{ __html: content.filesize }} />
