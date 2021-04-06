@@ -15,14 +15,12 @@ const ContentAccordion = ({content, licenseInfo}) => {
         header={Dictionary.get('contentPublisherPanelHeader')}
         className='h5p-hub-publisher-info'
       >
-        <h3
-          className="h5p-hub-publisher-name"
-          dangerouslySetInnerHTML={{ __html: content.publisher.name }}>
+        <h3 className="h5p-hub-publisher-name">
+          {content.publisher.name}
         </h3>
-        <img className='h5p-hub-publisher-image' src={content.publisher.logo} />
-        <div
-          className="h5p-hub-publisher-description"
-          dangerouslySetInnerHTML={{ __html: content.publisher.description }}>
+        <img className='h5p-hub-publisher-image' src={content.publisher.logo}/>
+        <div className="h5p-hub-publisher-description">
+          {content.publisher.description}
         </div>
       </div>
     </Accordion>
