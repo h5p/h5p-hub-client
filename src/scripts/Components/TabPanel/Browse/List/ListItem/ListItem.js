@@ -46,9 +46,14 @@ const ListItem = ({contentType, apiVersion, tabindex, onSelect}) => {
           </button>
         )}
 
-        <div className={'h5p-hub-content-type-update-info' + (updateAvailable ? '' : ' hidden')}>
-          {Dictionary.get('contentTypeUpdateAvailable')}
-        </div>
+        <button
+          type="button" className={'h5p-hub-content-type-update-info' + (updateAvailable ? '' : ' hidden')} tabIndex={tabindex}
+          onClick={(event) => {
+            handleSelect(event);
+          }}
+        >
+          {Dictionary.get('getUpdates')}
+        </button>
 
         <div className="h5p-hub-description">{contentType.summary || ''}</div>
       </div>
