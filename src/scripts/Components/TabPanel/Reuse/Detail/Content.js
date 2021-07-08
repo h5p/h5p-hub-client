@@ -157,8 +157,8 @@ class Content extends React.Component {
               className={`h5p-hub-title ${content.reviewed ? 'h5p-hub-reviewed' : ''}`}
               tabIndex="-1"
               ref={element => this.title = element}
-              dangerouslySetInnerHTML={{__html: content.title}}
             >
+              {content.title}
             </h2>
 
             <div className="h5p-hub-info-list">
@@ -175,8 +175,8 @@ class Content extends React.Component {
                 className="h5p-hub-button h5p-hub-demo-button"
                 target="_blank"
                 href={content.preview_url}
-                dangerouslySetInnerHTML={{__html: Dictionary.get("contentPreviewButtonLabel")}}
               >
+                {Dictionary.get("contentPreviewButtonLabel")}
               </a>
             }
           </div>
@@ -201,8 +201,8 @@ class Content extends React.Component {
           <button type="button"
             className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
             onClick={() => this.props.onDownload(content)}
-            dangerouslySetInnerHTML={{__html: Dictionary.get('contentDownloadButtonLabel')}}
           >
+            {Dictionary.get('contentDownloadButtonLabel')}
           </button>
         </div>
 

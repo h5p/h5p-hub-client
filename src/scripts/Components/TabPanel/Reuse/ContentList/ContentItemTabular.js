@@ -15,25 +15,16 @@ const ContentItemTabular = ({content}) => {
 
       <div className='h5p-hub-middle'>
         <div className='h5p-hub-headline'>
-          <span
-            className={`h5p-hub-title ${content.reviewed ? 'h5p-hub-reviewed' : ''}`}
-            dangerouslySetInnerHTML={{ __html: minimizeLongText(content.title) }}
-          />
-          <span
-            className='h5p-hub-by'
-            dangerouslySetInnerHTML={{ __html: Dictionary.get('by') }} />
-          <span
-            className='h5p-hub-owner'
-            dangerouslySetInnerHTML={{ __html: minimizeLongText(content.owner, 50) }} />
+          <span className={`h5p-hub-title ${content.reviewed ? 'h5p-hub-reviewed' : ''}`}>
+            {minimizeLongText(content.title)}
+          </span>
+          <span className='h5p-hub-by'>{Dictionary.get('by')}</span>
+          <span className='h5p-hub-owner'>{minimizeLongText(content.owner, 50)}</span>
         </div>
-        <div
-          className='h5p-hub-content-type'
-          dangerouslySetInnerHTML={{ __html: content.contentType }} />
-        <div
-          className='h5p-hub-summary'
-          dangerouslySetInnerHTML={{ __html: content.summary }} />
+        <div className='h5p-hub-content-type'>{content.contentType}</div>
+        <div className='h5p-hub-summary'>{content.summary}</div>
       </div>
-
+      
       <div className='h5p-hub-right'></div>
     </>
   );
