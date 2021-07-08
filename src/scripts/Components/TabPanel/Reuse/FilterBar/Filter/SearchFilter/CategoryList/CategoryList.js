@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CategoryList.scss';
-import { isChecked, descendantsChecked, boldTextNotMatching } from '../../../../../../../utils/filters';
+import { isChecked, getCheckedNumber, boldTextNotMatching } from '../../../../../../../utils/filters';
 import Checkbox from '../../../../../../Checkbox/Checkbox';
 import Dictionary from '../../../../../../../utils/dictionary';
 
 const CategoryList = React.forwardRef(({
   onChecked,
-  checkedParents,
   checked,
   filter,
   focused,
@@ -17,7 +16,9 @@ const CategoryList = React.forwardRef(({
   tabIndex,
   categoryList,
   searchValue,
-  categoryRefId }, ref) => {
+  categoryRefId,
+  appliedSearch
+}, ref) => {
 
   /**
    * Return a list of checboxElements with span as children
@@ -34,7 +35,7 @@ const CategoryList = React.forwardRef(({
         onChecked={onChecked}
         focused={focused === element.id}
         parent={parent}
-        descendantsChecked={descendantsChecked(getDescendants(element), checked, checkedParents)}
+        checkedNumber={getCheckedNumber(getDescendants(element), element, appliedSearch)}
         ref={ref && ref[element.id]}
         tabIndex={tabIndex}
       >
@@ -86,7 +87,8 @@ CategoryList.propTypes = {
   checkedParents: PropTypes.array,
   getDescendants: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
-  searchValue: PropTypes.string.isRequired
+  searchValue: PropTypes.string.isRequired,
+  appliedSearch: PropTypes.array
 };
 
 export default CategoryList;

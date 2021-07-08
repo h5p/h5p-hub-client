@@ -7,6 +7,17 @@
     .h5p-hub-search-field {
       position: relative;
 
+      &::before {
+        position: absolute;
+        @include icon($icon-search);
+        font-style: normal;
+        font-size: 1em;
+        margin-left: 1em;
+        color: #b7b8ba;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
       .h5p-hub-icon-arrow {
         position: absolute;
         font-size: 1.30353em;
@@ -32,6 +43,7 @@
     font-size: 1.25em;
     width: 100%;
     box-sizing: border-box;
+    padding-left: 2.25em;
 
     &::placeholder {
       color: #b7b8ba;

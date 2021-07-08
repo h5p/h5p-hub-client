@@ -131,12 +131,15 @@ class Hub extends React.Component {
                 onUse={this.handleUse}
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
-              <ReuseContent id="h5p-hub-reuse"
-                title={Dictionary.get('reuseContentTabLabel')}
-                isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
-                getAjaxUrl={this.props.getAjaxUrl}
-                onDownload={this.handleUpload}
-              />
+              {
+                this.props.enableContentHub &&
+                <ReuseContent id="h5p-hub-reuse"
+                              title={Dictionary.get('reuseContentTabLabel')}
+                              isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
+                              getAjaxUrl={this.props.getAjaxUrl}
+                              onDownload={this.handleUpload}
+                />
+              }
               <UploadContent id="h5p-hub-upload"
                 title={Dictionary.get('uploadTabLabel')}
                 getAjaxUrl={this.props.getAjaxUrl}
@@ -165,7 +168,8 @@ Hub.propTypes = {
   getAjaxUrl: PropTypes.func.isRequired,
   onResize: PropTypes.func.isRequired,
   onUse: PropTypes.func.isRequired,
-  onUpload: PropTypes.func.isRequired
+  onUpload: PropTypes.func.isRequired,
+  enableContentHub: PropTypes.bool.isRequired,
 };
 
 export default Hub;

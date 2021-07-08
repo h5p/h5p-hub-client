@@ -21,6 +21,7 @@ $icon-filters: '\e90f';
 $icon-checkbox-check: '\e91c';
 $icon-check-empty: '\e91e';
 $icon-arrow-thin: '\e906';
+$icon-colapse: '\e58e';
 
 @mixin scroll-bar($background-color, $button-color) {
   &::-webkit-scrollbar {
@@ -207,5 +208,13 @@ $icon-arrow-thin: '\e906';
   &[aria-disabled] {
     color: lighten($color, 40%);
     border-color: lighten($color, 40%);
+  }
+}
+
+@mixin only-when-using-mouse {
+  @at-root {
+    .h5p-hub-client-container-using-mouse #{&} {
+      @content;
+    }
   }
 }

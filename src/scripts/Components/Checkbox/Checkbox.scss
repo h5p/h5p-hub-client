@@ -2,14 +2,12 @@
 @import "../../../styles/base/colors";
 
 @mixin arrow-right {
-  color: #121212;
-  @include icon($icon-arrow-line);
-  transform: rotate(-90deg);
+  @include icon($icon-colapse);
+  font-family: "h5p";
+  transform: rotate(90deg);
   font-style: normal;
-  font-size: 0.7em;
+  font-size: 1.1em;
   display: block;
-  position: absolute;
-  right: 2em;
   align-self: center;
 }
 

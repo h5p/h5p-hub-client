@@ -14,7 +14,6 @@ class FilterBar extends React.Component {
 
     this.state = {
       openFilter: '',
-      showClearFilters: false,
     };
 
     this.filterBarRef = React.createRef();
@@ -27,12 +26,15 @@ class FilterBar extends React.Component {
   }
 
   /**
-   * Test if there is any checked checkboxes
+   * Clear filters button should be shown if any there is any checked
+   * except for the exception prop
    */
-  anyChecked = () => {
+  showClearFilters = () => {
     let anyChecked = false;
     Object.keys(this.props.checked).forEach((filter) => {
-      if ((this.props.checked[filter]).length > 0) {
+      if ((this.props.checked[filter]).length > 0
+        && this.props.clearFilterExceptions
+        && this.props.clearFilterExceptions.indexOf(filter) === -1) {
         anyChecked = true;
         return;
       }
@@ -41,12 +43,20 @@ class FilterBar extends React.Component {
   }
 
   /**
-   * Unchecks all checkboxes.
+   * Unchecks all checkboxes excpet for clear filters exception
    */
   clearFilters = () => {
-    this.setState({ showClearFilters: false });
-    this.props.setChecked({});
-    this.props.applyFilters({});
+    const checkedFilters = {};
+    for (let i = 0; i < this.props.clearFilterExceptions.length; i++) {
+      const filter = this.props.clearFilterExceptions[i];
+      checkedFilters[filter] = this.props.checked[filter];
+    }
+    this.props.setChecked(
+      checkedFilters
+    );
+    this.props.applyFilters(
+      checkedFilters
+    );
   }
 
   /**
@@ -55,7 +65,7 @@ class FilterBar extends React.Component {
    */
   handleFilterButtonClicked = (id) => {
     const close = this.state.openFilter === id;
-    this.setState({ openFilter: close ? '' : id, showClearFilters: this.anyChecked() });
+    this.setState({ openFilter: close ? '' : id});
     if (close) {
       this.props.applyFilters(this.props.checked);
     }
@@ -66,8 +76,9 @@ class FilterBar extends React.Component {
    * Updates states and calls the apply filters
    */
   handleFilterClosed = (id) => {
-    if (this.state.openFilter === id) {
-      this.setState({ openFilter: '', showClearFilters: this.anyChecked() });
+    const filteredId = id.split('-').pop();
+    if (this.state.openFilter.split('-').pop() === filteredId) {
+      this.setState({ openFilter: '' });
     }
     this.props.applyFilters(this.props.checked);
   }
@@ -106,7 +117,7 @@ class FilterBar extends React.Component {
    * @returns {Object} The filter
    */
   findFilterById = (id) => {
-    const cleanId = id.replace('h5p-hub-', '');
+    const cleanId = id.replace('h5p-hub-filter-button-', '');
     for (let i = 0; i < this.props.filters.length; i++) {
       if (this.props.filters[i].id === cleanId) {
         return this.props.filters[i];
@@ -116,9 +127,9 @@ class FilterBar extends React.Component {
 
   render() {
     const filterButtons = this.props.filters.map(filter =>
-      <li key={filter.id} id={'h5p-hub-filter-button' + filter.id}>
+      <li key={filter.id} id={'h5p-hub-filter-button-' + filter.id}>
         <FilterButton
-          id={'h5p-hub-filter-button' + filter.id}
+          id={'h5p-hub-filter-button-' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
           checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
@@ -192,7 +203,7 @@ class FilterBar extends React.Component {
         }
 
         {
-          this.state.showClearFilters &&
+          this.showClearFilters() &&
           <div className="h5p-hub-clear-filters">
             <button onClick={this.clearFilters} aria-label={Dictionary.get('clearFilters')}>
               {Dictionary.get('clearFilters')}
@@ -211,7 +222,8 @@ FilterBar.propTypes = {
   metaData: PropTypes.object.isRequired,
   failedDataFetch: PropTypes.object.isRequired,
   checked: PropTypes.object.isRequired,
-  setChecked: PropTypes.func.isRequired
+  setChecked: PropTypes.func.isRequired,
+  clearFilterExceptions: PropTypes.array
 };
 
 export default FilterBar;

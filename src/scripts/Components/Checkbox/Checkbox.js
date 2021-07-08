@@ -12,7 +12,7 @@ const Checkbox = React.forwardRef(({
   checkboxChildren,
   navigateToChildren,
   parent,
-  descendantsChecked,
+  checkedNumber,
   tabIndex,
   children }, ref) => {
 
@@ -61,7 +61,7 @@ const Checkbox = React.forwardRef(({
         />
         <div className='h5p-hub-label-text'>
           {children ? children : label}
-          {descendantsChecked > 0 && ` (${descendantsChecked})`}
+          {checkedNumber > 0 && ` (${checkedNumber})`}
         </div>
       </div>
     </li>
@@ -80,7 +80,7 @@ Checkbox.propTypes = {
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
   tabIndex: PropTypes.string,
-  descendantsChecked: PropTypes.any
+  checkedNumber: PropTypes.any
 };
 
 export default Checkbox;

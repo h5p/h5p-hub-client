@@ -147,7 +147,7 @@ export default class ApiClient {
     for (let i = 0; i < contentTypes.libraries.length; i++) {
       const library = contentTypes.libraries[i];
       cts.push({
-        id: library.machineName + ' ' + library.majorVersion + '.' + library.minorVersion,
+        id: library.machineName,
         label: library.title,
         categories: library.categories
       });
@@ -254,22 +254,22 @@ export default class ApiClient {
    * @return {Function}
    */
   static search(datas) {
-    const query = [];
+    const formData = new FormData();
 
     if (datas.filters !== undefined) {
       // Add licensing facets
       if (datas.filters.license !== undefined) {
         if (datas.filters.license.indexOf('modified') !== -1) {
-          query.push('can_be_modified=1');
+          formData.append('can_be_modified', 1);
         }
         if (datas.filters.license.indexOf('commercial') !== -1) {
-          query.push('allows_commercial_use=1');
+          formData.append('allows_commercial_use', 1);
         }
       }
 
       // Add reviewed facet
       if (datas.filters.reviewed !== undefined && datas.filters.reviewed.indexOf('reviewed') !== -1) {
-        query.push('reviewed=1');
+        formData.append('reviewed', 1);
       }
 
       // Add multi facets
@@ -283,7 +283,7 @@ export default class ApiClient {
         if (supportedFacets.hasOwnProperty(supportedFacet) && datas.filters[supportedFacet] !== undefined) {
           const facet = datas.filters[supportedFacet];
           for (let i = 0; i < facet.length; i++) {
-            query.push(supportedFacets[supportedFacet] + '[]=' + facet[i]);
+            formData.append(supportedFacets[supportedFacet] + '[]', facet[i]);
           }
         }
       }
@@ -291,23 +291,22 @@ export default class ApiClient {
 
     // Add sorting
     if (datas.orderBy === 'newest') {
-      query.push('sort_by=created_at');
+      formData.append('sort_by', 'created_at');
     }
 
     // Add pagination
     if (datas.page !== undefined && datas.page > 1) {
-      query.push('from=' + ((datas.page - 1) * 6));
+      formData.append('from', ((datas.page - 1) * 6).toString());
     }
 
     // Add fuzzy text search
     if (datas.query !== undefined && datas.query.trim()) {
-      query.push('text=' + datas.query);
+      formData.append('text', datas.query);
     }
-
-    const queryString = query.join('&');
 
     // Did we create a promise for this query already?
     // If we did, use the "cached" promise.
+    const queryString = new URLSearchParams(formData).toString();
     const cachedPromise = this.getCachedQueryResults(queryString);
     if (cachedPromise) {
       return () => cachedPromise;
@@ -318,13 +317,13 @@ export default class ApiClient {
         return reject(new Error('Did you forget to add the Hub integration?'));
       }
       
-      const url = window.H5PIntegration.Hub.contentSearchUrl + (queryString ? '?' + queryString : '');
+      const url = window.H5PIntegration.Hub.contentSearchUrl;
 
-      return new fetchJSON(url, undefined, 'omit').then(response => {
+      return new fetchJSON(url, formData, 'omit').then(response => {
         resolve({
           numResults: response.total,
           content: response.items,
-          pages: response.total / 6,
+          pages: Math.ceil(parseInt(response.total) / 6),
           page: datas.page || 1
         });
       }).catch(reason => {

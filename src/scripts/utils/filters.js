@@ -12,13 +12,16 @@ export const isChecked = (id, checked) => {
 /**
  * Gives the number of descendants that are checked of
  * @param  {Object[]} children
- * @param  {string[]} checkedParents
+ * @param  {Object} children
+ * @param  {string[]} appliedSearch
  * @returns number
  */
-export const descendantsChecked = (children, checked, checkedParents) => {
-  return children ?
-    children.filter(element => isChecked(element.id, checked) && checkedParents.indexOf(element.id) === -1).length
+export const getCheckedNumber = (children, element, appliedSearch) => {
+  const descendantsChecked = children ?
+    children.filter(element => isChecked(element.id, appliedSearch)).length
     : 0;
+  const elementApplied = appliedSearch.indexOf(element.id) === -1 ? 0 : 1;
+  return descendantsChecked + elementApplied;
 };
 
 /**

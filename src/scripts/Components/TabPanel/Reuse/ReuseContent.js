@@ -15,7 +15,7 @@ import Search from '../../Search/Search';
 import Content from './Detail/Content';
 import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
-import filesize from 'filesize.js';
+import filesize from 'filesize';
 import Message from '../../Message/Message';
 
 import './ReuseContent.scss';
@@ -29,7 +29,9 @@ class ReuseContent extends React.Component {
     this.state = {
       page: 1,
       orderBy: defaultOrderBy,
-      appliedFilters: {},
+      appliedFilters: {
+        reviewed: ['reviewed'],
+      },
       hasSearchResults: false,
       contentListVisible: true,
       detailViewVisible: false,
@@ -40,7 +42,9 @@ class ReuseContent extends React.Component {
       metaData: {},
       initialized: false,
       downloading: false,
-      selectedFilters: {}
+      selectedFilters: {
+        reviewed: ['reviewed'],
+      }
     };
 
     this.orderBySettings = [{
@@ -92,15 +96,27 @@ class ReuseContent extends React.Component {
     ];
 
     this.reuseContentResultRef = React.createRef();
+
+    this.clearFilterExceptions = ['reviewed'];
   }
 
   componentDidUpdate(prevProps, prevState) {
     // Run initial search first time ReuseContent is shown:
     if (!this.state.initialized && this.props.isVisible) {
       this.setState({
-        newContent: ContentApiClient.search({ orderBy: 'newest', limit: 6 }),
-        popularContent: ContentApiClient.search({ orderBy: 'popularity', limit: 6 }),
-        search: ContentApiClient.search({}),
+        newContent: ContentApiClient.search({
+          orderBy: 'newest',
+          limit: 6,
+          filters: this.state.appliedFilters,
+        }),
+        popularContent: ContentApiClient.search({
+          orderBy: 'popularity',
+          limit: 6,
+          filters: this.state.appliedFilters,
+        }),
+        search: ContentApiClient.search({
+          filters: this.state.appliedFilters,
+        }),
         initialized: true
       });
     }
@@ -191,10 +207,14 @@ class ReuseContent extends React.Component {
   }
 
   showAllOrderedBy = (orderBy) => {
+    const keptFilters = {};
+    this.clearFilterExceptions.forEach((filter) => {
+      keptFilters[filter] = this.state.appliedFilters[filter];
+    });
     this.setState({
       orderBy: orderBy,
-      appliedFilters: {},
-      selectedFilters: {},
+      appliedFilters: keptFilters,
+      selectedFilters: keptFilters,
       query: '',
       page: 1
     });
@@ -325,6 +345,7 @@ class ReuseContent extends React.Component {
           setChecked={this.setChecked}
           metaData={{ ...this.state.metaData, 'license': this.licenseFilter, 'reviewed': this.reviewedFilter }}
           failedDataFetch={this.state.failedDataFetch}
+          clearFilterExceptions={this.clearFilterExceptions}
         />
 
         <div className='h5p-hub-reuse-content-container' id='h5p-hub-reuse-content-container' >

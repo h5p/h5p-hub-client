@@ -20,6 +20,7 @@ class SearchFilter extends React.Component {
       parent: [],
       inSearch: false,
       categoryList: [],
+      navigateDirection: ''
     };
 
     this.searchRef = React.createRef();
@@ -209,24 +210,27 @@ class SearchFilter extends React.Component {
 
   /**
    * Updates state and use callbacks with a checkbox being switched on or off
-   * @param  {string} filter
-   * @param  {string} checkbox id
-   * @param  {boolean} checkedOf
+   * @param  {string} filterType
+   * @param  {string} checkboxId id
+   * @param  {boolean} isChecked
    */
-  handleChecked = (filter, checkbox, checkedOf) => {
-    if (this.state.dropdownOpen && checkbox && this.state.checkboxElements[this.indexOfId(checkbox)]) {
-      this.setState({ setFocus: true, focused: checkbox });
-      const children = this.state.checkboxElements[this.indexOfId(checkbox)].children;
+  handleChecked = (filterType, checkboxId, isChecked) => {
+    if (this.state.dropdownOpen && checkboxId && this.state.checkboxElements[this.indexOfId(checkboxId)]) {
+      this.setState({setFocus: true, focused: checkboxId});
+      const children = this.state.checkboxElements[this.indexOfId(checkboxId)].children;
 
       //The checkbox is a category and all it's descendants should either be checked on or off.
       if (children) {
-        this.props.handleChecked(filter,
-          this.getDescendants(this.getCheckboxFromId(checkbox, this.parents))
-            .filter(element => this.getCheckboxFromId(element.id, this.parents) === null)
-            .map(element => element.id), checkedOf);
+        const checkbox = this.getCheckboxFromId(checkboxId, this.parents);
+        const descendants = this.getDescendants(checkbox)
+          .map(element => element.id);
+        this.props.handleChecked(filterType, [
+          checkboxId,
+          ...descendants
+        ], isChecked);
       }
       else {
-        this.props.handleChecked(filter, checkbox, checkedOf);
+        this.props.handleChecked(filterType, checkboxId, isChecked);
       }
       this.searchRef.current.focus();
     }
@@ -309,6 +313,7 @@ class SearchFilter extends React.Component {
     this.setState({
       checkboxElements: children,
       parent: [...this.state.parent, id],
+      navigateDirection: 'right'
     });
     this.searchRef.current.focus();
   }
@@ -324,7 +329,8 @@ class SearchFilter extends React.Component {
     this.setState({
       parent: newParent,
       checkboxElements: checkboxElements ? checkboxElements : this.props.items.sort(this.compare),
-      focused: focused
+      focused: focused,
+      navigateDirection: 'left'
     });
     this.searchRef.current.focus();
   }
@@ -463,6 +469,9 @@ class SearchFilter extends React.Component {
             listRefId={this.listRefId}
             getDescendants={this.getDescendants}
             tabIndex='-1'
+            appliedSearch={this.props.checked}
+            navigateDirection={this.state.navigateDirection}
+            setNavigateDirection={(value) => this.setState({ navigateDirection: value })}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
@@ -479,6 +488,7 @@ class SearchFilter extends React.Component {
             categoryList={this.state.categoryList}
             searchValue={this.state.searchValue}
             categoryRefId={this.categoryRefId}
+            appliedSearch={this.props.checked}
           />
         }
       </div>

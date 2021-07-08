@@ -1,13 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
-import { isChecked, descendantsChecked } from '../../utils/filters';
+import { isChecked, getCheckedNumber } from '../../utils/filters';
 
 const CheckboxList = React.forwardRef(({
   items,
   onChecked,
-  checkedParents,
   checked,
   filter,
   focused,
@@ -15,11 +14,22 @@ const CheckboxList = React.forwardRef(({
   parent,
   listRefId,
   getDescendants,
-  tabIndex }, ref) => {
+  tabIndex,
+  appliedSearch,
+  navigateDirection,
+  setNavigateDirection }, ref) => {
+
+  useEffect(() => {
+    if (setNavigateDirection) {
+      setTimeout(() => {
+        setNavigateDirection('');
+      }, 350);
+    }
+  }, [items]);
 
   return (
     <ul
-      className="h5p-hub-checkbox-list"
+      className={`h5p-hub-checkbox-list ${navigateDirection ? `h5p-hub-animate-in-${navigateDirection}` : ''}`}
       role='group'
       aria-labelledby={filter.label}
       ref={ref && ref[listRefId]}>
@@ -36,7 +46,7 @@ const CheckboxList = React.forwardRef(({
           checkboxChildren={element.children}
           navigateToChildren={navigateToChildren}
           parent={parent}
-          descendantsChecked={element.children && descendantsChecked(getDescendants(element), checked, checkedParents)}
+          checkedNumber={element.children && getCheckedNumber(getDescendants(element), element, appliedSearch)}
           ref={ref && ref[element.id]}
           tabIndex={tabIndex}
         />
@@ -54,6 +64,10 @@ CheckboxList.propTypes = {
   parent: PropTypes.string,
   listRefId: PropTypes.string,
   tabIndex: PropTypes.string,
+  getDescendants: PropTypes.func,
+  appliedSearch: PropTypes.array,
+  navigateDirection: PropTypes.string,
+  setNavigateDirection: PropTypes.func
 };
 
 export default CheckboxList;

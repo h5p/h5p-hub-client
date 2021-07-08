@@ -61,7 +61,7 @@ const ContentList = ({
         <Async.Fulfilled>{result =>
           result.numResults ? (
             <>
-              <List 
+              <List
                 type={type}
                 onSelect={id => onSelect(contentLookup[id], id,type)}
                 focused={focused}

@@ -20,6 +20,8 @@ class TabPanel extends React.Component {
 
   render() {
     const tabButtons = React.Children.map(this.props.children, child => (
+      // Children that are null should not be rendered
+      child !== null &&
       <li
         className='h5p-hub-tab-button'
         aria-selected={this.state.selected === child.props.id}
@@ -31,6 +33,8 @@ class TabPanel extends React.Component {
     ));
 
     const tabContent = React.Children.map(this.props.children, child => (
+      // Children that are null should not be rendered
+      child !== null &&
       <div className={`h5p-hub-tabpanel${this.state.selected === child.props.id ? '' : ' h5p-hub-hidden'}`}
         id={`h5p-hub-tab-panel-${child.props.id}`}
         aria-labelledby={child.props.id}
