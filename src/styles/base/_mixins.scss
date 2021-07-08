@@ -210,3 +210,11 @@ $icon-colapse: '\e58e';
     border-color: lighten($color, 40%);
   }
 }
+
+@mixin only-when-using-mouse {
+  @at-root {
+    .h5p-hub-client-container-using-mouse #{&} {
+      @content;
+    }
+  }
+}

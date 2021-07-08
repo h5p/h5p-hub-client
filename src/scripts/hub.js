@@ -90,12 +90,11 @@ export default class HubClient {
    * @returns {HTMLElement}
    */
   createContainerElement(tagName) {
-    const NAV_KEY_CODES = ['Enter', 'Space', 'Tab'];
+    const NAV_KEY_CODES = ['Enter', 'Space', 'Tab', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'];
     const USING_MOUSE_SELECTOR = 'h5p-hub-client-container-using-mouse';
     
-    const container = document.createElement(tagName, {
-      className: USING_MOUSE_SELECTOR
-    });
+    const container = document.createElement(tagName);
+    container.classList.add(USING_MOUSE_SELECTOR);
 
     window.addEventListener('keydown', (event) => {
       if (NAV_KEY_CODES.indexOf(event.code) !== -1) {
@@ -103,7 +102,7 @@ export default class HubClient {
       }
     });
 
-    window.addEventListener('mousemove', () => {
+    window.addEventListener('mousedown', () => {
       container.classList.add(USING_MOUSE_SELECTOR);
     });
 
