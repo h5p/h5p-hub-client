@@ -17,3 +17,6 @@ Run `watch` to continually watch for changes to JavaScript and scss, and rebuild
 ```bash
 npm run watch
 ```
+## License
+
+Open Sans font is licensed under Apache license, Version 2.0
