@@ -26,7 +26,6 @@ const config = {
         include: path.resolve(__dirname, 'src'),
         exclude: /node_modules/,
         use: [
-          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader',
         ],
