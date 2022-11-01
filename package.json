@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "cross-env DEV_ENV=1 karma start && eslint src",
-    "dev": "cross-env NODE_ENV='development' webpack",
-    "build": "cross-env NODE_ENV='production' webpack",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "lint": "./node_modules/.bin/eslint src",
     "prettier": "./node_modules/.bin/prettier --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
-    "watch": "cross-env NODE_ENV='development' webpack --watch",
-    "watch:test-api": "cross-env NODE_ENV='development' webpack --api test --watch"
+    "watch": "webpack --mode development --watch",
+    "watch:test-api": "webpack --mode development --api test --watch"
   },
   "repository": {
     "type": "git",
