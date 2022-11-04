@@ -20,6 +20,35 @@ export const minimizeLongText = (text, threshold = 90) => {
 };
 
 /**
+ * Get the first characters from each word.
+ * If only one word, and not longer than maxLength, the text is trimmed and returned otherwise unchanged.
+ * If number of words is larger than maxLength, the first character from first and last word is used.
+ *
+ * Examples:
+ *  initials('Donald Duck') => 'DD'
+ *  initials('Donald Fauntleroy Duck') => 'DFD'
+ *  initials('donald fauntleroy duck') => 'DFD'
+ *  initials('Donald Fauntleroy Duck', 2) => 'DD'
+ *  initials('Donald') => 'Donald'
+ *  initials('  DoNaLd ') => 'DoNaLd'
+ *  initials('Donald', 3) => 'D'
+ *
+ * @param text
+ * @param maxLength
+ * @return {string}
+ */
+export const initials = (text, maxLength = 2) => {
+  const parts = text.trim().split(' ');
+
+  if (parts.length === 1 && parts[0].trim().length <= maxLength) {
+    return text.trim();
+  } else if (parts.length > maxLength) {
+    return (parts.shift().trim().charAt(0) + parts.pop().trim().charAt(0)).toUpperCase();
+  }
+  return parts.map(t => t.trim().charAt(0)).join('').toUpperCase();
+};
+
+/**
  * Maps content screenshots to a format that ImageSlider accepts
  *
  * @param screenshots Screenshots as received from the content hub
@@ -98,7 +127,8 @@ export const hubFiltersEqual = (a, b) => {
     'language',
     'level',
     'license',
-    'reviewed'
+    'reviewed',
+    'publisher',
   ];
 
   for (let i = 0; i < fields.length; i++) {
