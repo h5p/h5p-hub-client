@@ -472,6 +472,7 @@ class SearchFilter extends React.Component {
             appliedSearch={this.props.checked}
             navigateDirection={this.state.navigateDirection}
             setNavigateDirection={(value) => this.setState({ navigateDirection: value })}
+            filterCounts={this.props.filterCounts}
           />
         }{
           this.state.dropdownOpen && this.props.items && this.props.category && (this.state.categoryList.length > 0 || this.state.categoryList.topCategories) && this.state.inSearch &&
@@ -489,6 +490,7 @@ class SearchFilter extends React.Component {
             searchValue={this.state.searchValue}
             categoryRefId={this.categoryRefId}
             appliedSearch={this.props.checked}
+            filterCounts={this.props.filterCounts}
           />
         }
       </div>
@@ -503,7 +505,8 @@ SearchFilter.propTypes = {
   filter: PropTypes.string.isRequired,
   dictionary: PropTypes.object.isRequired,
   category: PropTypes.bool,
-  dropdownAlwaysOpen: PropTypes.bool
+  dropdownAlwaysOpen: PropTypes.bool,
+  searchCounts: PropTypes.object,
 };
 
 export default SearchFilter;

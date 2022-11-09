@@ -52,3 +52,13 @@ export const boldTextNotMatching = (label, searchValue) => {
   });
   return (spans.map(element => element));
 };
+
+export const summarizeChildFilterCounts = (children, countsData, initialValue = 0) => {
+  return children.reduce((sum, child) => {
+    let childSum = 0;
+    if (child.children) {
+      childSum = summarizeChildFilterCounts(child.children, countsData, 0)
+    }
+    return sum + (countsData[child.id] ?? 0) + childSum;
+  }, initialValue);
+};
