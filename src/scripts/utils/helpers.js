@@ -26,12 +26,11 @@ export const minimizeLongText = (text, threshold = 90) => {
  *
  * Examples:
  *  initials('Donald Duck') => 'DD'
- *  initials('Donald Fauntleroy Duck') => 'DFD'
- *  initials('donald fauntleroy duck') => 'DFD'
- *  initials('Donald Fauntleroy Duck', 2) => 'DD'
- *  initials('Donald') => 'Donald'
- *  initials('  DoNaLd ') => 'DoNaLd'
+ *  initials('Donald Fauntleroy Duck', 3) => 'DFD'
+ *  initials('donald fauntleroy duck', 6) => 'DFD'
+ *  initials('Donald Fauntleroy Duck') => 'DD'
  *  initials('Donald', 3) => 'D'
+ *  initials('  DoNaLd ', 6) => 'DoNaLd'
  *
  * @param text
  * @param maxLength
