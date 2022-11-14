@@ -58,6 +58,10 @@
 
   .h5p-hub-owner {
     font-size: 1em;
+
+      & > a {
+          color: #326efb;
+      }
   }
 
   .h5p-hub-content-type {
