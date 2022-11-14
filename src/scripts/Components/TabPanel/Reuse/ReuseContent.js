@@ -45,6 +45,7 @@ class ReuseContent extends React.Component {
       downloading: false,
       selectedFilters: {
         reviewed: ['reviewed'],
+        publisher: [],
       }
     };
 
