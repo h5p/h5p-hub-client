@@ -28,6 +28,11 @@
       outline: none;
     }
 
+    &.h5p-hub-checkbox-disabled {
+      color: #697585;
+      opacity: 60%;
+    }
+
     &.h5p-hub-parent::after {
       @include arrow-right();
     }

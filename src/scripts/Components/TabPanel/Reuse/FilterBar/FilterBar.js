@@ -14,6 +14,7 @@ class FilterBar extends React.Component {
 
     this.state = {
       openFilter: '',
+      filterCounts: {},
     };
 
     this.filterBarRef = React.createRef();
@@ -23,6 +24,30 @@ class FilterBar extends React.Component {
 
       this.filterButtons[filter.id] = React.createRef();
     });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.searchPromise !== prevProps.searchPromise) {
+      this.props.searchPromise().then(data => {
+        if (data.filterCounts) {
+          this.setState({
+            filterCounts: {
+              disciplines: data.filterCounts.disciplines ?? {},
+              contentTypes: data.filterCounts.content_type ?? {},
+              language: data.filterCounts.language ?? {},
+              level: data.filterCounts.level ?? {},
+              reviewed: {
+                reviewed: data.filterCounts.reviewed['1'] ?? 0,
+              },
+              license: {
+                commercial: data.filterCounts.allows_commercial_use['1'] ?? 0,
+                modified: data.filterCounts.can_be_modified['1'] ?? 0,
+              },
+            },
+          });
+        }
+      });
+    }
   }
 
   /**
@@ -132,9 +157,9 @@ class FilterBar extends React.Component {
           id={'h5p-hub-filter-button-' + filter.id}
           dropdownLabel={filter.dictionary.dropdownLabel}
           onClick={this.handleFilterButtonClicked}
-          checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
-          open={this.state.openFilter == filter.id}
-          data={this.props.metaData[filter.id]}
+          checkedCount={this.props.checked[filter.id] && this.props.checked[filter.id].length > 0 ? 1 : 0}
+          open={this.state.openFilter === filter.id}
+          dataCount={1}
           ref={this.filterButtons[filter.id]}
         />
       </li>
@@ -176,6 +201,7 @@ class FilterBar extends React.Component {
                 items={this.props.metaData[filter.id]}
                 checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
                 filter={filter.id}
+                filterCounts={this.state.filterCounts[filter.id] ?? {}}
               />
             }
             {filter.type === 'search' && this.props.metaData[filter.id] &&
@@ -186,6 +212,7 @@ class FilterBar extends React.Component {
                 filter={filter.id}
                 dictionary={filter.dictionary}
                 dropdownAlwaysOpen={true}
+                filterCounts={this.state.filterCounts[filter.id] ?? {}}
               />
             }
             {filter.type === 'categorySearch' && this.props.metaData[filter.id] &&
@@ -197,6 +224,7 @@ class FilterBar extends React.Component {
                 dictionary={filter.dictionary}
                 category={true}
                 dropdownAlwaysOpen={true}
+                filterCounts={this.state.filterCounts[filter.id] ?? {}}
               />
             }
           </Filter>
@@ -223,7 +251,8 @@ FilterBar.propTypes = {
   failedDataFetch: PropTypes.object.isRequired,
   checked: PropTypes.object.isRequired,
   setChecked: PropTypes.func.isRequired,
-  clearFilterExceptions: PropTypes.array
+  clearFilterExceptions: PropTypes.array,
+  searchPromise: PropTypes.func,
 };
 
 export default FilterBar;

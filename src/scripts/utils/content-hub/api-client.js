@@ -331,6 +331,7 @@ export default class ApiClient {
           pages: Math.ceil(parseInt(response.total) / 6),
           page: datas.page || 1,
           counts: response.counts ?? {},
+          filterCounts: response.filterCounts ?? {},
         });
       }).catch(reason => {
         //Delete cache if fetching failed

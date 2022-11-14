@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './CategoryList.scss';
-import { isChecked, getCheckedNumber, boldTextNotMatching } from '../../../../../../../utils/filters';
+import {
+  isChecked,
+  boldTextNotMatching,
+  summarizeChildFilterCounts
+} from '../../../../../../../utils/filters';
 import Checkbox from '../../../../../../Checkbox/Checkbox';
 import Dictionary from '../../../../../../../utils/dictionary';
 
@@ -17,7 +21,8 @@ const CategoryList = React.forwardRef(({
   categoryList,
   searchValue,
   categoryRefId,
-  appliedSearch
+  appliedSearch,
+  filterCounts,
 }, ref) => {
 
   /**
@@ -35,7 +40,7 @@ const CategoryList = React.forwardRef(({
         onChecked={onChecked}
         focused={focused === element.id}
         parent={parent}
-        checkedNumber={getCheckedNumber(getDescendants(element), element, appliedSearch)}
+        checkedNumber={element.children ? summarizeChildFilterCounts(element.children, filterCounts, filterCounts[element.id] ?? 0) : filterCounts[element.id] ?? 0}
         ref={ref && ref[element.id]}
         tabIndex={tabIndex}
       >
@@ -88,7 +93,8 @@ CategoryList.propTypes = {
   getDescendants: PropTypes.func.isRequired,
   categoryList: PropTypes.array.isRequired,
   searchValue: PropTypes.string.isRequired,
-  appliedSearch: PropTypes.array
+  appliedSearch: PropTypes.array,
+  filterCounts: PropTypes.object,
 };
 
 export default CategoryList;

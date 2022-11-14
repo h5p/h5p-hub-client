@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import './FilterButton.scss';
 
 const FilterButton = React.forwardRef(({
-  checked,
+  checkedCount,
   id,
   onClick,
   open,
-  data,
+  dataCount,
   dropdownLabel }, ref) => {
 
   //Check if the check symbol on the filterButton should be shown
-  const oneChecked = checked.length == 1 && data.length == 1;
+  const oneChecked = checkedCount === 1 && dataCount === 1;
 
-  const filterNumberShown = checked.length > 0 && !oneChecked;
+  const filterNumberShown = checkedCount > 0 && !oneChecked;
 
   const className = () => {
     if (open) {
@@ -53,7 +53,7 @@ const FilterButton = React.forwardRef(({
 
         {dropdownLabel}
         <div className={oneChecked ? 'h5p-hub-icon h5p-hub-check' : 'h5p-hub-icon'}>
-          {filterNumberShown && `(${checked.length})`}
+          {filterNumberShown && `(${checkedCount})`}
         </div>
 
       </button>
@@ -62,12 +62,17 @@ const FilterButton = React.forwardRef(({
 });
 
 FilterButton.propTypes = {
-  checked: PropTypes.array,
+  checkedCount: PropTypes.number,
   id: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  data: PropTypes.array,
+  dataCount: PropTypes.number,
   dropdownLabel: PropTypes.string.isRequired,
+};
+
+FilterButton.defaultProps = {
+  checkedCount: 0,
+  dataCount: 0,
 };
 
 export default FilterButton;

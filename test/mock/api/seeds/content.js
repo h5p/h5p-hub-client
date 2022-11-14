@@ -105,6 +105,39 @@ const get = function (params, noResults) {
     pages: pages,
     page: page,
     counts: {publisher: chance.integer({min: 1, max: 100})},
+    filterCounts: {
+      allows_commercial_use: {
+        0: 123,
+        1: 234,
+      },
+      can_be_modified: {
+        0: 213,
+        1: 324,
+      },
+      content_type: {
+        'H5P.MultiChoice': 345,
+        'H5P.ImageSlider': 321,
+      },
+      disciplines: {
+        'architecture': 111,
+        'business': 112,
+        'curriculum-and-instruction': 113,
+        'economics': 114,
+      },
+      language: {
+        'aa': 333,
+        'bg': 444,
+      },
+      level: {
+        beginner: 110,
+        intermediate: 220,
+        advanced: 330,
+      },
+      reviewed: {
+        0: 432,
+        1: 568,
+      },
+    },
   };
 };
 

@@ -44,24 +44,26 @@ const Checkbox = React.forwardRef(({
       ref={ref}
       id={'h5p-hub-' + id}
       key={filter + id}
-      className={`h5p-hub-checkbox ${checked ? 'h5p-hub-checked ' : ''} ${focused ? 'h5p-hub-highlighted' : ''} ${checkboxChildren ? 'h5p-hub-parent' : ''}`}
+      className={`h5p-hub-checkbox ${checked ? 'h5p-hub-checked ' : ''} ${focused ? 'h5p-hub-highlighted' : ''} ${checkboxChildren ? 'h5p-hub-parent' : ''} ${checkedNumber === 0 ? 'h5p-hub-checkbox-disabled' : ''}`}
       role='checkbox'
       aria-checked={checked}
-      aria-label={label}
-      onClick={() => 
-        checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked)
+      aria-disabled={checkedNumber === 0}
+      onClick={checkedNumber > 0 ?
+        () => checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked) :
+        null
       }
       tabIndex={tabIndex ? tabIndex : '0'}
-      onKeyDown={handleKeyDown}>
+      onKeyDown={checkedNumber > 0 ? handleKeyDown : null}
+    >
       <div className='h5p-hub-content' key={'label' + id}>
         <div className='h5p-hub-icon' 
-          onClick={(e) =>
-            checkboxChildren ? onCheckedClick(filter, id, !checked, e) : {}
-          }
+          onClick={checkedNumber > 0 ?
+            (e) => checkboxChildren ? onCheckedClick(filter, id, !checked, e) : {} :
+            null
+        }
         />
         <div className='h5p-hub-label-text'>
-          {children ? children : label}
-          {checkedNumber > 0 && ` (${checkedNumber})`}
+          {children ? children : label} {` (${checkedNumber})`}
         </div>
       </div>
     </li>

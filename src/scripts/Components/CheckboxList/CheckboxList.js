@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
-import { isChecked, getCheckedNumber } from '../../utils/filters';
+import { isChecked, summarizeChildFilterCounts } from '../../utils/filters';
 
 const CheckboxList = React.forwardRef(({
   items,
@@ -17,7 +17,9 @@ const CheckboxList = React.forwardRef(({
   tabIndex,
   appliedSearch,
   navigateDirection,
-  setNavigateDirection }, ref) => {
+  setNavigateDirection,
+  filterCounts,
+}, ref) => {
 
   useEffect(() => {
     if (setNavigateDirection) {
@@ -46,7 +48,7 @@ const CheckboxList = React.forwardRef(({
           checkboxChildren={element.children}
           navigateToChildren={navigateToChildren}
           parent={parent}
-          checkedNumber={element.children && getCheckedNumber(getDescendants(element), element, appliedSearch)}
+          checkedNumber={element.children ? summarizeChildFilterCounts(element.children, filterCounts, filterCounts[element.id] ?? 0) : (filterCounts[element.id] ?? 0)}
           ref={ref && ref[element.id]}
           tabIndex={tabIndex}
         />
@@ -67,7 +69,8 @@ CheckboxList.propTypes = {
   getDescendants: PropTypes.func,
   appliedSearch: PropTypes.array,
   navigateDirection: PropTypes.string,
-  setNavigateDirection: PropTypes.func
+  setNavigateDirection: PropTypes.func,
+  filterCount: PropTypes.object,
 };
 
 export default CheckboxList;
