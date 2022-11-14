@@ -20,7 +20,8 @@ const ContentList = ({
   showPagination,
   focused,
   setFocus,
-  title
+  title,
+  setPublisherFilter,
 }) => {
 
   const listId = useMemo(() => {
@@ -39,6 +40,7 @@ const ContentList = ({
           content={item}
           key={item.id}
           id={item.id}
+          setPublisherFilter={setPublisherFilter}
         />
       </li>
     );

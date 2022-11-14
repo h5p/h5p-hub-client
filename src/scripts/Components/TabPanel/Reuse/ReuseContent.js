@@ -17,6 +17,7 @@ import fetchJSON from '../../../utils/fetchJSON';
 import { hubFiltersEqual } from '../../../utils/helpers';
 import filesize from 'filesize';
 import Message from '../../Message/Message';
+import SelectedPublisher from '../../SelectedPublisher/SelectedPublisher';
 
 import './ReuseContent.scss';
 
@@ -97,7 +98,7 @@ class ReuseContent extends React.Component {
 
     this.reuseContentResultRef = React.createRef();
 
-    this.clearFilterExceptions = ['reviewed'];
+    this.clearFilterExceptions = ['reviewed', 'publisher'];
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -189,6 +190,17 @@ class ReuseContent extends React.Component {
       this.setState({ appliedFilters: checked });
     }
   }
+
+  setPublisherFilter = (publisher) => {
+    this.applyFilters({
+      ...this.state.appliedFilters,
+      publisher: [publisher],
+    });
+    this.setChecked({
+      ...this.state.selectedFilters,
+      publisher: [publisher],
+    });
+  };
 
   showContentDetails = (content, id) => {
     this.setState({
@@ -285,6 +297,24 @@ class ReuseContent extends React.Component {
     });
   }
 
+  handlePublisherBackClick = (event) => {
+    event.preventDefault();
+    this.applyFilters({
+      ...this.state.appliedFilters,
+      publisher: [],
+    });
+    this.setChecked({
+      ...this.state.selectedFilters,
+      publisher: [],
+    });
+  }
+
+  handlePublisherBackKeyDown = (event) => {
+    if (['Space', 'Enter'].includes(event.code)) {
+      this.handlePublisherBackClick(event);
+    }
+  }
+
   /**
    * Get title og H5P content type
    * @param  {string} name
@@ -350,13 +380,21 @@ class ReuseContent extends React.Component {
 
         <div className='h5p-hub-reuse-content-container' id='h5p-hub-reuse-content-container' >
           <div className={!this.state.contentListVisible ? 'h5p-hub-content-list-hidden' : ''}>
-            <Order
+            <SelectedPublisher
+              publisher={(this.state.appliedFilters.publisher && this.state.appliedFilters.publisher[0]) ? this.state.appliedFilters.publisher[0] : {}}
+              onBackArrowClick={this.handlePublisherBackClick}
+              onBackArrowKeyDown={this.handlePublisherBackKeyDown}
               searchPromise={this.state.search}
-              selected={this.state.orderBy}
-              onChange={this.handleOrderBy}
-              headerLabel={Dictionary.get('contentSectionAll')}
-              visible={this.state.contentListVisible}
-              orderVariables={this.orderBySettings} />
+            >
+              <Order
+                searchPromise={this.state.search}
+                selected={this.state.orderBy}
+                onChange={this.handleOrderBy}
+                headerLabel={Dictionary.get('resultsShown')}
+                visible={this.state.contentListVisible}
+                orderVariables={this.orderBySettings}
+              />
+            </SelectedPublisher>
 
             <div className='h5p-hub-reuse-content-result' ref={this.reuseContentResultRef}>
               {this.state.initialized && <ContentList
@@ -366,7 +404,9 @@ class ReuseContent extends React.Component {
                 handlePageChange={this.handlePageChange}
                 focused={this.state.focused}
                 setFocus={this.state.setFocus}
-                title={Dictionary.get('contentSectionAll')} />}
+                title={Dictionary.get('contentSectionAll')}
+                setPublisherFilter={this.setPublisherFilter}
+              />}
 
               <Async promiseFn={this.state.search}>
                 <Async.Fulfilled>{result =>

@@ -6,7 +6,13 @@ import Dictionary from '../../../../utils/dictionary';
 import { minimizeLongText } from '../../../../utils/helpers';
 import ContentIcon from '../ContentIcon';
 
-const ContentItemTabular = ({content}) => {
+const ContentItemTabular = ({content, setPublisherFilter}) => {
+  const handleOwnerClick = (event) => {
+    event.preventDefault();
+    event.cancelBubble = true;
+    setPublisherFilter(content.publisher);
+  };
+
   return (
     <>
       <div className='h5p-hub-left'>
@@ -19,7 +25,11 @@ const ContentItemTabular = ({content}) => {
             {minimizeLongText(content.title)}
           </span>
           <span className='h5p-hub-by'>{Dictionary.get('by')}</span>
-          <span className='h5p-hub-owner'>{minimizeLongText(content.owner, 50)}</span>
+          <span className='h5p-hub-owner'>
+              <a href="#" onClick={handleOwnerClick}>
+                {minimizeLongText(content.owner, 50)}
+              </a>
+          </span>
         </div>
         <div className='h5p-hub-content-type'>{content.contentType}</div>
         <div className='h5p-hub-summary'>{content.summary}</div>

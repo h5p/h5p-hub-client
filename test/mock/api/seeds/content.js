@@ -24,10 +24,12 @@ const create = function (content) {
     };
   }
 
+  const owner = content.owner || chance.name();
+
   return {
     id: content.id || chance.guid(),
     title: content.title || chance.sentence({ words: 5 }),
-    owner: content.owner || chance.name(),
+    owner: owner,
     content_type: content.contentType || randomContentType(),
     icon: content.image || 'test/images/image.jpg',
     summary: content.summary || chance.sentence({ words: 12 }),
@@ -44,7 +46,8 @@ const create = function (content) {
       "fr",
       "it"]),
     publisher: {
-      name: chance.name(),
+      id: content?.publisher?.id || chance.integer({min: 1}),
+      name: owner,
       description: chance.sentence({ words: 50 }),
       image: 'test/images/image.jpg',
     },
@@ -87,6 +90,8 @@ const get = function (params, noResults) {
 
   // A long name
   content[1].owner = "Adolph Blaine Charles David Earl Frederick Gerald Hubert Irvin John Kenneth Lloyd Martin Nero Oliver Paul Quincy Randolph Sherman Thomas Uncas Victor William Xerxes Yancy Zeus";
+  content[1].publisher.name = content[1].owner;
+  content[1].publisher.image = null;
 
   // No image at all
   delete content[1].icon;
@@ -98,7 +103,8 @@ const get = function (params, noResults) {
     numResults: 1000,
     content: content,
     pages: pages,
-    page: page
+    page: page,
+    counts: {publisher: chance.integer({min: 1, max: 100})},
   };
 };
 

@@ -272,6 +272,11 @@ export default class ApiClient {
         formData.append('reviewed', 1);
       }
 
+      // Add publisher (owner)
+      if (datas.filters.publisher !== undefined && datas.filters.publisher.length === 1) {
+        formData.append('publisher_id', datas.filters.publisher[0].id);
+      }
+
       // Add multi facets
       const supportedFacets = {
         contentTypes: 'content_types',
@@ -324,7 +329,8 @@ export default class ApiClient {
           numResults: response.total,
           content: response.items,
           pages: Math.ceil(parseInt(response.total) / 6),
-          page: datas.page || 1
+          page: datas.page || 1,
+          counts: response.counts ?? {},
         });
       }).catch(reason => {
         //Delete cache if fetching failed
