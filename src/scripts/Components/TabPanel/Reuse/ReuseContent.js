@@ -363,7 +363,7 @@ class ReuseContent extends React.Component {
       <div id='h5p-hub-reuse-view'>
         {this.state.downloading  && <DownloadingModal label={downloadingLabel} />}
         <Search
-          placeholder={Dictionary.get('contentSearchFieldPlaceholder')}
+          placeholder={Dictionary.get('oerContentSearchFieldPlaceholder')}
           onSearch={this.handleSearch}
           value={this.state.query}
           setFocus={this.props.isVisible} />

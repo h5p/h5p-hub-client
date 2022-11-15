@@ -152,4 +152,6 @@ export default {
   somethingWentWrongTryAgain: 'Something went wrong. Please try again.',
   resultsShown: 'Results shown',
   numberOfContents: ':count contents',
+  oerContentSearchFieldPlaceholder: 'Search for content from OER hub',
+  contentTypeSearchCreatePlaceholder: 'Search for content type to create',
 };
