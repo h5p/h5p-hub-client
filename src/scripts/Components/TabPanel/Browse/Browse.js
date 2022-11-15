@@ -164,7 +164,7 @@ class Browse extends React.Component {
           onNavigate={this.handleFocusMove}
           onSelect={this.handleSearchSelect} 
           instantSearch={true}
-          placeholder={Dictionary.get('contentTypeSearchFieldPlaceholder')}
+          placeholder={Dictionary.get('contentTypeSearchCreatePlaceholder')}
         />
         {
           !!this.state.warnOutdated &&
