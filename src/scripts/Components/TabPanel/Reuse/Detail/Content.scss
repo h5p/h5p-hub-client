@@ -161,8 +161,9 @@ $color-back-button: #474f5a;
     }
 
     .h5p-hub-button-bar {
-      text-align: right;
-      margin: 1.666em 0;
+      flex: 1 1 auto;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .h5p-hub-button-download-content {
@@ -182,6 +183,24 @@ $color-back-button: #474f5a;
 
     .h5p-hub-lightbox-inner.h5p-hub-license {
       @include scroll-bar(#f3f3f3, #5e6978);
+    }
+
+    .h5p-hub-terms-download-container {
+      margin: 1.666em 0;
+      display: flex;
+      align-items: center;
+
+      .h5p-hub-terms-of-use {
+        padding: 0 1em;
+
+        .h5p-hub-terms-of-use-text {
+          font-size: 0.9em;
+
+          a {
+            color: #326efb;
+          }
+        }
+      }
     }
   }
 }

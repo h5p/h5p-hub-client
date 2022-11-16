@@ -154,4 +154,6 @@ export default {
   numberOfContents: ':count contents',
   oerContentSearchFieldPlaceholder: 'Search for content from OER hub',
   contentTypeSearchCreatePlaceholder: 'Search for content type to create',
+  hubTermsOfUseInfo: 'By using and downloading content from the H5P Hub you accept the',
+  hubTermsOfUseLinkText: 'H5P Hub\'s Terms of Use',
 };
