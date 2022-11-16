@@ -448,7 +448,6 @@ class ReuseContent extends React.Component {
                   <a
                     target="_blank"
                     href="https://h5p.org/H5P-Hub-terms-of-use"
-                    className="h5p-hub-link"
                   >
                     {Dictionary.get('hubTermsOfUseLinkText')}
                   </a>
