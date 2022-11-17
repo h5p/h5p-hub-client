@@ -441,6 +441,18 @@ class ReuseContent extends React.Component {
                   focused={this.state.focused}
                   setFocus={this.state.setFocus} />
               }
+              <div className="h5p-hub-terms-of-use">
+                <span className="h5p-hub-terms-of-use-text">
+                  {Dictionary.get('hubTermsOfUseInfo')}
+                  {' '}
+                  <a
+                    target="_blank"
+                    href="https://h5p.org/H5P-Hub-terms-of-use"
+                  >
+                    {Dictionary.get('hubTermsOfUseLinkText')}
+                  </a>
+                </span>
+              </div>
             </div>
           </div>
 

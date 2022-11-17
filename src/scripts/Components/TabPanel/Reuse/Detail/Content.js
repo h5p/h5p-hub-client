@@ -197,13 +197,27 @@ class Content extends React.Component {
         }
         <hr />
         {this.props.message}
-        <div className="h5p-hub-button-bar">
-          <button type="button"
-            className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
-            onClick={() => this.props.onDownload(content)}
-          >
-            {Dictionary.get('contentDownloadButtonLabel')}
-          </button>
+        <div className="h5p-hub-terms-download-container">
+          <div className="h5p-hub-terms-of-use">
+            <span className="h5p-hub-terms-of-use-text">
+              {Dictionary.get('hubTermsOfUseInfo')}
+              {' '}
+              <a
+                target="_blank"
+                href="https://h5p.org/H5P-Hub-terms-of-use"
+              >
+                {Dictionary.get('hubTermsOfUseLinkText')}
+              </a>
+            </span>
+          </div>
+          <div className="h5p-hub-button-bar">
+            <button type="button"
+              className="h5p-hub-button h5p-hub-button-orange h5p-hub-button-inverse-primary h5p-hub-button-download-content"
+              onClick={() => this.props.onDownload(content)}
+            >
+              {Dictionary.get('contentDownloadButtonLabel')}
+            </button>
+          </div>
         </div>
 
         <ContentAccordion

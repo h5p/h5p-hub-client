@@ -13,6 +13,19 @@
       margin-top: 2em;
       margin-left: 2em;
     }
+
+    .h5p-hub-terms-of-use {
+      padding: 0 1em 1em;
+      text-align: center;
+
+      .h5p-hub-terms-of-use-text {
+        font-size: 0.8em;
+
+        a {
+          color: #326efb;
+        }
+      }
+    }
   }
 
   .h5p-hub-reuse-content-container {
