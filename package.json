@@ -47,7 +47,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-webpack": "^5.0.0",
     "mini-css-extract-plugin": "^2.6.1",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "prettier": "^2.7.1",
     "react-async": "^10.0.1",
     "resolve-url-loader": "^5.0.0",
