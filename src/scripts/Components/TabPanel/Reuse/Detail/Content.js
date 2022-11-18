@@ -7,7 +7,7 @@ import {
   licensesReducer,
   mapContentScreenShotsForImageSlider
 } from '../../../../utils/helpers';
-import variables from '../../../../../styles/base/_variables.scss';
+import variables from '../../../../../styles/_exports.module.scss';
 
 import Message from '../../../Message/Message';
 import Modal from '../../../Modal/Modal';

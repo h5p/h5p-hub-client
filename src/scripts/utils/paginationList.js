@@ -1,5 +1,5 @@
 import React from 'react';
-import variables from '../../styles/base/_variables.scss';
+import variables from '../../styles/_exports.module.scss';
 import Dictionary from './dictionary';
 
 export const pageNumToId = (num) => {
