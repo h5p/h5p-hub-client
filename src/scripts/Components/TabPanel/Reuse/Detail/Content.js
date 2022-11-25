@@ -164,6 +164,7 @@ class Content extends React.Component {
             <div className="h5p-hub-info-list">
               <InfoList
                 content={this.props.content}
+                setPublisherFilter={this.props.setPublisherFilter}
               />
             </div>
 
@@ -183,6 +184,7 @@ class Content extends React.Component {
           <div className="h5p-hub-info-list">
             <InfoList
               content={this.props.content}
+              setPublisherFilter={this.props.setPublisherFilter}
             />
           </div>
         </div>

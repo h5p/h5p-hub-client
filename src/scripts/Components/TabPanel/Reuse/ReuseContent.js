@@ -474,6 +474,7 @@ class ReuseContent extends React.Component {
               onDownload={this.handleDownload}
               aboutToClose={() => this.closeContentDetails()}
               onClose={() => this.setState({ detailViewVisible: false })}
+              setPublisherFilter={this.setPublisherFilter}
             />
           }
         </div>
