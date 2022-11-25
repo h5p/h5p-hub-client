@@ -5,13 +5,24 @@ import Dictionary from '../../../../utils/dictionary';
 import './InfoList.scss';
 
 const InfoList = ({
-  content
+  content,
+  setPublisherFilter
 }) => {
+  const handleOwnerClick = (event) => {
+    event.preventDefault();
+    event.cancelBubble = true;
+    setPublisherFilter(content.publisher);
+  };
+
   return (
     <ul>
       <li>
         <span id='h5p-hub-info-list-owner' className='h5p-hub-label'>{Dictionary.get('by')}: </span>
-        <span aria-labelledby='h5p-hub-info-list-owner' className='h5p-hub-content'>{content.owner}</span>
+        <span aria-labelledby='h5p-hub-info-list-owner' className='h5p-hub-content'>
+          <a href="#" onClick={handleOwnerClick}>
+            {content.owner}
+          </a>
+        </span>
       </li>
       <li>
         <span id='h5p-hub-info-list-h5p-type' className='h5p-hub-label'>{Dictionary.get('h5pType') + ': '}</span>

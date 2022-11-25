@@ -13,6 +13,10 @@
       .h5p-hub-content {
         color: #242424;
         font-weight: bold;
+
+        & > a {
+          color: #326efb;
+        }
       }
       .h5p-hub-capitalize {
         text-transform: capitalize;
