@@ -53,7 +53,7 @@ const Checkbox = React.forwardRef(({
         null
       }
       tabIndex={tabIndex ? tabIndex : '0'}
-      onKeyDown={checkedNumber > 0 ? handleKeyDown : null}
+      onKeyDown={handleKeyDown}
     >
       <div className='h5p-hub-content' key={'label' + id}>
         <div className='h5p-hub-icon' 
