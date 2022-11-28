@@ -116,7 +116,7 @@ class FilterBar extends React.Component {
    */
   filterHasContent = (filterGroup, filterItem) => {
     const counts = this.state.filterCounts[filterGroup] ?? [];
-    return counts[filterItem] > 0 ?? false;
+    return counts[filterItem] > 0;
   };
 
   /**
