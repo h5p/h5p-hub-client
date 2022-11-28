@@ -115,7 +115,6 @@ class FilterBar extends React.Component {
    * @return {boolean} true if applying filter option will result in content, false if it results in zero content
    */
   filterHasContent = (filterGroup, filterItem) => {
-    console.log(filterGroup, filterItem);
     const counts = this.state.filterCounts[filterGroup] ?? [];
     return counts[filterItem] > 0 ?? false;
   };
