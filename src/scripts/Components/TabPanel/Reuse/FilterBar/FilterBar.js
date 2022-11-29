@@ -109,29 +109,48 @@ class FilterBar extends React.Component {
   }
 
   /**
+   * Check if applying a filter results in content or not
+   * @param {string} filterGroup Key in filterCounts where the filter can be found, e.g. 'language'
+   * @param {string} filterItem The filter to check, e.g. 'nb'
+   * @return {boolean} true if applying filter option will result in content, false if it results in zero content
+   */
+  filterHasContent = (filterGroup, filterItem) => {
+    const counts = this.state.filterCounts[filterGroup] ?? [];
+    return counts[filterItem] > 0;
+  };
+
+  /**
    * Updates state each time a checkbox is checked on or off
    * @param  {string} filter
    * @param  {array} checkbox
    * @param  {bool} checkedOf true if new state of checkbox is checked
    */
   handleChecked = (filter, checkbox, checkedOf) => {
+    let filterList = null;
+
     if (Array.isArray(checkbox)) {
-      if (this.props.checked[filter] == undefined && checkbox != null) {
-        this.props.setChecked({  ...this.props.checked, [filter]: checkbox });
+      if (this.props.checked[filter] === undefined) {
+        filterList = checkbox;
+      } else {
+        filterList = checkedOf ?
+          this.props.checked[filter].filter(element => checkbox.indexOf(element) === -1).concat(checkbox)
+          : this.props.checked[filter].filter(id => checkbox.indexOf(id) === -1);
       }
-      else if (checkbox != null) {
-        const newList = checkedOf ?
-          this.props.checked[filter].filter(element => checkbox.indexOf(element) == -1).concat(checkbox)
-          : this.props.checked[filter].filter(id => checkbox.indexOf(id) == -1);
-        this.props.setChecked({...this.props.checked, [filter]: newList });
+    } else if (checkbox !== null) {
+      if (this.props.checked[filter] === undefined) {
+        filterList = [checkbox];
+      } else {
+        filterList = checkedOf ?
+          [...this.props.checked[filter], checkbox] :
+          this.props.checked[filter].filter(id => id !== checkbox);
       }
     }
-    else if (this.props.checked[filter] == undefined && checkbox != null) {
-      this.props.setChecked({ ...this.props.checked, [filter]: [checkbox] });
-    }
-    else if (checkbox != null) {
-      const newList = checkedOf ? [...this.props.checked[filter], checkbox] : this.props.checked[filter].filter(id => id != checkbox);
-      this.props.setChecked({ ...this.props.checked, [filter]: newList });
+    if (filterList !== null) {
+      // Don't toggle the state of filter items that have zero content
+      this.props.setChecked({
+        ...this.props.checked,
+        [filter]: filterList.filter(filterItem => this.filterHasContent(filter, filterItem)),
+      });
     }
   }
 
