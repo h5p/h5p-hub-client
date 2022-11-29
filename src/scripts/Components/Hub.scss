@@ -7,6 +7,9 @@
   padding-bottom: $gutter;
   position: relative;
   overflow: hidden;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+
   .h5p-hub-panel {
     border: 1px solid $c1;
     background: #fff;
