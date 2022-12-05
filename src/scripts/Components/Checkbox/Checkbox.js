@@ -39,14 +39,24 @@ const Checkbox = React.forwardRef(({
     onChecked(filter, id, checked, parent);
   };
 
+  const getStateCssClasses = () => {
+    return [
+      checked === true ? 'h5p-hub-checked' : '',
+      checked === 2 ? 'h5p-hub-mixed-state' : '',
+      focused ? 'h5p-hub-highlighted' : '',
+      checkboxChildren ? 'h5p-hub-parent' : '',
+      checkedNumber === 0 ? 'h5p-hub-checkbox-disabled' : '',
+    ].join(' ');
+  };
+
   return (
     <li
       ref={ref}
       id={'h5p-hub-' + id}
       key={filter + id}
-      className={`h5p-hub-checkbox ${checked ? 'h5p-hub-checked ' : ''} ${focused ? 'h5p-hub-highlighted' : ''} ${checkboxChildren ? 'h5p-hub-parent' : ''} ${checkedNumber === 0 ? 'h5p-hub-checkbox-disabled' : ''}`}
+      className={`h5p-hub-checkbox ${getStateCssClasses()}`}
       role='checkbox'
-      aria-checked={checked}
+      aria-checked={checked === 2 ? 'mixed' : checked}
       aria-disabled={checkedNumber === 0}
       onClick={checkedNumber > 0 ?
         () => checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked) :
@@ -74,7 +84,7 @@ Checkbox.propTypes = {
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   onChecked: PropTypes.func.isRequired,
-  checked: PropTypes.bool.isRequired,
+  checked: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]).isRequired,
   filter: PropTypes.string.isRequired,
   focused: PropTypes.bool,
   children: PropTypes.any,

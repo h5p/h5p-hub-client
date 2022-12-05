@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import './CheckboxList.scss';
 import Checkbox from '../Checkbox/Checkbox';
-import { isChecked, summarizeChildFilterCounts } from '../../utils/filters';
+import { getCheckboxTriState, isChecked, summarizeChildFilterCounts } from '../../utils/filters';
 
 const CheckboxList = React.forwardRef(({
   items,
@@ -41,7 +41,7 @@ const CheckboxList = React.forwardRef(({
           key={parent + element.id}
           id={element.id}
           label={element.label}
-          checked={isChecked(element.id, checked)}
+          checked={getDescendants ? getCheckboxTriState(element, getDescendants(element), appliedSearch) : isChecked(element.id, checked)}
           filter={filter}
           onChecked={onChecked}
           focused={focused == element.id}

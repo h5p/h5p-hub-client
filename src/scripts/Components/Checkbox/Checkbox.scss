@@ -71,5 +71,21 @@
         }
       }
     }
+
+    &.h5p-hub-mixed-state {
+      .h5p-hub-content {
+        .h5p-hub-icon {
+          &::before {
+            @include icon($icon-radio-selected); // TODO: Replace with correct icon when available
+            font-style: normal;
+            font-weight: normal;
+            font-size: 1em;
+            margin: 0.4em 0.4em 0 0.4em;
+            margin-right: 1em;
+            color: $c1;
+          }
+        }
+      }
+    }
   }
 }
