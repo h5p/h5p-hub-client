@@ -10,6 +10,22 @@ export const isChecked = (id, checked) => {
 };
 
 /**
+ * Get the state for the tri-state checkbox
+ * @param {Object} element Current element
+ * @param {Object[]} children Child nodes to check
+ * @param {string[]} checked Nodes that are checked
+ * @returns {number, boolean} false => unchecked, true => checked, 2 => mixed
+ */
+export const getCheckboxTriState = (element, children, checked) => {
+  if (Array.isArray(children) && children.length > 0) {
+    const checkedCount = getCheckedNumber(children, {}, checked);
+    const selfCheckValue = isChecked(element.id, checked) ? 2 : false;
+    return checkedCount > 0 ? checkedCount === children.length ? true : 2 : selfCheckValue;
+  }
+  return isChecked(element.id, checked);
+};
+
+/**
  * Gives the number of descendants that are checked of
  * @param  {Object[]} children
  * @param  {Object} children
