@@ -20,7 +20,7 @@ export const getCheckboxTriState = (element, children, checked) => {
   if (Array.isArray(children) && children.length > 0) {
     const checkedCount = getCheckedNumber(children, {}, checked);
     const selfCheckValue = isChecked(element.id, checked) ? 2 : false;
-    return checkedCount > 0 ? checkedCount === children.length ? true : 2 : selfCheckValue;
+    return checkedCount > 0 ? (checkedCount === children.length && selfCheckValue === 2) ? true : 2 : selfCheckValue;
   }
   return isChecked(element.id, checked);
 };
