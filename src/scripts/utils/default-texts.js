@@ -148,7 +148,7 @@ export default {
   downloadFailed: 'Download failed',
   downloadFailedMissingLibrariesTitle: 'Download failed',
   downloadFailedMissingLibrariesMessage: 'You are not authorized to install or update the libraries required by this content.',
-  contentHubConnectionFailed: 'Could not connect to the content hub.',
+  contentHubConnectionFailed: 'Couldn\'t communicate with the H5P Hub. Please try again later.',
   somethingWentWrongTryAgain: 'Something went wrong. Please try again.',
   resultsShown: 'Results shown',
   numberOfContents: ':count contents',
