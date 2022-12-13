@@ -59,9 +59,13 @@
   .h5p-hub-owner {
     font-size: 1em;
 
-      & > a {
-          color: #326efb;
+    & > a {
+      color: #326efb;
+
+      &:focus {
+        outline: 5px auto;
       }
+    }
   }
 
   .h5p-hub-content-type {
