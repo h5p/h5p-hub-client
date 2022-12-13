@@ -83,9 +83,8 @@ class Choose extends React.Component {
         break;
 
       case 32: // Space
-      case 13: // Enter
-        this.select(id);
         event.preventDefault();
+        event.target.click();
         break;
     }
   }
