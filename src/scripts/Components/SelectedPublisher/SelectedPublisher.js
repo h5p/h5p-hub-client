@@ -18,8 +18,8 @@ const SelectedPublisher = ({ publisher, onBackArrowClick, onBackArrowKeyDown, se
           onKeyDown={onBackArrowKeyDown}
         />
           <div className="h5p-hub-selectedpublisher-logo-container">
-          {publisher.image ? (
-              <img className="" src={publisher.image} />
+          {publisher.logo ? (
+              <img className="" src={publisher.logo} />
             ) : (
               <>
                 <div className="h5p-hub-selectedpublisher-avatar-background" />
