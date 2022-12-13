@@ -19,6 +19,7 @@ const CheckboxList = React.forwardRef(({
   navigateDirection,
   setNavigateDirection,
   filterCounts,
+  alwaysToggleable,
 }, ref) => {
 
   useEffect(() => {
@@ -51,6 +52,7 @@ const CheckboxList = React.forwardRef(({
           checkedNumber={element.children ? summarizeChildFilterCounts(element.children, filterCounts, filterCounts[element.id] ?? 0) : (filterCounts[element.id] ?? 0)}
           ref={ref && ref[element.id]}
           tabIndex={tabIndex}
+          alwaysToggleable={alwaysToggleable}
         />
       )}
     </ul>
@@ -71,6 +73,11 @@ CheckboxList.propTypes = {
   navigateDirection: PropTypes.string,
   setNavigateDirection: PropTypes.func,
   filterCount: PropTypes.object,
+  alwaysToggleable: PropTypes.bool,
+};
+
+CheckboxList.defaultProps = {
+  alwaysToggleable: false,
 };
 
 export default CheckboxList;

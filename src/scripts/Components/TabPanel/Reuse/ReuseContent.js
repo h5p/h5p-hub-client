@@ -94,7 +94,7 @@ class ReuseContent extends React.Component {
       { id: 'license', dictionary: filterTrans.licenses, type: 'checkboxList' },
       { id: 'language', dictionary: filterTrans.language, type: 'search' },
       { id: 'level', dictionary: filterTrans.level, type: 'checkboxList' },
-      { id: 'reviewed', dictionary: filterTrans.reviewed, type: 'checkboxList' }
+      { id: 'reviewed', dictionary: filterTrans.reviewed, type: 'checkboxList', alwaysToggleable: true }
     ];
 
     this.reuseContentResultRef = React.createRef();

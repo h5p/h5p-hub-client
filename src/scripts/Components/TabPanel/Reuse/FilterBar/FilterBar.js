@@ -221,6 +221,7 @@ class FilterBar extends React.Component {
                 checked={this.props.checked[filter.id] ? this.props.checked[filter.id] : []}
                 filter={filter.id}
                 filterCounts={this.state.filterCounts[filter.id] ?? {}}
+                alwaysToggleable={filter.alwaysToggleable || false}
               />
             }
             {filter.type === 'search' && this.props.metaData[filter.id] &&

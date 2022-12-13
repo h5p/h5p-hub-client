@@ -14,7 +14,9 @@ const Checkbox = React.forwardRef(({
   parent,
   checkedNumber,
   tabIndex,
-  children }, ref) => {
+  children,
+  alwaysToggleable,
+}, ref) => {
 
   /**
    * Checkes of current checkbox if you use enter or space
@@ -39,13 +41,15 @@ const Checkbox = React.forwardRef(({
     onChecked(filter, id, checked, parent);
   };
 
+  const disabled = !alwaysToggleable && checkedNumber === 0;
+
   const getStateCssClasses = () => {
     return [
       checked === true ? 'h5p-hub-checked' : '',
       checked === 2 ? 'h5p-hub-mixed-state' : '',
       focused ? 'h5p-hub-highlighted' : '',
       checkboxChildren ? 'h5p-hub-parent' : '',
-      checkedNumber === 0 ? 'h5p-hub-checkbox-disabled' : '',
+      disabled ? 'h5p-hub-checkbox-disabled' : '',
     ].join(' ');
   };
 
@@ -57,8 +61,8 @@ const Checkbox = React.forwardRef(({
       className={`h5p-hub-checkbox ${getStateCssClasses()}`}
       role='checkbox'
       aria-checked={checked === 2 ? 'mixed' : checked}
-      aria-disabled={checkedNumber === 0}
-      onClick={checkedNumber > 0 ?
+      aria-disabled={disabled}
+      onClick={!disabled ?
         () => checkboxChildren ? navigateToChildren(id, checkboxChildren) : onChecked(filter, id, !checked) :
         null
       }
@@ -67,7 +71,7 @@ const Checkbox = React.forwardRef(({
     >
       <div className='h5p-hub-content' key={'label' + id}>
         <div className='h5p-hub-icon' 
-          onClick={checkedNumber > 0 ?
+          onClick={!disabled ?
             (e) => checkboxChildren ? onCheckedClick(filter, id, !checked, e) : {} :
             null
         }
@@ -92,7 +96,12 @@ Checkbox.propTypes = {
   navigateToChildren: PropTypes.func,
   parent: PropTypes.string,
   tabIndex: PropTypes.string,
-  checkedNumber: PropTypes.any
+  checkedNumber: PropTypes.any,
+  alwaysToggleable: PropTypes.bool,
+};
+
+Checkbox.defaultProps = {
+  alwaysToggleable: false,
 };
 
 export default Checkbox;
