@@ -25,6 +25,20 @@
       &:last-child {
         border-bottom: none;
       }
+
+      .h5p-hub-publisher-link {
+        color: #1f2227;
+        text-decoration: underline;
+
+        &:hover {
+          color: #186df7;
+        }
+
+        &:focus {
+          box-shadow: 0 0 1px 1px #186df7;
+          color: #186df7;
+        }
+      }
     }
   }
 }

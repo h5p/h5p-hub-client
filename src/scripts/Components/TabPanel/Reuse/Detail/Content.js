@@ -173,7 +173,7 @@ class Content extends React.Component {
             {
               content.preview_url &&
               <a
-                className="h5p-hub-button h5p-hub-demo-button"
+                className="h5p-hub-button h5p-hub-preview-button"
                 target="_blank"
                 href={content.preview_url}
               >
