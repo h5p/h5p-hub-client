@@ -62,7 +62,7 @@
 
       .h5p-hub-selectedpublisher-name {
         font-size: 1em;
-        padding: 0 1.2em 0 2.292em;
+        padding: 0 1.2em;
 
         h3 {
           margin: 0;
@@ -79,6 +79,10 @@
         .h5p-hub-selectedpublisher-content-hidden {
           visibility: hidden;
         }
+      }
+
+      .h5p-hub-navbar {
+        padding-left: 1.2em;
       }
     }
   }

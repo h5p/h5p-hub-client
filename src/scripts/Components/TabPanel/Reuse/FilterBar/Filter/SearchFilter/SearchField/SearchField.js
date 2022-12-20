@@ -77,7 +77,6 @@ const SearchField = React.forwardRef(({
           onFocus={onFocus}
         >
         </input>
-        <div className="h5p-hub-icon-arrow" />
       </div>
     </div>
   );
