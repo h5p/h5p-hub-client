@@ -19,7 +19,7 @@ const InfoList = ({
       <li>
         <span id='h5p-hub-info-list-owner' className='h5p-hub-label'>{Dictionary.get('by')}: </span>
         <span aria-labelledby='h5p-hub-info-list-owner' className='h5p-hub-content'>
-          <a href="#" onClick={handleOwnerClick}>
+          <a href="#" onClick={handleOwnerClick} className="h5p-hub-publisher-link">
             {content.owner}
           </a>
         </span>
