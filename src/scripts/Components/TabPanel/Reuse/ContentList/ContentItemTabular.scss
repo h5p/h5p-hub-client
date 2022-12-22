@@ -60,10 +60,16 @@
     font-size: 1em;
 
     & > a {
-      color: #326efb;
+      color: #1f2227;
+
+      &:hover {
+        color: #186df7;
+      }
 
       &:focus {
-        outline: 5px auto;
+        box-shadow: 0 0 1px 1px #186df7;
+        color: #186df7;
+        outline: none;
       }
     }
   }
