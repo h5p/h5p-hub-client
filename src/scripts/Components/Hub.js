@@ -132,7 +132,7 @@ class Hub extends React.Component {
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
               {
-                this.props.enableContentHub &&
+                this.props.enableContentHubSearch &&
                 <ReuseContent id="h5p-hub-reuse"
                               title={Dictionary.get('reuseContentTabLabel')}
                               isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
@@ -140,12 +140,16 @@ class Hub extends React.Component {
                               onDownload={this.handleUpload}
                 />
               }
-              <UploadContent id="h5p-hub-upload"
-                title={Dictionary.get('uploadTabLabel')}
-                getAjaxUrl={this.props.getAjaxUrl}
-                contentId={this.props.contentId}
-                setFocus={this.state.expanded && this.state.section === 'h5p-hub-upload'}
-                onUpload={this.handleUpload} />
+              {
+                this.props.enableContentHub && 
+                  <UploadContent id="h5p-hub-upload"
+                    title={Dictionary.get('uploadTabLabel')}
+                    getAjaxUrl={this.props.getAjaxUrl}
+                    contentId={this.props.contentId}
+                    setFocus={this.state.expanded && this.state.section === 'h5p-hub-upload'}
+                    onUpload={this.handleUpload}
+                  />
+              }
             </TabPanel>
           </div>
         </div>
@@ -170,6 +174,7 @@ Hub.propTypes = {
   onUse: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
   enableContentHub: PropTypes.bool.isRequired,
+  enableContentHubSearch: PropTypes.bool.isRequired,
 };
 
 export default Hub;
