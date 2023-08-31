@@ -47,7 +47,6 @@ export default class HubClient {
           onPaste={self.trigger.bind(self, 'paste')}
           onRender={(title, expanded) => {state.title = title; state.expanded = expanded;}}
           enableContentHub={state.enableContentHub}
-          enableContentHubSearch={state.enableContentHubSearch}
         />,
         container
       );
