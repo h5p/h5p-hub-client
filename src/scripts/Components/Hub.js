@@ -140,13 +140,16 @@ class Hub extends React.Component {
                               onDownload={this.handleUpload}
                 />
               }
-              <UploadContent id="h5p-hub-upload"
-                title={Dictionary.get('uploadTabLabel')}
-                getAjaxUrl={this.props.getAjaxUrl}
-                contentId={this.props.contentId}
-                setFocus={this.state.expanded && this.state.section === 'h5p-hub-upload'}
-                onUpload={this.handleUpload}
-              />
+              {
+                this.props.enableContentHub && 
+                  <UploadContent id="h5p-hub-upload"
+                    title={Dictionary.get('uploadTabLabel')}
+                    getAjaxUrl={this.props.getAjaxUrl}
+                    contentId={this.props.contentId}
+                    setFocus={this.state.expanded && this.state.section === 'h5p-hub-upload'}
+                    onUpload={this.handleUpload}
+                  />
+              }
             </TabPanel>
           </div>
         </div>
