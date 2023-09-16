@@ -20,5 +20,7 @@ $ac-warning: #ffcc33 !default;
 $ac-error: #c64750 !default;
 $text-dark: #1f2227 !default;
 $text-light: #697585 !default;
+$text-link: #1a93f4 !default;
+$text-link-hover: darken($text-link, 15%);
 
 $separator-color: #ececec !default;
