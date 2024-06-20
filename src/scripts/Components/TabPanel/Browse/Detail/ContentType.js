@@ -135,7 +135,14 @@ class ContentType extends React.Component {
   handleShowLicenseDetails = () => {
 
     const licenseId = this.props.library.license.id;
-    let details = licenseCache[licenseId];
+    let details;
+
+    // Set current libraries owner information
+    if (licenseCache[licenseId]) {
+      details = licenseCache[licenseId]
+        .replace(':owner', this.props.library.owner)
+        .replace(':year', new Date().getFullYear());
+    }
 
     if (details) {
       // We already got it
@@ -150,7 +157,8 @@ class ContentType extends React.Component {
             details = Dictionary.get('licenseFetchDetailsFailed');
           }
           else {
-            details = licenseCache[licenseId] = response.description
+            licenseCache[licenseId] = response.description;
+            details = licenseCache[licenseId]
               .replace(':owner', this.props.library.owner)
               .replace(':year', new Date().getFullYear());
           }
