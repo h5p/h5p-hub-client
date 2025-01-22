@@ -222,7 +222,9 @@ class ReuseContent extends React.Component {
   showAllOrderedBy = (orderBy) => {
     const keptFilters = {};
     this.clearFilterExceptions.forEach((filter) => {
-      keptFilters[filter] = this.state.appliedFilters[filter];
+      if (this.state.appliedFilters[filter] !== undefined) {
+        keptFilters[filter] = this.state.appliedFilters[filter];
+      }
     });
     this.setState({
       orderBy: orderBy,
