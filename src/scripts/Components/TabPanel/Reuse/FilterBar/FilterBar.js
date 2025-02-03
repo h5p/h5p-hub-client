@@ -74,7 +74,9 @@ class FilterBar extends React.Component {
     const checkedFilters = {};
     for (let i = 0; i < this.props.clearFilterExceptions.length; i++) {
       const filter = this.props.clearFilterExceptions[i];
-      checkedFilters[filter] = this.props.checked[filter];
+      if (this.props.checked[filter] !== undefined) {
+        checkedFilters[filter] = this.props.checked[filter];
+      }
     }
     this.props.setChecked(
       checkedFilters
