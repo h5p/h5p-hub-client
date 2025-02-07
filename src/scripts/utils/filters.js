@@ -18,9 +18,19 @@ export const isChecked = (id, checked) => {
  */
 export const getCheckboxTriState = (element, children, checked) => {
   if (Array.isArray(children) && children.length > 0) {
-    const checkedCount = getCheckedNumber(children, {}, checked);
+    // Only process active (non-disabled) children
+    const activeChildren = children.filter(child => !child.disabled);
+    // If there are no active children, just return the element's own checked state
+    if (activeChildren.length === 0) {
+      return isChecked(element.id, checked);
+    }
+    const checkedCount = getCheckedNumber(activeChildren, {}, checked);
     const selfCheckValue = isChecked(element.id, checked) ? 2 : false;
-    return checkedCount > 0 ? (checkedCount === children.length && selfCheckValue === 2) ? true : 2 : selfCheckValue;
+    return checkedCount > 0
+      ? (checkedCount === activeChildren.length && selfCheckValue === 2)
+        ? true
+        : 2
+      : selfCheckValue;
   }
   return isChecked(element.id, checked);
 };
