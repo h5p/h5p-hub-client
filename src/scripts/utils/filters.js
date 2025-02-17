@@ -17,22 +17,33 @@ export const isChecked = (id, checked) => {
  * @returns {number, boolean} false => unchecked, true => checked, 2 => mixed
  */
 export const getCheckboxTriState = (element, children, checked) => {
-  if (Array.isArray(children) && children.length > 0) {
-    // Only process active (non-disabled) children
-    const activeChildren = children.filter(child => !child.disabled);
-    // If there are no active children, just return the element's own checked state
-    if (activeChildren.length === 0) {
-      return isChecked(element.id, checked);
-    }
-    const checkedCount = getCheckedNumber(activeChildren, {}, checked);
-    const selfCheckValue = isChecked(element.id, checked) ? 2 : false;
-    return checkedCount > 0
-      ? (checkedCount === activeChildren.length && selfCheckValue === 2)
-        ? true
-        : 2
-      : selfCheckValue;
+  if (!Array.isArray(children) || children.length === 0) {
+    return isChecked(element.id, checked);
   }
-  return isChecked(element.id, checked);
+
+  const activeChildren = children.filter(child => !child.disabled);
+
+  if (activeChildren.length === 0) {
+    return isChecked(element.id, checked);
+  }
+
+  const checkedActiveChildren = activeChildren.filter(child => {
+    if (child.children) {
+      const childState = getCheckboxTriState(child, child.children, checked);
+      return childState === true || childState === 2;
+    }
+    return isChecked(child.id, checked);
+  }).length;
+
+  if (checkedActiveChildren === activeChildren.length) {
+    return true;
+  }
+  
+  if (checkedActiveChildren > 0) {
+    return 2;
+  }
+
+  return false;
 };
 
 /**
