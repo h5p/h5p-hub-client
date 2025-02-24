@@ -42,7 +42,7 @@ const CheckboxList = React.forwardRef(({
           key={parent + element.id}
           id={element.id}
           label={element.label}
-          checked={getDescendants ? getCheckboxTriState(element, getDescendants(element), appliedSearch) : isChecked(element.id, checked)}
+          checked={getDescendants ? getCheckboxTriState(element, getDescendants(element), appliedSearch, filterCounts) : isChecked(element.id, checked)}
           filter={filter}
           onChecked={onChecked}
           focused={focused == element.id}

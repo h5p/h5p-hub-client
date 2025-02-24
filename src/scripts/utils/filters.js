@@ -3,7 +3,7 @@ import React from 'react';
 /**
  * Check if a checkbox is in list of the checked checkboxes
  * @param  {string} id
- * @param  {string[]} checked 
+ * @param  {string[]} checked
  */
 export const isChecked = (id, checked) => {
   return checked.indexOf(id) != -1;
@@ -16,12 +16,12 @@ export const isChecked = (id, checked) => {
  * @param {string[]} checked Nodes that are checked
  * @returns {number, boolean} false => unchecked, true => checked, 2 => mixed
  */
-export const getCheckboxTriState = (element, children, checked) => {
+export const getCheckboxTriState = (element, children, checked, filterCounts) => {
   if (!Array.isArray(children) || children.length === 0) {
     return isChecked(element.id, checked);
   }
 
-  const activeChildren = children.filter(child => !child.disabled);
+  const activeChildren = children.filter(child => (child.children ? summarizeChildFilterCounts(child.children, filterCounts, filterCounts[child.id] ?? 0) : (filterCounts[child.id] ?? 0)) !== 0);
 
   if (activeChildren.length === 0) {
     return isChecked(element.id, checked);
@@ -29,7 +29,7 @@ export const getCheckboxTriState = (element, children, checked) => {
 
   const checkedActiveChildren = activeChildren.filter(child => {
     if (child.children) {
-      const childState = getCheckboxTriState(child, child.children, checked);
+      const childState = getCheckboxTriState(child, child.children, checked, filterCounts);
       return childState === true || childState === 2;
     }
     return isChecked(child.id, checked);
@@ -38,7 +38,7 @@ export const getCheckboxTriState = (element, children, checked) => {
   if (checkedActiveChildren === activeChildren.length) {
     return true;
   }
-  
+
   if (checkedActiveChildren > 0) {
     return 2;
   }
