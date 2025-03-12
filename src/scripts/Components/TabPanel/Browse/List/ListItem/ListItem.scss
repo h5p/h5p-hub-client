@@ -29,10 +29,25 @@ $content-type-list-image-size: 100px;
     width: $content-type-list-image-size / 2;
   }
 
-  .h5p-hub-media-heading {
-    margin-top: 0;
+  .h5p-hub-headline {
     float: left;
-    margin-right: 0.5em;
+    font-size: $text-list-title;
+    margin: 0 0.5em $gutter / 2 0;
+
+    .h5p-hub-title {
+      font-weight: bold;
+      letter-spacing: -0.5px;
+    }
+
+    .h5p-hub-by {
+      font-size: 90%;
+      color: #666;
+      margin: 0 0.3em 0 0.6em;
+    }
+
+    .h5p-hub-owner {
+      font-size: 90%;
+    }
   }
 
   .h5p-hub-media-text-icon {
