@@ -112,13 +112,14 @@ class Hub extends React.Component {
   render() {
     this.handleRender(this.state.title, this.state.expanded);
     return (
-      <section className="h5p-hub" id='h5p-hub'>
+      <section className={'h5p-hub' + (this.props.disabled ? ' h5p-hub-disabled' : '')} id='h5p-hub'>
         <div className={`h5p-hub-panel h5p-hub-section-${this.state.section}${this.state.expanded ? ' h5p-hub-open' : ''}`} id='h5p-hub-panel'>
           <DropDownSelector
             title={this.state.title || Dictionary.get('hubPanelLabel')}
             sectionId={this.state.section}
             isExpanded={this.state.expanded}
             togglePanel={() => this.setState({expanded: !this.state.expanded})}
+            disabled={this.props.disabled}
           />
           <div id={`h5p-hub-panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'h5p-hub-hidden'}>
             <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} canPasteTitle={this.props.canPasteTitle} onPaste={this.props.onPaste}>
