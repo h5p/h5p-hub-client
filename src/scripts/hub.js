@@ -47,6 +47,7 @@ export default class HubClient {
           onPaste={self.trigger.bind(self, 'paste')}
           onRender={(title, expanded) => {state.title = title; state.expanded = expanded;}}
           enableContentHub={state.enableContentHub}
+          disabled={state.disabled}
         />,
         container
       );
@@ -85,14 +86,14 @@ export default class HubClient {
    * Creates a DOM element and attaches listeners to the window object to
    * detect if the user is navigating using their mouse or keyboard, assigning
    * a CSS class to the container to allow distinctive styling.
-   * 
+   *
    * @param {string} tagName
    * @returns {HTMLElement}
    */
   createContainerElement(tagName) {
     const NAV_KEY_CODES = ['Enter', 'Space', 'Tab', 'ArrowUp', 'ArrowRight', 'ArrowLeft', 'ArrowDown', 'ArrowUp'];
     const USING_MOUSE_SELECTOR = 'h5p-hub-client-container-using-mouse';
-    
+
     const container = document.createElement(tagName);
     container.classList.add(USING_MOUSE_SELECTOR);
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './DropDownSelector.scss';
 
-const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
+const DropDownSelector = ({togglePanel, isExpanded, sectionId, title, disabled}) => {
 
   const onPanelKeyUp = (e) => {
     if (e.which === 13 || e.which === 32) {
@@ -11,15 +11,16 @@ const DropDownSelector = ({togglePanel, isExpanded, sectionId, title}) => {
   };
 
   return (
-    <div className="h5p-hub-client-drop-down" aria-level="1" role="heading">
+    <div className={'h5p-hub-client-drop-down' + (disabled ? ' h5p-hub-disabled' : '')} aria-level="1" role="heading">
       <div
         className="h5p-hub-icon-hub-icon"
         role="button"
-        onClick={togglePanel}
-        onKeyUp={onPanelKeyUp}
+        onClick={disabled ? null : togglePanel}
+        onKeyUp={disabled ? null : onPanelKeyUp}
         aria-expanded={isExpanded.toString()}
         aria-controls={`h5p-hub-panel-body-${sectionId}`}
-        tabIndex="0"
+        tabIndex={disabled ? '-1' : '0'}
+        aria-disabled={disabled ? 'true' : 'false'}
       >
         <span className="h5p-hub-description">H5P Hub.</span>
         <span className="h5p-hub-selected">{title}</span>

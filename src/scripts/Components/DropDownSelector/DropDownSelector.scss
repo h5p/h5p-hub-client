@@ -46,4 +46,8 @@
       color: #474f5a;
     }
   }
+
+  &.h5p-hub-disabled .h5p-hub-client-drop-down {
+    cursor: default;
+  }
 }
