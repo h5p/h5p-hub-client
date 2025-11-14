@@ -122,7 +122,7 @@ class Hub extends React.Component {
           />
           <div id={`h5p-hub-panel-body-${this.state.section}`} role="region" className={this.state.expanded ? '' : 'h5p-hub-hidden'}>
             <TabPanel selected={this.state.section} onSelect={this.handleTabPanelSelect} canPaste={this.props.canPaste} canPasteTitle={this.props.canPasteTitle} onPaste={this.props.onPaste}>
-              <Browse id="h5p-hub-content-types"
+              <Browse id="h5p-hub-content-types" 
                 title={Dictionary.get('createContentTabLabel')}
                 contentTypes={this.state.contentTypes}
                 setFocus={this.state.expanded && this.state.section === 'h5p-hub-content-types'}
@@ -132,7 +132,7 @@ class Hub extends React.Component {
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
               {
-                this.props.enableContentHub &&
+                this.props.enableContentHubSearch &&
                 <ReuseContent id="h5p-hub-reuse"
                               title={Dictionary.get('reuseContentTabLabel')}
                               isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
@@ -171,6 +171,7 @@ Hub.propTypes = {
   onUse: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
   enableContentHub: PropTypes.bool.isRequired,
+  enableContentHubSearch: PropTypes.bool.isRequired,
 };
 
 export default Hub;
