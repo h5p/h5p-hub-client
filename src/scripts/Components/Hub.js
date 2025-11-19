@@ -132,7 +132,7 @@ class Hub extends React.Component {
                 onInstall={this.handleUpdate}
                 onReload={this.handleReload}/>
               {
-                this.props.enableContentHubSearch &&
+                (this.props.enableContentHub || this.props.enableContentHubSearch) &&
                 <ReuseContent id="h5p-hub-reuse"
                               title={Dictionary.get('reuseContentTabLabel')}
                               isVisible={this.state.expanded && this.state.section === 'h5p-hub-reuse'}
