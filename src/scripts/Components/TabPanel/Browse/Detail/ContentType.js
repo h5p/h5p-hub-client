@@ -143,7 +143,7 @@ class ContentType extends React.Component {
     }
     else {
       // Fetch the license:
-      fetch(`https://api.h5p.org/v1/licenses/${this.props.library.license.id}`)
+      fetch(`https://hub-api.h5p.org/v1/licenses/${this.props.library.license.id}`)
         .then(result => result.json())
         .then(response => {
           if (response.success === false) {
