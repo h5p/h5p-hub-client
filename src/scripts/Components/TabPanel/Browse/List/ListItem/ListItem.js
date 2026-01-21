@@ -33,7 +33,12 @@ const ListItem = ({contentType, apiVersion, tabindex, onSelect}) => {
       </div>
 
       <div className="h5p-hub-media-body">
-        <div className="h4 h5p-hub-media-heading">{title}</div>
+        <div className="h5p-hub-headline">
+          <span className="h5p-hub-title">{title}</span>
+          <span className='h5p-hub-by'>{Dictionary.get('by')}</span>
+          <span className="h5p-hub-owner">{contentType.owner}</span>
+        </div>
+
         { textIcons }
 
         {contentType.installed ? (
