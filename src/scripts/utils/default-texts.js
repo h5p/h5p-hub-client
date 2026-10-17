@@ -43,6 +43,7 @@ export default {
   readMore: 'Read more',
   readLess: 'Read less',  
   contentTypeUpdateAvailable: 'Update available',
+  getUpdates: 'Get updates',
   licenseDescription: 'Some of the features of this license are indicated below. Click the info icon above to read the original license text.',
   licenseModalTitle: 'License Details',
   licenseModalSubtitle: 'Select a license to view information about proper usage',
