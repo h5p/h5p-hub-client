@@ -271,7 +271,8 @@ class ContentType extends React.Component {
             >
               {this.props.library.title || this.props.library.machineName}
             </h2>
-            <div className="h5p-hub-owner">{this.props.library.owner}</div>
+            <span className='h5p-hub-by'>{Dictionary.get('by')}</span>
+            <span className="h5p-hub-owner">{this.props.library.owner}</span>
             <ReadMore
               text={this.props.library.description}
               maxLength={285}
